@@ -29,9 +29,11 @@ Every change must respect:
 |---|---|
 | [docs/architecture_info.md](docs/architecture_info.md) | Before any architectural decision — runtime topology, stack, deploy |
 | [docs/file_structure.md](docs/file_structure.md) | Before moving/creating folders or files |
-| [docs/db_schema.md](docs/db_schema.md) | Before designing or seeding any Payload collection |
+| [docs/db_schema.md](docs/db_schema.md) | Before designing or seeding any Payload collection (the WHAT) |
+| [docs/db_ops.md](docs/db_ops.md) | Before Postgres provisioning, migrations, backups, or perf debugging (the HOW) |
 | [docs/sitemap.md](docs/sitemap.md) | Before adding/removing routes or nav items |
-| [docs/cms_info.md](docs/cms_info.md) | Before changing anything in `packages/cms/src/components/` or `payload.config.ts` admin block |
+| [docs/cms_info.md](docs/cms_info.md) | Before changing anything in `packages/cms/src/components/` or `payload.config.ts` admin block (the LOOK) |
+| [docs/cms_ops.md](docs/cms_ops.md) | Before writing Payload hooks, access control, seed scripts, drafts/preview, or email pipeline (the HOW) |
 | [docs/brand-guidelines.pdf](docs/brand-guidelines.pdf) | Canonical brand source — palette, typography, mark, usage rules |
 | [docs/pricelist.xlsx](docs/pricelist.xlsx) | Canonical clinic price + procedure catalogue — seed source for Phase 6 |
 | [design_reference/](design_reference/) | Original Claude Design source — never modified, only mirrored |

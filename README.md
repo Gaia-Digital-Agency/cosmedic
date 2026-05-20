@@ -14,9 +14,11 @@ Marketing site for **BIMC CosMedic** — Bali International Medical Centre's pla
 | [CLAUDE.md](./CLAUDE.md) | Guide for Claude Code sessions in this folder |
 | [docs/architecture_info.md](./docs/architecture_info.md) | Runtime topology, stack, deployment |
 | [docs/file_structure.md](./docs/file_structure.md) | End-state directory tree + renames |
-| [docs/db_schema.md](./docs/db_schema.md) | Full Payload CMS collection + global schema |
+| [docs/db_schema.md](./docs/db_schema.md) | Full Payload CMS collection + global schema (WHAT) |
+| [docs/db_ops.md](./docs/db_ops.md) | Postgres provisioning, migrations, backup, restore, perf (HOW) |
 | [docs/sitemap.md](./docs/sitemap.md) | Every page · subpage · CTA · button · mega-menu |
-| [docs/cms_info.md](./docs/cms_info.md) | CosMedic Site CMS white-label spec |
+| [docs/cms_info.md](./docs/cms_info.md) | CosMedic Site CMS white-label spec (LOOK) |
+| [docs/cms_ops.md](./docs/cms_ops.md) | Payload init, hooks, access, drafts, media, seed, email (HOW) |
 | [docs/brand-guidelines.pdf](./docs/brand-guidelines.pdf) | BIMC CosMedic Brand Guidelines v1.0 (canonical brand source) |
 | [docs/pricelist.xlsx](./docs/pricelist.xlsx) | Clinic's price + procedure catalogue (CMS seed source) |
 | [design_reference/](./design_reference/) | Original Claude Design source (READ-ONLY) |
