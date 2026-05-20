@@ -63,12 +63,20 @@
   - [x] All home section classNames present in SSR markup (`hero-v2`, `trust-strip`, `intro`, `treatments`, `price-teaser`, `surgeons`, `gallery`, `lead-magnet`, `journey`, `stories`, `place`)
   - [ ] Side-by-side visual comparison vs `design/index.html` — pixel-fidelity gate (full Playwright suite in Phase 11)
 
-- [ ] **PHASE 4 — Detail templates (73 routes from 4 templates)**
-  - [ ] `<DisciplineDetail>` template → 6 discipline pages
-  - [ ] `<SubCategoryDetail>` template → 18 sub-category pages
-  - [ ] `<ProcedureDetail>` template → 41+ procedure pages
-  - [ ] `<SurgeonDetail>` template → 8 surgeon pages
-  - [ ] Spot-check one route per template against design
+- [x] **PHASE 4 — Detail templates (36 detail routes from 3 templates + router)**
+  - [x] SSR router (`src/router.ts`) — pathname → `{ kind, slug }` discriminator, status 404 on unknown slugs
+  - [x] `server.ts` + `entry-server.tsx` pass URL into render; client hydrates via `window.location.pathname`
+  - [x] App.tsx switches on route to dispatch HomePage / DisciplineDetail / SubCategoryDetail / SurgeonDetail / NotFound
+  - [x] `DisciplineDetail` template → 6 discipline pages (`/treatment-surgical` etc., ChapterOpener + sticky TOC + overview + sections + sub-categories (or procedures fallback) + FAQs + Related)
+  - [x] `SubCategoryDetail` template → 22 sub-category pages (12 expected + extras like `recovery-villas`, `concierge-*`) — accordion TreatmentRow per row with full price + duration + recovery + included list + 3 CTAs
+  - [x] `SurgeonDetail` template → 8 surgeon pages (hero + breadcrumb + stats + bio + specialty areas + training table + other-surgeon strip)
+  - [x] Shared sub-components: `FAQItem` (accordion), `TreatmentRow` (accordion), `SurgeonMini`
+  - [x] `NotFound` (404) — branded page with `/contact` CTA
+  - [x] TREATMENT_CONTENT data → `src/content/treatment-content.ts` (6 disciplines, ~250 lines)
+  - [x] SUBCATEGORY_DATA → `src/content/subcategory-data.ts` (22 entries, ~1,000 lines) — `parent`, `chapterTitle`, `sections[]`, `treatments[]`, `faqs[]`
+  - [x] All routes verified: 1 home + 6 disciplines + 22 sub-categories + 8 surgeons = **37 routes returning 200**, unknown paths return 404
+  - [ ] ProcedureDetail × 41 — deferred to Phase 6 (procedure detail rendered inline as accordion rows on sub-category pages per design; standalone routes need procedure data in Procedures collection)
+  - [ ] Side-by-side visual comparison vs design HTML — Phase 11 pixel-fidelity gate
 
 - [ ] **PHASE 5 — Index pages (11 remaining routes)**
   - [ ] `/gallery` with category filters

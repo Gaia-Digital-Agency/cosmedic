@@ -38,7 +38,7 @@ async function createServer() {
   app.use('*', async (req, res, next) => {
     try {
       let template: string
-      let render: () => { html: string }
+      let render: (url: string) => { html: string; status: number }
 
       if (!isProduction && vite) {
         template = await fs.readFile(path.resolve(root, 'index.html'), 'utf-8')
@@ -50,9 +50,13 @@ async function createServer() {
         render = serverEntry.render
       }
 
-      const { html: appHtml } = render()
+      const pathname = (req.originalUrl || '/').split('?')[0]
+      const { html: appHtml, status } = render(pathname)
       const html = template.replace('<!--ssr-outlet-->', appHtml)
-      res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
+      res
+        .status(status)
+        .set({ 'Content-Type': 'text/html' })
+        .end(html)
     } catch (e) {
       if (!isProduction && vite) vite.ssrFixStacktrace(e as Error)
       next(e)
