@@ -36,6 +36,17 @@ async function createServer() {
         maxAge: '1y',
       }),
     )
+    // Brand assets (favicon, lockup variants) live at dist/client root —
+    // copied from public/ by Vite at build time. Serve them at the URL root
+    // so /cosmedic-favicon.png and /favicon.ico resolve from both / and
+    // /admin/login (admin meta references these as absolute root paths).
+    app.use(
+      express.static(path.resolve(root, 'dist/client'), {
+        index: false,
+        maxAge: '7d',
+        extensions: false,
+      }),
+    )
   }
 
   // CMS revalidate hook target. Payload afterChange posts here on every save.

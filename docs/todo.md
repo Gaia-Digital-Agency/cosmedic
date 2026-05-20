@@ -127,13 +127,25 @@
   - [ ] **Open**: SMTP provider chosen + configured (Postmark / SES / clinic relay) — fill `SMTP_*` in `.env` once picked. Phase 8 launch can proceed; emails currently land in CMS stdout logs.
   - [ ] Optional: Cloudflare Turnstile if abuse appears post-launch
 
-- [ ] **PHASE 8 — nginx + SSL + DNS + deploy**
-  - [ ] DNS A record: `cosmedic.gaiada.online` → `34.124.244.233`
-  - [ ] nginx server block (port 80, then 443 after certbot)
-  - [ ] `sudo certbot --nginx -d cosmedic.gaiada.online`
-  - [ ] `sudo nginx -t && sudo systemctl reload nginx`
-  - [ ] `pm2 save`
-  - [ ] Smoke: `https://cosmedic.gaiada.online` 200, `/admin` 200, sibling sites unchanged
+- [x] **PHASE 8 — nginx + SSL + DNS + deploy** *(commit 055c4dc — live at https://cosmedic.gaiada.online)*
+  - [x] DNS A record: `cosmedic.gaiada.online` → `34.124.244.233` (already pointed pre-session)
+  - [x] nginx server block replaces stale Phase-0 static-design-preview block in `/etc/nginx/sites-enabled/subdomains.gaiada.online` — mirrors christos VRTPN pattern with ports 3007/4007 + adds `/api/enquiry` web-route. Snapshot in repo at `ops/nginx/cosmedic.gaiada.online.conf`. Pre-Phase-8 backup at `/etc/nginx/backups/subdomains.gaiada.online.bak-phase8-*`
+  - [x] Let's Encrypt cert at `/etc/letsencrypt/live/cosmedic.gaiada.online/` (issued 2026-05-20, expires 2026-08-18, auto-renew via certbot.timer)
+  - [x] `sudo nginx -t && sudo systemctl reload nginx` — clean, only benign pre-existing http2-redefine warnings; no "conflicting server name" warnings
+  - [x] `pm2 save` — `cosmedic-cms` + `cosmedic-web` persisted
+  - [x] Smoke: `/` 200 (Express), `/admin` 200 (Next.js/Payload), `/treatments` 200, `/pricing` 200, `POST /api/revalidate` `{ok:true}`, `POST /api/enquiry` returns Zod 400 with validation errors, HTTP→HTTPS 301
+  - [x] Sibling sites verified unchanged (christos / templatebase / templategen / flowstep all 200)
+  - [ ] **Open**: SMTP provider chosen + configured (carries over from Phase 7 — Postmark / SES / clinic relay) — enquiry emails currently land in CMS stdout logs, not delivered
+  - [ ] **Open** (uncovered during Phase 8 smoke): SSR router uses `/surgeon-<slug>` but `/surgeons/<slug>` returns 404; Header + sitemap.md use the latter pattern. Slug-pattern mismatch — fix during Phase 11
+
+- [~] **Post-Phase-8 admin polish** *(in progress)*
+  - [x] Web favicon: copied `cosmedic-favicon.png` + lockup variants to `packages/web/public/`; added `<link rel="icon">` + apple-touch-icon to `packages/web/index.html`
+  - [x] CMS favicon: same file now served at root via web (admin meta `/cosmedic-favicon.png` resolves through nginx → web)
+  - [x] `CosmedicIcon.tsx`: replaced cropped/clipped 32×32 image with pure-text "C" wordmark in Cormorant Garamond on brand bronze (avoids the "BIN" clipping artefact in the collapsed admin nav)
+  - [x] `CosmedicBeforeLogin.tsx`: explicit `marginInline: auto` + `maxWidth: 420` + `textAlign: center` + `width: 100%` on every child to guarantee centring inside Payload's login wrapper; logo lockup moved above the wordmark per brand.pdf §I
+  - [ ] Light/dark toggle: Payload 3 exposes the theme toggle inside the **user account menu** (top-right avatar → Account → Admin Theme). No floating toggle by default; add a custom one if more discoverable surfacing is wanted
+  - [ ] Rebuild cms + restart `cosmedic-cms`; smoke `/admin/login` shows centred lockup, browser tab shows brand favicon
+  - [ ] Commit the polish patch
 
 - [ ] **PHASE 9 — i18n EN ⇄ ID**
   - [ ] `payload.config.ts`: `localization: { locales: ['en', 'id'], defaultLocale: 'en' }`
