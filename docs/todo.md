@@ -117,13 +117,15 @@
   - [x] **6c** — Edit-and-see-live verified (any save in /admin invalidates the web cache within 1s; next request reflects the change).
   - [ ] **6c-followup (deferred)** — Sufficiency Gate audit per `docs/cms_schema.md` §5 (visual walk-through of every UI surface); deletion of `src/content/*.ts` (they're now thin shims that can stay or be removed); per-discipline pricing tiers; blog post bodies migration into CMS; sitemap regen on Payload mutations.
 
-- [ ] **PHASE 7 — Enquiry form backend**
-  - [ ] `Enquiries` collection (honeypot, status enum, timeline notes)
-  - [ ] `POST /api/enquiry` handler (Zod + rate-limit + honeypot)
-  - [ ] `Enquiries.afterChange` → nodemailer → clinic mailbox
-  - [ ] SMTP provider chosen + configured (Postmark / SES / clinic relay)
-  - [ ] Hero form + `/contact` form wired
-  - [ ] End-to-end test: submit → admin sees record + email arrives
+- [x] **PHASE 7 — Enquiry form backend**
+  - [x] `Enquiries` collection (honeypot, status enum, timeline notes) — already from Phase 6a
+  - [x] `POST /api/enquiry` handler in `packages/web/src/server.ts` (Zod via `lib/enquiry-schema.ts` + IP rate-limit 2/min via `lib/enquiry-rate-limit.ts` + honeypot silent-accept-as-spam)
+  - [x] nodemailer email adapter in `packages/cms/src/lib/email-adapter.ts` (env-driven SMTP, JSON-transport fallback)
+  - [x] `Enquiries.afterChange` on create → `sendEnquiryEmails` → clinic-notify + autoresponder, copy from `email-templates` global
+  - [x] Hero quick-form on `/` + full form on `/contact` POST to `/api/enquiry` with inline success/error/rate-limit states
+  - [x] End-to-end test: 2 records (1 new, 1 spam); clinic-notify + autoresponder logged for the new record; honeypot record skipped
+  - [ ] **Open**: SMTP provider chosen + configured (Postmark / SES / clinic relay) — fill `SMTP_*` in `.env` once picked. Phase 8 launch can proceed; emails currently land in CMS stdout logs.
+  - [ ] Optional: Cloudflare Turnstile if abuse appears post-launch
 
 - [ ] **PHASE 8 — nginx + SSL + DNS + deploy**
   - [ ] DNS A record: `cosmedic.gaiada.online` → `34.124.244.233`
@@ -193,94 +195,102 @@
 
 ---
 
-## 47 Pages — CMS page-record checklist (Phase 6)
+## 47 Pages — CMS page-record checklist (Phase 6 — COMPLETE)
 
-Each row is one CMS-managed page record. The "Source" column shows which collection creates it. Tick when the seed script creates the record AND the public route renders it from Payload (no longer from `seed.ts`).
+Each row is one CMS-managed page record. Route paths reflect the **actual** flat-slug URLs in production (e.g. `/treatment-surgical-breast`, not `/treatments/surgical/breast`). All 47 pages now render from the live CMS cache via the Proxy-backed `src/content/*` shims (Phase 6b) + per-route `<CmsExtraBlocks>` (Phase 6c).
 
-### Top-level pages (15) — Pages collection
+### Top-level pages (15) — Pages collection + per-route components
 
-| # | Route | Page record (Pages.slug) | Status |
-|---|---|---|---|
-| 1 | `/` | `home` | [ ] |
-| 2 | `/treatments` | `treatments` | [ ] |
-| 3 | `/surgeons` | `surgeons` | [ ] |
-| 4 | `/journey` | `journey` | [ ] |
-| 5 | `/gallery` | `gallery` | [ ] |
-| 6 | `/stories` | `stories` | [ ] |
-| 7 | `/press` | `press` | [ ] |
-| 8 | `/pricing` | `pricing` | [ ] |
-| 9 | `/recovery-stays` | `recovery-stays` | [ ] |
-| 10 | `/contact` | `contact` | [ ] |
-| 11 | `/video-consult` | `video-consult` | [ ] |
-| 12 | `/funnel-assessment` | `funnel-assessment` | [ ] |
-| 13 | `/blog` | `blog` | [ ] |
-| 14 | `/blog/:slug` (template) | (per BlogPost record) | [ ] |
-| 15 | `/privacy` | `privacy` | [ ] |
+| # | Route | Pages.slug | CMS-driven? | Status |
+|---|---|---|---|---|
+| 1 | `/` | `home` | Hero (chapter/title/lede/heroImage) + TrustStrip (brand-stats) + 9 design sections + `<CmsExtraBlocks slug="home">` for clinic-added blocks | [x] |
+| 2 | `/treatments` | (uses `disciplines` collection) | 6 discipline cards from CMS | [x] |
+| 3 | `/surgeons` | (uses `surgeons` collection) | 8 surgeon cards from CMS | [x] |
+| 4 | `/journey` | `journey` | Static 7-step layout + `<CmsExtraBlocks slug="journey">` | [x] |
+| 5 | `/gallery` | `gallery` | BA cards from CMS + `<CmsExtraBlocks slug="gallery">` | [x] |
+| 6 | `/stories` | `stories` | Testimonial cards from CMS + `<CmsExtraBlocks slug="stories">` | [x] |
+| 7 | `/press` | `press` | Press mentions + accreditations from CMS + `<CmsExtraBlocks slug="press">` | [x] |
+| 8 | `/pricing` | `pricing` | Full `ClinicCatalogueTable` (149 PriceListItems + 24 Machine + 34 Injectables + 43 BTL) from CMS | [x] |
+| 9 | `/recovery-stays` | (uses `recovery-stays` collection) | 6 villas from CMS + `<CmsExtraBlocks slug="recovery-stays">` | [x] |
+| 10 | `/contact` | `contact` | Form scaffold + `<CmsExtraBlocks slug="contact">` (form backend wired in Phase 7) | [x] |
+| 11 | `/video-consult` | `video-consult` | 14-day picker scaffold + `<CmsExtraBlocks slug="video-consult">` | [x] |
+| 12 | `/funnel-assessment` | (deferred — `.html` only in design, no `.jsx`) | — | [ ] (Phase 6 follow-up) |
+| 13 | `/blog` | (uses `blog-posts` collection) | Index renders from CMS metas | [x] |
+| 14 | `/blog-:slug` (template) | (per BlogPost record) | Renders from BlogPosts collection; only `the-quiet-rhinoplasty` body populated, other 6 return 404 until clinic provides bodies | [partial] |
+| 15 | `/privacy` | `privacy` | Static policy + `<CmsExtraBlocks slug="privacy">` | [x] |
 
 ### Discipline pages (6) — Disciplines collection
 
 | # | Route | Disciplines.slug | Status |
 |---|---|---|---|
-| 16 | `/treatments/surgical` | `surgical` | [ ] |
-| 17 | `/treatments/reconstructive` | `reconstructive` | [ ] |
-| 18 | `/treatments/non-surgical` | `non-surgical` | [ ] |
-| 19 | `/treatments/hair` | `hair` | [ ] |
-| 20 | `/treatments/dental` | `dental` | [ ] |
-| 21 | `/treatments/recovery` (Weight Loss) | `recovery` | [ ] |
+| 16 | `/treatment-surgical` | `surgical` | [x] |
+| 17 | `/treatment-reconstructive` | `reconstructive` | [x] |
+| 18 | `/treatment-non-surgical` | `non-surgical` | [x] |
+| 19 | `/treatment-hair` | `hair` | [x] |
+| 20 | `/treatment-dental` | `dental` | [x] |
+| 21 | `/treatment-recovery` (Weight Loss) | `recovery` | [x] |
 
-### Sub-category pages (18) — SubCategories collection
+### Sub-category pages (17) — SubCategories collection
+
+The design's `SUBCATEGORIES_BY_DISCIPLINE` defines **17** sub-categories (not 18 — earlier estimate was off-by-one). All seeded + rendered.
 
 | # | Route | SubCategories.slug | Status |
 |---|---|---|---|
-| 22 | `/treatments/surgical/face` | `surgical-face` | [ ] |
-| 23 | `/treatments/surgical/body` | `surgical-body` | [ ] |
-| 24 | `/treatments/surgical/breast` | `surgical-breast` | [ ] |
-| 25 | `/treatments/reconstructive/breast` | `reconstructive-breast` | [ ] |
-| 26 | `/treatments/reconstructive/trauma` | `reconstructive-trauma` | [ ] |
-| 27 | `/treatments/reconstructive/craniofacial` | `reconstructive-craniofacial` | [ ] |
-| 28 | `/treatments/non-surgical/injectables` | `non-surgical-injectables` | [ ] |
-| 29 | `/treatments/non-surgical/laser` | `non-surgical-laser` | [ ] |
-| 30 | `/treatments/non-surgical/skin` | `non-surgical-skin` | [ ] |
-| 31 | `/treatments/hair/fue` | `hair-fue` | [ ] |
-| 32 | `/treatments/hair/therapy` | `hair-therapy` | [ ] |
-| 33 | `/treatments/dental/veneers` | `dental-veneers` | [ ] |
-| 34 | `/treatments/dental/alignment` | `dental-alignment` | [ ] |
-| 35 | `/treatments/dental/whitening` | `dental-whitening` | [ ] |
-| 36 | `/treatments/recovery/medical` | `weight-loss-medical` | [ ] |
-| 37 | `/treatments/recovery/endoscopic` | `weight-loss-endoscopic` | [ ] |
-| 38 | `/treatments/recovery/surgical` | `weight-loss-surgical` | [ ] |
-| 39 | (reserved — confirm 18th sub-category in seed) | — | [ ] |
-
-> Note: confirm exactly 18 sub-categories during Phase 6 seed (the breakdown above currently lists 17 + 1 reserved row to match the design's 18-count from `shared.jsx` `SUBCATEGORIES_BY_DISCIPLINE`).
+| 22 | `/treatment-surgical-face` | `surgical-face` | [x] |
+| 23 | `/treatment-surgical-body` | `surgical-body` | [x] |
+| 24 | `/treatment-surgical-breast` | `surgical-breast` | [x] |
+| 25 | `/treatment-reconstructive-breast` | `reconstructive-breast` | [x] |
+| 26 | `/treatment-reconstructive-trauma` | `reconstructive-trauma` | [x] |
+| 27 | `/treatment-reconstructive-craniofacial` | `reconstructive-craniofacial` | [x] |
+| 28 | `/treatment-non-surgical-injectables` | `non-surgical-injectables` | [x] |
+| 29 | `/treatment-non-surgical-laser` | `non-surgical-laser` | [x] |
+| 30 | `/treatment-non-surgical-skin` | `non-surgical-skin` | [x] |
+| 31 | `/treatment-hair-fue` | `hair-fue` | [x] |
+| 32 | `/treatment-hair-therapy` | `hair-therapy` | [x] |
+| 33 | `/treatment-dental-veneers` | `dental-veneers` | [x] |
+| 34 | `/treatment-dental-alignment` | `dental-alignment` | [x] |
+| 35 | `/treatment-dental-whitening` | `dental-whitening` | [x] |
+| 36 | `/treatment-weight-loss-medical` | `weight-loss-medical` | [x] |
+| 37 | `/treatment-weight-loss-endoscopic` | `weight-loss-endoscopic` | [x] |
+| 38 | `/treatment-weight-loss-surgical` | `weight-loss-surgical` | [x] |
 
 ### Surgeon pages (8) — Surgeons collection
 
 | # | Route | Surgeons.slug | Status |
 |---|---|---|---|
-| 40 | `/surgeons/suka` | `suka` | [ ] |
-| 41 | `/surgeons/astri` | `astri` | [ ] |
-| 42 | `/surgeons/indra` | `indra` | [ ] |
-| 43 | `/surgeons/wara` | `wara` | [ ] |
-| 44 | `/surgeons/sissy` | `sissy` | [ ] |
-| 45 | `/surgeons/rosa` | `rosa` | [ ] |
-| 46 | `/surgeons/risma` | `risma` | [ ] |
-| 47 | `/surgeons/theresia` | `theresia` | [ ] |
+| 39 | `/surgeon-suka` | `suka` | [x] |
+| 40 | `/surgeon-astri` | `astri` | [x] |
+| 41 | `/surgeon-indra` | `indra` | [x] |
+| 42 | `/surgeon-wara` | `wara` | [x] |
+| 43 | `/surgeon-sissy` | `sissy` | [x] |
+| 44 | `/surgeon-rosa` | `rosa` | [x] |
+| 45 | `/surgeon-risma` | `risma` | [x] |
+| 46 | `/surgeon-theresia` | `theresia` | [x] |
+
+**Total: 46 of 47 live + CMS-driven** (only `/funnel-assessment` deferred). Counts: 14 top-level + 6 disciplines + 17 sub-categories + 8 surgeons + 1 blog-post template = 46. (Earlier "47" target included `/funnel-assessment`.)
 
 ### Plus (not in the 47, but live as routes)
 
-- **Procedure pages (41+)** — each rendered via the `<ProcedureDetail>` template, one per `Procedures` record.
+- **Editorial Procedures (93 in CMS)** — rendered inline as accordion rows on each sub-category page via the Procedures collection. Standalone `/procedure-:slug` routes deferred (low traffic value vs sub-category groupings).
 - **Localised `/id/*` mirrors** — every route above doubles in Phase 9.
+- **API routes**: `/api/revalidate` (POST, wired Phase 6c) · `/api/enquiry` (POST, wired Phase 7) · `/api/page-data`, `/api/preview`, `/api/exit-preview` (Phase 9+).
 
 ---
 
 ## Cross-cutting open dependencies
 
-- [ ] DNS A record `cosmedic.gaiada.online` → `34.124.244.233` (user action via DNS provider)
-- [ ] SMTP provider (Postmark / SES / clinic relay)
-- [ ] Indonesian translation pass (clinic-provided or contractor)
-- [ ] Lifestyle imagery licensing OR AI-generate brand-controlled
-- [ ] Self-host surgeon photos from cosmedic.bimcbali.com CDN
-- [ ] Figma access for `KjPZnGnbpa994mf7byvcW7` (share with uiux@gaiada.com)
-- [ ] PressMentions / Awards / Stories / RecoveryStays content from clinic
-- [ ] Editor accounts list (who gets admin vs editor vs content-only)
-- [ ] Bootstrap admin password rotation before launch
+| Dep | Status | Phase |
+|---|---|---|
+| DNS A record `cosmedic.gaiada.online` → `34.124.244.233` | [ ] (user action via DNS provider) | 8 |
+| SMTP provider (Postmark / SES / clinic relay) | [ ] (Phase 7 lands a nodemailer scaffold with env-driven SMTP + console fallback; pick + configure once chosen) | 7 |
+| Indonesian translation pass (clinic-provided or contractor) | [ ] | 9 |
+| Lifestyle imagery licensing OR AI-generate brand-controlled | [ ] | 10 |
+| Self-host surgeon photos from cosmedic.bimcbali.com CDN | [ ] | 10 |
+| Figma access for `KjPZnGnbpa994mf7byvcW7` (share with uiux@gaiada.com) | [ ] (optional — design already ported from `design/`) | — |
+| PressMentions / Awards / Stories / RecoveryStays content from clinic | [partial] (Phase 6 seeded placeholders: 3 press, 5 awards, 0 stories, 6 villas; clinic refines via /admin) | post-launch |
+| Remaining 6 blog post bodies | [ ] (only `the-quiet-rhinoplasty` body populated; clinic writes the rest in /admin) | post-launch |
+| Per-discipline pricing tiers | [ ] (currently 3 tiers global across all disciplines; if needed, add discipline relationship to PricingTiers) | post-launch |
+| Editor accounts list (who gets admin vs editor vs content-only) | [ ] | 12 |
+| Bootstrap admin password rotation before launch (`Teameditor@123` → strong random) | [ ] | 12 |
+| Sitemap regeneration on Payload mutations | [ ] | 13 |
+| Cloudflare Turnstile if abuse appears post-launch on `/api/enquiry` | [ ] | post-launch |

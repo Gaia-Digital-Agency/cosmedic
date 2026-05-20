@@ -43,6 +43,17 @@ const OPTIONAL_LABEL = (
 
 export const ContactPage: React.FC = () => {
   const [showOptional, setShowOptional] = useState(false)
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [treatment, setTreatment] = useState('')
+  const [country, setCountry] = useState('')
+  const [preferredDate, setPreferredDate] = useState('')
+  const [message, setMessage] = useState('')
+  const [honeypot, setHoneypot] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const [status, setStatus] = useState<'idle' | 'success' | 'error' | 'rate-limit'>('idle')
+  const [errorMessage, setErrorMessage] = useState('')
+
   const params =
     typeof window !== 'undefined'
       ? new URLSearchParams(window.location.search)
@@ -50,6 +61,55 @@ export const ContactPage: React.FC = () => {
   const prefillProc = params.get('procedure') || ''
   const prefillIntent = params.get('intent') || ''
   const intent = INTENT_COPY[prefillIntent]
+
+  React.useEffect(() => {
+    if (prefillProc && !treatment) setTreatment(prefillProc)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [prefillProc])
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
+    e.preventDefault()
+    if (submitting) return
+    setSubmitting(true)
+    setStatus('idle')
+    setErrorMessage('')
+    try {
+      const res = await fetch('/api/enquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+          country,
+          treatmentInterestText: treatment,
+          preferredDate,
+          message,
+          honeypot,
+          sourcePage: typeof window !== 'undefined' ? window.location.pathname : '/contact',
+          sourceCta: 'contact-form',
+        }),
+      })
+      const body = await res.json()
+      if (res.ok && body.ok) {
+        setStatus('success')
+        setName(''); setEmail(''); setTreatment(''); setCountry(''); setPreferredDate(''); setMessage('')
+      } else if (res.status === 429) {
+        setStatus('rate-limit')
+        setErrorMessage(`Please wait ${body.retryAfterSeconds || 60}s and try again.`)
+      } else if (body.error === 'validation') {
+        setStatus('error')
+        setErrorMessage(body.issues?.[0]?.message || 'Please check the form and try again.')
+      } else {
+        setStatus('error')
+        setErrorMessage('Something went wrong. Please email cosmedic@bimcbali.com if it persists.')
+      }
+    } catch {
+      setStatus('error')
+      setErrorMessage('Network error. Please try again or email cosmedic@bimcbali.com.')
+    } finally {
+      setSubmitting(false)
+    }
+  }
 
   return (
     <PageShell activePage="contact" hideCTA>
@@ -135,24 +195,39 @@ export const ContactPage: React.FC = () => {
           </Reveal>
 
           <Reveal delay={120}>
-            <form className="contact-form-grid" onSubmit={(e) => e.preventDefault()}>
+            <form className="contact-form-grid" onSubmit={handleSubmit}>
+              <input
+                type="text"
+                name="company"
+                tabIndex={-1}
+                autoComplete="off"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+                style={{ position: 'absolute', left: '-10000px', top: 'auto', width: 1, height: 1, overflow: 'hidden' }}
+                aria-hidden="true"
+              />
               <label className="field field-full">
                 <span className="field-label">Your name {REQUIRED_LABEL}</span>
-                <input type="text" placeholder="First name" required />
+                <input type="text" placeholder="First name" required value={name} onChange={(e) => setName(e.target.value)} />
               </label>
               <label className="field field-full">
                 <span className="field-label">Email {REQUIRED_LABEL}</span>
-                <input type="email" placeholder="you@example.com" required />
+                <input type="email" placeholder="you@example.com" required value={email} onChange={(e) => setEmail(e.target.value)} />
               </label>
               <label className="field field-full">
                 <span className="field-label">Area of interest {REQUIRED_LABEL}</span>
                 <div className="select-row">
-                  <span>{prefillProc || 'Select a treatment…'}</span>
+                  <span>{treatment || 'Select a treatment…'}</span>
                   <span className="chev">▾</span>
                 </div>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 16 }}>
                   {TREATMENT_LIST.map((t) => (
-                    <button key={t.slug} type="button" className="chip">
+                    <button
+                      key={t.slug}
+                      type="button"
+                      className={`chip ${treatment === t.t ? 'chip-active' : ''}`}
+                      onClick={() => setTreatment(t.t)}
+                    >
                       {t.t}
                     </button>
                   ))}
@@ -192,15 +267,15 @@ export const ContactPage: React.FC = () => {
                 <>
                   <label className="field">
                     <span className="field-label">Country & city {OPTIONAL_LABEL}</span>
-                    <input type="text" placeholder="Sydney, Australia" />
+                    <input type="text" placeholder="Sydney, Australia" value={country} onChange={(e) => setCountry(e.target.value)} />
                   </label>
                   <label className="field">
                     <span className="field-label">Approximate dates {OPTIONAL_LABEL}</span>
-                    <input type="text" placeholder="Month / year" />
+                    <input type="text" placeholder="Month / year" value={preferredDate} onChange={(e) => setPreferredDate(e.target.value)} />
                   </label>
                   <label className="field field-full">
                     <span className="field-label">Tell us a little {OPTIONAL_LABEL}</span>
-                    <textarea placeholder="What you'd like to discuss, in your own words. Or simply say hello." />
+                    <textarea placeholder="What you'd like to discuss, in your own words. Or simply say hello." value={message} onChange={(e) => setMessage(e.target.value)} />
                   </label>
                 </>
               )}
@@ -228,8 +303,25 @@ export const ContactPage: React.FC = () => {
                 >
                   Held in confidence. Reviewed by a credentialed surgeon. We reply within 24 hours.
                 </p>
-                <Btn kind="accent">Send enquiry</Btn>
+                <button type="submit" className="btn btn-accent" disabled={submitting}>
+                  <span>{submitting ? 'Sending…' : status === 'success' ? 'Sent — thank you' : 'Send enquiry'}</span>
+                  <span className="btn-arrow">→</span>
+                </button>
               </div>
+              {status === 'success' ? (
+                <div className="field-full" role="status" style={{ padding: 16, background: 'var(--accent-tint)', borderLeft: '3px solid var(--accent)', marginTop: 16 }}>
+                  <p style={{ margin: 0, fontFamily: 'var(--font-serif)', fontSize: 16, lineHeight: 1.55 }}>
+                    Thank you — your concierge will reply within one business day.
+                  </p>
+                </div>
+              ) : null}
+              {status === 'error' || status === 'rate-limit' ? (
+                <div className="field-full" role="alert" style={{ padding: 16, background: '#FBE9D9', borderLeft: '3px solid #C28E66', marginTop: 16 }}>
+                  <p style={{ margin: 0, fontFamily: 'var(--font-serif)', fontSize: 16, lineHeight: 1.55 }}>
+                    {errorMessage}
+                  </p>
+                </div>
+              ) : null}
             </form>
           </Reveal>
         </div>

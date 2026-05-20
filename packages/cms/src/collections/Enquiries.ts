@@ -1,5 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { isAuthenticated } from '../lib/access'
+import { revalidationHooks } from '../lib/revalidate'
+import { sendEnquiryEmails } from '../lib/enquiry-emails'
 
 export const Enquiries: CollectionConfig = {
   slug: 'enquiries',
@@ -14,6 +16,25 @@ export const Enquiries: CollectionConfig = {
     create: () => true,
     update: isAuthenticated,
     delete: () => false, // immutable from UI
+  },
+  hooks: {
+    afterChange: [
+      // Phase 6c — bust web cache.
+      revalidationHooks().afterChange[0],
+      // Phase 7 — on first save (operation === 'create'), email clinic + submitter.
+      /* eslint-disable @typescript-eslint/no-explicit-any */
+      async ({ doc, req, operation }: any) => {
+        if (operation !== 'create') return doc
+        try {
+          await sendEnquiryEmails(doc, req.payload)
+        } catch (err) {
+          req.payload.logger.warn(`[enquiry] sendEnquiryEmails failed: ${(err as Error).message}`)
+        }
+        return doc
+      },
+      /* eslint-enable @typescript-eslint/no-explicit-any */
+    ],
+    afterDelete: revalidationHooks().afterDelete,
   },
   fields: [
     { name: 'name', type: 'text', required: true },

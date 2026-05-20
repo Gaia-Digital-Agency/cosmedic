@@ -42,6 +42,7 @@ import { EmailTemplates } from './globals/EmailTemplates'
 import { SeoDefaults } from './globals/SeoDefaults'
 
 import { seedSuperAdmin } from './seed/admin'
+import { emailAdapter } from './lib/email-adapter'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -120,6 +121,7 @@ export default buildConfig({
     },
   }),
   sharp,
+  email: emailAdapter,
   plugins: [],
   onInit: async (payload) => {
     await seedSuperAdmin(payload)

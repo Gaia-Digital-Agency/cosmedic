@@ -3,6 +3,8 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import express from 'express'
 import { loadCmsCache } from './lib/cms'
+import { enquirySchema, type EnquiryResponse } from './lib/enquiry-schema'
+import { checkRateLimit } from './lib/enquiry-rate-limit'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -36,13 +38,80 @@ async function createServer() {
     )
   }
 
-  // CMS revalidate hook target. Payload afterChange will POST here (wired in Phase 7).
+  // CMS revalidate hook target. Payload afterChange posts here on every save.
   app.post('/api/revalidate', express.json(), async (_req, res) => {
     try {
       await loadCmsCache(true)
       res.json({ ok: true })
     } catch (err) {
       res.status(500).json({ ok: false, error: String(err) })
+    }
+  })
+
+  // Public enquiry endpoint. Validates with Zod, applies honeypot + IP
+  // rate-limiting, then POSTs to Payload's /api/enquiries to create a record.
+  // The Payload afterChange hook on Enquiries (cms/src/collections/Enquiries)
+  // emails the clinic via nodemailer. We never expose internal errors to the
+  // public; any unhandled failure responds with { ok: false, error: 'internal' }.
+  app.post('/api/enquiry', express.json({ limit: '64kb' }), async (req, res) => {
+    const respond = (status: number, body: EnquiryResponse): void => {
+      res.status(status).json(body)
+    }
+
+    const parsed = enquirySchema.safeParse(req.body)
+    if (!parsed.success) {
+      const issues = parsed.error.issues.map((i) => ({
+        path: i.path.join('.'),
+        message: i.message,
+      }))
+      return respond(400, { ok: false, error: 'validation', issues })
+    }
+    const data = parsed.data
+
+    const ip =
+      (req.headers['x-forwarded-for'] as string | undefined)?.split(',')[0]?.trim() ||
+      req.socket.remoteAddress ||
+      'unknown'
+
+    const limit = checkRateLimit(ip)
+    if (!limit.ok) {
+      res.setHeader('Retry-After', String(limit.retryAfterSeconds))
+      return respond(429, { ok: false, error: 'rate-limit', retryAfterSeconds: limit.retryAfterSeconds })
+    }
+
+    // Honeypot — pretend success but mark spam so the clinic can audit.
+    const isSpam = Boolean(data.honeypot && data.honeypot.trim().length > 0)
+
+    try {
+      const payloadUrl = process.env.PAYLOAD_URL || 'http://127.0.0.1:4007'
+      const upstream = await fetch(`${payloadUrl}/api/enquiries`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          phone: data.phone || undefined,
+          country: data.country || undefined,
+          treatmentInterestText: data.treatmentInterestText || data.treatmentInterestSlug || undefined,
+          preferredDate: data.preferredDate || undefined,
+          message: data.message || undefined,
+          sourcePage: data.sourcePage || undefined,
+          sourceCta: data.sourceCta || undefined,
+          status: isSpam ? 'spam' : 'new',
+          submittedAt: new Date().toISOString(),
+          ip,
+          userAgent: (req.headers['user-agent'] as string | undefined)?.slice(0, 500),
+          honeypot: data.honeypot || undefined,
+        }),
+      })
+      if (!upstream.ok) {
+        console.warn(`[enquiry] payload responded ${upstream.status}`)
+        return respond(500, { ok: false, error: 'internal' })
+      }
+      return respond(200, { ok: true })
+    } catch (err) {
+      console.warn('[enquiry] failed:', err)
+      return respond(500, { ok: false, error: 'internal' })
     }
   })
 

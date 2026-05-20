@@ -65,7 +65,7 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
 - Pixel-Fidelity Gate + Lighthouse Green Gate are launch-blocking. Don't bypass them.
 - This server is the dev environment (user chose server-first). Edits happen here; commits + pushes happen here.
 
-## Current state (Phase 6 complete — 6a + 6b + 6c)
+## Current state (Phase 7 complete)
 
 - `packages/cms` — Payload 3.84.1 on Next.js 15.4.11 + Postgres adapter, port **4007**. Admin white-labelled as **Cosmedic CMS** (Cormorant Garamond + JetBrains Mono, brand-beige palette from `docs/brand-guidelines.pdf`). Light/dark toggle.
   - **23 collections** in `src/collections/`: Users · Media · Surgeons · Disciplines · SubCategories · Procedures · PriceListItems · InjectableProducts · MachineTreatments · HairRemovalAreas · BeforeAfterCases · Stories · PressMentions · Awards · RecoveryStays · PricingTiers · BlogPosts · BlogTags · Authors · JourneySteps · InclusionItems · ExclusionItems · Pages · Enquiries.
@@ -92,7 +92,9 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
 - pm2 manages both processes (`cosmedic-cms`, `cosmedic-web`); `pm2 save` persisted.
 - DNS `cosmedic.gaiada.online` still NXDOMAIN — Phase 8 (nginx + SSL + DNS) handles cutover.
 
-Next session: **Phase 7** — Enquiry form backend (Zod + honeypot + rate-limit; `Enquiries.afterChange` → nodemailer → clinic mailbox; SMTP provider TBD).
+- **Phase 7**: `POST /api/enquiry` on web (Zod schema in `lib/enquiry-schema.ts` + IP rate-limit in `lib/enquiry-rate-limit.ts`: 2 req/IP/60s) creates `Enquiries` records via Payload REST. Honeypot is silent-accept-as-spam. `Enquiries.afterChange` (only on `operation === 'create'`) calls `sendEnquiryEmails` → loads the `email-templates` global + sends clinic-notify to `MAIL_CLINIC_TO` and autoresponder to submitter via the `nodemailerAdapter` in `packages/cms/src/lib/email-adapter.ts`. SMTP is env-driven (`SMTP_HOST/PORT/USER/PASS/SECURE`); when unset, JSON transport logs full message to stdout (no delivery — safe for dev + pre-launch). Hero quick-form on `/` + full form on `/contact` both POST to `/api/enquiry` with inline success/error states.
+
+Next session: **Phase 8** — nginx + SSL + DNS + deploy. Rewrite stale server block at `/etc/nginx/sites-enabled/subdomains.gaiada.online` to proxy `cosmedic.gaiada.online/` → `127.0.0.1:3007` + `/admin` → `:4007`. `sudo certbot --nginx -d cosmedic.gaiada.online`. Pick SMTP provider (Postmark / SES / clinic relay) and set the `SMTP_*` env vars so enquiry emails actually deliver.
 
 ## Common ops
 

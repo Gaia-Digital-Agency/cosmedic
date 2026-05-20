@@ -17,6 +17,42 @@ export const Hero: React.FC = () => {
   const heroImage = page?.heroImage ? mediaUrl(page.heroImage, IMG.hero) || IMG.hero : IMG.hero
 
   const [expanded, setExpanded] = useState(false)
+  const [heroName, setHeroName] = useState('')
+  const [heroEmail, setHeroEmail] = useState('')
+  const [heroProc, setHeroProc] = useState('')
+  const [heroHoneypot, setHeroHoneypot] = useState('')
+  const [heroSubmitting, setHeroSubmitting] = useState(false)
+  const [heroStatus, setHeroStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const heroSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
+    e.preventDefault()
+    if (heroSubmitting) return
+    setHeroSubmitting(true)
+    try {
+      const res = await fetch('/api/enquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: heroName,
+          email: heroEmail,
+          treatmentInterestText: heroProc,
+          honeypot: heroHoneypot,
+          sourcePage: '/',
+          sourceCta: 'hero-enquiry',
+        }),
+      })
+      const body = await res.json()
+      if (res.ok && body.ok) {
+        setHeroStatus('success')
+        setHeroName(''); setHeroEmail(''); setHeroProc('')
+      } else {
+        setHeroStatus('error')
+      }
+    } catch {
+      setHeroStatus('error')
+    } finally {
+      setHeroSubmitting(false)
+    }
+  }
   return (
     <section className="hero-v2">
       <div className="hero-image-inner">
@@ -94,19 +130,25 @@ export const Hero: React.FC = () => {
               Two fields to start. We'll reply with a tailored estimate and procedure guide — no
               marketing.
             </p>
-            <form
-              className={`quick-enquiry ${expanded ? 'expanded' : ''}`}
-              onSubmit={(e) => {
-                e.preventDefault()
-                window.location.href = '/contact'
-              }}
-            >
+            <form className={`quick-enquiry ${expanded ? 'expanded' : ''}`} onSubmit={heroSubmit}>
+              <input
+                type="text"
+                name="company"
+                tabIndex={-1}
+                autoComplete="off"
+                value={heroHoneypot}
+                onChange={(e) => setHeroHoneypot(e.target.value)}
+                style={{ position: 'absolute', left: '-10000px', top: 'auto', width: 1, height: 1, overflow: 'hidden' }}
+                aria-hidden="true"
+              />
               <label className="field">
                 <span className="field-label">Your name</span>
                 <input
                   type="text"
                   placeholder="First name"
                   required
+                  value={heroName}
+                  onChange={(e) => setHeroName(e.target.value)}
                   onFocus={() => setExpanded(true)}
                 />
               </label>
@@ -116,6 +158,8 @@ export const Hero: React.FC = () => {
                   type="email"
                   placeholder="you@email.com"
                   required
+                  value={heroEmail}
+                  onChange={(e) => setHeroEmail(e.target.value)}
                   onFocus={() => setExpanded(true)}
                 />
               </label>
@@ -125,7 +169,12 @@ export const Hero: React.FC = () => {
                     Area of interest{' '}
                     <em style={{ fontStyle: 'italic', color: 'var(--ink-40)' }}>(optional)</em>
                   </span>
-                  <input type="text" placeholder="e.g. rhinoplasty, mommy makeover…" />
+                  <input
+                    type="text"
+                    placeholder="e.g. rhinoplasty, mommy makeover…"
+                    value={heroProc}
+                    onChange={(e) => setHeroProc(e.target.value)}
+                  />
                 </label>
               </div>
               {!expanded && (
@@ -138,9 +187,19 @@ export const Hero: React.FC = () => {
                 </button>
               )}
               <Btn kind="primary" full>
-                Begin enquiry
+                {heroSubmitting ? 'Sending…' : heroStatus === 'success' ? 'Sent — thank you' : 'Begin enquiry'}
               </Btn>
-              <p className="form-fine">Held in confidence. Reviewed by a credentialed surgeon.</p>
+              {heroStatus === 'success' ? (
+                <p className="form-fine" style={{ color: 'var(--accent-deep)' }}>
+                  Thank you — your concierge will reply within one business day.
+                </p>
+              ) : heroStatus === 'error' ? (
+                <p className="form-fine" style={{ color: '#C28E66' }}>
+                  Something went wrong. Please try the full form on /contact.
+                </p>
+              ) : (
+                <p className="form-fine">Held in confidence. Reviewed by a credentialed surgeon.</p>
+              )}
             </form>
           </div>
         </div>
