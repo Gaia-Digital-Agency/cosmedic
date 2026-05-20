@@ -44,8 +44,25 @@
   - [ ] Visual regression baseline (Playwright) — deferred to Phase 11 alongside the full QA gate
   - [ ] Tailwind theme mapping — deferred (CSS-vars + class names from `globals.css` are already the source of truth; Tailwind layer will be added only if/when needed)
 
-- [ ] **PHASE 3 — Homepage**
-  - [ ] `packages/web/src/content/seed.ts` (already ported in Phase 2 — extend with `STORY_PORTRAITS`, `BA_PAIRS`, `IMG`)
+- [x] **PHASE 3 — Homepage**
+  - [x] `packages/web/src/content/seed.ts` extended with `IMG` (Unsplash URLs), `STORY_PORTRAITS`, `BA_PAIRS`, `TREATMENT_IMG()`, `SURGEON_IMG()`
+  - [x] `design/assets/{treatments,surgeons,results}/` copied to `packages/web/public/assets/`
+  - [x] Hero (image bg + vignette + headline + 2-field quick enquiry form with progressive disclosure)
+  - [x] TrustStrip (4 stats: 28 yrs · 8 ISAPS-FICS · 3,400+ procedures · #1 hospital 2026)
+  - [x] Intro ("Our Approach" eyebrow + pull-quote + 2-col body, all reveal-staggered)
+  - [x] Treatments (6 discipline cards in `treatments-grid`)
+  - [x] PricingTeaser (8 price rows + AUD↔IDR conversion + foot disclaimer + "View full pricing")
+  - [x] Surgeons (lead-surgeon feature block + 6 associate cards)
+  - [x] Gallery (3 B&A cards: Necklift · Lip Lift × 2)
+  - [x] LeadMagnet (Bali Recovery Guide cover + email-capture form + success state)
+  - [x] Journey (5 steps: Consult · Plan · Arrive · Procedure · Recover)
+  - [x] Stories (3 testimonials with verified-review chips + portraits)
+  - [x] Place (Bali recovery copy + A/B/C/D list + recovery-stays CTA)
+  - [x] HomeApp wired in `App.tsx` — `<PageShell>` wraps all 11 sections
+  - [x] Build verified: 51 modules, 72 kB CSS bundle, 238 kB JS bundle (gzip 12 kB + 74 kB)
+  - [x] All home section classNames present in SSR markup (`hero-v2`, `trust-strip`, `intro`, `treatments`, `price-teaser`, `surgeons`, `gallery`, `lead-magnet`, `journey`, `stories`, `place`)
+  - [ ] Side-by-side visual comparison vs `design/index.html` — pixel-fidelity gate (full Playwright suite in Phase 11)
+
   - [ ] Hero (left: chapter + form, right: lifestyle image)
   - [ ] TrustBar credentials
   - [ ] Stats strip

@@ -52,6 +52,7 @@ This is the initial documentation + design-handoff import. Phases 1–14 are doc
 - **Phase 0** ✅ Documentation capture + git checkpoint of the starting state.
 - **Phase 1** ✅ Monorepo scaffold — packages/cms (Payload 3 on Next.js, port 4007) + packages/web (Vite SSR, port 3007), Postgres provisioned, Cosmedic CMS branding, super-admin seeded.
 - **Phase 2** ✅ Theme + PageShell ported from `design/`: full `global.css`, primitives (Btn / Mono / Eyebrow / Img / Reveal / PriceTag / ChapterOpener / TrustBar / CTABandSlim), shell (Header + Footer + FloatingChrome + PageShell).
+- **Phase 3** ✅ Homepage: 11 sections matching `design/index.html` — Hero · TrustStrip · Intro · Treatments · PricingTeaser · Surgeons · Gallery · LeadMagnet · Journey · Stories · Place. All read from `seed.ts`; Phase 6 swaps to Payload (mapping captured in `docs/cms_schema.md`).
 - **Phase 3+**: Homepage → detail templates → index pages → CMS schema → forms → deploy.
 - **Phase 11**: Pixel-Fidelity Gate + Lighthouse Green Gate (launch-blocking).
 - **Phase 12**: Launch at `https://cosmedic.gaiada.online`.

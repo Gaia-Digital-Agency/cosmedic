@@ -194,6 +194,9 @@ Header / Footer / FloatingChrome appear on every public route. Localised mirror 
 | Form submit → POST | hook | — | POST /api/enquiry → Enquiries.create | sourcePage=/ , sourceCta=hero-form |
 | TrustBar credentials (ACHSI, ISAPS, etc.) | row | Global: BrandStats | stats[?role=trust] | Each: number, label, sourceNote |
 | Stats strip (28 / 8 / 3,400+ / #1) | grid | Global: BrandStats | stats[?role=hero-stats] | Subset filter by role tag |
+| Intro eyebrow ("Our Approach") | text | Pages | pages(slug=home).sections[?].block=RichText.eyebrow | Localized |
+| Intro pull-quote ("Aesthetic medicine…considered with the same care…") | text | Pages | pages(slug=home).sections[?].block=RichText.pullQuote | Italic accent on key word |
+| Intro 2-col body paragraphs | text | Pages | pages(slug=home).sections[?].block=RichText.columns[] | Two-column richtext |
 | Treatments section eyebrow + H2 + lede | text | Pages | pages(slug=home).sections[?].block=RichText | Or as ChapterOpener mini |
 | Treatments cards (6) | list | Collection: Disciplines | iterate, publishStatus=published, sortBy=order ASC | Card: heroImage, displayCount, title, subtitle, body, link |
 | Pricing teaser "Starting From" eyebrow | text | Pages | pages(slug=home).sections[?].block=RichText.eyebrow | |
@@ -209,6 +212,10 @@ Header / Footer / FloatingChrome appear on every public route. Localised mirror 
 | Journey teaser steps (3–4) | list | Collection: JourneySteps | sortBy=order, limit 4 | Each: dayLabel, title, body excerpt |
 | Stories teaser cards (3) | list | Collection: Stories | filter isFeatured=true, limit 3 | portrait, quote, patientLabel, country, procedure.name |
 | Stories teaser "View all" CTA | CTA | Pages | pages(slug=home).sections[?].block=TestimonialList.viewAllCta | → /stories |
+| LeadMagnet cover ("The Bali Recovery Guide.") | block | Pages | pages(slug=home).sections[?].block=LeadMagnet.{coverEyebrow, coverTitle[3], coverFoot[2]} | "BIMC CosMedic / MMXXVI" foot |
+| LeadMagnet body eyebrow ("Free Guide") + H2 + lede | text | Pages | pages(slug=home).sections[?].block=LeadMagnet.{eyebrow, heading, lede} | Localized |
+| LeadMagnet email-capture form | form | Pages + FormDefaults | LeadMagnet.formLabels + FormDefaults.placeholders.email | Submit → NewsletterSubscribers.create with source=lead-magnet; success message from EmailTemplates |
+| LeadMagnet fineprint | text | Pages | pages(slug=home).sections[?].block=LeadMagnet.fineprint | Localized |
 | "Place" / location section (Bali photography + text) | block | Pages | pages(slug=home).sections[?].block=RichText + ImageGrid | |
 | CTA band ("Begin your journey." + 2 buttons) | block | Pages | pages(slug=home).sections[last].block=CTABand | {title[2], lede, primaryCta, secondaryCta} |
 | Footer logo | image | Global: Footer | logoLight | |

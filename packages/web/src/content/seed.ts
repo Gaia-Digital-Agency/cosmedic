@@ -316,3 +316,125 @@ export const SURGEON_LIST: Surgeon[] = [
 ]
 
 export const WHATSAPP_HREF = 'https://wa.me/6281339001911'
+
+/* ============================================
+ * Imagery — ported verbatim from design/shared.jsx
+ * ============================================ */
+
+const uid = (id: string, w = 1200, h = 1500, opts = ''): string =>
+  `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&h=${h}&q=80${opts ? '&' + opts : ''}`
+
+const ID = {
+  hero: 'photo-1540555700478-4be289fbecef',
+  surgical: 'photo-1631815589968-fdb09a223b1e',
+  injectables: 'photo-1570172619644-dfd03ed5d881',
+  hair: 'photo-1522337360788-8b13dee7a37e',
+  dental: 'photo-1606811971618-4486d14f3f99',
+  recovery: 'photo-1582719508461-905c673771fd',
+  concierge: 'photo-1519810755548-39cd217da494',
+  bali: 'photo-1537996194471-e657df975ab4',
+  baliAlt: 'photo-1559494007-9f5847c49d94',
+  clinic: 'photo-1631217872822-1c2546d6b864',
+  clinicAlt: 'photo-1629909613654-28e377c37b09',
+  reception: 'photo-1582719478250-c89cae4dc85b',
+  textureOne: 'photo-1505944270255-72b8c68c6a70',
+  textureTwo: 'photo-1515378791036-0648a3ef77b2',
+  light: 'photo-1620462544879-1afb18cdd2f0',
+  story1: 'photo-1494790108377-be9c29b29330',
+  story2: 'photo-1531123897727-8f129e1688ce',
+  story3: 'photo-1544005313-94ddf0286df2',
+  story4: 'photo-1488426862026-3ee34a7d66df',
+  story5: 'photo-1573496359142-b8d87734a5a2',
+  story6: 'photo-1487412720507-e7ab37603c6f',
+  story7: 'photo-1534528741775-53994a69daeb',
+  story8: 'photo-1524504388940-b1c1722653e1',
+}
+
+export const IMG = {
+  hero: uid(ID.hero, 1400, 1800),
+  surgical: uid(ID.surgical, 1000, 1250),
+  injectables: uid(ID.injectables, 1000, 1250),
+  hair: uid(ID.hair, 1000, 1250),
+  dental: uid(ID.dental, 1000, 1250),
+  recovery: uid(ID.recovery, 1000, 1250),
+  concierge: uid(ID.concierge, 1000, 1250),
+  bali: uid(ID.bali, 1200, 1500),
+  baliAlt: uid(ID.baliAlt, 1200, 1500),
+  clinic: uid(ID.clinic, 1400, 900),
+  clinicAlt: uid(ID.clinicAlt, 1400, 900),
+  reception: uid(ID.reception, 1200, 800),
+  texture: uid(ID.textureOne, 1200, 800),
+  textureAlt: uid(ID.textureTwo, 1200, 800),
+  light: uid(ID.light, 1200, 800),
+}
+
+export const STORY_PORTRAITS = [
+  uid(ID.story1, 400, 400),
+  uid(ID.story2, 400, 400),
+  uid(ID.story3, 400, 400),
+  uid(ID.story4, 400, 400),
+  uid(ID.story5, 400, 400),
+  uid(ID.story6, 400, 400),
+  uid(ID.story7, 400, 400),
+  uid(ID.story8, 400, 400),
+]
+
+// Per-treatment images — local assets
+const TREATMENT_IMAGES: Record<string, string> = {
+  surgical: '/assets/treatments/surgical.webp',
+  reconstructive: '/assets/treatments/surgical.webp',
+  'non-surgical': '/assets/treatments/non-surgical.webp',
+  hair: '/assets/treatments/hair.webp',
+  dental: '/assets/treatments/dental.webp',
+  recovery: '/assets/treatments/recovery.webp',
+  concierge: '/assets/treatments/concierge.webp',
+}
+
+export const TREATMENT_IMG = (slug: string): string =>
+  TREATMENT_IMAGES[slug] || ''
+
+// Surgeon portraits — local assets, mirrors design/assets/surgeons/
+const SURGEON_PORTRAITS: Record<string, string> = {
+  suka: '/assets/surgeons/suka.png',
+  astri: '/assets/surgeons/astri.png',
+  indra: '/assets/surgeons/indra.webp',
+  wara: '/assets/surgeons/wara.png',
+  sissy: '/assets/surgeons/sissy.png',
+  rosa: '/assets/surgeons/rosa.png',
+  risma: '/assets/surgeons/risma.webp',
+  theresia: '/assets/surgeons/theresia.webp',
+}
+
+export const SURGEON_IMG = (slug: string): string => SURGEON_PORTRAITS[slug] || ''
+
+export type BaPair = {
+  num: string
+  label: string
+  time: string
+  cat: string
+  image: string
+}
+
+export const BA_PAIRS: BaPair[] = [
+  {
+    num: 'Case 047',
+    label: 'Necklift',
+    time: 'Five months',
+    cat: 'surgical',
+    image: '/assets/results/necklift-female.webp',
+  },
+  {
+    num: 'Case 001',
+    label: 'Lip Lift',
+    time: 'Three months',
+    cat: 'surgical',
+    image: '/assets/results/lip-lift-female.webp',
+  },
+  {
+    num: 'Case 003',
+    label: 'Lip Lift',
+    time: 'Three months',
+    cat: 'surgical',
+    image: '/assets/results/lip-lift-male.webp',
+  },
+]
