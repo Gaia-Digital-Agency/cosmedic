@@ -1,6 +1,6 @@
 # BIMC CosMedic — Payload CMS Operations
 
-> Operational reference for **CosMedic Site CMS** (Payload v3 white-labelled). Companion to `docs/cms_info.md` (branding/customization — the LOOK) and `docs/db_schema.md` (collections + fields — the WHAT). This doc is the HOW — how the CMS initialises, persists, exposes data, hooks into the web, and gets seeded.
+> Operational reference for **Cosmedic CMS** (Payload v3 white-labelled). Companion to `docs/cms_info.md` (branding/customization — the LOOK) and `docs/db_schema.md` (collections + fields — the WHAT). This doc is the HOW — how the CMS initialises, persists, exposes data, hooks into the web, and gets seeded.
 
 ---
 
@@ -13,7 +13,7 @@ Payload v3 sits at `127.0.0.1:4007` as a Next.js app that:
    - REST: `/api/<collection>` and `/api/globals/<global>`
    - GraphQL: `/api/graphql`
    - Local API (for in-process callers like seed scripts and afterChange hooks)
-3. **Hosts the admin UI** at `/admin` — white-labelled as CosMedic Site CMS.
+3. **Hosts the admin UI** at `/admin` — white-labelled as Cosmedic CMS.
 4. **Serves media files** from `packages/cms/public/media/` (mounted from disk; Payload writes here on upload).
 
 The web app at `:3007` consumes Payload via HTTP fetch (REST). Web never imports Payload directly.
@@ -41,7 +41,7 @@ Update `packages/cms/package.json`:
 - Add: `"scripts.generate:types": "payload generate:types"`
 - Add: `"scripts.migrate": "payload migrate"`, `"scripts.migrate:create": "payload migrate:create"`
 
-Apply CosMedic Site CMS branding per `docs/cms_info.md` — three React components + admin-theme.css + admin config block.
+Apply Cosmedic CMS branding per `docs/cms_info.md` — three React components + admin-theme.css + admin config block.
 
 ## 3. `payload.config.ts` skeleton
 
@@ -67,10 +67,10 @@ export default buildConfig({
     user: Users.slug,
     theme: 'all',
     meta: {
-      titleSuffix: ' — CosMedic Site CMS',
+      titleSuffix: ' — Cosmedic CMS',
       description: 'BIMC CosMedic — content management for the clinic team.',
       icons: [{ rel: 'icon', type: 'image/png', url: '/cosmedic-favicon.png' }],
-      openGraph: { siteName: 'CosMedic Site CMS', images: [{ url: '/cosmedic-mark-on-light.png' }] },
+      openGraph: { siteName: 'Cosmedic CMS', images: [{ url: '/cosmedic-mark-on-light.png' }] },
     },
     components: {
       graphics: {
@@ -611,7 +611,7 @@ import { emailAdapter } from '@payloadcms/email-nodemailer'
 
 export const email = emailAdapter({
   defaultFromAddress: 'no-reply@cosmedic.gaiada.online',
-  defaultFromName: 'CosMedic Site CMS',
+  defaultFromName: 'Cosmedic CMS',
   transport: nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT ?? 587),

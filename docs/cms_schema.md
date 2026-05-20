@@ -1,6 +1,6 @@
 # CosMedic CMS Map — UI ↔ CMS coverage matrix
 
-> Verifies **Non-negotiable #3**: every editorial surface on the front-end is editable in CosMedic Site CMS. This is the round-trip check that complements `db_schema.md` (the WHAT) and `cms_info.md` (the LOOK).
+> Verifies **Non-negotiable #3**: every editorial surface on the front-end is editable in Cosmedic CMS. This is the round-trip check that complements `db_schema.md` (the WHAT) and `cms_info.md` (the LOOK).
 >
 > **How to use:**
 > - "Can an editor change THIS thing on the homepage?" → see §3, find the page, find the surface, read the CMS column.
@@ -87,7 +87,7 @@ Used inside `Pages` records to assemble per-route content:
 | `pages.afterChange`, `surgeons.afterChange`, `procedures.afterChange`, `subCategories.afterChange`, `disciplines.afterChange`, `beforeAfterCases.afterChange`, `stories.afterChange`, `blogPosts.afterChange` | revalidate-web | POST `http://127.0.0.1:3007/api/revalidate` so web SSR cache busts immediately |
 | `pages.afterChange`, `surgeons.afterChange`, `procedures.afterChange`, `subCategories.afterChange`, `disciplines.afterChange`, `blogPosts.afterChange` | regenerate-sitemap | Triggers `/sitemap.xml` regeneration |
 | `media.beforeValidate` | require-alt | Rejects upload if `alt` field is empty (a11y / SEO Green) |
-| `users.afterChange` (`op=create`) | welcome-email | Sends "welcome to CosMedic Site CMS" template |
+| `users.afterChange` (`op=create`) | welcome-email | Sends "welcome to Cosmedic CMS" template |
 | `priceListItems.beforeChange` | link-procedure | Auto-links to matching `Procedures` slug when name resembles editorial procedure |
 
 ### 1.5 Plugins
@@ -102,7 +102,7 @@ Used inside `Pages` records to assemble per-route content:
 | `@payloadcms/plugin-search` | Admin-side search across collections (optional, low priority) |
 | `@payloadcms/plugin-redirects` | Drives the `Redirects` collection (optional) |
 
-### 1.6 Custom admin components (CosMedic Site CMS branding)
+### 1.6 Custom admin components (Cosmedic CMS branding)
 
 See `docs/cms_info.md` for full spec.
 
@@ -430,7 +430,7 @@ Header / Footer / FloatingChrome appear on every public route. Localised mirror 
 | Chapter opener | block | Pages | pages(slug=privacy).sections[0].block=ChapterOpener |
 | Body | richtext | Pages | pages(slug=privacy).sections[?].block=RichText (long-form policy) |
 
-### 3.19 `/admin` — Payload (CosMedic Site CMS)
+### 3.19 `/admin` — Payload (Cosmedic CMS)
 
 Not part of the public site map but covered for completeness. See `docs/cms_info.md`.
 
@@ -441,7 +441,7 @@ Not part of the public site map but covered for completeness. See `docs/cms_info
 | Admin nav logo (expanded) | custom component `CosmedicLogo` (no-op) |
 | Admin palette + typography | `admin-theme.css` |
 | Light/dark toggle | Payload built-in (`admin.theme: 'all'`) |
-| Title suffix | `admin.meta.titleSuffix: ' — CosMedic Site CMS'` |
+| Title suffix | `admin.meta.titleSuffix: ' — Cosmedic CMS'` |
 | Favicon | `admin.meta.icons[0].url: /cosmedic-favicon.png` |
 
 ---

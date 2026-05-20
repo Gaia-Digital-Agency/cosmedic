@@ -1,0 +1,37 @@
+{
+  "name": "@cosmedic/web",
+  "version": "0.1.0",
+  "description": "Cosmedic — Vite SSR + React 19 + Tailwind 3 public marketing site.",
+  "license": "UNLICENSED",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "cross-env PORT=3007 tsx watch src/server.ts",
+    "build": "cross-env NODE_ENV=production vite build --ssrManifest --outDir dist/client && cross-env NODE_ENV=production vite build --ssr src/entry-server.tsx --outDir dist/server",
+    "start": "cross-env NODE_ENV=production PORT=3007 tsx src/server.ts",
+    "preview": "vite preview --port 3007",
+    "lint": "eslint . --max-warnings 0",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "cross-env": "^10.1.0",
+    "express": "^4.21.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tsx": "^4.21.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.10.5",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.5.2",
+    "eslint": "^9.16.0",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.7"
+  },
+  "engines": {
+    "node": "^20.9.0 || >=22.0.0",
+    "pnpm": "^10"
+  }
+}

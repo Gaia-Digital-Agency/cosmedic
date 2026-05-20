@@ -11,7 +11,7 @@ Goal: ship a multi-page editorial-luxury site (~88 routes — homepage, 6 discip
 - **Production domain**: `https://cosmedic.gaiada.online`
 - **Repo**: `git@github.com:Gaia-Digital-Agency/cosmedic.git`
 - **Stack**: Vite SSR · React · Tailwind · Payload CMS · Node · Postgres (VRTPN)
-- **CMS branding**: White-labelled as **"CosMedic Site CMS"** using `docs/brand-guidelines.pdf`
+- **CMS branding**: White-labelled as **"Cosmedic CMS"** using `docs/brand-guidelines.pdf`
 
 ## Non-negotiables
 
@@ -20,7 +20,7 @@ Every change must respect:
 1. **Frontend pixel-fidelity to Claude Design** — production matches design 100%. See [docs/sitemap.md](docs/sitemap.md) for the route matrix; see [design/](design/) for source.
 2. **Lighthouse Green on every page** — Accessibility / Best Practices / SEO ≥ 90 on every route × every breakpoint.
 3. **Editor-friendly CMS** — every editorial string + every image lives in a Payload collection. See [docs/db_schema.md](docs/db_schema.md).
-4. **CosMedic Site CMS branding** — Payload admin uses the BIMC brand identity. See [docs/cms_info.md](docs/cms_info.md).
+4. **Cosmedic CMS branding** — Payload admin uses the BIMC brand identity. See [docs/cms_info.md](docs/cms_info.md).
 5. **Multisite-safe** — `/var/www/cosmedic/` is one of ~10 sites on this server. **Never `pm2 restart all`. Always `nginx -t` before reload. Never touch sibling certs/databases.**
 
 ## Docs to read first
@@ -65,17 +65,17 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
 - Pixel-Fidelity Gate + Lighthouse Green Gate are launch-blocking. Don't bypass them.
 - This server is the dev environment (user chose server-first). Edits happen here; commits + pushes happen here.
 
-## Current state (Phase 0 complete)
+## Current state (Phase 1 complete)
 
-- Documentation in `docs/` is complete and committed.
-- Root `package.json` + `pnpm-workspace.yaml` + `tsconfig.json` + `config/tooling/*` scaffolded.
-- `pnpm install` run successfully (128 packages, dev tooling: eslint, prettier, typescript, typescript-eslint, concurrently).
-- `pnpm-lock.yaml` committed.
-- `packages/cms` and `packages/web` **not yet created** — that's Phase 1.
-- DNS `cosmedic.gaiada.online` pending (NXDOMAIN at last check).
-- Postgres `cosmedic` role + db **not yet created** — Phase 1.
+- `packages/cms` — Payload 3.84.1 on Next.js 15.4.11 + Postgres adapter, port **4007**. Admin white-labelled as **Cosmedic CMS** (Cormorant Garamond + JetBrains Mono, brand-beige palette from `docs/brand-guidelines.pdf`). Light/dark toggle (`theme: 'all'`).
+- `packages/web` — Vite 6 SSR + React 19 + Express, port **3007**. Renders a hello-world chrome.
+- Postgres `cosmedic` role + db provisioned on `127.0.0.1:5432`. Initial migration applied (`packages/cms/src/migrations/20260520_112358.ts`).
+- Super-admin user seeded from env (idempotent — `seed/admin.ts`). Login verified at `/admin`.
+- pm2 manages both processes (`cosmedic-cms`, `cosmedic-web`); `pm2 save` persisted.
+- Sibling pm2 processes (christos, templategen, templatebase, flowstep, gtec, whatsnewasia) all still online.
+- DNS `cosmedic.gaiada.online` still NXDOMAIN — Phase 8 (nginx + SSL + DNS) handles cutover.
 
-Next session: **Phase 1** per `docs/plan.md` and `docs/todo.md`.
+Next session: **Phase 2** (theme + PageShell) per `docs/plan.md`.
 
 ## Common ops
 

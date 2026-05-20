@@ -27,8 +27,8 @@
 │   ├── file_structure.md            ← this file
 │   ├── db_schema.md                 ← full Payload collection + global schema
 │   ├── sitemap.md                   ← every route, mega-menu, CTA inventory
-│   ├── cms_info.md                  ← CosMedic Site CMS white-label spec
-│   ├── editor_cheatsheet.md         ← how clinic staff use CosMedic Site CMS (Phase 14)
+│   ├── cms_info.md                  ← Cosmedic CMS white-label spec
+│   ├── editor_cheatsheet.md         ← how clinic staff use Cosmedic CMS (Phase 14)
 │   ├── runbook.md                   ← ops playbook (Phase 14)
 │   ├── brand-guidelines.pdf         ← BIMC CosMedic Brand Guidelines v1.0 (canonical brand source)
 │   └── pricelist.xlsx               ← clinic's canonical price + procedure catalogue (CMS seed source)
@@ -145,7 +145,7 @@
 │   │   │   │   ├── ContactForm.ts
 │   │   │   │   ├── JourneyStepList.ts
 │   │   │   │   └── ExternalEmbed.ts
-│   │   │   ├── components/          ← admin UI overrides (CosMedic Site CMS branding)
+│   │   │   ├── components/          ← admin UI overrides (Cosmedic CMS branding)
 │   │   │   │   ├── CosmedicBeforeLogin.tsx
 │   │   │   │   ├── CosmedicLogo.tsx       ← no-op (suppress Payload default)
 │   │   │   │   └── CosmedicIcon.tsx

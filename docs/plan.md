@@ -11,7 +11,7 @@
 | [file_structure.md](./file_structure.md) | Target directory layout + renames |
 | [db_schema.md](./db_schema.md) | Full Payload collection + global schema (WHAT) |
 | [db_ops.md](./db_ops.md) | Postgres provisioning, migrations, backup (HOW) |
-| [cms_info.md](./cms_info.md) | CosMedic Site CMS white-label spec (LOOK) |
+| [cms_info.md](./cms_info.md) | Cosmedic CMS white-label spec (LOOK) |
 | [cms_ops.md](./cms_ops.md) | Payload init, hooks, access, drafts, seed, email (HOW) |
 | [cms_schema.md](./cms_schema.md) | UI ↔ CMS coverage matrix (every page surface → CMS entity) |
 | [sitemap.md](./sitemap.md) | All ~88 routes + nav IA + CTA inventory |
@@ -55,7 +55,7 @@ Most user-facing text and all imagery on the site must be editable through the P
 - Hard-coded text is restricted to: structural UI strings (nav primitives like "More", "Close"), error messages, accessibility labels — and even these are translatable via the static i18n catalogue (Phase 9).
 - Phase 6 (Payload schema + content port) is the gate that ensures this; Phase 11 audits compliance per route.
 
-## ⚠️ Non-negotiable #4 — CosMedic Site CMS branding (white-labelled, Brand-Guidelines-driven)
+## ⚠️ Non-negotiable #4 — Cosmedic CMS branding (white-labelled, Brand-Guidelines-driven)
 
 Payload is white-labelled as **"COSMEDIC SITE CMS"** in the admin UI. Visual identity is derived directly from `docs/brand-guidelines.pdf` (BIMC CosMedic Brand Guidelines v1.0, 19 May 2026) — the same palette and typography as the public site, so admin feels like an editorial extension of the front-end. This **supersedes** the earlier Gaia-CMS-branded plan; the essentialbali Gaia pattern is no longer fetched or used.
 
@@ -89,12 +89,12 @@ Payload is white-labelled as **"COSMEDIC SITE CMS"** in the admin UI. Visual ide
 - Type scale: 6 steps (110/64/36/21/14/11) — apply to admin where Payload's defaults clash with the brand.
 
 **Where the branding applies**
-- Admin browser title / meta: `… — CosMedic Site CMS` (`admin.meta.titleSuffix`).
-- OpenGraph for shared admin links: site name `CosMedic Site CMS`, image `/cosmedic-mark-on-light.png`.
+- Admin browser title / meta: `… — Cosmedic CMS` (`admin.meta.titleSuffix`).
+- OpenGraph for shared admin links: site name `Cosmedic CMS`, image `/cosmedic-mark-on-light.png`.
 - Admin nav (collapsed): compact mark.
 - Admin nav (expanded): full lockup (small).
 - Login screen: `beforeLogin` renders the hero. Payload's default wordmark is suppressed by no-op `Logo`.
-- Email-from name: `CosMedic Site CMS <no-reply@cosmedic.gaiada.online>`.
+- Email-from name: `Cosmedic CMS <no-reply@cosmedic.gaiada.online>`.
 - Password-reset emails: subject/body use the same brand language.
 
 **Branding assets dependency**
@@ -126,7 +126,7 @@ The user requested architecture decisions be locked first. After locking them, t
 | Phase | Title | Architecture sections (Appendix A) it implements |
 |---|---|---|
 | **0** | Documentation + git checkpoint | A.1, A.2 — write `README.md`, `docs/architecture_info.md`, `docs/sitemap.md`, `.gitignore`; rename `uploads/` → `discovery/`, `pages/`/loose `.jsx`/`.html` → `design/`; git init, first commit, push. |
-| **1** | Monorepo scaffold + **CosMedic Site CMS branding** | A.3, A.4 — pnpm workspace, packages/cms (Payload init **with CosMedic Site CMS admin branding** per Non-negotiable #4), packages/web (Vite SSR), `.env`, `ecosystem.config.cjs`, Postgres db/role, hello-world boot, `docs/cms_info.md`. |
+| **1** | Monorepo scaffold + **Cosmedic CMS branding** | A.3, A.4 — pnpm workspace, packages/cms (Payload init **with Cosmedic CMS admin branding** per Non-negotiable #4), packages/web (Vite SSR), `.env`, `ecosystem.config.cjs`, Postgres db/role, hello-world boot, `docs/cms_info.md`. |
 | **2** | Theme + `PageShell` | A.7, A.8 — Tailwind theme from tokens, fonts, header (logo + mega-menu + active-state + EN\|ID), footer, floating CTA + chat. |
 | **3** | Homepage | A.6, A.7 — hero+form, stats, treatments index, surgeons, gallery teaser, journey teaser, stories teaser, place. |
 | **4** | Detail templates | A.5, A.6 — procedure detail (41 routes), discipline detail (6), sub-category detail (18), surgeon detail (8). One template per kind, data-driven. |
@@ -159,7 +159,7 @@ Cross-cutting (every phase): **multisite hygiene** (never `pm2 restart all`, alw
    medical tourists from AU / US / EU.
 
    - **Live**: https://cosmedic.gaiada.online
-   - **CMS**: https://cosmedic.gaiada.online/admin (branded as "CosMedic Site CMS")
+   - **CMS**: https://cosmedic.gaiada.online/admin (branded as "Cosmedic CMS")
    - **Repo**: https://github.com/Gaia-Digital-Agency/cosmedic
    - **Stack**: Vite SSR · React · Tailwind · Payload CMS · Node · Postgres (VRTPN)
 
@@ -307,7 +307,7 @@ Cross-cutting (every phase): **multisite hygiene** (never `pm2 restart all`, alw
      checklist (Phase 11).
    ```
 
-1c. **Move + curate brand inputs for CosMedic Site CMS** (replaces the earlier Gaia-asset-fetch step). `brand.pdf` and `procedure.xlsx` are already uploaded to `/var/www/cosmedic/`; this step moves them into `docs/` and prepares the BIMC CosMedic mark for use in Payload admin.
+1c. **Move + curate brand inputs for Cosmedic CMS** (replaces the earlier Gaia-asset-fetch step). `brand.pdf` and `procedure.xlsx` are already uploaded to `/var/www/cosmedic/`; this step moves them into `docs/` and prepares the BIMC CosMedic mark for use in Payload admin.
 
    ```bash
    mv /var/www/cosmedic/brand.pdf       /var/www/cosmedic/docs/brand-guidelines.pdf
@@ -340,7 +340,7 @@ Cross-cutting (every phase): **multisite hygiene** (never `pm2 restart all`, alw
    - Palette (5 tokens + 1 accent) mapped to Payload admin theme vars.
    - Typography (Cormorant + JetBrains Mono) loading strategy in admin.
    - Asset inventory (which file lives where, what each represents).
-   - What's overridable per site (the wordmark string "CosMedic Site CMS", the per-site assets) vs what stays consistent across Gaia clients (the Payload component pattern).
+   - What's overridable per site (the wordmark string "Cosmedic CMS", the per-site assets) vs what stays consistent across Gaia clients (the Payload component pattern).
 
 2. **Write `.gitignore`** at `/var/www/cosmedic/.gitignore`:
 
@@ -414,14 +414,14 @@ Cross-cutting (every phase): **multisite hygiene** (never `pm2 restart all`, alw
 
 ---
 
-## Phase 1 — Monorepo scaffold + CosMedic Site CMS branding
+## Phase 1 — Monorepo scaffold + Cosmedic CMS branding
 
-**Goal**: Both processes boot on assigned ports, Postgres provisioned, pm2 managing them. CosMedic Site CMS branding live in admin UI. No business logic yet — hello-world only.
+**Goal**: Both processes boot on assigned ports, Postgres provisioned, pm2 managing them. Cosmedic CMS branding live in admin UI. No business logic yet — hello-world only.
 
 **Reference docs** (read before executing):
 - `docs/architecture_info.md` — runtime topology + stack rationale
 - `docs/file_structure.md` — target monorepo layout
-- `docs/cms_info.md` — CosMedic Site CMS branding spec (palette / typography / lockup / theme)
+- `docs/cms_info.md` — Cosmedic CMS branding spec (palette / typography / lockup / theme)
 - `docs/cms_ops.md` §2-4 — Payload init flow, config skeleton, type generation
 - `docs/cms_ops.md` §14 — Custom admin UI (CosmedicBeforeLogin/Logo/Icon + admin-theme.css)
 - `docs/cms_ops.md` §16 — Bootstrap super-admin user from env
@@ -457,7 +457,7 @@ Cross-cutting (every phase): **multisite hygiene** (never `pm2 restart all`, alw
    - `.env.example` (committed): `DATABASE_URI=postgres://cosmedic:REPLACE_ME@127.0.0.1:5432/cosmedic`, `PAYLOAD_SECRET=REPLACE_ME`, `PORT=4007`, `FRONTEND_URL=http://localhost:3007`.
    - `.env` (not committed): real values, generated from `.env.example`.
 
-3a. **CosMedic Site CMS branding** in `packages/cms/payload.config.ts` (Non-negotiable #4). White-label Payload with the BIMC CosMedic brand from `docs/brand-guidelines.pdf`. Pattern borrowed from essentialbali (component scaffold: `Icon` + `Logo` no-op + `beforeLogin`), but assets and palette are CosMedic.
+3a. **Cosmedic CMS branding** in `packages/cms/payload.config.ts` (Non-negotiable #4). White-label Payload with the BIMC CosMedic brand from `docs/brand-guidelines.pdf`. Pattern borrowed from essentialbali (component scaffold: `Icon` + `Logo` no-op + `beforeLogin`), but assets and palette are CosMedic.
 
    ```ts
    // packages/cms/src/payload.config.ts (admin block only)
@@ -465,13 +465,13 @@ Cross-cutting (every phase): **multisite hygiene** (never `pm2 restart all`, alw
      user: Users.slug,
      theme: 'all',                                                  // light/dark toggle
      meta: {
-       titleSuffix: ' — CosMedic Site CMS',
+       titleSuffix: ' — Cosmedic CMS',
        description: 'BIMC CosMedic — content management for the clinic team.',
        icons: [
          { rel: 'icon', type: 'image/png', url: '/cosmedic-favicon.png' },
        ],
        openGraph: {
-         siteName: 'CosMedic Site CMS',
+         siteName: 'Cosmedic CMS',
          description: 'BIMC CosMedic — content management for the clinic team.',
          images: [{ url: '/cosmedic-mark-on-light.png' }],
        },
@@ -494,7 +494,7 @@ Cross-cutting (every phase): **multisite hygiene** (never `pm2 restart all`, alw
    const CosmedicBeforeLogin: React.FC = () => (
      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '2rem', gap: '1.1rem' }}>
        <h1 style={{ margin: 0, fontFamily: '"Cormorant Garamond", Georgia, serif', fontWeight: 500, fontSize: '2.4rem', letterSpacing: '0.02em', color: 'var(--theme-text)' }}>
-         CosMedic Site CMS
+         Cosmedic CMS
        </h1>
        <img src="/cosmedic-mark-on-light.png" alt="BIMC CosMedic"
          style={{ width: '180px', height: 'auto', display: 'block' }} />
@@ -571,7 +571,7 @@ Cross-cutting (every phase): **multisite hygiene** (never `pm2 restart all`, alw
 
    **Google Fonts** for admin head (loaded via Payload `admin.meta.css` linked file or a small custom html head injection): Cormorant Garamond + JetBrains Mono.
 
-   **Email-from name** in nodemailer config: `CosMedic Site CMS <no-reply@cosmedic.gaiada.online>`.
+   **Email-from name** in nodemailer config: `Cosmedic CMS <no-reply@cosmedic.gaiada.online>`.
 
    **Light/dark verification**: with `theme: 'all'`, Payload follows system preference and shows toggle in the user menu. Both themes use the same brand palette mapped to the elevation vars above. Brand rule: "one bronze gesture per surface" — verify accent is on links/primary CTA only, never on cards/blocks.
 
@@ -1167,7 +1167,7 @@ Other non-negotiables:
 - **Pixel-faithful** to the handoff design tokens, typography, spacing, imagery treatment, and interaction model.
 - **Lighthouse Green on a11y, Best Practices, SEO** on every route × every breakpoint (Non-negotiable #2).
 - **CMS-editable** — every page, surgeon, procedure, B&A case, story, price, FAQ, and image is editable via Payload by non-technical clinic staff (Non-negotiable #3).
-- **CosMedic Site CMS branding** — Payload admin UI is branded as "CosMedic Site CMS" matching `gda-pn01:/var/www/essentialbali` (Non-negotiable #4).
+- **Cosmedic CMS branding** — Payload admin UI is branded as "Cosmedic CMS" matching `gda-pn01:/var/www/essentialbali` (Non-negotiable #4).
 - **Bilingual** — every editorial string available in EN and ID via the `EN | ID` switcher already in the design.
 - **Multisite-safe** — never touches sibling sites' files, certs, databases, or pm2 processes.
 
@@ -1240,7 +1240,7 @@ SSL cert: shared from /etc/letsencrypt/live/templategen.gaiada.online/.
 ```
 /var/www/cosmedic/                  ← deploy target on gda-s01
 ├── CLAUDE.md                        ← project guide for Claude sessions
-├── README.md                        ← **human-facing project entry point** — what the project is, stack at a glance, how to run dev/build/deploy locally, link to docs/, link to live URL, link to design/, link to CosMedic Site CMS admin URL
+├── README.md                        ← **human-facing project entry point** — what the project is, stack at a glance, how to run dev/build/deploy locally, link to docs/, link to live URL, link to design/, link to Cosmedic CMS admin URL
 ├── .gitignore
 ├── .env                             ← shared env (DB, SMTP, etc.) — never committed
 ├── package.json                     ← root: dev/build/start scripts via concurrently
@@ -1257,8 +1257,8 @@ SSL cert: shared from /etc/letsencrypt/live/templategen.gaiada.online/.
 │   ├── page-map.md                  ← **every page · subpage · link · sublink · button** documented (Phase 0)
 │   ├── design-tokens.md             ← extracted from global.css (Phase 2)
 │   ├── content-model.md             ← full Payload collection schemas + xlsx mapping (Phase 6)
-│   ├── cms-customization.md         ← CosMedic Site CMS branding spec + palette mapping (Phase 0/1)
-│   ├── editor-cheatsheet.md         ← how clinic staff manage content via CosMedic Site CMS (Phase 14)
+│   ├── cms-customization.md         ← Cosmedic CMS branding spec + palette mapping (Phase 0/1)
+│   ├── editor-cheatsheet.md         ← how clinic staff manage content via Cosmedic CMS (Phase 14)
 │   ├── runbook.md                   ← ops playbook (Phase 14)
 │   ├── brand-guidelines.pdf         ← BIMC CosMedic Brand Guidelines v1.0 (moved from /brand.pdf in Phase 0)
 │   └── pricelist.xlsx               ← clinic's canonical price + procedure catalogue (moved from /procedure.xlsx in Phase 0); CMS seed source for Phase 6
@@ -1272,8 +1272,8 @@ SSL cert: shared from /etc/letsencrypt/live/templategen.gaiada.online/.
 │   │   ├── logo-bronze.png          ← BIMC CosMedic site logo (bronze, transparent)
 │   │   ├── logo-light.png           ← BIMC CosMedic site logo (white, for dark footer)
 │   │   ├── cosmedic-mark-on-light.png        ← Gaia tree-of-life mark (yellow square tile) — admin login + nav
-│   │   ├── cosmedic-favicon.png     ← CosMedic Site CMS favicon (yellow tree square)
-│   │   └── cosmedic-mark-on-light.png          ← CosMedic Site CMS OG image (1200×630, for admin login page link sharing)
+│   │   ├── cosmedic-favicon.png     ← Cosmedic CMS favicon (yellow tree square)
+│   │   └── cosmedic-mark-on-light.png          ← Cosmedic CMS OG image (1200×630, for admin login page link sharing)
 │   └── images/
 │       ├── surgeons/                ← 8 surgeon portraits, 500×500, self-hosted
 │       ├── treatments/              ← 6 discipline hero images + sub-category imagery

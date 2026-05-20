@@ -3,7 +3,7 @@
 Marketing site for **BIMC CosMedic** — Bali International Medical Centre's plastic-surgery & aesthetic-medicine clinic in Nusa Dua, Bali. Editorial-luxury multi-page site for international medical tourists from AU / US / EU.
 
 - **Live (production)**: <https://cosmedic.gaiada.online>
-- **CMS** (white-labelled as "CosMedic Site CMS"): <https://cosmedic.gaiada.online/admin>
+- **CMS** (white-labelled as "Cosmedic CMS"): <https://cosmedic.gaiada.online/admin>
 - **Repo**: <https://github.com/Gaia-Digital-Agency/cosmedic>
 - **Stack**: Vite SSR · React · Tailwind · Payload CMS · Node · Postgres (VRTPN)
 
@@ -17,10 +17,12 @@ Marketing site for **BIMC CosMedic** — Bali International Medical Centre's pla
 | [docs/db_schema.md](./docs/db_schema.md) | Full Payload CMS collection + global schema (WHAT) |
 | [docs/db_ops.md](./docs/db_ops.md) | Postgres provisioning, migrations, backup, restore, perf (HOW) |
 | [docs/sitemap.md](./docs/sitemap.md) | Every page · subpage · CTA · button · mega-menu |
-| [docs/cms_info.md](./docs/cms_info.md) | CosMedic Site CMS white-label spec (LOOK) |
+| [docs/cms_info.md](./docs/cms_info.md) | Cosmedic CMS white-label spec (LOOK) |
 | [docs/cms_ops.md](./docs/cms_ops.md) | Payload init, hooks, access, drafts, media, seed, email (HOW) |
 | [docs/cms_schema.md](./docs/cms_schema.md) | UI ↔ CMS coverage matrix — every page surface mapped to its CMS entity |
+| [docs/site_features.md](./docs/site_features.md) | Visitor walkthrough + every site feature, primitive, and interaction |
 | [docs/plan.md](./docs/plan.md) | Full 14-phase execution plan + locked architecture decisions + Appendix A |
+| [docs/todo.md](./docs/todo.md) | Master TODO — 14-phase checklist + 47-page CMS tracker |
 | [docs/brand-guidelines.pdf](./docs/brand-guidelines.pdf) | BIMC CosMedic Brand Guidelines v1.0 (canonical brand source) |
 | [docs/pricelist.xlsx](./docs/pricelist.xlsx) | Clinic's price + procedure catalogue (CMS seed source) |
 | [design/](./design/) | Original Claude Design source (READ-ONLY) |
@@ -47,9 +49,9 @@ Internal abbreviation for this stack across Gaia infra: **VRTPN**.
 
 This is the initial documentation + design-handoff import. Phases 1–14 are documented in the planning file; execution proceeds phase-by-phase with user approval at each gate.
 
-- **Phase 0** (current): Documentation capture + git checkpoint of the starting state.
-- **Phase 1**: Monorepo scaffold (packages/cms + packages/web on ports 4007/3007).
-- **Phase 2**: Theme + PageShell port from `design/`.
+- **Phase 0** ✅ Documentation capture + git checkpoint of the starting state.
+- **Phase 1** ✅ Monorepo scaffold — packages/cms (Payload 3 on Next.js, port 4007) + packages/web (Vite SSR, port 3007), Postgres provisioned, Cosmedic CMS branding, super-admin seeded.
+- **Phase 2** (next): Theme + PageShell port from `design/`.
 - **Phase 3+**: Homepage → detail templates → index pages → CMS schema → forms → deploy.
 - **Phase 11**: Pixel-Fidelity Gate + Lighthouse Green Gate (launch-blocking).
 - **Phase 12**: Launch at `https://cosmedic.gaiada.online`.

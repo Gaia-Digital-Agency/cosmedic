@@ -13,7 +13,7 @@ Deliver 100% of the BIMC CosMedic Claude Design handoff (75+ pages, editorial-lu
 1. **Frontend pixel-fidelity to Claude Design** — production must match the design 100% across all breakpoints and interactions. Visual regression suite + page-by-page sign-off enforces this (see `docs/sitemap.md` and Phase 11 in the plan).
 2. **Lighthouse Green on every page** — Accessibility / Best Practices / SEO ≥ 90 on every public route × every breakpoint. Lighthouse CI blocks launch if any drops below Green.
 3. **Editor-friendly CMS** — every editorial string + every image is editable in Payload by non-technical clinic staff. Hard-coding is restricted to UI primitives. See `docs/db_schema.md`.
-4. **CosMedic Site CMS branding** — Payload is white-labelled using the brand identity from `docs/brand-guidelines.pdf`. See `docs/cms_info.md`.
+4. **Cosmedic CMS branding** — Payload is white-labelled using the brand identity from `docs/brand-guidelines.pdf`. See `docs/cms_info.md`.
 5. **Multisite-safe** — never touches sibling sites' files, certs, databases, or pm2 processes.
 6. **Bilingual** — every editorial string available in EN and ID via the `EN | ID` switcher already in the design.
 

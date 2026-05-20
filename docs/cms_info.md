@@ -1,6 +1,6 @@
-# CosMedic Site CMS — Branding & Customization Spec
+# Cosmedic CMS — Branding & Customization Spec
 
-> Payload CMS is white-labelled as **"CosMedic Site CMS"** using the BIMC CosMedic brand identity from `docs/brand-guidelines.pdf`. Admin UI feels like an editorial extension of the public site — same palette, typography, mark.
+> Payload CMS is white-labelled as **"Cosmedic CMS"** using the BIMC CosMedic brand identity from `docs/brand-guidelines.pdf`. Admin UI feels like an editorial extension of the public site — same palette, typography, mark.
 
 This document captures the full spec for the admin-UI customization. Implementation lands in Phase 1.
 
@@ -78,13 +78,13 @@ admin: {
   user: Users.slug,
   theme: 'all',                                                  // light/dark toggle enabled
   meta: {
-    titleSuffix: ' — CosMedic Site CMS',
+    titleSuffix: ' — Cosmedic CMS',
     description: 'BIMC CosMedic — content management for the clinic team.',
     icons: [
       { rel: 'icon', type: 'image/png', url: '/cosmedic-favicon.png' },
     ],
     openGraph: {
-      siteName: 'CosMedic Site CMS',
+      siteName: 'Cosmedic CMS',
       description: 'BIMC CosMedic — content management for the clinic team.',
       images: [{ url: '/cosmedic-mark-on-light.png' }],
     },
@@ -132,7 +132,7 @@ const CosmedicBeforeLogin: React.FC = () => (
       letterSpacing: '0.02em',
       color: 'var(--theme-text)',
     }}>
-      CosMedic Site CMS
+      Cosmedic CMS
     </h1>
     <img
       src="/cosmedic-mark-on-light.png"
@@ -253,13 +253,13 @@ Google Fonts loaded via custom head injection in admin (Cormorant Garamond 400/5
 
 | Surface | What's branded |
 |---|---|
-| Browser title | `{Page} — CosMedic Site CMS` (`titleSuffix`) |
+| Browser title | `{Page} — Cosmedic CMS` (`titleSuffix`) |
 | Favicon | `/cosmedic-favicon.png` |
 | OpenGraph (admin link sharing) | siteName + description + image from `meta.openGraph` |
 | Login screen | `CosmedicBeforeLogin` is sole brand element |
 | Admin nav (expanded) | `CosmedicLogo` is no-op; wordmark suppressed |
 | Admin nav (collapsed) | `CosmedicIcon` shows mark |
-| Email-from name | `CosMedic Site CMS <no-reply@cosmedic.gaiada.online>` (nodemailer config) |
+| Email-from name | `Cosmedic CMS <no-reply@cosmedic.gaiada.online>` (nodemailer config) |
 | Password-reset email subject + body | Templated via `EmailTemplates` global, branded copy |
 
 ---
@@ -289,7 +289,7 @@ PAYLOAD_SEED_ADMIN_PASSWORD=Teameditor@123
 
 The component scaffold + admin-theme.css pattern documented here is **reusable across other Gaia client sites**. For a new client:
 
-1. Replace the wordmark string in `CosmedicBeforeLogin` (e.g. "CosMedic Site CMS" → "FooBar Site CMS").
+1. Replace the wordmark string in `CosmedicBeforeLogin` (e.g. "Cosmedic CMS" → "FooBar Site CMS").
 2. Swap mark assets in `packages/cms/public/`.
 3. Replace the palette in `admin-theme.css` (5 tokens + 1 accent) with the new brand's tokens.
 4. Replace the typography families if needed.
@@ -303,11 +303,11 @@ Everything else (theme: 'all', component scaffold, no-op Logo trick, CSS variabl
 
 Phase 1 acceptance criteria for CMS branding:
 
-- [ ] `/admin` browser title reads `… — CosMedic Site CMS`.
-- [ ] Login screen renders: `CosMedic Site CMS` wordmark (Cormorant), BIMC lockup, "Managed by BIMC Hospital" tagline (mono uppercase).
+- [ ] `/admin` browser title reads `… — Cosmedic CMS`.
+- [ ] Login screen renders: `Cosmedic CMS` wordmark (Cormorant), BIMC lockup, "Managed by BIMC Hospital" tagline (mono uppercase).
 - [ ] No Payload default "Payload" wordmark anywhere in the UI.
 - [ ] Collapsed nav shows BIMC mark icon.
 - [ ] Both light and dark modes are legible.
 - [ ] One bronze accent gesture per screen — no accent on bulk surfaces.
 - [ ] Favicon shows in browser tab.
-- [ ] Email-from name reads "CosMedic Site CMS" in test emails.
+- [ ] Email-from name reads "Cosmedic CMS" in test emails.

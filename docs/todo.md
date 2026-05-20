@@ -14,19 +14,21 @@
   - [x] Reorg: `uploads/` → `discovery/{feedback,roadmap,screenshots,source-imagery}`
   - [x] Reorg: design source + `assets/` → `design/`
   - [x] Initial commits pushed to `origin/main` on GitHub
-  - [ ] Base 3PRTVN install (root `package.json` + `pnpm install`) — pre-Phase-1
+  - [x] Base 3PRTVN install (root `package.json` + `pnpm install`) — pre-Phase-1
 
-- [ ] **PHASE 1 — Monorepo scaffold + CosMedic Site CMS branding**
-  - [ ] Postgres `cosmedic` role + db provisioned
-  - [ ] `pnpm-workspace.yaml` + `packages/cms` (Payload, port 4007) + `packages/web` (Vite SSR, port 3007)
-  - [ ] `ecosystem.config.cjs` for pm2 (`cosmedic-cms` + `cosmedic-web`)
-  - [ ] `.env` + `.env.example` (DB URI, PAYLOAD_SECRET, PORT vars, SMTP placeholders, bootstrap admin)
-  - [ ] CosMedic Site CMS admin branding: `CosmedicBeforeLogin.tsx`, `CosmedicLogo.tsx` (no-op), `CosmedicIcon.tsx`, `admin-theme.css`
-  - [ ] Brand palette + typography wired into admin
-  - [ ] `theme: 'all'` (light/dark toggle)
-  - [ ] Hello-world boot — both processes online, `/admin` shows the CosMedic Site CMS login
-  - [ ] Bootstrap super-admin from `.env` (super_admin@email.com / Teameditor@123)
-  - [ ] Smoke: `curl localhost:3007` + `curl localhost:4007/admin` → 200; sibling sites untouched
+- [x] **PHASE 1 — Monorepo scaffold + Cosmedic CMS branding**
+  - [x] Postgres `cosmedic` role + db provisioned (local 127.0.0.1:5432)
+  - [x] `pnpm-workspace.yaml` + `packages/cms` (Payload 3.84.1 on Next 15.4.11, port 4007) + `packages/web` (Vite SSR + Express, port 3007)
+  - [x] `ecosystem.config.cjs` for pm2 (`cosmedic-cms` + `cosmedic-web`)
+  - [x] `.env` + `.env.example` (DATABASE_URI, PAYLOAD_SECRET, PORT vars, bootstrap admin)
+  - [x] Cosmedic CMS admin branding: `CosmedicBeforeLogin.tsx`, `CosmedicLogo.tsx` (no-op), `CosmedicIcon.tsx`, `admin-theme.css` (brand palette + Cormorant Garamond + JetBrains Mono)
+  - [x] Brand palette + typography wired into admin
+  - [x] `theme: 'all'` (light/dark toggle)
+  - [x] Hello-world boot — both processes online, `/admin` shows the Cosmedic CMS login (verified 200)
+  - [x] Initial Payload migration generated + applied (`src/migrations/20260520_112358.ts`)
+  - [x] Bootstrap super-admin seeded from `.env` (super_admin@email.com) — auth verified, JWT issued
+  - [x] Smoke: `curl localhost:3007` → 200 + "BIMC CosMedic"; `curl localhost:4007/admin` → 200; sibling sites untouched (christos / templategen / templatebase / flowstep all still online)
+  - [x] `docs/site_features.md` written (site walkthrough + features inventory)
 
 - [ ] **PHASE 2 — Theme + PageShell**
   - [ ] Port `global.css` tokens → `packages/web/src/styles/globals.css`

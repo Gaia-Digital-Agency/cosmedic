@@ -1,0 +1,51 @@
+/*
+ * Cosmedic CMS — admin theme overrides.
+ * Palette + typography from docs/brand-guidelines.pdf (BIMC CosMedic v1.0).
+ * Light is default; [data-theme="dark"] inverts via the same brand tokens.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --cs-paper: #f4efe6;
+  --cs-cream: #e6dcc8;
+  --cs-ink: #1f1b16;
+  --cs-brown: #6b4a2b;
+  --cs-accent: #a67c52;
+
+  --theme-bg: var(--cs-paper);
+  --theme-text: var(--cs-ink);
+  --theme-elevation-0: var(--cs-paper);
+  --theme-elevation-50: #ece4d2;
+  --theme-elevation-100: var(--cs-cream);
+  --theme-elevation-500: var(--cs-brown);
+  --theme-elevation-1000: var(--cs-ink);
+  --theme-success-500: var(--cs-brown);
+  --theme-error-500: #b95c5c;
+  --color-accent: var(--cs-accent);
+}
+
+[data-theme='dark'] {
+  --theme-bg: var(--cs-ink);
+  --theme-text: var(--cs-paper);
+  --theme-elevation-0: var(--cs-ink);
+  --theme-elevation-50: #2a241e;
+  --theme-elevation-100: #3b332b;
+  --theme-elevation-500: var(--cs-cream);
+  --theme-elevation-1000: var(--cs-paper);
+  --color-accent: var(--cs-accent);
+}
+
+body,
+.payload__app {
+  font-family: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+}
+
+.payload__app input,
+.payload__app button,
+code,
+.label,
+.eyebrow {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  letter-spacing: 0.05em;
+}
