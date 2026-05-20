@@ -54,6 +54,7 @@ This is the initial documentation + design-handoff import. Phases 1–14 are doc
 - **Phase 2** ✅ Theme + PageShell ported from `design/`: full `global.css`, primitives (Btn / Mono / Eyebrow / Img / Reveal / PriceTag / ChapterOpener / TrustBar / CTABandSlim), shell (Header + Footer + FloatingChrome + PageShell).
 - **Phase 3** ✅ Homepage: 11 sections matching `design/index.html` — Hero · TrustStrip · Intro · Treatments · PricingTeaser · Surgeons · Gallery · LeadMagnet · Journey · Stories · Place. All read from `seed.ts`; Phase 6 swaps to Payload (mapping captured in `docs/cms_schema.md`).
 - **Phase 4** ✅ Detail templates: SSR router + 3 page templates covering **37 live routes** — DisciplineDetail (×6), SubCategoryDetail (×22, accordion treatment rows with IDR + AUD prices), SurgeonDetail (×8 with hero + bio + specialty areas + training). 404 fallback page. Editorial data ported to `src/content/treatment-content.ts` + `src/content/subcategory-data.ts`.
+- **Phase 5** ✅ Index pages: 14 more routes — treatments + surgeons + results indices, gallery, stories, journey (7 steps), pricing (full table), recovery-stays (6 villas), press (8 accreditations + 6 mentions), contact (form + visit map), video-consult (14-day picker), blog index + post, privacy. **Total 51 live routes.**
 - **Phase 3+**: Homepage → detail templates → index pages → CMS schema → forms → deploy.
 - **Phase 11**: Pixel-Fidelity Gate + Lighthouse Green Gate (launch-blocking).
 - **Phase 12**: Launch at `https://cosmedic.gaiada.online`.

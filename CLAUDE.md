@@ -65,7 +65,7 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
 - Pixel-Fidelity Gate + Lighthouse Green Gate are launch-blocking. Don't bypass them.
 - This server is the dev environment (user chose server-first). Edits happen here; commits + pushes happen here.
 
-## Current state (Phase 4 complete)
+## Current state (Phase 5 complete)
 
 - `packages/cms` — Payload 3.84.1 on Next.js 15.4.11 + Postgres adapter, port **4007**. Admin white-labelled as **Cosmedic CMS** (Cormorant Garamond + JetBrains Mono, brand-beige palette from `docs/brand-guidelines.pdf`). Light/dark toggle.
 - `packages/web` — Vite 6 SSR + React 19 + Express, port **3007**. Renders the full homepage matching the Claude Design source.
@@ -74,8 +74,10 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
   - Primitives: `Btn`, `Mono`/`Eyebrow`, `Img` (painted-SVG fallback), `Reveal` (IntersectionObserver), `PriceTag` (IDR + AUD), `ChapterOpener`, `TrustBar`, `CTABandSlim`.
   - Shell: `Header` (mega-menu hover bridge, EN|ID, scroll-state, mobile drawer) + `Footer` (3 columns + newsletter) + `FloatingChrome` (CTA pill + WhatsApp fab) + `PageShell`.
   - Homepage (`src/routes/home/`): Hero · TrustStrip · Intro · Treatments · PricingTeaser · Surgeons · Gallery · LeadMagnet · Journey · Stories · Place.
-  - Detail templates (`src/routes/detail/`): `DisciplineDetail` (6 routes) · `SubCategoryDetail` (22 routes) · `SurgeonDetail` (8 routes) · `NotFound` (404). Total **37 live routes** + 404 for unknown paths.
-  - SSR router (`src/router.ts`) parses `pathname` → `{kind, slug}`, status 404 on unknown slugs. `entry-server.tsx` / `entry-client.tsx` both resolve before render so hydration matches SSR.
+  - Detail templates (`src/routes/detail/`): `DisciplineDetail` (6 routes) · `SubCategoryDetail` (22 routes) · `SurgeonDetail` (8 routes).
+  - Index + content pages (`src/routes/*/`): `treatments` · `surgeons` · `results` · `gallery` · `stories` · `journey` · `pricing` · `recovery-stays` · `press` · `contact` · `video-consult` · `blog` (index + post) · `privacy` (14 routes).
+  - Total **51 live routes** + 404 for unknown paths.
+  - SSR router (`src/router.ts`) parses `pathname` → `{kind, slug}` via static-routes map + treatment/surgeon/blog matchers. Status 404 on unknown slugs. `entry-server.tsx` / `entry-client.tsx` both resolve before render so hydration matches SSR.
   - Seed data in `src/content/seed.ts` — `TREATMENT_LIST`, `SUBCATEGORIES_BY_DISCIPLINE`, `SURGEON_LIST`, `BA_PAIRS`, `STORY_PORTRAITS`, `IMG`, `TREATMENT_IMG()`, `SURGEON_IMG()`, `WHATSAPP_HREF`.
   - Editorial content for detail pages: `src/content/treatment-content.ts` (per-discipline) + `src/content/subcategory-data.ts` (per-sub-category, 22 entries, with `treatments[]` accordion data). Phase 6 replaces all four `src/content/*` files with Payload-backed fetch.
   - Brand + treatment + surgeon + B&A imagery at `packages/web/public/assets/{logo*.png,treatments/,surgeons/,results/}`.

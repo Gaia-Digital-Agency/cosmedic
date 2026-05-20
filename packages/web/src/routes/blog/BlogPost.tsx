@@ -1,0 +1,206 @@
+import React from 'react'
+import { PageShell } from '@/components/shell/PageShell'
+import { ChapterOpener } from '@/components/primitives/ChapterOpener'
+import { Reveal } from '@/components/primitives/Reveal'
+import { Img } from '@/components/primitives/Img'
+import { Mono, Eyebrow } from '@/components/primitives/Mono'
+import { Btn } from '@/components/primitives/Btn'
+import { SURGEON_LIST, SURGEON_IMG } from '@/content/seed'
+import { BLOG_POST_BODIES, BLOG_POSTS } from '@/content/blog-data'
+
+type Props = { slug: string }
+
+function splitTitle(title: string): [string, string] {
+  const words = title.split(' ')
+  const mid = Math.ceil(words.length / 2)
+  return [words.slice(0, mid).join(' '), words.slice(mid).join(' ')]
+}
+
+export const BlogPost: React.FC<Props> = ({ slug }) => {
+  const post = BLOG_POST_BODIES[slug]
+  if (!post) return null
+  const author = SURGEON_LIST.find((s) => s.slug === post.authorSlug)
+  if (!author) return null
+
+  return (
+    <PageShell activePage="blog">
+      <ChapterOpener
+        chapter={`Chapter X — Journal · ${post.category}`}
+        title={splitTitle(post.title)}
+        lede={post.dek}
+        image={post.img}
+        imageHue={post.hue}
+        imageLabel={post.category.toUpperCase()}
+        breadcrumbs={[
+          { label: 'BIMC CosMedic', href: '/' },
+          { label: 'Journal', href: '/blog' },
+          { label: post.title },
+        ]}
+      />
+
+      <section className="blog-byline">
+        <Reveal>
+          <div className="blog-byline-inner">
+            <div className="blog-byline-author">
+              <a
+                href={`/surgeon-${author.slug}`}
+                className="blog-byline-portrait"
+                data-surgeon={author.slug}
+              >
+                <Img
+                  src={SURGEON_IMG(author.slug)}
+                  fallbackLabel={`DR. ${author.common.toUpperCase()}`}
+                  fallbackHue={author.hue}
+                  alt=""
+                />
+              </a>
+              <div>
+                <Mono>Written by</Mono>
+                <div className="blog-byline-name">
+                  {author.title} {author.name}
+                </div>
+                <span className="blog-byline-role">{author.group}</span>
+              </div>
+            </div>
+            <div className="blog-byline-meta">
+              <div>
+                <Mono>Published</Mono>
+                <span>{post.date}</span>
+              </div>
+              <div>
+                <Mono>Length</Mono>
+                <span>{post.read}</span>
+              </div>
+              <div>
+                <Mono>Filed under</Mono>
+                <span>{post.category}</span>
+              </div>
+            </div>
+          </div>
+        </Reveal>
+      </section>
+
+      <section className="page-section blog-body">
+        <article className="blog-article">
+          {post.body.map((block, i) => {
+            if (block.kind === 'p')
+              return (
+                <Reveal key={i} delay={Math.min(i, 6) * 40}>
+                  <p className="blog-p">{block.text}</p>
+                </Reveal>
+              )
+            if (block.kind === 'h')
+              return (
+                <Reveal key={i} delay={80}>
+                  <h3 className="blog-h">{block.text}</h3>
+                </Reveal>
+              )
+            if (block.kind === 'pull')
+              return (
+                <Reveal key={i} delay={80}>
+                  <blockquote className="blog-pull">{block.text}</blockquote>
+                </Reveal>
+              )
+            if (block.kind === 'list')
+              return (
+                <Reveal key={i} delay={80}>
+                  <ul className="blog-list">
+                    {block.items.map((it, j) => (
+                      <li key={j}>{it}</li>
+                    ))}
+                  </ul>
+                </Reveal>
+              )
+            return null
+          })}
+        </article>
+      </section>
+
+      <section className="page-section tinted">
+        <Reveal>
+          <div className="blog-author-callout">
+            <a
+              href={`/surgeon-${author.slug}`}
+              className="blog-author-portrait"
+              data-surgeon={author.slug}
+            >
+              <Img
+                src={SURGEON_IMG(author.slug)}
+                fallbackLabel={`DR. ${author.common.toUpperCase()}`}
+                fallbackHue={author.hue}
+                alt=""
+              />
+            </a>
+            <div className="blog-author-body">
+              <Mono>About the author</Mono>
+              <h3 className="blog-author-name">
+                <span>
+                  {author.title} {author.name.split(' ').slice(0, -1).join(' ')}
+                </span>{' '}
+                <span className="italic">{author.name.split(' ').slice(-1)[0]}</span>
+              </h3>
+              <p className="blog-author-cred">{author.cred}</p>
+              <p className="blog-author-bio">{author.bio}</p>
+              <div style={{ display: 'flex', gap: 16, marginTop: 20, flexWrap: 'wrap' }}>
+                <Btn kind="primary" as="a" href={`/surgeon-${author.slug}`}>
+                  Read full profile
+                </Btn>
+                <Btn kind="ghost" as="a" href="/contact">
+                  Book a consultation
+                </Btn>
+              </div>
+            </div>
+          </div>
+        </Reveal>
+      </section>
+
+      <section className="page-section">
+        <Reveal>
+          <div className="section-head">
+            <Eyebrow>More from the journal</Eyebrow>
+            <div>
+              <h2 className="section-title">
+                Read <span className="italic">on.</span>
+              </h2>
+            </div>
+          </div>
+        </Reveal>
+        <div className="blog-grid">
+          {post.related.map((relSlug, i) => {
+            const r = BLOG_POSTS.find((p) => p.slug === relSlug)
+            if (!r) return null
+            return (
+              <Reveal key={relSlug} delay={i * 80}>
+                <a href={`/blog-${relSlug}`} className="blog-card">
+                  <div className="blog-card-img">
+                    <Img
+                      src={r.img}
+                      fallbackLabel={r.category.toUpperCase()}
+                      fallbackHue={r.hue}
+                      alt=""
+                    />
+                  </div>
+                  <div className="blog-card-meta">
+                    <div className="blog-card-mono">
+                      <Mono>{r.category}</Mono>
+                      <span className="blog-card-dot">·</span>
+                      <Mono>{r.date}</Mono>
+                    </div>
+                    <h3 className="blog-card-title">{r.title}</h3>
+                  </div>
+                </a>
+              </Reveal>
+            )
+          })}
+        </div>
+        <Reveal>
+          <div style={{ marginTop: 60, textAlign: 'center' }}>
+            <Btn kind="ghost" as="a" href="/blog">
+              Back to the journal
+            </Btn>
+          </div>
+        </Reveal>
+      </section>
+    </PageShell>
+  )
+}

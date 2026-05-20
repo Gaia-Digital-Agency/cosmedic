@@ -78,18 +78,24 @@
   - [ ] ProcedureDetail × 41 — deferred to Phase 6 (procedure detail rendered inline as accordion rows on sub-category pages per design; standalone routes need procedure data in Procedures collection)
   - [ ] Side-by-side visual comparison vs design HTML — Phase 11 pixel-fidelity gate
 
-- [ ] **PHASE 5 — Index pages (11 remaining routes)**
-  - [ ] `/gallery` with category filters
-  - [ ] `/stories`
-  - [ ] `/journey` (8-step process)
-  - [ ] `/pricing` (tier packages + per-treatment table)
-  - [ ] `/recovery-stays`
-  - [ ] `/press`
-  - [ ] `/contact` (form stubbed)
-  - [ ] `/video-consult`
-  - [ ] `/blog` index + `/blog/:slug`
-  - [ ] `/privacy`
-  - [ ] `/funnel-assessment`
+- [x] **PHASE 5 — Index pages (14 routes built)**
+  - [x] `/treatments` index — 6 discipline rows with hero + count + body
+  - [x] `/surgeons` index — lead-surgeon feature + Plastic Surgery + Aesthetic Medicine grids
+  - [x] `/results` — hybrid B&A gallery + stories archive
+  - [x] `/gallery` — 4-up B&A grid with featured-cases filter bar
+  - [x] `/stories` — 8 testimonials, story-row layout
+  - [x] `/journey` — 7-step full journey (Enquiry → Homecoming) with paired imagery
+  - [x] `/pricing` — full per-treatment table grouped by discipline + sub-category + insurance/payment columns
+  - [x] `/recovery-stays` — 6 villa cards + 8-item "what's included" grid
+  - [x] `/press` — 8 accreditations + 6 press mentions
+  - [x] `/contact` — enquiry form + practical info + visit map (URL params: `?intent=estimate&procedure=...` prefill)
+  - [x] `/video-consult` — 14-day calendar grid + time-slot picker + topic chips + submit success state
+  - [x] `/blog` index — featured post + 6-card archive + 7-category filter
+  - [x] `/blog-the-quiet-rhinoplasty` (rhinoplasty post body); other slugs 404 until Phase 6 backs them
+  - [x] `/privacy` — 10-section policy with sticky TOC + DPO contact callout
+  - [x] Router extended to `STATIC_ROUTES` map + `/blog-{slug}` matcher; App.tsx dispatcher updated
+  - [x] All 14 new routes verified 200; unknown `/blog-{slug}` returns 404
+  - [ ] `/funnel-assessment` — design has `.html` only (no `.jsx`); will port in Phase 6 alongside the form-builder block
 
 - [ ] **PHASE 6 — Payload schema + content port (PRIMARY CMS PHASE)**
   - [ ] 17 collections implemented per `docs/db_schema.md`
