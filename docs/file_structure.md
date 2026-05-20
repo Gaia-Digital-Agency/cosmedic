@@ -33,17 +33,26 @@
 │   ├── brand-guidelines.pdf         ← BIMC CosMedic Brand Guidelines v1.0 (canonical brand source)
 │   └── pricelist.xlsx               ← clinic's canonical price + procedure catalogue (CMS seed source)
 │
-├── assets/                          ← seed imagery + brand assets (source-of-truth before Payload upload)
-│   ├── logos/
-│   │   ├── cosmedic-mark-on-light.png ← BIMC lockup, ink on light-beige (admin + site)
-│   │   ├── cosmedic-mark-on-dark.png  ← BIMC lockup, inverse (dark footer + admin dark mode)
-│   │   ├── cosmedic-mark-icon.png     ← 32×32 square mark (favicon + collapsed nav)
-│   │   └── cosmedic-favicon.png       ← favicon variant
-│   └── images/
-│       ├── surgeons/                ← 8 surgeon portraits, 500×500, self-hosted
-│       ├── treatments/              ← 6 discipline hero images + sub-category imagery
-│       ├── results/                 ← 29 B&A composite images
-│       └── lifestyle/               ← hero, recovery villa, place imagery (licensed/AI)
+├── design_reference/assets/         ← CURRENT — design source imagery, lives inside design_reference/
+│   ├── logo.png                     ← BIMC lockup (bronze on transparent) — referenced by design as `assets/logo.png`
+│   ├── logo-light.png               ← BIMC lockup (white) — referenced as `assets/logo-light.png`
+│   ├── surgeons/                    ← 8 surgeon portraits (suka.png, astri.png, etc.)
+│   ├── treatments/                  ← 6 discipline hero images
+│   └── results/                     ← 3 B&A composite images (lip-lift × 2, necklift × 1)
+│
+│   NOTE: This folder lives inside design_reference/ because the design's
+│   .html / .jsx files reference paths as `assets/logo.png` (relative). When
+│   served by nginx with root=design_reference/, those paths resolve correctly.
+│   Renames or moves here would break the design preview — Non-negotiable #1.
+│
+├── assets/                          ← (Phase 1+) PRODUCTION asset structure for packages/web/
+│   │                                   Empty until Phase 1 scaffold; populated then.
+│   ├── logos/                       ← clean filenames (cosmedic-mark-on-light.png, etc.)
+│   └── images/                      ← curated production imagery
+│       ├── surgeons/                ← self-hosted from cosmedic.bimcbali.com (Phase 10)
+│       ├── treatments/              ← brand-licensed or AI-generated (Phase 10)
+│       ├── results/                 ← 29 B&A composites for production (Phase 10)
+│       └── lifestyle/               ← hero / recovery villa / place imagery (Phase 10)
 │
 ├── design_reference/                ← original Claude Design source (READ-ONLY reference)
 │   ├── index.html                   ← homepage + the other root .html page shells (Babel-in-browser)
