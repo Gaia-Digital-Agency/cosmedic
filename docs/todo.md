@@ -63,18 +63,6 @@
   - [x] All home section classNames present in SSR markup (`hero-v2`, `trust-strip`, `intro`, `treatments`, `price-teaser`, `surgeons`, `gallery`, `lead-magnet`, `journey`, `stories`, `place`)
   - [ ] Side-by-side visual comparison vs `design/index.html` — pixel-fidelity gate (full Playwright suite in Phase 11)
 
-  - [ ] Hero (left: chapter + form, right: lifestyle image)
-  - [ ] TrustBar credentials
-  - [ ] Stats strip
-  - [ ] Treatments index (6 cards)
-  - [ ] Surgeons strip (8 portraits)
-  - [ ] Gallery teaser (4-6 B&A)
-  - [ ] Journey teaser (8 steps preview)
-  - [ ] Stories teaser
-  - [ ] Place / location section
-  - [ ] CTABand at end
-  - [ ] Side-by-side comparison with `design/index.html` — ≤ 0.1% diff
-
 - [ ] **PHASE 4 — Detail templates (73 routes from 4 templates)**
   - [ ] `<DisciplineDetail>` template → 6 discipline pages
   - [ ] `<SubCategoryDetail>` template → 18 sub-category pages
