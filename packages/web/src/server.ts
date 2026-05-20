@@ -2,6 +2,7 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import express from 'express'
+import { loadCmsCache } from './lib/cms'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -35,10 +36,23 @@ async function createServer() {
     )
   }
 
+  // CMS revalidate hook target. Payload afterChange will POST here (wired in Phase 7).
+  app.post('/api/revalidate', express.json(), async (_req, res) => {
+    try {
+      await loadCmsCache(true)
+      res.json({ ok: true })
+    } catch (err) {
+      res.status(500).json({ ok: false, error: String(err) })
+    }
+  })
+
   app.use('*', async (req, res, next) => {
     try {
+      // Refresh CMS cache (TTL'd in lib/cms; effectively no-op when warm).
+      const cms = await loadCmsCache()
+
       let template: string
-      let render: (url: string) => { html: string; status: number }
+      let render: (url: string, cms?: unknown) => { html: string; status: number }
 
       if (!isProduction && vite) {
         template = await fs.readFile(path.resolve(root, 'index.html'), 'utf-8')
@@ -51,7 +65,7 @@ async function createServer() {
       }
 
       const pathname = (req.originalUrl || '/').split('?')[0]
-      const { html: appHtml, status } = render(pathname)
+      const { html: appHtml, status } = render(pathname, cms)
       const html = template.replace('<!--ssr-outlet-->', appHtml)
       res
         .status(status)

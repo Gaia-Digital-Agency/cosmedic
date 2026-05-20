@@ -15,6 +15,7 @@
     "migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
     "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
+    "seed": "cross-env NODE_OPTIONS=--no-deprecation tsx src/seed/run.ts",
     "start": "pnpm migrate && cross-env NODE_OPTIONS=--no-deprecation next start -p 4007"
   },
   "dependencies": {
@@ -29,16 +30,19 @@
     "payload": "3.84.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "sharp": "0.34.2"
+    "sharp": "0.34.2",
+    "slugify": "^1.6.9",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
     "@types/node": "^22.10.5",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "@eslint/eslintrc": "^3.2.0",
     "eslint": "^9.16.0",
     "eslint-config-next": "15.4.11",
     "prettier": "^3.4.2",
+    "tsx": "^4.22.3",
     "typescript": "^5.7.3"
   },
   "engines": {

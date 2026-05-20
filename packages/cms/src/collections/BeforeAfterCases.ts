@@ -1,0 +1,36 @@
+import type { CollectionConfig } from 'payload'
+import { isAuthenticated, readPublic } from '../lib/access'
+import { seoGroup, sortOrderField } from '../lib/seo'
+
+export const BeforeAfterCases: CollectionConfig = {
+  slug: 'before-after-cases',
+  admin: {
+    useAsTitle: 'caseLabel',
+    defaultColumns: ['caseLabel', 'procedure', 'isFeatured', 'sortOrder'],
+    group: 'Editorial',
+    description: 'Before/after composites. Powers /gallery + home teaser. Anonymous-friendly labels only.',
+  },
+  access: {
+    read: readPublic,
+    create: isAuthenticated,
+    update: isAuthenticated,
+    delete: isAuthenticated,
+  },
+  fields: [
+    { name: 'slug', type: 'text', required: true, unique: true, index: true },
+    { name: 'caseLabel', type: 'text', required: true, admin: { description: 'Anonymous label, e.g. "Case 014 — Rhinoplasty"' } },
+    { name: 'procedure', type: 'relationship', relationTo: 'procedures' },
+    { name: 'composite', type: 'upload', relationTo: 'media',
+      admin: { description: 'Single image: left half = before, right half = after' } },
+    { name: 'beforeAlt', type: 'text', admin: { description: 'Required for a11y' } },
+    { name: 'afterAlt', type: 'text', admin: { description: 'Required for a11y' } },
+    { name: 'surgeon', type: 'relationship', relationTo: 'surgeons' },
+    { name: 'tags', type: 'array', fields: [{ name: 'value', type: 'text', required: true }] },
+    { name: 'description', type: 'richText' },
+    { name: 'year', type: 'number' },
+    { name: 'isFeatured', type: 'checkbox', defaultValue: false,
+      admin: { description: 'Show on homepage gallery teaser' } },
+    seoGroup,
+    sortOrderField,
+  ],
+}

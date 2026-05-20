@@ -20,55 +20,60 @@ import { BlogPost } from '@/routes/blog/BlogPost'
 import { PrivacyPage } from '@/routes/privacy/PrivacyPage'
 import { NotFound } from '@/routes/NotFound'
 import { resolveRoute, type Route } from './router'
+import { CmsProvider } from './lib/cms-context'
+import type { CmsCache } from './lib/cms'
 
-type Props = { route?: Route }
+type Props = { route?: Route; cms?: CmsCache | null }
 
-export const App: React.FC<Props> = ({ route: initialRoute }) => {
+export const App: React.FC<Props> = ({ route: initialRoute, cms }) => {
   const [route] = useState<Route>(() => {
     if (initialRoute) return initialRoute
     if (typeof window !== 'undefined') return resolveRoute(window.location.pathname)
     return { kind: 'home' }
   })
 
-  switch (route.kind) {
-    case 'home':
-      return <HomePage />
-    case 'discipline':
-      return <DisciplineDetail slug={route.slug} />
-    case 'subcategory':
-      return <SubCategoryDetail slug={route.slug} />
-    case 'surgeon':
-      return <SurgeonDetail slug={route.slug} />
-    case 'treatments-index':
-      return <TreatmentsIndex />
-    case 'surgeons-index':
-      return <SurgeonsIndex />
-    case 'results':
-      return <ResultsPage />
-    case 'gallery':
-      return <GalleryPage />
-    case 'stories':
-      return <StoriesPage />
-    case 'journey':
-      return <JourneyPage />
-    case 'pricing':
-      return <PricingPage />
-    case 'recovery-stays':
-      return <RecoveryStaysPage />
-    case 'press':
-      return <PressPage />
-    case 'contact':
-      return <ContactPage />
-    case 'video-consult':
-      return <VideoConsultPage />
-    case 'blog-index':
-      return <BlogIndex />
-    case 'blog-post':
-      return <BlogPost slug={route.slug} />
-    case 'privacy':
-      return <PrivacyPage />
-    case 'notfound':
-    default:
-      return <NotFound />
-  }
+  const content = ((): React.ReactElement => {
+    switch (route.kind) {
+      case 'home':
+        return <HomePage />
+      case 'discipline':
+        return <DisciplineDetail slug={route.slug} />
+      case 'subcategory':
+        return <SubCategoryDetail slug={route.slug} />
+      case 'surgeon':
+        return <SurgeonDetail slug={route.slug} />
+      case 'treatments-index':
+        return <TreatmentsIndex />
+      case 'surgeons-index':
+        return <SurgeonsIndex />
+      case 'results':
+        return <ResultsPage />
+      case 'gallery':
+        return <GalleryPage />
+      case 'stories':
+        return <StoriesPage />
+      case 'journey':
+        return <JourneyPage />
+      case 'pricing':
+        return <PricingPage />
+      case 'recovery-stays':
+        return <RecoveryStaysPage />
+      case 'press':
+        return <PressPage />
+      case 'contact':
+        return <ContactPage />
+      case 'video-consult':
+        return <VideoConsultPage />
+      case 'blog-index':
+        return <BlogIndex />
+      case 'blog-post':
+        return <BlogPost slug={route.slug} />
+      case 'privacy':
+        return <PrivacyPage />
+      case 'notfound':
+      default:
+        return <NotFound />
+    }
+  })()
+  return <CmsProvider value={cms}>{content}</CmsProvider>
 }

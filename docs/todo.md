@@ -97,16 +97,25 @@
   - [x] All 14 new routes verified 200; unknown `/blog-{slug}` returns 404
   - [ ] `/funnel-assessment` — design has `.html` only (no `.jsx`); will port in Phase 6 alongside the form-builder block
 
-- [ ] **PHASE 6 — Payload schema + content port (PRIMARY CMS PHASE)**
-  - [ ] 17 collections implemented per `docs/db_schema.md`
-  - [ ] 10 globals implemented
-  - [ ] 15 reusable blocks for `Pages.sections`
-  - [ ] Access control + `localized: true` flags + `seo` groups
-  - [ ] `pnpm generate:types` → typed Payload client in web
-  - [ ] Seed scripts: surgeons, disciplines, subcategories, procedures, **pages**, beforeAfter, stories, pressMentions, awards, pricingTiers, recoveryStays, journeySteps, priceList (xlsx parser), injectableProducts, machineTreatments, hairRemoval, brand-stats, endorsement-mark, settings, consultation-policy, form-defaults, email-templates, seo-defaults, admin (super-admin)
-  - [ ] `afterChange` hooks: revalidate web, sitemap regen, media-alt enforcement
-  - [ ] Web refactored to fetch from Payload (delete `seed.ts`)
-  - [ ] Edit-and-see-live verified
+- [~] **PHASE 6 — Payload schema + content port (PRIMARY CMS PHASE)** — *6a complete, 6b/6c next*
+  - [x] **23 collections** implemented per `docs/db_schema.md` (17 catalogue + 4 editorial-override + Enquiries + Users + Media)
+  - [x] **10 globals** implemented (Settings, Header, Footer, FloatingChrome, BrandStats, EndorsementMark, ConsultationPolicy, FormDefaults, EmailTemplates, SeoDefaults)
+  - [x] 16 reusable blocks for `Pages.sections` (richText, imageGrid, ctaBand, stats, faqAccordion, procedureList, surgeonList, baGrid, testimonialList, recoveryStayList, pressMentionList, contactForm, journeyStepList, externalEmbed, notes)
+  - [x] Access control + `seo` groups + `publishStatus` on draftable collections
+  - [x] `pnpm generate:types` → typed Payload client in web (`src/payload-types.ts`)
+  - [x] Seed scripts: surgeons, disciplines, subcategories, procedures, **pages**, beforeAfter, stories, pressMentions, awards, pricingTiers, recoveryStays, journeySteps, priceList (xlsx parser: 7 sheets → PriceListItems + InjectableProducts + MachineTreatments + HairRemovalAreas + Inclusions + Exclusions + JourneySteps), brand-stats, endorsement-mark, settings, consultation-policy, form-defaults, email-templates, seo-defaults, admin (super-admin), blogPosts (metas), header, footer
+  - [x] **Phase 6 catalogue migration** generated + applied (`20260520_123550_phase_6_catalogue` + `20260520_125136_rename_section_anchor`)
+  - [x] Seed run — counts: **149 PriceListItems, 93 Procedures, 8 Surgeons, 6 Disciplines, 17 SubCategories, 24 MachineTreatments, 43 HairRemovalAreas, 34 InjectableProducts, 6 JourneySteps, 5 Inclusions, 7 Exclusions, 5 Awards, 3 PressMentions, 6 RecoveryStays, 3 PricingTiers, 7 BlogPosts, 8 Pages, 10 globals**
+  - [x] Web SSR cache (`packages/web/src/lib/cms.ts`) fetches all collections + globals from Payload REST, hydrates client via embedded JSON
+  - [x] `/pricing` rewired — new `ClinicCatalogueTable` renders full CMS catalogue (surgical + machine + injection + BTL + consultation-policy callout) inline beneath the editorial pricing block
+  - [x] All 51 existing routes still 200 (no regressions)
+  - [ ] **6b** — Rewire home, treatments index, surgeons index, discipline detail, sub-category detail, surgeon detail to read from CMS cache
+  - [ ] **6b** — Wire `Header` + `Footer` + `FloatingChrome` globals into shell components
+  - [ ] **6c** — Rewire journey, contact, recovery-stays, press, stories, gallery, blog to read from CMS Pages + collections
+  - [ ] **6c** — Delete `packages/web/src/content/{seed,treatment-content,subcategory-data,blog-data}.ts`
+  - [ ] **6c** — `afterChange` hooks: revalidate web (`POST /api/revalidate`), sitemap regen, media-alt enforcement
+  - [ ] **6c** — Sufficiency Gate audit per `docs/cms_schema.md` §5 — every UI surface traces to a Payload entity
+  - [ ] **6c** — Edit-and-see-live verified (edit a surgeon bio in /admin → /surgeon-suka updates within 5s)
 
 - [ ] **PHASE 7 — Enquiry form backend**
   - [ ] `Enquiries` collection (honeypot, status enum, timeline notes)

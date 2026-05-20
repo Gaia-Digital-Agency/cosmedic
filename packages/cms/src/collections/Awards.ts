@@ -1,0 +1,28 @@
+import type { CollectionConfig } from 'payload'
+import { isAuthenticated, readPublic } from '../lib/access'
+import { sortOrderField } from '../lib/seo'
+
+export const Awards: CollectionConfig = {
+  slug: 'awards',
+  admin: {
+    useAsTitle: 'name',
+    defaultColumns: ['name', 'year', 'issuer'],
+    group: 'Editorial',
+    description: 'Accreditations + awards (ACHSI, ISAPS, IPRAS, "#1 Hospital 2026", …).',
+  },
+  access: {
+    read: readPublic,
+    create: isAuthenticated,
+    update: isAuthenticated,
+    delete: isAuthenticated,
+  },
+  fields: [
+    { name: 'slug', type: 'text', required: true, unique: true, index: true },
+    { name: 'name', type: 'text', required: true },
+    { name: 'year', type: 'number' },
+    { name: 'issuer', type: 'text' },
+    { name: 'logo', type: 'upload', relationTo: 'media' },
+    { name: 'summary', type: 'textarea' },
+    sortOrderField,
+  ],
+}

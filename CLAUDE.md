@@ -65,9 +65,13 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
 - Pixel-Fidelity Gate + Lighthouse Green Gate are launch-blocking. Don't bypass them.
 - This server is the dev environment (user chose server-first). Edits happen here; commits + pushes happen here.
 
-## Current state (Phase 5 complete)
+## Current state (Phase 6a complete)
 
 - `packages/cms` — Payload 3.84.1 on Next.js 15.4.11 + Postgres adapter, port **4007**. Admin white-labelled as **Cosmedic CMS** (Cormorant Garamond + JetBrains Mono, brand-beige palette from `docs/brand-guidelines.pdf`). Light/dark toggle.
+  - **23 collections** in `src/collections/`: Users · Media · Surgeons · Disciplines · SubCategories · Procedures · PriceListItems · InjectableProducts · MachineTreatments · HairRemovalAreas · BeforeAfterCases · Stories · PressMentions · Awards · RecoveryStays · PricingTiers · BlogPosts · BlogTags · Authors · JourneySteps · InclusionItems · ExclusionItems · Pages · Enquiries.
+  - **10 globals** in `src/globals/`: Settings · Header · Footer · FloatingChrome · BrandStats · EndorsementMark · ConsultationPolicy · FormDefaults · EmailTemplates · SeoDefaults.
+  - Phase-6 seed (`src/seed/runtime.ts` + `src/seed/parse-pricelist.ts`) parses all 7 sheets of `docs/pricelist.xlsx` and idempotently upserts into Payload via Local API. Run with `pnpm --filter @cosmedic/cms seed`. Seed source files are imported from `packages/web/src/content/*` via relative path (will be deleted after Phase 6c rewires every web page).
+  - Counts seeded: **149 PriceListItems**, 93 Procedures, 8 Surgeons, 6 Disciplines, 17 SubCategories, 24 MachineTreatments, 43 HairRemovalAreas, 34 InjectableProducts, 6 JourneySteps, 5 Inclusions, 7 Exclusions, 5 Awards, 3 PressMentions, 6 RecoveryStays, 3 PricingTiers, 7 BlogPosts, 8 Pages, 10 globals.
 - `packages/web` — Vite 6 SSR + React 19 + Express, port **3007**. Renders the full homepage matching the Claude Design source.
   - `design/global.css` (3,687 lines) ported **verbatim** to `packages/web/src/styles/globals.css`.
   - Google Fonts (Cormorant Garamond + Inter + JetBrains Mono) preconnected + loaded in `index.html`.
@@ -81,11 +85,13 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
   - Seed data in `src/content/seed.ts` — `TREATMENT_LIST`, `SUBCATEGORIES_BY_DISCIPLINE`, `SURGEON_LIST`, `BA_PAIRS`, `STORY_PORTRAITS`, `IMG`, `TREATMENT_IMG()`, `SURGEON_IMG()`, `WHATSAPP_HREF`.
   - Editorial content for detail pages: `src/content/treatment-content.ts` (per-discipline) + `src/content/subcategory-data.ts` (per-sub-category, 22 entries, with `treatments[]` accordion data). Phase 6 replaces all four `src/content/*` files with Payload-backed fetch.
   - Brand + treatment + surgeon + B&A imagery at `packages/web/public/assets/{logo*.png,treatments/,surgeons/,results/}`.
-- Postgres `cosmedic` role + db provisioned on `127.0.0.1:5432`. Initial Payload migration applied. Super-admin seeded.
+  - **Phase 6a**: `src/lib/cms.ts` is the typed SSR-side data loader — fetches all CMS collections + globals from `http://127.0.0.1:4007/api/...` on first request, caches in-memory with 60s TTL, hydrates the client via `<script>window.__COSMEDIC_CMS__=...</script>` so SSR + hydration match. `server.ts` awaits `loadCmsCache()` before each render and threads the cache to `render(url, cms)`. Cache is bust-able via `POST /api/revalidate` (Payload `afterChange` hook will call this in Phase 7).
+  - `/pricing` route now renders a new `ClinicCatalogueTable` block under the editorial pricing — full CMS-driven view of every line item from `docs/pricelist.xlsx` (surgical, machine, injection, BTL), grouped by sheet → category, with consultation-policy callout from `consultation-policy` global.
+- Postgres `cosmedic` role + db provisioned on `127.0.0.1:5432`. Phase 6 catalogue migration applied. Super-admin seeded. Content seed run.
 - pm2 manages both processes (`cosmedic-cms`, `cosmedic-web`); `pm2 save` persisted.
 - DNS `cosmedic.gaiada.online` still NXDOMAIN — Phase 8 (nginx + SSL + DNS) handles cutover.
 
-Next session: **Phase 3** (homepage) per `docs/plan.md`.
+Next session: **Phase 6b** — extend CMS coverage to the rest of the web (home / treatments index / surgeons index / discipline & sub-category detail / surgeon detail / journey / contact / recovery-stays / press / etc.). Delete `packages/web/src/content/*.ts` once every page reads from the CMS cache. Run the **Sufficiency Gate** audit per `docs/cms_schema.md`.
 
 ## Common ops
 

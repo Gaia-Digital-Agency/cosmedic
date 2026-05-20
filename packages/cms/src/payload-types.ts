@@ -69,6 +69,28 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    surgeons: Surgeon;
+    disciplines: Discipline;
+    'sub-categories': SubCategory;
+    procedures: Procedure;
+    'price-list-items': PriceListItem;
+    'injectable-products': InjectableProduct;
+    'machine-treatments': MachineTreatment;
+    'hair-removal-areas': HairRemovalArea;
+    'before-after-cases': BeforeAfterCase;
+    stories: Story;
+    'press-mentions': PressMention;
+    awards: Award;
+    'recovery-stays': RecoveryStay;
+    'pricing-tiers': PricingTier;
+    'blog-posts': BlogPost;
+    'blog-tags': BlogTag;
+    authors: Author;
+    'journey-steps': JourneyStep;
+    'inclusion-items': InclusionItem;
+    'exclusion-items': ExclusionItem;
+    pages: Page;
+    enquiries: Enquiry;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,6 +100,28 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    surgeons: SurgeonsSelect<false> | SurgeonsSelect<true>;
+    disciplines: DisciplinesSelect<false> | DisciplinesSelect<true>;
+    'sub-categories': SubCategoriesSelect<false> | SubCategoriesSelect<true>;
+    procedures: ProceduresSelect<false> | ProceduresSelect<true>;
+    'price-list-items': PriceListItemsSelect<false> | PriceListItemsSelect<true>;
+    'injectable-products': InjectableProductsSelect<false> | InjectableProductsSelect<true>;
+    'machine-treatments': MachineTreatmentsSelect<false> | MachineTreatmentsSelect<true>;
+    'hair-removal-areas': HairRemovalAreasSelect<false> | HairRemovalAreasSelect<true>;
+    'before-after-cases': BeforeAfterCasesSelect<false> | BeforeAfterCasesSelect<true>;
+    stories: StoriesSelect<false> | StoriesSelect<true>;
+    'press-mentions': PressMentionsSelect<false> | PressMentionsSelect<true>;
+    awards: AwardsSelect<false> | AwardsSelect<true>;
+    'recovery-stays': RecoveryStaysSelect<false> | RecoveryStaysSelect<true>;
+    'pricing-tiers': PricingTiersSelect<false> | PricingTiersSelect<true>;
+    'blog-posts': BlogPostsSelect<false> | BlogPostsSelect<true>;
+    'blog-tags': BlogTagsSelect<false> | BlogTagsSelect<true>;
+    authors: AuthorsSelect<false> | AuthorsSelect<true>;
+    'journey-steps': JourneyStepsSelect<false> | JourneyStepsSelect<true>;
+    'inclusion-items': InclusionItemsSelect<false> | InclusionItemsSelect<true>;
+    'exclusion-items': ExclusionItemsSelect<false> | ExclusionItemsSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
+    enquiries: EnquiriesSelect<false> | EnquiriesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -87,8 +131,30 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    settings: Setting;
+    header: Header;
+    footer: Footer;
+    'floating-chrome': FloatingChrome;
+    'brand-stats': BrandStat;
+    'endorsement-mark': EndorsementMark;
+    'consultation-policy': ConsultationPolicy;
+    'form-defaults': FormDefault;
+    'email-templates': EmailTemplate;
+    'seo-defaults': SeoDefault;
+  };
+  globalsSelect: {
+    settings: SettingsSelect<false> | SettingsSelect<true>;
+    header: HeaderSelect<false> | HeaderSelect<true>;
+    footer: FooterSelect<false> | FooterSelect<true>;
+    'floating-chrome': FloatingChromeSelect<false> | FloatingChromeSelect<true>;
+    'brand-stats': BrandStatsSelect<false> | BrandStatsSelect<true>;
+    'endorsement-mark': EndorsementMarkSelect<false> | EndorsementMarkSelect<true>;
+    'consultation-policy': ConsultationPolicySelect<false> | ConsultationPolicySelect<true>;
+    'form-defaults': FormDefaultsSelect<false> | FormDefaultsSelect<true>;
+    'email-templates': EmailTemplatesSelect<false> | EmailTemplatesSelect<true>;
+    'seo-defaults': SeoDefaultsSelect<false> | SeoDefaultsSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -162,6 +228,1379 @@ export interface Media {
   focalY?: number | null;
 }
 /**
+ * 8 surgeons. Each renders at /surgeon-{slug}. Group drives the Surgeons mega-menu.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "surgeons".
+ */
+export interface Surgeon {
+  id: number;
+  /**
+   * URL slug, e.g. "suka" → /surgeon-suka
+   */
+  slug: string;
+  /**
+   * Full formal name, e.g. "dr. I Made Suka Adnyana, SpBP-RE (K)"
+   */
+  name: string;
+  /**
+   * Short/familiar name, e.g. "Suka"
+   */
+  commonName?: string | null;
+  title?: string | null;
+  /**
+   * e.g. "SpBP-RE (K)"
+   */
+  suffix?: string | null;
+  /**
+   * Specialty headline (1 line)
+   */
+  spec?: string | null;
+  /**
+   * Training narrative, e.g. "Indonesia · Japan"
+   */
+  train?: string | null;
+  /**
+   * Memberships, e.g. "ISAPS Member"
+   */
+  proc?: string | null;
+  /**
+   * Compact credentials line for cards
+   */
+  credLine?: string | null;
+  yearsInPractice?: number | null;
+  /**
+   * Brand colour token index 0-5
+   */
+  hue?: number | null;
+  group: 'plastic-surgery' | 'aesthetic-medicine';
+  /**
+   * Featured lead surgeon flag (homepage + indices)
+   */
+  lead?: boolean | null;
+  /**
+   * Long-form biography on /surgeon-{slug}
+   */
+  bio?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Chip-style specialty tags
+   */
+  specAreas?:
+    | {
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Portrait — alt text required on the media record
+   */
+  portrait?: (number | null) | Media;
+  /**
+   * CSS object-position value
+   */
+  portraitPosition?: string | null;
+  /**
+   * Per-day availability windows (from clinic pricelist Further Info)
+   */
+  availabilitySchedule?:
+    | {
+        day: 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';
+        /**
+         * e.g. "09:00"
+         */
+        windowStart?: string | null;
+        /**
+         * e.g. "17:00"
+         */
+        windowEnd?: string | null;
+        byAppointment?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  languages?:
+    | {
+        code?: ('en' | 'id' | 'ja' | 'fr' | 'de') | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Procedures this surgeon performs (drives surgeon→procedure cross-links)
+   */
+  credentialedProcedures?: (number | Procedure)[] | null;
+  /**
+   * Per-record SEO override (falls back to SeoDefaults global).
+   */
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+    ogImage?: (number | null) | Media;
+    canonical?: string | null;
+    noindex?: boolean | null;
+  };
+  /**
+   * Lower = earlier in listings.
+   */
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * The 41+ editorial procedures. Each is a deep-content record (descriptions, sections, FAQs, pricing). The procedure accordion on sub-category pages reads from here.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "procedures".
+ */
+export interface Procedure {
+  id: number;
+  /**
+   * e.g. "breast-augmentation"
+   */
+  slug: string;
+  name: string;
+  /**
+   * For cards / nav (optional)
+   */
+  shortName?: string | null;
+  parentDiscipline: number | Discipline;
+  parentSubCategory?: (number | null) | SubCategory;
+  /**
+   * Top-of-page description
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  sections?:
+    | {
+        anchorId: string;
+        t: string;
+        body: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  faqs?:
+    | {
+        q: string;
+        a: string;
+        id?: string | null;
+      }[]
+    | null;
+  surgeonsCredentialed?: (number | Surgeon)[] | null;
+  heroImage?: (number | null) | Media;
+  /**
+   * All prices from docs/pricelist.xlsx Surgical sheet. Editable per record.
+   */
+  pricing?: {
+    priceIdr2025?: number | null;
+    priceAud2025?: number | null;
+    priceIdr2026?: number | null;
+    priceAud2026?: number | null;
+    /**
+     * For range values
+     */
+    priceIdrRangeLow?: number | null;
+    priceIdrRangeHigh?: number | null;
+    /**
+     * e.g. "Local Anesthesia", "General Anesthesia"
+     */
+    priceNotes?: string | null;
+    /**
+     * Which year to display by default on procedure cards
+     */
+    displayYear?: ('2025' | '2026') | null;
+  };
+  /**
+   * Top-3 indicator from pricelist column 1 (1, 2, or 3 — blank for non-featured)
+   */
+  featuredRank?: number | null;
+  /**
+   * Flagged from "*" marker in pricelist
+   */
+  includesImplant?: boolean | null;
+  /**
+   * Sub-category accordion detail fields
+   */
+  detail?: {
+    /**
+     * e.g. "3.5 hours"
+     */
+    duration?: string | null;
+    /**
+     * e.g. "10–14 days for stitches; 6 weeks for swelling"
+     */
+    recovery?: string | null;
+    included?:
+      | {
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Universal what-surgery-includes (from xlsx Further Info Include list)
+   */
+  included?: (number | InclusionItem)[] | null;
+  /**
+   * Universal what-is-excluded
+   */
+  excluded?: (number | ExclusionItem)[] | null;
+  recoveryTimeline?: (number | JourneyStep)[] | null;
+  relatedBA?: (number | BeforeAfterCase)[] | null;
+  relatedProcedures?: (number | Procedure)[] | null;
+  /**
+   * Per-record SEO override (falls back to SeoDefaults global).
+   */
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+    ogImage?: (number | null) | Media;
+    canonical?: string | null;
+    noindex?: boolean | null;
+  };
+  /**
+   * Lower = earlier in listings.
+   */
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * 6 disciplines. Each renders at /treatment-{slug}. Drives Treatments mega-menu top level.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "disciplines".
+ */
+export interface Discipline {
+  id: number;
+  /**
+   * e.g. "surgical" → /treatment-surgical
+   */
+  slug: string;
+  /**
+   * "Surgical"
+   */
+  title: string;
+  /**
+   * "Rhinoplasty · Breast · Body"
+   */
+  subtitle?: string | null;
+  /**
+   * e.g. "9 procedures" (free text, not auto)
+   */
+  displayCount?: string | null;
+  hue?: number | null;
+  /**
+   * Card paragraph used on treatments index + home
+   */
+  body?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Two-part title with italic accent on the second part
+   */
+  chapterTitle?: {
+    /**
+     * First half (roman)
+     */
+    a?: string | null;
+    /**
+     * Second half (italic accent)
+     */
+    b?: string | null;
+  };
+  /**
+   * Editorial strap above title
+   */
+  tagline?: string | null;
+  /**
+   * Hero lede paragraph
+   */
+  lede?: string | null;
+  /**
+   * Long-form overview block
+   */
+  overview?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  heroImage?: (number | null) | Media;
+  leadSurgeons?: (number | Surgeon)[] | null;
+  faqs?:
+    | {
+        q: string;
+        a: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Per-record SEO override (falls back to SeoDefaults global).
+   */
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+    ogImage?: (number | null) | Media;
+    canonical?: string | null;
+    noindex?: boolean | null;
+  };
+  /**
+   * Lower = earlier in listings.
+   */
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * 22 sub-categories. Each renders at /treatment-{slug}. Drives Treatments mega-menu second level.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sub-categories".
+ */
+export interface SubCategory {
+  id: number;
+  /**
+   * e.g. "surgical-breast" → /treatment-surgical-breast
+   */
+  slug: string;
+  /**
+   * Parent discipline
+   */
+  parent: number | Discipline;
+  title: string;
+  chapterTitle?: {
+    a?: string | null;
+    b?: string | null;
+  };
+  tagline?: string | null;
+  lede?: string | null;
+  intro?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  overview?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  leadSurgeon?: (number | null) | Surgeon;
+  /**
+   * Page body sections (rendered as the sticky-TOC list)
+   */
+  sections?:
+    | {
+        /**
+         * Anchor id, e.g. "overview"
+         */
+        anchorId: string;
+        /**
+         * Section title
+         */
+        t: string;
+        body: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  faqs?:
+    | {
+        q: string;
+        a: string;
+        id?: string | null;
+      }[]
+    | null;
+  heroImage?: (number | null) | Media;
+  /**
+   * Per-record SEO override (falls back to SeoDefaults global).
+   */
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+    ogImage?: (number | null) | Media;
+    canonical?: string | null;
+    noindex?: boolean | null;
+  };
+  /**
+   * Lower = earlier in listings.
+   */
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Universal "what surgery includes" items. Linked from Procedures.included. Seeded from pricelist Further Info.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "inclusion-items".
+ */
+export interface InclusionItem {
+  id: number;
+  text: string;
+  scope?: ('surgical-procedure' | 'consultation' | 'general') | null;
+  /**
+   * Lower = earlier in listings.
+   */
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Universal "what is excluded" items. Linked from Procedures.excluded. Seeded from pricelist Further Info.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "exclusion-items".
+ */
+export interface ExclusionItem {
+  id: number;
+  text: string;
+  scope?: ('surgical-procedure' | 'consultation' | 'general') | null;
+  /**
+   * Lower = earlier in listings.
+   */
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Patient journey steps. Reused on /journey and as recovery timeline on procedure pages. Seeded from pricelist Day 1/2/4/7/10/14 + design 8-step.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "journey-steps".
+ */
+export interface JourneyStep {
+  id: number;
+  slug: string;
+  order: number;
+  /**
+   * e.g. "Day 1", "Week 1", "Before you fly"
+   */
+  dayLabel?: string | null;
+  title: string;
+  body?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  icon?: (number | null) | Media;
+  category?: ('consult' | 'medical' | 'surgical' | 'recovery' | 'follow-up') | null;
+  /**
+   * Lower = earlier in listings.
+   */
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Before/after composites. Powers /gallery + home teaser. Anonymous-friendly labels only.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "before-after-cases".
+ */
+export interface BeforeAfterCase {
+  id: number;
+  slug: string;
+  /**
+   * Anonymous label, e.g. "Case 014 — Rhinoplasty"
+   */
+  caseLabel: string;
+  procedure?: (number | null) | Procedure;
+  /**
+   * Single image: left half = before, right half = after
+   */
+  composite?: (number | null) | Media;
+  /**
+   * Required for a11y
+   */
+  beforeAlt?: string | null;
+  /**
+   * Required for a11y
+   */
+  afterAlt?: string | null;
+  surgeon?: (number | null) | Surgeon;
+  tags?:
+    | {
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  year?: number | null;
+  /**
+   * Show on homepage gallery teaser
+   */
+  isFeatured?: boolean | null;
+  /**
+   * Per-record SEO override (falls back to SeoDefaults global).
+   */
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+    ogImage?: (number | null) | Media;
+    canonical?: string | null;
+    noindex?: boolean | null;
+  };
+  /**
+   * Lower = earlier in listings.
+   */
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * The full clinic price list (~200 rows) parsed from docs/pricelist.xlsx. Powers /pricing page transparency. Each row is editable in the CMS.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "price-list-items".
+ */
+export interface PriceListItem {
+  id: number;
+  /**
+   * Auto-generated from sheet + name during seed
+   */
+  slug: string;
+  sheet: 'surgical' | 'non-surgical' | 'machine' | 'injection' | 'btl';
+  /**
+   * e.g. "Face & Neck"
+   */
+  category?: string | null;
+  /**
+   * e.g. "Breast"
+   */
+  subCategory?: string | null;
+  name: string;
+  /**
+   * e.g. "1 ml", "per thread", "Face"
+   */
+  unit?: string | null;
+  audienceTier?: ('standard' | 'tourist' | 'kitas_ktp' | 'package') | null;
+  /**
+   * Parenthetical notes from the row
+   */
+  notes?: string | null;
+  priceIdr2025?: number | null;
+  priceAud2025?: number | null;
+  priceIdr2026?: number | null;
+  priceAud2026?: number | null;
+  priceIdrRangeLow?: number | null;
+  priceIdrRangeHigh?: number | null;
+  /**
+   * 1/2/3 from "Top 3" marker in xlsx column 1
+   */
+  featuredRank?: number | null;
+  includesImplant?: boolean | null;
+  /**
+   * If this row maps to a curated editorial procedure
+   */
+  linkedProcedure?: (number | null) | Procedure;
+  linkedInjectableProduct?: (number | null) | InjectableProduct;
+  linkedMachineTreatment?: (number | null) | MachineTreatment;
+  /**
+   * Lower = earlier in listings.
+   */
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Named injectable products (Restylane, Juvederm, Teosyal, …) parsed from pricelist Injection sheet.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "injectable-products".
+ */
+export interface InjectableProduct {
+  id: number;
+  slug: string;
+  name: string;
+  /**
+   * e.g. "Juvederm"
+   */
+  brand?: string | null;
+  /**
+   * e.g. "Volux"
+   */
+  productLine?: string | null;
+  category:
+    | 'filler'
+    | 'botulinum-toxin'
+    | 'skin-booster'
+    | 'collagen-stimulator'
+    | 'bio-remodeling'
+    | 'hgh'
+    | 'thread-lift'
+    | 'mesotherapy';
+  /**
+   * e.g. "1 ml", "per unit", "per thread"
+   */
+  unit?: string | null;
+  priceIdr?: number | null;
+  priceAud?: number | null;
+  notes?: string | null;
+  manufacturer?: string | null;
+  fdaApproved?: boolean | null;
+  /**
+   * Lower = earlier in listings.
+   */
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Laser / RF / non-injection machine treatments from pricelist Machine sheet. Three-tier pricing (Tourist / Kitas+KTP / Package).
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "machine-treatments".
+ */
+export interface MachineTreatment {
+  id: number;
+  /**
+   * e.g. "laser-erbium-resurfacing-face"
+   */
+  slug: string;
+  /**
+   * e.g. "Laser Erbium Resurfacing"
+   */
+  machineName: string;
+  /**
+   * e.g. "Face", "Neck", "Half Arm"
+   */
+  area: string;
+  pricing?: {
+    /**
+     * BIMC Tourist (standard) IDR
+     */
+    standardIdr?: number | null;
+    /**
+     * Kitas + KTP holder IDR
+     */
+    kitasKtpIdr?: number | null;
+    /**
+     * Package price IDR (optional)
+     */
+    packageIdr?: number | null;
+  };
+  notes?: string | null;
+  linkedProcedure?: (number | null) | Procedure;
+  /**
+   * Lower = earlier in listings.
+   */
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * BTL hair removal areas + non-hair BTL services from pricelist BTL sheet.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hair-removal-areas".
+ */
+export interface HairRemovalArea {
+  id: number;
+  slug: string;
+  area: string;
+  bodyZone: 'face' | 'upper-body' | 'lower-body' | 'package' | 'other';
+  priceIdr?: number | null;
+  notes?: string | null;
+  /**
+   * Lower = earlier in listings.
+   */
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Patient testimonials. Anonymous labels (e.g. "Sarah, 42, Sydney").
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "stories".
+ */
+export interface Story {
+  id: number;
+  slug: string;
+  patientLabel: string;
+  /**
+   * ISO country code or city, e.g. "AU/Sydney"
+   */
+  country?: string | null;
+  procedure?: (number | null) | Procedure;
+  portrait?: (number | null) | Media;
+  /**
+   * Pullquote (~1 sentence)
+   */
+  quote?: string | null;
+  /**
+   * Full testimonial
+   */
+  body?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Optional video testimonial URL
+   */
+  videoUrl?: string | null;
+  year?: number | null;
+  surgeon?: (number | null) | Surgeon;
+  isFeatured?: boolean | null;
+  publishStatus: 'draft' | 'published' | 'scheduled';
+  /**
+   * Per-record SEO override (falls back to SeoDefaults global).
+   */
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+    ogImage?: (number | null) | Media;
+    canonical?: string | null;
+    noindex?: boolean | null;
+  };
+  /**
+   * Lower = earlier in listings.
+   */
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Press / editorial mentions for /press page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "press-mentions".
+ */
+export interface PressMention {
+  id: number;
+  slug: string;
+  publication: string;
+  logo?: (number | null) | Media;
+  headline?: string | null;
+  /**
+   * Outbound link
+   */
+  url?: string | null;
+  publishedDate?: string | null;
+  summary?: string | null;
+  isFeatured?: boolean | null;
+  /**
+   * Lower = earlier in listings.
+   */
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Accreditations + awards (ACHSI, ISAPS, IPRAS, "#1 Hospital 2026", …).
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "awards".
+ */
+export interface Award {
+  id: number;
+  slug: string;
+  name: string;
+  year?: number | null;
+  issuer?: string | null;
+  logo?: (number | null) | Media;
+  summary?: string | null;
+  /**
+   * Lower = earlier in listings.
+   */
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Villa partner accommodations for post-op recovery. Powers /recovery-stays.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "recovery-stays".
+ */
+export interface RecoveryStay {
+  id: number;
+  slug: string;
+  name: string;
+  /**
+   * e.g. "Seminyak", "Ubud"
+   */
+  location?: string | null;
+  heroImage?: (number | null) | Media;
+  gallery?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  descriptor?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  amenities?:
+    | {
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  priceFromAudPerNight?: number | null;
+  priceFromIdrPerNight?: number | null;
+  partnerUrl?: string | null;
+  geo?: {
+    lat?: number | null;
+    lng?: number | null;
+  };
+  /**
+   * Per-record SEO override (falls back to SeoDefaults global).
+   */
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+    ogImage?: (number | null) | Media;
+    canonical?: string | null;
+    noindex?: boolean | null;
+  };
+  /**
+   * Lower = earlier in listings.
+   */
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Concierge package tiers (Sanctuary, Restorative, …) for /pricing.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pricing-tiers".
+ */
+export interface PricingTier {
+  id: number;
+  slug: string;
+  name: string;
+  descriptor?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  priceFromAud?: number | null;
+  priceFromIdr?: number | null;
+  inclusions?:
+    | {
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  isFeatured?: boolean | null;
+  /**
+   * Lower = earlier in listings.
+   */
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Blog index + post pages.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-posts".
+ */
+export interface BlogPost {
+  id: number;
+  slug: string;
+  title: string;
+  lede?: string | null;
+  body?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  heroImage?: (number | null) | Media;
+  author?: (number | null) | Author;
+  publishedAt?: string | null;
+  tags?: (number | BlogTag)[] | null;
+  readingTimeMinutes?: number | null;
+  publishStatus: 'draft' | 'published' | 'scheduled';
+  /**
+   * Per-record SEO override (falls back to SeoDefaults global).
+   */
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+    ogImage?: (number | null) | Media;
+    canonical?: string | null;
+    noindex?: boolean | null;
+  };
+  /**
+   * Lower = earlier in listings.
+   */
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "authors".
+ */
+export interface Author {
+  id: number;
+  slug: string;
+  name: string;
+  role?: string | null;
+  bio?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  portrait?: (number | null) | Media;
+  /**
+   * If author is one of the clinic surgeons
+   */
+  surgeonProfile?: (number | null) | Surgeon;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-tags".
+ */
+export interface BlogTag {
+  id: number;
+  slug: string;
+  name: string;
+  description?: string | null;
+  /**
+   * Lower = earlier in listings.
+   */
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Per-route editorial overrides — hero / lede / body sections / SEO. Used wherever the page is not driven by a catalogue collection.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  /**
+   * Admin label only
+   */
+  title: string;
+  /**
+   * e.g. "home", "journey", "contact"
+   */
+  slug: string;
+  /**
+   * URL route, e.g. "/", "/journey", "/contact"
+   */
+  route: string;
+  chapterTitle?: {
+    a?: string | null;
+    b?: string | null;
+  };
+  tagline?: string | null;
+  lede?: string | null;
+  heroImage?: (number | null) | Media;
+  /**
+   * Composable body sections — pick from the block library.
+   */
+  sections?:
+    | (
+        | {
+            eyebrow?: string | null;
+            heading?: string | null;
+            body: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'richText';
+          }
+        | {
+            heading?: string | null;
+            columns?: ('2' | '3' | '4') | null;
+            images: {
+              image: number | Media;
+              caption?: string | null;
+              id?: string | null;
+            }[];
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'imageGrid';
+          }
+        | {
+            heading: string;
+            lede?: string | null;
+            primaryLabel?: string | null;
+            primaryHref?: string | null;
+            secondaryLabel?: string | null;
+            secondaryHref?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'ctaBand';
+          }
+        | {
+            heading?: string | null;
+            items?:
+              | {
+                  /**
+                   * e.g. "28", "#1"
+                   */
+                  number: string;
+                  label: string;
+                  sourceNote?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'stats';
+          }
+        | {
+            heading?: string | null;
+            items?:
+              | {
+                  q: string;
+                  a: string;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'faqAccordion';
+          }
+        | {
+            heading?: string | null;
+            filterDiscipline?: (number | null) | Discipline;
+            filterSubCategory?: (number | null) | SubCategory;
+            layout?: ('grid' | 'list' | 'featured') | null;
+            limit?: number | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'procedureList';
+          }
+        | {
+            heading?: string | null;
+            filterGroup?: ('all' | 'plastic-surgery' | 'aesthetic-medicine') | null;
+            layout?: ('strip' | 'grid') | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'surgeonList';
+          }
+        | {
+            heading?: string | null;
+            filterProcedure?: (number | null) | Procedure;
+            limit?: number | null;
+            featuredOnly?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'baGrid';
+          }
+        | {
+            heading?: string | null;
+            count?: number | null;
+            featuredOnly?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'testimonialList';
+          }
+        | {
+            heading?: string | null;
+            limit?: number | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'recoveryStayList';
+          }
+        | {
+            heading?: string | null;
+            limit?: number | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'pressMentionList';
+          }
+        | {
+            heading?: string | null;
+            lede?: string | null;
+            /**
+             * Recorded against any submission
+             */
+            sourceCta?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'contactForm';
+          }
+        | {
+            heading?: string | null;
+            filterCategory?: ('all' | 'consult' | 'medical' | 'surgical' | 'recovery' | 'follow-up') | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'journeyStepList';
+          }
+        | {
+            heading?: string | null;
+            iframeUrl?: string | null;
+            html?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'externalEmbed';
+          }
+        | {
+            kind?: ('info' | 'warning' | 'tip' | 'disclaimer') | null;
+            heading?: string | null;
+            body: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'notes';
+          }
+      )[]
+    | null;
+  publishStatus: 'draft' | 'published' | 'scheduled';
+  /**
+   * Per-record SEO override (falls back to SeoDefaults global).
+   */
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+    ogImage?: (number | null) | Media;
+    canonical?: string | null;
+    noindex?: boolean | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Lead submissions. Public can create; only authed users can read/update. Never deleted (audit trail).
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "enquiries".
+ */
+export interface Enquiry {
+  id: number;
+  name: string;
+  email: string;
+  phone?: string | null;
+  country?: string | null;
+  treatmentInterest?: (number | null) | Procedure;
+  /**
+   * Fallback when not a known procedure
+   */
+  treatmentInterestText?: string | null;
+  preferredDate?: string | null;
+  message?: string | null;
+  sourcePage?: string | null;
+  sourceCta?: string | null;
+  status?: ('new' | 'contacted' | 'scheduled' | 'converted' | 'closed' | 'spam') | null;
+  assignedTo?: (number | null) | User;
+  internalNotes?:
+    | {
+        /**
+         * Auto-stamped on save
+         */
+        at?: string | null;
+        by?: (number | null) | User;
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  submittedAt?: string | null;
+  ip?: string | null;
+  userAgent?: string | null;
+  honeypot?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -192,6 +1631,94 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'surgeons';
+        value: number | Surgeon;
+      } | null)
+    | ({
+        relationTo: 'disciplines';
+        value: number | Discipline;
+      } | null)
+    | ({
+        relationTo: 'sub-categories';
+        value: number | SubCategory;
+      } | null)
+    | ({
+        relationTo: 'procedures';
+        value: number | Procedure;
+      } | null)
+    | ({
+        relationTo: 'price-list-items';
+        value: number | PriceListItem;
+      } | null)
+    | ({
+        relationTo: 'injectable-products';
+        value: number | InjectableProduct;
+      } | null)
+    | ({
+        relationTo: 'machine-treatments';
+        value: number | MachineTreatment;
+      } | null)
+    | ({
+        relationTo: 'hair-removal-areas';
+        value: number | HairRemovalArea;
+      } | null)
+    | ({
+        relationTo: 'before-after-cases';
+        value: number | BeforeAfterCase;
+      } | null)
+    | ({
+        relationTo: 'stories';
+        value: number | Story;
+      } | null)
+    | ({
+        relationTo: 'press-mentions';
+        value: number | PressMention;
+      } | null)
+    | ({
+        relationTo: 'awards';
+        value: number | Award;
+      } | null)
+    | ({
+        relationTo: 'recovery-stays';
+        value: number | RecoveryStay;
+      } | null)
+    | ({
+        relationTo: 'pricing-tiers';
+        value: number | PricingTier;
+      } | null)
+    | ({
+        relationTo: 'blog-posts';
+        value: number | BlogPost;
+      } | null)
+    | ({
+        relationTo: 'blog-tags';
+        value: number | BlogTag;
+      } | null)
+    | ({
+        relationTo: 'authors';
+        value: number | Author;
+      } | null)
+    | ({
+        relationTo: 'journey-steps';
+        value: number | JourneyStep;
+      } | null)
+    | ({
+        relationTo: 'inclusion-items';
+        value: number | InclusionItem;
+      } | null)
+    | ({
+        relationTo: 'exclusion-items';
+        value: number | ExclusionItem;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'enquiries';
+        value: number | Enquiry;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -277,6 +1804,781 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "surgeons_select".
+ */
+export interface SurgeonsSelect<T extends boolean = true> {
+  slug?: T;
+  name?: T;
+  commonName?: T;
+  title?: T;
+  suffix?: T;
+  spec?: T;
+  train?: T;
+  proc?: T;
+  credLine?: T;
+  yearsInPractice?: T;
+  hue?: T;
+  group?: T;
+  lead?: T;
+  bio?: T;
+  specAreas?:
+    | T
+    | {
+        value?: T;
+        id?: T;
+      };
+  portrait?: T;
+  portraitPosition?: T;
+  availabilitySchedule?:
+    | T
+    | {
+        day?: T;
+        windowStart?: T;
+        windowEnd?: T;
+        byAppointment?: T;
+        id?: T;
+      };
+  languages?:
+    | T
+    | {
+        code?: T;
+        id?: T;
+      };
+  credentialedProcedures?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+        canonical?: T;
+        noindex?: T;
+      };
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "disciplines_select".
+ */
+export interface DisciplinesSelect<T extends boolean = true> {
+  slug?: T;
+  title?: T;
+  subtitle?: T;
+  displayCount?: T;
+  hue?: T;
+  body?: T;
+  chapterTitle?:
+    | T
+    | {
+        a?: T;
+        b?: T;
+      };
+  tagline?: T;
+  lede?: T;
+  overview?: T;
+  heroImage?: T;
+  leadSurgeons?: T;
+  faqs?:
+    | T
+    | {
+        q?: T;
+        a?: T;
+        id?: T;
+      };
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+        canonical?: T;
+        noindex?: T;
+      };
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sub-categories_select".
+ */
+export interface SubCategoriesSelect<T extends boolean = true> {
+  slug?: T;
+  parent?: T;
+  title?: T;
+  chapterTitle?:
+    | T
+    | {
+        a?: T;
+        b?: T;
+      };
+  tagline?: T;
+  lede?: T;
+  intro?: T;
+  overview?: T;
+  leadSurgeon?: T;
+  sections?:
+    | T
+    | {
+        anchorId?: T;
+        t?: T;
+        body?: T;
+        id?: T;
+      };
+  faqs?:
+    | T
+    | {
+        q?: T;
+        a?: T;
+        id?: T;
+      };
+  heroImage?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+        canonical?: T;
+        noindex?: T;
+      };
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "procedures_select".
+ */
+export interface ProceduresSelect<T extends boolean = true> {
+  slug?: T;
+  name?: T;
+  shortName?: T;
+  parentDiscipline?: T;
+  parentSubCategory?: T;
+  description?: T;
+  sections?:
+    | T
+    | {
+        anchorId?: T;
+        t?: T;
+        body?: T;
+        id?: T;
+      };
+  faqs?:
+    | T
+    | {
+        q?: T;
+        a?: T;
+        id?: T;
+      };
+  surgeonsCredentialed?: T;
+  heroImage?: T;
+  pricing?:
+    | T
+    | {
+        priceIdr2025?: T;
+        priceAud2025?: T;
+        priceIdr2026?: T;
+        priceAud2026?: T;
+        priceIdrRangeLow?: T;
+        priceIdrRangeHigh?: T;
+        priceNotes?: T;
+        displayYear?: T;
+      };
+  featuredRank?: T;
+  includesImplant?: T;
+  detail?:
+    | T
+    | {
+        duration?: T;
+        recovery?: T;
+        included?:
+          | T
+          | {
+              value?: T;
+              id?: T;
+            };
+      };
+  included?: T;
+  excluded?: T;
+  recoveryTimeline?: T;
+  relatedBA?: T;
+  relatedProcedures?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+        canonical?: T;
+        noindex?: T;
+      };
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "price-list-items_select".
+ */
+export interface PriceListItemsSelect<T extends boolean = true> {
+  slug?: T;
+  sheet?: T;
+  category?: T;
+  subCategory?: T;
+  name?: T;
+  unit?: T;
+  audienceTier?: T;
+  notes?: T;
+  priceIdr2025?: T;
+  priceAud2025?: T;
+  priceIdr2026?: T;
+  priceAud2026?: T;
+  priceIdrRangeLow?: T;
+  priceIdrRangeHigh?: T;
+  featuredRank?: T;
+  includesImplant?: T;
+  linkedProcedure?: T;
+  linkedInjectableProduct?: T;
+  linkedMachineTreatment?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "injectable-products_select".
+ */
+export interface InjectableProductsSelect<T extends boolean = true> {
+  slug?: T;
+  name?: T;
+  brand?: T;
+  productLine?: T;
+  category?: T;
+  unit?: T;
+  priceIdr?: T;
+  priceAud?: T;
+  notes?: T;
+  manufacturer?: T;
+  fdaApproved?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "machine-treatments_select".
+ */
+export interface MachineTreatmentsSelect<T extends boolean = true> {
+  slug?: T;
+  machineName?: T;
+  area?: T;
+  pricing?:
+    | T
+    | {
+        standardIdr?: T;
+        kitasKtpIdr?: T;
+        packageIdr?: T;
+      };
+  notes?: T;
+  linkedProcedure?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hair-removal-areas_select".
+ */
+export interface HairRemovalAreasSelect<T extends boolean = true> {
+  slug?: T;
+  area?: T;
+  bodyZone?: T;
+  priceIdr?: T;
+  notes?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "before-after-cases_select".
+ */
+export interface BeforeAfterCasesSelect<T extends boolean = true> {
+  slug?: T;
+  caseLabel?: T;
+  procedure?: T;
+  composite?: T;
+  beforeAlt?: T;
+  afterAlt?: T;
+  surgeon?: T;
+  tags?:
+    | T
+    | {
+        value?: T;
+        id?: T;
+      };
+  description?: T;
+  year?: T;
+  isFeatured?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+        canonical?: T;
+        noindex?: T;
+      };
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "stories_select".
+ */
+export interface StoriesSelect<T extends boolean = true> {
+  slug?: T;
+  patientLabel?: T;
+  country?: T;
+  procedure?: T;
+  portrait?: T;
+  quote?: T;
+  body?: T;
+  videoUrl?: T;
+  year?: T;
+  surgeon?: T;
+  isFeatured?: T;
+  publishStatus?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+        canonical?: T;
+        noindex?: T;
+      };
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "press-mentions_select".
+ */
+export interface PressMentionsSelect<T extends boolean = true> {
+  slug?: T;
+  publication?: T;
+  logo?: T;
+  headline?: T;
+  url?: T;
+  publishedDate?: T;
+  summary?: T;
+  isFeatured?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "awards_select".
+ */
+export interface AwardsSelect<T extends boolean = true> {
+  slug?: T;
+  name?: T;
+  year?: T;
+  issuer?: T;
+  logo?: T;
+  summary?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "recovery-stays_select".
+ */
+export interface RecoveryStaysSelect<T extends boolean = true> {
+  slug?: T;
+  name?: T;
+  location?: T;
+  heroImage?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  descriptor?: T;
+  amenities?:
+    | T
+    | {
+        value?: T;
+        id?: T;
+      };
+  priceFromAudPerNight?: T;
+  priceFromIdrPerNight?: T;
+  partnerUrl?: T;
+  geo?:
+    | T
+    | {
+        lat?: T;
+        lng?: T;
+      };
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+        canonical?: T;
+        noindex?: T;
+      };
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pricing-tiers_select".
+ */
+export interface PricingTiersSelect<T extends boolean = true> {
+  slug?: T;
+  name?: T;
+  descriptor?: T;
+  priceFromAud?: T;
+  priceFromIdr?: T;
+  inclusions?:
+    | T
+    | {
+        value?: T;
+        id?: T;
+      };
+  isFeatured?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-posts_select".
+ */
+export interface BlogPostsSelect<T extends boolean = true> {
+  slug?: T;
+  title?: T;
+  lede?: T;
+  body?: T;
+  heroImage?: T;
+  author?: T;
+  publishedAt?: T;
+  tags?: T;
+  readingTimeMinutes?: T;
+  publishStatus?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+        canonical?: T;
+        noindex?: T;
+      };
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-tags_select".
+ */
+export interface BlogTagsSelect<T extends boolean = true> {
+  slug?: T;
+  name?: T;
+  description?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "authors_select".
+ */
+export interface AuthorsSelect<T extends boolean = true> {
+  slug?: T;
+  name?: T;
+  role?: T;
+  bio?: T;
+  portrait?: T;
+  surgeonProfile?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "journey-steps_select".
+ */
+export interface JourneyStepsSelect<T extends boolean = true> {
+  slug?: T;
+  order?: T;
+  dayLabel?: T;
+  title?: T;
+  body?: T;
+  icon?: T;
+  category?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "inclusion-items_select".
+ */
+export interface InclusionItemsSelect<T extends boolean = true> {
+  text?: T;
+  scope?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "exclusion-items_select".
+ */
+export interface ExclusionItemsSelect<T extends boolean = true> {
+  text?: T;
+  scope?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  route?: T;
+  chapterTitle?:
+    | T
+    | {
+        a?: T;
+        b?: T;
+      };
+  tagline?: T;
+  lede?: T;
+  heroImage?: T;
+  sections?:
+    | T
+    | {
+        richText?:
+          | T
+          | {
+              eyebrow?: T;
+              heading?: T;
+              body?: T;
+              id?: T;
+              blockName?: T;
+            };
+        imageGrid?:
+          | T
+          | {
+              heading?: T;
+              columns?: T;
+              images?:
+                | T
+                | {
+                    image?: T;
+                    caption?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        ctaBand?:
+          | T
+          | {
+              heading?: T;
+              lede?: T;
+              primaryLabel?: T;
+              primaryHref?: T;
+              secondaryLabel?: T;
+              secondaryHref?: T;
+              id?: T;
+              blockName?: T;
+            };
+        stats?:
+          | T
+          | {
+              heading?: T;
+              items?:
+                | T
+                | {
+                    number?: T;
+                    label?: T;
+                    sourceNote?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        faqAccordion?:
+          | T
+          | {
+              heading?: T;
+              items?:
+                | T
+                | {
+                    q?: T;
+                    a?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        procedureList?:
+          | T
+          | {
+              heading?: T;
+              filterDiscipline?: T;
+              filterSubCategory?: T;
+              layout?: T;
+              limit?: T;
+              id?: T;
+              blockName?: T;
+            };
+        surgeonList?:
+          | T
+          | {
+              heading?: T;
+              filterGroup?: T;
+              layout?: T;
+              id?: T;
+              blockName?: T;
+            };
+        baGrid?:
+          | T
+          | {
+              heading?: T;
+              filterProcedure?: T;
+              limit?: T;
+              featuredOnly?: T;
+              id?: T;
+              blockName?: T;
+            };
+        testimonialList?:
+          | T
+          | {
+              heading?: T;
+              count?: T;
+              featuredOnly?: T;
+              id?: T;
+              blockName?: T;
+            };
+        recoveryStayList?:
+          | T
+          | {
+              heading?: T;
+              limit?: T;
+              id?: T;
+              blockName?: T;
+            };
+        pressMentionList?:
+          | T
+          | {
+              heading?: T;
+              limit?: T;
+              id?: T;
+              blockName?: T;
+            };
+        contactForm?:
+          | T
+          | {
+              heading?: T;
+              lede?: T;
+              sourceCta?: T;
+              id?: T;
+              blockName?: T;
+            };
+        journeyStepList?:
+          | T
+          | {
+              heading?: T;
+              filterCategory?: T;
+              id?: T;
+              blockName?: T;
+            };
+        externalEmbed?:
+          | T
+          | {
+              heading?: T;
+              iframeUrl?: T;
+              html?: T;
+              id?: T;
+              blockName?: T;
+            };
+        notes?:
+          | T
+          | {
+              kind?: T;
+              heading?: T;
+              body?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  publishStatus?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+        canonical?: T;
+        noindex?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "enquiries_select".
+ */
+export interface EnquiriesSelect<T extends boolean = true> {
+  name?: T;
+  email?: T;
+  phone?: T;
+  country?: T;
+  treatmentInterest?: T;
+  treatmentInterestText?: T;
+  preferredDate?: T;
+  message?: T;
+  sourcePage?: T;
+  sourceCta?: T;
+  status?: T;
+  assignedTo?: T;
+  internalNotes?:
+    | T
+    | {
+        at?: T;
+        by?: T;
+        text?: T;
+        id?: T;
+      };
+  submittedAt?: T;
+  ip?: T;
+  userAgent?: T;
+  honeypot?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -314,6 +2616,575 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * Site-wide configuration — name, currency rate, contact, hours, social, defaults.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "settings".
+ */
+export interface Setting {
+  id: number;
+  siteName?: string | null;
+  siteTagline?: string | null;
+  defaultOgImage?: (number | null) | Media;
+  defaultMetaDescription?: string | null;
+  /**
+   * AUD → IDR conversion rate. Per brand.pdf May 2026 = 10,500.
+   */
+  audToIdrRate?: number | null;
+  /**
+   * Round computed IDR to nearest N. Default 50,000.
+   */
+  roundIdrTo?: number | null;
+  contactEmail?: string | null;
+  contactPhone?: string | null;
+  /**
+   * In E.164. Used for the floating chrome WhatsApp affordance.
+   */
+  whatsappNumber?: string | null;
+  addressLine1?: string | null;
+  addressLine2?: string | null;
+  city?: string | null;
+  postalCode?: string | null;
+  country?: string | null;
+  hoursMonFri?: string | null;
+  hoursSatSun?: string | null;
+  googleMapsUrl?: string | null;
+  socialLinks?:
+    | {
+        platform: 'instagram' | 'facebook' | 'whatsapp' | 'tiktok' | 'youtube' | 'linkedin' | 'x';
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  defaultLocale?: ('en' | 'id') | null;
+  currencyDisplayMode?: ('idr-only' | 'idr-with-aud') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Site header — logo, nav items, mega-menus, locale switcher.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header".
+ */
+export interface Header {
+  id: number;
+  /**
+   * Used on cream/light background
+   */
+  logoLight?: (number | null) | Media;
+  /**
+   * Used on dark sections
+   */
+  logoDark?: (number | null) | Media;
+  /**
+   * Top-level nav items, in order
+   */
+  navItems?:
+    | {
+        label: string;
+        href: string;
+        /**
+         * Regex or prefix to mark active
+         */
+        activePattern?: string | null;
+        /**
+         * Optional mega-menu columns under this nav item
+         */
+        megaMenu?:
+          | {
+              heading: string;
+              items: {
+                label: string;
+                href: string;
+                id?: string | null;
+              }[];
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  localeSwitcher?: {
+    enabled?: boolean | null;
+    labelEn?: string | null;
+    labelId?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Site footer — logo, link columns, enquiry summary, address, copyright.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer".
+ */
+export interface Footer {
+  id: number;
+  /**
+   * White-on-dark variant
+   */
+  logoLight?: (number | null) | Media;
+  linkColumns?:
+    | {
+        heading: string;
+        items: {
+          label: string;
+          href: string;
+          id?: string | null;
+        }[];
+        id?: string | null;
+      }[]
+    | null;
+  enquirySummary?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  addressBlock?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * {year} is auto-replaced at render.
+   */
+  copyrightTemplate?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Floating CTA pill + WhatsApp/chat affordance shown on every page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "floating-chrome".
+ */
+export interface FloatingChrome {
+  id: number;
+  ctaPill?: {
+    label?: string | null;
+    href?: string | null;
+    enabled?: boolean | null;
+  };
+  chat?: {
+    enabled?: boolean | null;
+    provider?: ('whatsapp' | 'custom') | null;
+    /**
+     * Custom widget HTML/JS (only if provider=custom)
+     */
+    embedScript?: string | null;
+    openOnLoad?: boolean | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Stats strip values (brand.pdf §IV). Used on home + about.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "brand-stats".
+ */
+export interface BrandStat {
+  id: number;
+  /**
+   * Default seed: 28 years / 8 ISAPS-FICS / 3,400+ procedures / #1 hospital 2026
+   */
+  stats?:
+    | {
+        /**
+         * e.g. "28", "8", "3,400+", "#1"
+         */
+        number: string;
+        label: string;
+        /**
+         * Provenance, e.g. "Per brand.pdf §IV"
+         */
+        sourceNote?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * "Managed by BIMC Hospital" lockup. Sourced from brand.pdf §I.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "endorsement-mark".
+ */
+export interface EndorsementMark {
+  id: number;
+  endorsementLine?: string | null;
+  /**
+   * Ink on light-beige variant
+   */
+  primaryLockup?: (number | null) | Media;
+  /**
+   * White on dark variant
+   */
+  inverseLockup?: (number | null) | Media;
+  clearspaceUnit?: string | null;
+  minScreenWidthPx?: number | null;
+  minPrintMmWidth?: number | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Consultation fee + waiver text from pricelist Further Info.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "consultation-policy".
+ */
+export interface ConsultationPolicy {
+  id: number;
+  feeIdr?: number | null;
+  feeAud?: number | null;
+  waiverConditionText?: string | null;
+  displayOn?: ('contact' | 'procedure-detail' | 'pricing' | 'hero')[] | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Enquiry form labels, placeholders, and feedback messages.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form-defaults".
+ */
+export interface FormDefault {
+  id: number;
+  labels?: {
+    name?: string | null;
+    email?: string | null;
+    phone?: string | null;
+    country?: string | null;
+    treatment?: string | null;
+    message?: string | null;
+  };
+  placeholders?: {
+    name?: string | null;
+    email?: string | null;
+    phone?: string | null;
+    country?: string | null;
+    treatment?: string | null;
+    message?: string | null;
+  };
+  submitLabel?: string | null;
+  successMessage?: string | null;
+  errorMessage?: string | null;
+  rateLimitMessage?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Transactional + notification email copy.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "email-templates".
+ */
+export interface EmailTemplate {
+  id: number;
+  /**
+   * Initial seed: enquiry-autoresponder, enquiry-clinic-notify, newsletter-confirm, admin-password-reset.
+   */
+  templates?:
+    | {
+        /**
+         * Template key, e.g. "enquiry-autoresponder"
+         */
+        id: string;
+        subject: string;
+        /**
+         * MJML or plain HTML. {{name}} / {{procedure}} / etc. placeholders are substituted by the email pipeline.
+         */
+        bodyMjml: string;
+        locale?: ('en' | 'id') | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * SEO defaults — title pattern, robots.txt, sitemap base URL, structured-data org info.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "seo-defaults".
+ */
+export interface SeoDefault {
+  id: number;
+  /**
+   * {page} is substituted at render.
+   */
+  titlePattern?: string | null;
+  robotsTxt?: string | null;
+  sitemapBaseUrl?: string | null;
+  /**
+   * schema.org JSON-LD for MedicalClinic. Injected on / and /contact.
+   */
+  organizationSchema?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "settings_select".
+ */
+export interface SettingsSelect<T extends boolean = true> {
+  siteName?: T;
+  siteTagline?: T;
+  defaultOgImage?: T;
+  defaultMetaDescription?: T;
+  audToIdrRate?: T;
+  roundIdrTo?: T;
+  contactEmail?: T;
+  contactPhone?: T;
+  whatsappNumber?: T;
+  addressLine1?: T;
+  addressLine2?: T;
+  city?: T;
+  postalCode?: T;
+  country?: T;
+  hoursMonFri?: T;
+  hoursSatSun?: T;
+  googleMapsUrl?: T;
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  defaultLocale?: T;
+  currencyDisplayMode?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header_select".
+ */
+export interface HeaderSelect<T extends boolean = true> {
+  logoLight?: T;
+  logoDark?: T;
+  navItems?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+        activePattern?: T;
+        megaMenu?:
+          | T
+          | {
+              heading?: T;
+              items?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+        id?: T;
+      };
+  localeSwitcher?:
+    | T
+    | {
+        enabled?: T;
+        labelEn?: T;
+        labelId?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer_select".
+ */
+export interface FooterSelect<T extends boolean = true> {
+  logoLight?: T;
+  linkColumns?:
+    | T
+    | {
+        heading?: T;
+        items?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  enquirySummary?: T;
+  addressBlock?: T;
+  copyrightTemplate?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "floating-chrome_select".
+ */
+export interface FloatingChromeSelect<T extends boolean = true> {
+  ctaPill?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+        enabled?: T;
+      };
+  chat?:
+    | T
+    | {
+        enabled?: T;
+        provider?: T;
+        embedScript?: T;
+        openOnLoad?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "brand-stats_select".
+ */
+export interface BrandStatsSelect<T extends boolean = true> {
+  stats?:
+    | T
+    | {
+        number?: T;
+        label?: T;
+        sourceNote?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "endorsement-mark_select".
+ */
+export interface EndorsementMarkSelect<T extends boolean = true> {
+  endorsementLine?: T;
+  primaryLockup?: T;
+  inverseLockup?: T;
+  clearspaceUnit?: T;
+  minScreenWidthPx?: T;
+  minPrintMmWidth?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "consultation-policy_select".
+ */
+export interface ConsultationPolicySelect<T extends boolean = true> {
+  feeIdr?: T;
+  feeAud?: T;
+  waiverConditionText?: T;
+  displayOn?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form-defaults_select".
+ */
+export interface FormDefaultsSelect<T extends boolean = true> {
+  labels?:
+    | T
+    | {
+        name?: T;
+        email?: T;
+        phone?: T;
+        country?: T;
+        treatment?: T;
+        message?: T;
+      };
+  placeholders?:
+    | T
+    | {
+        name?: T;
+        email?: T;
+        phone?: T;
+        country?: T;
+        treatment?: T;
+        message?: T;
+      };
+  submitLabel?: T;
+  successMessage?: T;
+  errorMessage?: T;
+  rateLimitMessage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "email-templates_select".
+ */
+export interface EmailTemplatesSelect<T extends boolean = true> {
+  templates?:
+    | T
+    | {
+        id?: T;
+        subject?: T;
+        bodyMjml?: T;
+        locale?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "seo-defaults_select".
+ */
+export interface SeoDefaultsSelect<T extends boolean = true> {
+  titlePattern?: T;
+  robotsTxt?: T;
+  sitemapBaseUrl?: T;
+  organizationSchema?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

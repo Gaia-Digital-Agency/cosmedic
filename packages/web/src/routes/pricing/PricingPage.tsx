@@ -5,6 +5,7 @@ import { Reveal } from '@/components/primitives/Reveal'
 import { Mono, Eyebrow } from '@/components/primitives/Mono'
 import { TREATMENT_LIST, SUBCATEGORIES_BY_DISCIPLINE, IMG } from '@/content/seed'
 import { SUBCATEGORY_DATA } from '@/content/subcategory-data'
+import { ClinicCatalogueTable } from './ClinicCatalogueTable'
 
 const fmtIDR = (aud: number) =>
   'Rp ' + (Math.round((aud * 10500) / 50000) * 50000).toLocaleString('de-DE')
@@ -242,6 +243,8 @@ export const PricingPage: React.FC = () => (
         </p>
       </div>
     </section>
+
+    <ClinicCatalogueTable />
 
     <section className="page-section tinted">
       <div className="two-col">
