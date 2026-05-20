@@ -65,17 +65,21 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
 - Pixel-Fidelity Gate + Lighthouse Green Gate are launch-blocking. Don't bypass them.
 - This server is the dev environment (user chose server-first). Edits happen here; commits + pushes happen here.
 
-## Current state (Phase 1 complete)
+## Current state (Phase 2 complete)
 
-- `packages/cms` — Payload 3.84.1 on Next.js 15.4.11 + Postgres adapter, port **4007**. Admin white-labelled as **Cosmedic CMS** (Cormorant Garamond + JetBrains Mono, brand-beige palette from `docs/brand-guidelines.pdf`). Light/dark toggle (`theme: 'all'`).
-- `packages/web` — Vite 6 SSR + React 19 + Express, port **3007**. Renders a hello-world chrome.
-- Postgres `cosmedic` role + db provisioned on `127.0.0.1:5432`. Initial migration applied (`packages/cms/src/migrations/20260520_112358.ts`).
-- Super-admin user seeded from env (idempotent — `seed/admin.ts`). Login verified at `/admin`.
+- `packages/cms` — Payload 3.84.1 on Next.js 15.4.11 + Postgres adapter, port **4007**. Admin white-labelled as **Cosmedic CMS** (Cormorant Garamond + JetBrains Mono, brand-beige palette from `docs/brand-guidelines.pdf`). Light/dark toggle.
+- `packages/web` — Vite 6 SSR + React 19 + Express, port **3007**. Now renders the full site chrome.
+  - `design/global.css` (3,687 lines) ported **verbatim** to `packages/web/src/styles/globals.css`.
+  - Google Fonts (Cormorant Garamond + Inter + JetBrains Mono) preconnected + loaded in `index.html`.
+  - Primitives ported from `design/shared.jsx`: `Btn`, `Mono`/`Eyebrow`, `Img` (painted-SVG fallback), `Reveal` (IntersectionObserver), `PriceTag` (IDR + AUD), `ChapterOpener`, `TrustBar`, `CTABandSlim`.
+  - Shell ported: `Header` (mega-menu hover bridge, EN|ID switcher, scroll-state, mobile drawer), `Footer` (3 link columns + newsletter + tri-mono bottom strip), `FloatingChrome` (fixed CTA pill + WhatsApp fab), `PageShell` composer.
+  - Seed data lives in `src/content/seed.ts` (TREATMENT_LIST, SUBCATEGORIES_BY_DISCIPLINE, SURGEON_LIST, WHATSAPP_HREF) — Phase 6 replaces with Payload-backed fetch.
+  - Brand mark assets at `packages/web/public/assets/logo*.png` (mirrors design source).
+- Postgres `cosmedic` role + db provisioned on `127.0.0.1:5432`. Initial Payload migration applied. Super-admin seeded.
 - pm2 manages both processes (`cosmedic-cms`, `cosmedic-web`); `pm2 save` persisted.
-- Sibling pm2 processes (christos, templategen, templatebase, flowstep, gtec, whatsnewasia) all still online.
 - DNS `cosmedic.gaiada.online` still NXDOMAIN — Phase 8 (nginx + SSL + DNS) handles cutover.
 
-Next session: **Phase 2** (theme + PageShell) per `docs/plan.md`.
+Next session: **Phase 3** (homepage) per `docs/plan.md`.
 
 ## Common ops
 

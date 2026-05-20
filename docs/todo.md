@@ -30,18 +30,22 @@
   - [x] Smoke: `curl localhost:3007` → 200 + "BIMC CosMedic"; `curl localhost:4007/admin` → 200; sibling sites untouched (christos / templategen / templatebase / flowstep all still online)
   - [x] `docs/site_features.md` written (site walkthrough + features inventory)
 
-- [ ] **PHASE 2 — Theme + PageShell**
-  - [ ] Port `global.css` tokens → `packages/web/src/styles/globals.css`
-  - [ ] Map tokens into `tailwind.config.ts`
-  - [ ] Google Fonts loaded (Cormorant Garamond + Inter + JetBrains Mono)
-  - [ ] Primitives: `Btn`, `Mono`, `Eyebrow`, `Img`, `Reveal`, `PriceTag`, `ChapterOpener`, `TrustBar`, `CTABandSlim`
-  - [ ] Shell: `Header`, `Footer`, `FloatingChrome`, `PageShell`
-  - [ ] Mega-menu hover bridge working
-  - [ ] EN | ID switcher in place (stubbed)
-  - [ ] Visual regression baseline captured for `/`, `/treatments`, `/surgeons` chrome
+- [x] **PHASE 2 — Theme + PageShell**
+  - [x] Port `global.css` (3,687 lines) verbatim → `packages/web/src/styles/globals.css`
+  - [x] Google Fonts loaded (Cormorant Garamond + Inter + JetBrains Mono) via `<link>` in index.html
+  - [x] Primitives: `Btn`, `Mono`, `Eyebrow`, `Img` (with painted-SVG fallback), `Reveal` (IntersectionObserver), `PriceTag` (IDR + AUD), `ChapterOpener`, `TrustBar`, `CTABandSlim`
+  - [x] Shell: `Header` (mega-menu hover bridge, EN|ID switcher, scroll-state, mobile drawer), `Footer` (3 link columns + newsletter), `FloatingChrome` (fixed CTA + WhatsApp fab), `PageShell` composer
+  - [x] Mega-menu hover bridge (2 s scheduled close + bridge padding) preserved from design
+  - [x] EN | ID switcher state in header (stubbed — locale routing arrives Phase 9)
+  - [x] Seed data ported (`TREATMENT_LIST`, `SUBCATEGORIES_BY_DISCIPLINE`, `SURGEON_LIST`, `WHATSAPP_HREF`) → `src/content/seed.ts`
+  - [x] Brand assets `design/assets/logo*.png` copied to `packages/web/public/assets/`
+  - [x] Pricing helper `src/lib/pricing.ts` (AUD↔IDR @ 10,500, rounded to 50k IDR)
+  - [x] `App.tsx` rewired to render `<PageShell>` with a Phase-2 placeholder body — chrome renders 200 with full design CSS bundled
+  - [ ] Visual regression baseline (Playwright) — deferred to Phase 11 alongside the full QA gate
+  - [ ] Tailwind theme mapping — deferred (CSS-vars + class names from `globals.css` are already the source of truth; Tailwind layer will be added only if/when needed)
 
 - [ ] **PHASE 3 — Homepage**
-  - [ ] `packages/web/src/content/seed.ts` (TS port of shared.jsx data, pre-Payload)
+  - [ ] `packages/web/src/content/seed.ts` (already ported in Phase 2 — extend with `STORY_PORTRAITS`, `BA_PAIRS`, `IMG`)
   - [ ] Hero (left: chapter + form, right: lifestyle image)
   - [ ] TrustBar credentials
   - [ ] Stats strip
