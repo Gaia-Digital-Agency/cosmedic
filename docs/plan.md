@@ -32,7 +32,7 @@ This is the contract. The Claude Design handoff (the `.html` / `.jsx` / `global.
 
 1. **Side-by-side review** — open the design `.html` in one browser tab, the production build in another, at each breakpoint. Sign off page-by-page.
 2. **Playwright visual regression** — `tests/e2e/visual/*.spec.ts` captures screenshots of every route at desktop / tablet / mobile widths and compares against design baselines.
-3. **Design tokens are imported, not re-typed** — `globals.css` is ported verbatim from `design_reference/global.css`; Tailwind config reads from those vars (A.8). Drift is detectable.
+3. **Design tokens are imported, not re-typed** — `globals.css` is ported verbatim from `design/global.css`; Tailwind config reads from those vars (A.8). Drift is detectable.
 4. **No "creative refactor" of design components** during port — match the JSX structure of `shared.jsx` / `pages/*.jsx` first, refactor for clean code only after pixel-match is verified.
 5. **A signed-off "Pixel-Fidelity Gate" before Phase 8 (nginx + deploy)** — Phase 11 (QA + responsive polish) ends with explicit user sign-off that every route matches the design. Launch does not happen without it.
 
@@ -125,7 +125,7 @@ The user requested architecture decisions be locked first. After locking them, t
 
 | Phase | Title | Architecture sections (Appendix A) it implements |
 |---|---|---|
-| **0** | Documentation + git checkpoint | A.1, A.2 — write `README.md`, `docs/architecture_info.md`, `docs/sitemap.md`, `.gitignore`; rename `uploads/` → `discovery/`, `pages/`/loose `.jsx`/`.html` → `design_reference/`; git init, first commit, push. |
+| **0** | Documentation + git checkpoint | A.1, A.2 — write `README.md`, `docs/architecture_info.md`, `docs/sitemap.md`, `.gitignore`; rename `uploads/` → `discovery/`, `pages/`/loose `.jsx`/`.html` → `design/`; git init, first commit, push. |
 | **1** | Monorepo scaffold + **CosMedic Site CMS branding** | A.3, A.4 — pnpm workspace, packages/cms (Payload init **with CosMedic Site CMS admin branding** per Non-negotiable #4), packages/web (Vite SSR), `.env`, `ecosystem.config.cjs`, Postgres db/role, hello-world boot, `docs/cms_info.md`. |
 | **2** | Theme + `PageShell` | A.7, A.8 — Tailwind theme from tokens, fonts, header (logo + mega-menu + active-state + EN\|ID), footer, floating CTA + chat. |
 | **3** | Homepage | A.6, A.7 — hero+form, stats, treatments index, surgeons, gallery teaser, journey teaser, stories teaser, place. |
@@ -168,7 +168,7 @@ Cross-cutting (every phase): **multisite hygiene** (never `pm2 restart all`, alw
    - [docs/architecture_info.md](./docs/architecture_info.md) — end-state architecture (north star)
    - [docs/sitemap.md](./docs/sitemap.md) — every page · subpage · link · button
    - [docs/runbook.md](./docs/runbook.md) — ops playbook (deploy, restore, incident)
-   - [design_reference/](./design_reference/) — original Claude Design source (READ-ONLY)
+   - [design/](./design/) — original Claude Design source (READ-ONLY)
 
    ## Dev (server-first on gda-s01)
    ```bash
@@ -1024,7 +1024,7 @@ Cross-cutting (every phase): **multisite hygiene** (never `pm2 restart all`, alw
 8. **🚧 Pixel-Fidelity Gate** (Non-negotiable #1):
    - **Playwright visual-regression suite** at `tests/e2e/visual/`:
      - One spec per route × breakpoint (~88 EN routes × 3 breakpoints = 264 screenshots; localised mirror doubles this in Phase 9).
-     - Baselines captured from the design's `.html` files in `design_reference/` rendered via headless Chromium against `file://` URLs.
+     - Baselines captured from the design's `.html` files in `design/` rendered via headless Chromium against `file://` URLs.
      - Tolerance: 0.1% per pixel, 1% total per screenshot.
    - **Page-by-page user sign-off**: checklist in `tests/e2e/visual/SIGNOFF.md` with one row per route — 47 pages + sub-pages + 41 procedure pages — marked "signed-off" only when you've personally confirmed the match.
    - **Suite must be green** AND **all sign-off rows ticked** before Phase 12 can begin.
@@ -1240,7 +1240,7 @@ SSL cert: shared from /etc/letsencrypt/live/templategen.gaiada.online/.
 ```
 /var/www/cosmedic/                  ← deploy target on gda-s01
 ├── CLAUDE.md                        ← project guide for Claude sessions
-├── README.md                        ← **human-facing project entry point** — what the project is, stack at a glance, how to run dev/build/deploy locally, link to docs/, link to live URL, link to design_reference/, link to CosMedic Site CMS admin URL
+├── README.md                        ← **human-facing project entry point** — what the project is, stack at a glance, how to run dev/build/deploy locally, link to docs/, link to live URL, link to design/, link to CosMedic Site CMS admin URL
 ├── .gitignore
 ├── .env                             ← shared env (DB, SMTP, etc.) — never committed
 ├── package.json                     ← root: dev/build/start scripts via concurrently
@@ -1280,7 +1280,7 @@ SSL cert: shared from /etc/letsencrypt/live/templategen.gaiada.online/.
 │       ├── results/                 ← 29 B&A composite images
 │       └── lifestyle/               ← hero, recovery villa, place imagery (licensed/AI)
 │
-├── design_reference/                ← original Claude Design source (kept read-only as reference)
+├── design/                ← original Claude Design source (kept read-only as reference)
 │   └── (the 51 .html files, .jsx files, global.css moved here in reorg phase)
 │
 ├── discovery/                       ← discovery artifacts (renamed from uploads/)
@@ -1408,9 +1408,9 @@ SSL cert: shared from /etc/letsencrypt/live/templategen.gaiada.online/.
 | Current | End state |
 |---|---|
 | `uploads/` | `discovery/` (subdivided by type) |
-| `pages/*.jsx` (Babel-in-browser) | `design_reference/pages/*.jsx` (kept read-only as reference) + reimplemented in `packages/web/src/routes/` |
+| `pages/*.jsx` (Babel-in-browser) | `design/pages/*.jsx` (kept read-only as reference) + reimplemented in `packages/web/src/routes/` |
 | `assets/surgeons/`, `assets/treatments/`, `assets/results/` | `assets/images/{surgeons,treatments,results}/` |
-| `BIMC CosMedic Homepage Wireframes.html`, `design-canvas.jsx`, `wireframes.jsx`, `tweaks-panel.jsx` | `design_reference/` |
+| `BIMC CosMedic Homepage Wireframes.html`, `design-canvas.jsx`, `wireframes.jsx`, `tweaks-panel.jsx` | `design/` |
 
 ## A.5 Data model — Payload collections (comprehensive)
 

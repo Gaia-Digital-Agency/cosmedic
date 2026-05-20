@@ -540,7 +540,7 @@ Run before Phase 11 sign-off. Each row should be ✅ before launch.
 
 ### Pixel-fidelity tie-in (Non-negotiable #1)
 
-- [ ] Every UI surface listed in §3 renders identically to its design source in `design_reference/`
+- [ ] Every UI surface listed in §3 renders identically to its design source in `design/`
 - [ ] Playwright visual regression covers every route × every breakpoint (Phase 11)
 
 ---

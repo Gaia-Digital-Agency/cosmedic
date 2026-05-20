@@ -23,7 +23,7 @@ Marketing site for **BIMC CosMedic** — Bali International Medical Centre's pla
 | [docs/plan.md](./docs/plan.md) | Full 14-phase execution plan + locked architecture decisions + Appendix A |
 | [docs/brand-guidelines.pdf](./docs/brand-guidelines.pdf) | BIMC CosMedic Brand Guidelines v1.0 (canonical brand source) |
 | [docs/pricelist.xlsx](./docs/pricelist.xlsx) | Clinic's price + procedure catalogue (CMS seed source) |
-| [design_reference/](./design_reference/) | Original Claude Design source (READ-ONLY) |
+| [design/](./design/) | Original Claude Design source (READ-ONLY) |
 
 ## Stack at a glance
 
@@ -49,7 +49,7 @@ This is the initial documentation + design-handoff import. Phases 1–14 are doc
 
 - **Phase 0** (current): Documentation capture + git checkpoint of the starting state.
 - **Phase 1**: Monorepo scaffold (packages/cms + packages/web on ports 4007/3007).
-- **Phase 2**: Theme + PageShell port from `design_reference/`.
+- **Phase 2**: Theme + PageShell port from `design/`.
 - **Phase 3+**: Homepage → detail templates → index pages → CMS schema → forms → deploy.
 - **Phase 11**: Pixel-Fidelity Gate + Lighthouse Green Gate (launch-blocking).
 - **Phase 12**: Launch at `https://cosmedic.gaiada.online`.

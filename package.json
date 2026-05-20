@@ -1,0 +1,43 @@
+{
+  "name": "cosmedic",
+  "version": "0.1.0",
+  "description": "BIMC CosMedic — VRTPN stack (Vite SSR + React + Tailwind + Payload + Node + Postgres). Multi-page editorial-luxury marketing site at https://cosmedic.gaiada.online.",
+  "private": true,
+  "type": "module",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": "^20.9.0 || >=22.0.0",
+    "pnpm": "^10"
+  },
+  "packageManager": "pnpm@10.33.3",
+  "scripts": {
+    "dev": "concurrently -n cms,web -c cyan,magenta \"pnpm --filter @cosmedic/cms dev\" \"pnpm --filter @cosmedic/web dev\"",
+    "dev:cms": "pnpm --filter @cosmedic/cms dev",
+    "dev:web": "pnpm --filter @cosmedic/web dev",
+    "build": "pnpm --filter @cosmedic/cms build && pnpm --filter @cosmedic/web build",
+    "build:cms": "pnpm --filter @cosmedic/cms build",
+    "build:web": "pnpm --filter @cosmedic/web build",
+    "start": "concurrently -n cms,web -c cyan,magenta \"pnpm --filter @cosmedic/cms start\" \"pnpm --filter @cosmedic/web start\"",
+    "generate:types": "pnpm --filter @cosmedic/cms generate:types",
+    "lint": "eslint . --config config/tooling/eslint.config.mjs",
+    "lint:fix": "eslint . --config config/tooling/eslint.config.mjs --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,js,mjs,cjs,json,md}\"",
+    "test": "pnpm --filter @cosmedic/cms test && pnpm --filter @cosmedic/web test"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.16.0",
+    "concurrently": "^9.1.0",
+    "eslint": "^9.16.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "sharp",
+      "esbuild",
+      "unrs-resolver",
+      "@swc/core"
+    ]
+  }
+}

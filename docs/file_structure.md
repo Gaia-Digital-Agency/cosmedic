@@ -33,16 +33,16 @@
 │   ├── brand-guidelines.pdf         ← BIMC CosMedic Brand Guidelines v1.0 (canonical brand source)
 │   └── pricelist.xlsx               ← clinic's canonical price + procedure catalogue (CMS seed source)
 │
-├── design_reference/assets/         ← CURRENT — design source imagery, lives inside design_reference/
+├── design/assets/         ← CURRENT — design source imagery, lives inside design/
 │   ├── logo.png                     ← BIMC lockup (bronze on transparent) — referenced by design as `assets/logo.png`
 │   ├── logo-light.png               ← BIMC lockup (white) — referenced as `assets/logo-light.png`
 │   ├── surgeons/                    ← 8 surgeon portraits (suka.png, astri.png, etc.)
 │   ├── treatments/                  ← 6 discipline hero images
 │   └── results/                     ← 3 B&A composite images (lip-lift × 2, necklift × 1)
 │
-│   NOTE: This folder lives inside design_reference/ because the design's
+│   NOTE: This folder lives inside design/ because the design's
 │   .html / .jsx files reference paths as `assets/logo.png` (relative). When
-│   served by nginx with root=design_reference/, those paths resolve correctly.
+│   served by nginx with root=design/, those paths resolve correctly.
 │   Renames or moves here would break the design preview — Non-negotiable #1.
 │
 ├── assets/                          ← (Phase 1+) PRODUCTION asset structure for packages/web/
@@ -54,7 +54,7 @@
 │       ├── results/                 ← 29 B&A composites for production (Phase 10)
 │       └── lifestyle/               ← hero / recovery villa / place imagery (Phase 10)
 │
-├── design_reference/                ← original Claude Design source (READ-ONLY reference)
+├── design/                ← original Claude Design source (READ-ONLY reference)
 │   ├── index.html                   ← homepage + the other root .html page shells (Babel-in-browser)
 │   ├── global.css                   ← canonical design tokens
 │   ├── shared.jsx                   ← React primitives + data exports
@@ -67,7 +67,7 @@
 │       └── design/                  ← older handoff iteration: 41 procedure-*.html flat pages, etc.
 │
 │   Two iterations are preserved because they describe different routing models:
-│   - Root files (`design_reference/*.html`): newer nested model — `treatment-{discipline}-{sub}.html`
+│   - Root files (`design/*.html`): newer nested model — `treatment-{discipline}-{sub}.html`
 │   - `_original-handoff/design/*.html`: older flat model — `procedure-{slug}.html` (41 files)
 │   Both inform Phase 4 (detail templates).
 │
@@ -284,12 +284,12 @@
 | Current path | End-state path | Reason |
 |---|---|---|
 | `uploads/` | `discovery/` (subdivided by type) | Clarifies these are discovery artifacts, not production assets |
-| `pages/*.jsx` + loose `.html` / `.jsx` at root | `design_reference/` | Quarantine the Babel-in-browser prototype so it's clearly READ-ONLY reference |
+| `pages/*.jsx` + loose `.html` / `.jsx` at root | `design/` | Quarantine the Babel-in-browser prototype so it's clearly READ-ONLY reference |
 | `assets/surgeons/`, `assets/treatments/`, `assets/results/` | `assets/images/{surgeons,treatments,results}/` | Cleaner hierarchy; makes `assets/logos/` and `assets/images/` siblings |
-| `BIMC CosMedic Homepage Wireframes.html`, `design-canvas.jsx`, `wireframes.jsx`, `tweaks-panel.jsx` | `design_reference/` | Same — quarantine non-production design tooling |
+| `BIMC CosMedic Homepage Wireframes.html`, `design-canvas.jsx`, `wireframes.jsx`, `tweaks-panel.jsx` | `design/` | Same — quarantine non-production design tooling |
 | `brand.pdf` | `docs/brand-guidelines.pdf` | Canonical brand source moves into the docs folder |
 | `procedure.xlsx` | `docs/pricelist.xlsx` | CMS seed source moves into the docs folder |
-| `design_handoff_bimc_cosmedic/` (the original handoff README + design copy) | merged into `design_reference/` | Avoid two copies of design files |
+| `design_handoff_bimc_cosmedic/` (the original handoff README + design copy) | merged into `design/` | Avoid two copies of design files |
 
 ## What is gitignored
 
@@ -306,7 +306,7 @@ See `.gitignore`. Highlights:
 ## What is intentionally NOT gitignored (for the snapshot-then-plan first commit)
 
 - `discovery/` — the full uploads/ history including discovery PDFs + screenshots. Preserves provenance of the design + content decisions.
-- `design_reference/` — the Babel-in-browser prototype + 75 HTML files. Frozen reference; never edited but always available.
+- `design/` — the Babel-in-browser prototype + 75 HTML files. Frozen reference; never edited but always available.
 - `assets/images/` — seed imagery.
 
 After the project matures we may move `discovery/` to a separate archive (e.g. Google Drive) and remove from repo. For now, keep.

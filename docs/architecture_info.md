@@ -94,7 +94,7 @@ See `docs/file_structure.md` for the complete tree. High level:
 ├── packages/web/    ← Vite SSR + React + Tailwind (port 3007)
 ├── docs/            ← this folder — north-star documentation + brand inputs
 ├── assets/          ← seed imagery + brand assets
-├── design_reference/← original Claude Design source (kept read-only)
+├── design/← original Claude Design source (kept read-only)
 ├── discovery/       ← discovery artifacts (was uploads/)
 ├── config/tooling/  ← shared ESLint / Prettier / TS configs
 ├── tests/           ← Vitest + Playwright + visual regression

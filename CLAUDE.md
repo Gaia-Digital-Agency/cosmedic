@@ -17,7 +17,7 @@ Goal: ship a multi-page editorial-luxury site (~88 routes — homepage, 6 discip
 
 Every change must respect:
 
-1. **Frontend pixel-fidelity to Claude Design** — production matches design 100%. See [docs/sitemap.md](docs/sitemap.md) for the route matrix; see [design_reference/](design_reference/) for source.
+1. **Frontend pixel-fidelity to Claude Design** — production matches design 100%. See [docs/sitemap.md](docs/sitemap.md) for the route matrix; see [design/](design/) for source.
 2. **Lighthouse Green on every page** — Accessibility / Best Practices / SEO ≥ 90 on every route × every breakpoint.
 3. **Editor-friendly CMS** — every editorial string + every image lives in a Payload collection. See [docs/db_schema.md](docs/db_schema.md).
 4. **CosMedic Site CMS branding** — Payload admin uses the BIMC brand identity. See [docs/cms_info.md](docs/cms_info.md).
@@ -36,28 +36,21 @@ Every change must respect:
 | [docs/cms_ops.md](docs/cms_ops.md) | Before writing Payload hooks, access control, seed scripts, drafts/preview, or email pipeline (the HOW) |
 | [docs/cms_schema.md](docs/cms_schema.md) | Before adding a UI surface — verify it traces to a CMS entity (Non-negotiable #3 audit) |
 | [docs/plan.md](docs/plan.md) | Before starting any phase — the 14-phase execution plan + locked decisions |
+| [docs/todo.md](docs/todo.md) | Master TODO — phase checklist + 47-page CMS record tracker |
 | [docs/brand-guidelines.pdf](docs/brand-guidelines.pdf) | Canonical brand source — palette, typography, mark, usage rules |
 | [docs/pricelist.xlsx](docs/pricelist.xlsx) | Canonical clinic price + procedure catalogue — seed source for Phase 6 |
-| [design_reference/](design_reference/) | Original Claude Design source — never modified, only mirrored |
+| [design/](design/) | Original Claude Design source — never modified, only mirrored |
 
 ## Sibling sites on this server (gda-s01)
 
-Touch none of these. They are managed independently via pm2 + nginx:
-
-`christos` · `dashboard` · `flowstep` · `rhproperties` · `templatebase` · `templategen` · `valuations` · `whatsnewasia` · `wteindo` · `zenbali`
-
-The closest reference for the VRTPN pattern is `/var/www/christos/` — same monorepo layout (packages/cms + packages/web), same pm2 config style. Read but never modify.
+This server hosts ~10 other production sites under `*.gaiada.online`. **Do not look at them, read from them, or reference them.** All cosmedic work derives from this project's own `docs/` folder. Never `pm2 restart all`. Never reload nginx without `nginx -t`. Never touch any other site's files, certs, or databases.
 
 ## Port allocation
 
-| Site | Web | CMS |
-|---|---|---|
-| templatebase | 3004 | 4004 |
-| templategen | 3005 | 4005 |
-| christos | 3006 | 4006 |
-| **cosmedic** | **3007** | **4007** |
+- **cosmedic-web** → `3007`
+- **cosmedic-cms** → `4007`
 
-Verify free with `ss -tlnp | grep ':30\\|:40'` before binding.
+Verify free with `ss -tlnp | grep ':3007\\|:4007'` before binding.
 
 ## Postgres
 
@@ -67,10 +60,22 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
 
 - Scope every action to `/var/www/cosmedic/`. Touch siblings only when explicitly asked.
 - Read the relevant `docs/*.md` before making decisions that affect that area.
-- Treat `design_reference/` as **read-only**.
+- Treat `design/` as **read-only**.
 - Treat `docs/brand-guidelines.pdf` and `docs/pricelist.xlsx` as **source-of-truth inputs** — quote from them when justifying decisions.
 - Pixel-Fidelity Gate + Lighthouse Green Gate are launch-blocking. Don't bypass them.
 - This server is the dev environment (user chose server-first). Edits happen here; commits + pushes happen here.
+
+## Current state (Phase 0 complete)
+
+- Documentation in `docs/` is complete and committed.
+- Root `package.json` + `pnpm-workspace.yaml` + `tsconfig.json` + `config/tooling/*` scaffolded.
+- `pnpm install` run successfully (128 packages, dev tooling: eslint, prettier, typescript, typescript-eslint, concurrently).
+- `pnpm-lock.yaml` committed.
+- `packages/cms` and `packages/web` **not yet created** — that's Phase 1.
+- DNS `cosmedic.gaiada.online` pending (NXDOMAIN at last check).
+- Postgres `cosmedic` role + db **not yet created** — Phase 1.
+
+Next session: **Phase 1** per `docs/plan.md` and `docs/todo.md`.
 
 ## Common ops
 
@@ -96,5 +101,4 @@ sudo nginx -t && sudo systemctl reload nginx
 ## When you're not sure
 
 1. Check the relevant `docs/*.md`.
-2. Check `/var/www/christos/` for the established pattern.
-3. Ask the user — better one clarifying question than a wrong assumption.
+2. Ask the user — better one clarifying question than a wrong assumption.
