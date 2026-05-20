@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BIMC CosMedic — Homepage Wireframes</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Caveat:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --font-serif: "Cormorant Garamond", Georgia, serif;
+    --font-hand: "Caveat", "Comic Sans MS", cursive;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+    --paper: #F5F1EA;
+    --paper-warm: #EFE9DE;
+    --cream: #E8E0D0;
+
+    --ink-100: #1A1815;
+    --ink-80: #3C3832;
+    --ink-60: #6B6660;
+    --ink-40: #B8B2A8;
+    --ink-20: #D9D4C8;
+
+    --accent: #A67C52;
+    --accent-deep: #6B4A2B;
+    --accent-tint: rgba(166, 124, 82, 0.10);
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #2A2825;
+    font-family: var(--font-serif);
+    color: var(--ink-100);
+    min-height: 100vh;
+  }
+
+  #root { min-height: 100vh; }
+</style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script>
+  // Tweakable defaults — wrapped for host persistence.
+  window.TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "showNotes": false,
+    "accentName": "Bronze",
+    "accent": "#A67C52",
+    "accentDeep": "#6B4A2B",
+    "accentTint": "rgba(166,124,82,0.10)",
+    "paperName": "Cream",
+    "paper": "#F5F1EA",
+    "paperWarm": "#EFE9DE",
+    "cream": "#E8E0D0"
+  }/*EDITMODE-END*/;
+</script>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="wireframes.jsx"></script>
+
+</body>
+</html>

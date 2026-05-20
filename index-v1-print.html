@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BIMC CosMedic — Considered Cosmetic Medicine in Bali</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="global.css" />
+
+<style>
+  /* --- Print-mode preparation: force backgrounds, neutralise sticky/fixed chrome --- */
+  html, body { background: var(--paper); }
+
+  /* Reveal animations are observer-driven; force everything visible for print. */
+  [style*="opacity: 0"] { opacity: 1 !important; }
+  [style*="translateY"] { transform: none !important; }
+
+  /* Hide interactive / floating chrome that doesn't belong in a printed brochure */
+  .site-header,
+  .fixed-cta,
+  .chat-fab,
+  .whatsapp-fab,
+  .header-cta,
+  .lang-switcher,
+  .footer-newsletter,
+  .footer-newsletter-label {
+    display: none !important;
+  }
+
+  /* Keep hero readable on a single page */
+  .hero-v2 { min-height: 0 !important; }
+
+  @page {
+    size: A4 portrait;
+    margin: 14mm 12mm;
+  }
+
+  @media print {
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+    html, body {
+      background: var(--paper) !important;
+      font-size: 11pt;
+    }
+
+    /* Remove every animation, transition, and hover artifact */
+    *, *::before, *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+
+    /* Make all revealed elements visible (IntersectionObserver may not fire in print) */
+    [style*="opacity"] { opacity: 1 !important; }
+    [style*="transform"] { transform: none !important; }
+
+    /* No fixed positioning in print */
+    .site-header,
+    .fixed-cta,
+    .chat-fab,
+    .whatsapp-fab { display: none !important; }
+
+    /* Force every major section to begin a new page */
+    main > section,
+    .page-section,
+    .hero-v2,
+    .cta-band-slim,
+    .site-footer {
+      break-before: page;
+      page-break-before: always;
+      break-inside: avoid-page;
+    }
+
+    /* The hero is the first page — don't push it */
+    main > section:first-child,
+    .hero-v2:first-of-type {
+      break-before: avoid !important;
+      page-break-before: avoid !important;
+    }
+
+    /* Keep cards, figures, and quote blocks intact on a single page */
+    .treatment-card,
+    .surgeon-card,
+    .pricing-card,
+    .price-row,
+    .ba-card,
+    figure,
+    blockquote,
+    .faq-item,
+    .related-card,
+    .stat-block {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    /* Tighten oversized hero on print */
+    .hero-v2 { min-height: 0 !important; padding: 0 !important; }
+    .hero-v2-bg { position: relative !important; height: 320px !important; }
+    .hero-v2-headline { position: relative !important; padding: 28px 0 !important; }
+    .display { font-size: 56pt !important; line-height: 1.02 !important; }
+
+    /* Make sure images & gradients actually render */
+    img { max-width: 100%; height: auto; }
+
+    /* Strip link decoration that adds visual noise on print */
+    a { color: inherit; text-decoration: none; }
+
+    /* Footer */
+    .site-footer { background: var(--ink-100) !important; color: var(--paper) !important; }
+  }
+</style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="shared.jsx"></script>
+<script type="text/babel" src="pages/home.jsx"></script>
+
+<script type="text/babel">
+  // Auto-print once everything has rendered, fonts have loaded, and Babel has
+  // transformed the JSX scripts above.
+  (async () => {
+    try { await document.fonts.ready; } catch (e) {}
+    // Wait until React has mounted into #root
+    const root = document.getElementById("root");
+    const waitForMount = () => new Promise(resolve => {
+      const tick = () => {
+        if (root && root.childNodes.length > 0) return resolve();
+        requestAnimationFrame(tick);
+      };
+      tick();
+    });
+    await waitForMount();
+    // Force all reveal-on-scroll elements visible
+    document.querySelectorAll('[style*="opacity"]').forEach(el => { el.style.opacity = 1; });
+    document.querySelectorAll('[style*="translate"]').forEach(el => { el.style.transform = 'none'; });
+    // Give images, fonts, and final layout a beat to settle
+    await new Promise(r => setTimeout(r, 1500));
+    window.print();
+  })();
+</script>
+
+</body>
+</html>

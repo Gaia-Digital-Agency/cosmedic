@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Colour Audit · BIMC CosMedic v1.4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="global.css" />
+<style>
+  body { background: var(--paper); }
+  .audit { max-width: 1240px; margin: 0 auto; padding: 72px 64px 140px; }
+  .head { display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; padding-bottom: 56px; border-bottom: 1px solid var(--ink-20); }
+  .head h1 { font-family: var(--font-serif); font-weight: 300; font-size: 72px; line-height: 0.98; letter-spacing: -0.02em; margin: 0; }
+  .head h1 .italic { color: var(--accent-deep); font-style: italic; }
+  .head .lede { font-size: 18px; line-height: 1.65; color: var(--ink-80); margin: 24px 0 0; max-width: 56ch; }
+  .meta { display: flex; flex-direction: column; gap: 12px; }
+  .stat { display: flex; align-items: baseline; gap: 14px; }
+  .stat .num { font-family: var(--font-serif); font-size: 42px; font-weight: 300; letter-spacing: -0.02em; color: var(--accent-deep); }
+
+  .section-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--accent-deep); margin: 72px 0 24px; }
+  .section-lede { font-size: 16px; line-height: 1.6; color: var(--ink-80); margin: 0 0 32px; max-width: 70ch; }
+
+  /* Current palette inventory */
+  .inventory { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .swatch { display: flex; flex-direction: column; border: 1px solid var(--ink-20); background: white; overflow: hidden; }
+  .swatch .chip { height: 92px; }
+  .swatch .meta-row { padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; }
+  .swatch .name { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-60); }
+  .swatch .hex { font-family: var(--font-serif); font-weight: 400; font-size: 17px; color: var(--ink-100); }
+  .swatch .use { font-family: var(--font-serif); font-style: italic; font-size: 13px; color: var(--ink-60); margin-top: 4px; }
+
+  /* Proposals */
+  .proposals { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 16px; }
+  .proposal { border: 1px solid var(--ink-20); background: white; padding: 0; cursor: pointer; transition: border-color .25s, transform .25s; display: flex; flex-direction: column; }
+  .proposal:hover { border-color: var(--accent); }
+  .proposal.selected { border-color: var(--accent-deep); border-width: 2px; }
+  .proposal .head-band { padding: 18px 22px; border-bottom: 1px solid var(--ink-20); display: flex; justify-content: space-between; align-items: center; }
+  .proposal .head-band h3 { font-family: var(--font-serif); font-weight: 400; font-size: 22px; margin: 0; letter-spacing: -0.01em; }
+  .proposal .head-band .pick { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-60); }
+  .proposal.selected .head-band .pick { color: var(--accent-deep); }
+  .proposal .strip { display: grid; grid-template-columns: repeat(5, 1fr); height: 80px; }
+  .proposal .strip > div { display: flex; align-items: flex-end; justify-content: center; padding: 8px; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.16em; color: rgba(255,255,255,0.7); }
+  .proposal .strip > div.dark { color: rgba(255,255,255,0.7); }
+  .proposal .strip > div.light { color: rgba(0,0,0,0.5); }
+  .proposal .body { padding: 22px; }
+  .proposal .body p { margin: 0; font-size: 14px; line-height: 1.55; color: var(--ink-80); }
+  .proposal .body ul { list-style: none; padding: 0; margin: 14px 0 0; display: flex; flex-direction: column; gap: 6px; }
+  .proposal .body li { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em; color: var(--ink-60); display: flex; gap: 10px; }
+  .proposal .body li::before { content: ""; width: 12px; height: 1px; background: var(--accent); display: inline-block; margin-top: 6px; flex-shrink: 0; }
+
+  /* Preview */
+  .preview-section { margin-top: 80px; }
+  .preview-frame { border: 1px solid var(--ink-20); background: white; overflow: hidden; }
+  .preview-iframe-wrap { background: var(--cream); padding: 0; }
+  .preview { padding: 64px 56px; transition: background .35s ease, color .35s ease; }
+  .preview .eyebrow { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; display: flex; align-items: center; gap: 12px; }
+  .preview .eyebrow::before { content: ""; width: 28px; height: 1px; background: var(--p-accent); }
+  .preview h2 { font-family: var(--font-serif); font-weight: 300; font-size: 56px; line-height: 1; letter-spacing: -0.02em; margin: 18px 0 18px; }
+  .preview h2 .italic { font-style: italic; }
+  .preview p.lede { font-size: 17px; line-height: 1.65; margin: 0; max-width: 56ch; }
+  .preview .pills { display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap; }
+  .preview .btn-p, .preview .btn-g { display: inline-flex; align-items: center; gap: 12px; padding: 14px 22px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: all .25s ease; border: 1px solid; }
+  .preview .strip-stat { margin-top: 48px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 36px; padding-top: 36px; border-top: 1px solid; }
+  .preview .strip-stat .ts { display: flex; flex-direction: column; gap: 8px; }
+  .preview .strip-stat .ts-num { font-family: var(--font-serif); font-style: italic; font-weight: 400; font-size: 48px; line-height: 0.95; letter-spacing: -0.02em; }
+  .preview .strip-stat .ts-lab { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; }
+
+  /* Footer apply */
+  .apply-band { margin-top: 96px; padding: 48px; background: var(--ink-100); color: var(--paper); display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .apply-band h3 { font-family: var(--font-serif); font-weight: 300; font-size: 38px; line-height: 1.1; margin: 0; letter-spacing: -0.02em; }
+  .apply-band h3 .italic { color: var(--accent-warm); font-style: italic; }
+  .apply-band p { font-size: 16px; line-height: 1.6; color: rgba(255,255,255,0.7); margin: 14px 0 0; }
+  .apply-band .submit { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; padding: 16px 28px; background: var(--accent); color: var(--paper); border: none; cursor: pointer; transition: background .25s; margin-top: 22px; }
+  .apply-band .submit:hover { background: var(--accent-warm); }
+  .summary { margin-top: 22px; padding: 18px 22px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; line-height: 1.7; white-space: pre-wrap; }
+  .summary:empty { display: none; }
+
+  @media (max-width: 980px) {
+    .audit { padding: 48px 24px 100px; }
+    .head, .proposals, .inventory, .apply-band { grid-template-columns: 1fr; gap: 32px; }
+    .head h1 { font-size: 52px; }
+    .inventory { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="audit">
+
+  <!-- HEAD -->
+  <header class="head">
+    <div class="meta">
+      <span class="mono" style="color: var(--accent-deep);">Internal Memorandum · 19 May 2026</span>
+      <span class="mono">Subject · Colour palette consolidation</span>
+      <span class="mono">For · v1.4 Colour Grading</span>
+      <div class="stat" style="margin-top: 24px;">
+        <span class="num">17</span>
+        <span class="mono">Colours currently in tokens</span>
+      </div>
+      <div class="stat">
+        <span class="num">5–6</span>
+        <span class="mono">Target after consolidation</span>
+      </div>
+    </div>
+    <div>
+      <span class="eyebrow"><span class="eyebrow-rule"></span> A colour audit</span>
+      <h1>Fewer colours,<br/><span class="italic">more rhythm.</span></h1>
+      <p class="lede">
+        v1.3 ships with 17 named colour tokens — six warm beiges (paper, paper-warm, cream, bone, sand, ink-10), seven ink stops, three bronze accents, plus an accent tint. The brand reads warm but the surfaces don't always feel intentional. Below: a full inventory of what's in use today, three possible directions for v1.4, and a live preview that updates as you click. Pick a direction, hit <em>Apply</em>, and I'll roll it across the site.
+      </p>
+    </div>
+  </header>
+
+  <!-- CURRENT INVENTORY -->
+  <div class="section-title">I · Current palette · 17 tokens</div>
+  <p class="section-lede">Every token shipping in <code>global.css</code> today, grouped by family and labelled with where it appears.</p>
+
+  <div class="inventory" id="current-inventory"></div>
+
+  <!-- PROPOSALS -->
+  <div class="section-title">II · Three directions</div>
+  <p class="section-lede">Each proposal collapses 17 tokens down to 5–7, mapping cleanly to <em>black · white · light beige · dark beige · dark brown</em>. Click a card to preview it below.</p>
+
+  <div class="proposals" id="proposals"></div>
+
+  <!-- PREVIEW -->
+  <div class="preview-section">
+    <div class="section-title">III · Live preview</div>
+    <p class="section-lede">A representative hero, button row, and stats strip rendered in your selected palette. Toggle "Dark" to see the inverse (footer / CTA band) surface.</p>
+
+    <div style="display: flex; gap: 12px; margin-bottom: 14px;">
+      <button type="button" class="surface-btn surface-light selected" data-surface="light">Light surface</button>
+      <button type="button" class="surface-btn surface-dark" data-surface="dark">Dark surface</button>
+    </div>
+
+    <div class="preview-frame">
+      <div class="preview" id="preview">
+        <span class="eyebrow">Surgical · Breast</span>
+        <h2><span>Considered,</span><br/><span class="italic">your own.</span></h2>
+        <p class="lede">Conservative breast surgery — augmentation, lift, reduction, refinement — sized to your anatomy by ISAPS-credentialed surgeons. Procedures from Rp 102,000,000 (≈ AUD 9,800).</p>
+        <div class="pills">
+          <a class="btn-p"><span>Plan Your Treatment</span><span>→</span></a>
+          <a class="btn-g"><span>View Pricing</span><span>→</span></a>
+        </div>
+        <div class="strip-stat">
+          <div class="ts"><span class="ts-num">28</span><span class="ts-lab">Years in practice</span></div>
+          <div class="ts"><span class="ts-num">8</span><span class="ts-lab">ISAPS / FICS surgeons</span></div>
+          <div class="ts"><span class="ts-num">3,400+</span><span class="ts-lab">Procedures performed</span></div>
+          <div class="ts"><span class="ts-num">#1</span><span class="ts-lab">Hospital 2026</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APPLY -->
+  <footer class="apply-band">
+    <div>
+      <span class="mono" style="color: var(--accent-warm);">When you've decided</span>
+      <h3 style="margin-top: 18px;">Apply selection<br/><span class="italic">to global.css.</span></h3>
+    </div>
+    <div>
+      <p>Confirm your selection below. I'll write the new tokens to <code>global.css</code> and verify each page renders correctly. You can always revert.</p>
+      <button class="submit" id="submit-btn">Generate apply brief →</button>
+      <div class="summary" id="summary"></div>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+(() => {
+  // ============================================
+  // CURRENT PALETTE INVENTORY
+  // ============================================
+  const CURRENT = [
+    { name: "--paper",       hex: "#F4EFE6", use: "Default page background" },
+    { name: "--paper-warm",  hex: "#EFE8DA", use: "Trust bar, tinted sections" },
+    { name: "--cream",       hex: "#E6DCC8", use: "Stats row, image fallbacks" },
+    { name: "--bone",        hex: "#DCD0B8", use: "Rarely used" },
+    { name: "--sand",        hex: "#C9B89A", use: "Rarely used" },
+    { name: "--ink-100",     hex: "#1F1B16", use: "Body text, dark surfaces" },
+    { name: "--ink-90",      hex: "#2E2922", use: "Rarely used" },
+    { name: "--ink-80",      hex: "#423B30", use: "Section body copy" },
+    { name: "--ink-60",      hex: "#6B6354", use: "Muted captions, mono" },
+    { name: "--ink-40",      hex: "#A8A192", use: "Placeholders, dividers" },
+    { name: "--ink-20",      hex: "#D4CDBE", use: "Rules, card borders" },
+    { name: "--ink-10",      hex: "#E8E2D5", use: "Rarely used" },
+    { name: "--accent",      hex: "#A67C52", use: "Buttons, accents, links" },
+    { name: "--accent-warm", hex: "#B58963", use: "Hover state on dark CTA" },
+    { name: "--accent-deep", hex: "#6B4A2B", use: "Primary buttons, eyebrows" },
+  ];
+
+  const inventoryEl = document.getElementById("current-inventory");
+  CURRENT.forEach(c => {
+    const card = document.createElement("div");
+    card.className = "swatch";
+    card.innerHTML = `
+      <div class="chip" style="background: ${c.hex}"></div>
+      <div class="meta-row">
+        <span class="name">${c.name}</span>
+        <span class="hex">${c.hex}</span>
+        <span class="use">${c.use}</span>
+      </div>
+    `;
+    inventoryEl.appendChild(card);
+  });
+
+  // ============================================
+  // PROPOSALS
+  // ============================================
+  const PROPOSALS = {
+    A: {
+      title: "A · Editorial",
+      desc: "Closest to today. Keeps the warm-beige editorial DNA intact, drops the unused middle tones (bone, sand, ink-10, ink-90), and consolidates the bronze accents to a single colour.",
+      colors: {
+        black:      "#1F1B16",
+        white:      "#FFFFFF",
+        lightBeige: "#F4EFE6",
+        darkBeige:  "#E6DCC8",
+        darkBrown:  "#6B4A2B",
+        accent:     "#A67C52",
+      },
+      notes: [
+        "5 surface colours + 1 accent",
+        "Closest to current — minimal disruption",
+        "Preserves the warm sanctuary feel",
+      ],
+    },
+    B: {
+      title: "B · Refined",
+      desc: "Cooler, more confident neutrals. Slightly desaturated beiges, deeper brown, more contrast. Reads more 'medical luxury' than 'spa'.",
+      colors: {
+        black:      "#1A1A1A",
+        white:      "#FAFAF7",
+        lightBeige: "#EFE9DD",
+        darkBeige:  "#D9CDB6",
+        darkBrown:  "#5A3D22",
+        accent:     "#8C6A45",
+      },
+      notes: [
+        "5 surface colours + 1 accent",
+        "More contrast, less warmth",
+        "Reads more clinical, less spa",
+      ],
+    },
+    C: {
+      title: "C · Earthy",
+      desc: "Warmer, deeper, more grounded. Heavier on the brown side — closer to natural materials (terracotta, raw timber). The most distinctive of the three.",
+      colors: {
+        black:      "#231C12",
+        white:      "#F9F2E5",
+        lightBeige: "#E8DDC7",
+        darkBeige:  "#C9B58E",
+        darkBrown:  "#4F3219",
+        accent:     "#9C6E3D",
+      },
+      notes: [
+        "5 surface colours + 1 accent",
+        "Strongest brand signature",
+        "Risk: looks 'spa-resort' if used heavily",
+      ],
+    },
+  };
+
+  let selected = "A";
+  let surface = "light";
+
+  function renderProposals() {
+    const root = document.getElementById("proposals");
+    root.innerHTML = "";
+    Object.entries(PROPOSALS).forEach(([key, p]) => {
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = `proposal ${selected === key ? "selected" : ""}`;
+      card.dataset.key = key;
+      card.innerHTML = `
+        <div class="head-band">
+          <h3>${p.title}</h3>
+          <span class="pick">${selected === key ? "✓ Selected" : "Pick this"}</span>
+        </div>
+        <div class="strip">
+          <div style="background: ${p.colors.black}" class="dark">BLACK</div>
+          <div style="background: ${p.colors.darkBrown}" class="dark">BROWN</div>
+          <div style="background: ${p.colors.accent}" class="dark">ACCENT</div>
+          <div style="background: ${p.colors.darkBeige}" class="light">DK BEIGE</div>
+          <div style="background: ${p.colors.lightBeige}" class="light">LT BEIGE</div>
+        </div>
+        <div class="body">
+          <p>${p.desc}</p>
+          <ul>${p.notes.map(n => `<li>${n}</li>`).join("")}</ul>
+        </div>
+      `;
+      card.addEventListener("click", () => { selected = key; renderProposals(); applyPreview(); });
+      root.appendChild(card);
+    });
+  }
+
+  function applyPreview() {
+    const p = PROPOSALS[selected].colors;
+    const preview = document.getElementById("preview");
+
+    if (surface === "light") {
+      preview.style.setProperty("--p-bg", p.lightBeige);
+      preview.style.setProperty("--p-bg-2", p.darkBeige);
+      preview.style.setProperty("--p-text", p.black);
+      preview.style.setProperty("--p-muted", "rgba(0,0,0,0.55)");
+      preview.style.setProperty("--p-rule", "rgba(0,0,0,0.18)");
+      preview.style.setProperty("--p-accent", p.accent);
+      preview.style.setProperty("--p-accent-deep", p.darkBrown);
+    } else {
+      preview.style.setProperty("--p-bg", p.black);
+      preview.style.setProperty("--p-bg-2", "rgba(255,255,255,0.04)");
+      preview.style.setProperty("--p-text", p.white);
+      preview.style.setProperty("--p-muted", "rgba(255,255,255,0.6)");
+      preview.style.setProperty("--p-rule", "rgba(255,255,255,0.18)");
+      preview.style.setProperty("--p-accent", p.accent);
+      preview.style.setProperty("--p-accent-deep", p.accent);
+    }
+
+    preview.style.background = "var(--p-bg)";
+    preview.style.color = "var(--p-text)";
+
+    preview.querySelector(".eyebrow").style.color = "var(--p-accent-deep)";
+    preview.querySelector("h2 .italic").style.color = "var(--p-accent-deep)";
+    preview.querySelector("p.lede").style.color = "var(--p-muted)";
+
+    const btnP = preview.querySelector(".btn-p");
+    btnP.style.background = "var(--p-accent-deep)";
+    btnP.style.color = "var(--p-bg)";
+    btnP.style.borderColor = "var(--p-accent-deep)";
+
+    const btnG = preview.querySelector(".btn-g");
+    btnG.style.background = "transparent";
+    btnG.style.color = "var(--p-text)";
+    btnG.style.borderColor = "var(--p-rule)";
+
+    preview.querySelector(".strip-stat").style.borderTopColor = "var(--p-rule)";
+    preview.querySelectorAll(".ts-num").forEach(el => { el.style.color = "var(--p-accent-deep)"; });
+    preview.querySelectorAll(".ts-lab").forEach(el => { el.style.color = "var(--p-muted)"; });
+  }
+
+  document.querySelectorAll(".surface-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      surface = btn.dataset.surface;
+      document.querySelectorAll(".surface-btn").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      applyPreview();
+    });
+  });
+
+  // style the surface-btn (light look matches Tweaks pills)
+  const css = document.createElement("style");
+  css.textContent = `
+    .surface-btn { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; padding: 10px 16px; background: transparent; border: 1px solid var(--ink-20); color: var(--ink-60); cursor: pointer; transition: all .25s; }
+    .surface-btn.selected { border-color: var(--accent-deep); color: var(--accent-deep); background: var(--paper-warm); }
+    .surface-btn:not(.selected):hover { border-color: var(--accent); color: var(--ink-100); }
+  `;
+  document.head.appendChild(css);
+
+  // Apply / summary
+  document.getElementById("submit-btn").addEventListener("click", () => {
+    const p = PROPOSALS[selected];
+    const c = p.colors;
+    const txt = `BIMC COSMEDIC v1.4 · COLOUR PALETTE\n` +
+                `Selected · ${p.title}\n\n` +
+                `--black        ${c.black}\n` +
+                `--white        ${c.white}\n` +
+                `--light-beige  ${c.lightBeige}\n` +
+                `--dark-beige   ${c.darkBeige}\n` +
+                `--dark-brown   ${c.darkBrown}\n` +
+                `--accent       ${c.accent}\n\n` +
+                `Mapping plan:\n` +
+                `  --paper, --paper-warm     → --light-beige\n` +
+                `  --cream, --bone           → --dark-beige\n` +
+                `  --sand, --ink-40, --ink-20 → muted scale (derived)\n` +
+                `  --ink-80, --ink-90, --ink-100 → --black\n` +
+                `  --accent                  → --accent\n` +
+                `  --accent-warm             → --accent (consolidated)\n` +
+                `  --accent-deep             → --dark-brown\n\n` +
+                `Ready to apply — paste this back to confirm.`;
+    document.getElementById("summary").textContent = txt;
+  });
+
+  renderProposals();
+  applyPreview();
+})();
+</script>
+
+</body>
+</html>

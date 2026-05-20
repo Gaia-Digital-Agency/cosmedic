@@ -1,0 +1,41 @@
+# Build outputs
+build
+dist
+.next
+.vercel
+next-env.d.ts
+tsconfig.tsbuildinfo
+
+# Dependencies
+node_modules
+
+# Env / secrets
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Payload media (runtime uploads — managed by Payload, not git)
+public/media/
+packages/web/public/media/
+packages/cms/public/media/
+
+# Generated routing artifacts
+public/robots.txt
+public/sitemap*.xml
+
+# Test artifacts
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# Local infra
+/database_backup/
+/.claude/worktrees/
+
+# graphify (laptop only — would not appear on server, but match sibling sites)
+/graphify-out/

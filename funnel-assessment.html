@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sales Funnel Assessment · BIMC CosMedic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="global.css" />
+<style>
+  body { background: var(--paper); }
+
+  .audit-shell {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 64px 160px;
+  }
+
+  .audit-head { display: grid; grid-template-columns: 1fr 1.6fr; gap: 80px; padding-bottom: 64px; border-bottom: 1px solid var(--ink-20); }
+  .audit-head .meta { display: flex; flex-direction: column; gap: 18px; padding-top: 8px; }
+  .audit-head h1 { font-family: var(--font-serif); font-weight: 300; font-size: 76px; line-height: 0.98; letter-spacing: -0.02em; margin: 0; color: var(--ink-100); }
+  .audit-head h1 .italic { color: var(--accent-deep); font-weight: 400; }
+  .audit-head .lede { font-size: 19px; line-height: 1.65; color: var(--ink-80); margin: 28px 0 0; max-width: 56ch; }
+
+  /* Funnel diagram */
+  .funnel { margin: 96px 0 0; }
+  .funnel-eyebrow { margin-bottom: 28px; }
+  .funnel-rows { display: flex; flex-direction: column; gap: 14px; }
+  .funnel-row {
+    display: grid;
+    grid-template-columns: 220px 1fr 240px 90px;
+    gap: 32px;
+    align-items: center;
+    padding: 22px 28px;
+    border: 1px solid var(--ink-20);
+    background: rgba(255,255,255,0.4);
+    position: relative;
+  }
+  .funnel-row[data-health="weak"] { border-left: 3px solid #B45A3C; }
+  .funnel-row[data-health="ok"] { border-left: 3px solid var(--accent); }
+  .funnel-row[data-health="good"] { border-left: 3px solid #5C7A4F; }
+
+  .funnel-stage { display: flex; flex-direction: column; gap: 6px; }
+  .funnel-stage .num { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.22em; color: var(--accent-deep); }
+  .funnel-stage h3 { font-family: var(--font-serif); font-weight: 400; font-size: 26px; margin: 0; letter-spacing: -0.01em; }
+  .funnel-stage h3 em { font-style: italic; color: var(--accent-deep); }
+
+  .funnel-note { font-family: var(--font-serif); font-size: 16px; line-height: 1.55; color: var(--ink-80); }
+  .funnel-pages { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.18em; color: var(--ink-60); text-transform: uppercase; }
+  .funnel-health {
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+    text-align: right;
+  }
+  .funnel-health[data-h="weak"] { color: #B45A3C; }
+  .funnel-health[data-h="ok"] { color: var(--accent-deep); }
+  .funnel-health[data-h="good"] { color: #5C7A4F; }
+
+  /* Findings */
+  .findings { margin: 120px 0 0; }
+  .findings-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; border-top: 1px solid var(--ink-20); }
+  .finding { padding: 32px 36px 32px 0; border-bottom: 1px solid var(--ink-20); }
+  .finding:nth-child(odd) { padding-right: 56px; border-right: 1px solid var(--ink-20); }
+  .finding:nth-child(even) { padding-left: 48px; }
+  .finding .tag { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-deep); }
+  .finding h4 { font-family: var(--font-serif); font-weight: 400; font-size: 24px; margin: 12px 0 10px; letter-spacing: -0.01em; line-height: 1.2; }
+  .finding p { font-size: 16px; line-height: 1.6; color: var(--ink-80); margin: 0; }
+
+  /* Suggestions */
+  .suggestions { margin: 128px 0 0; }
+  .suggestions-head { display: grid; grid-template-columns: 1fr 1.6fr; gap: 80px; align-items: end; padding-bottom: 28px; border-bottom: 1px solid var(--ink-20); }
+  .suggestions-head h2 { font-family: var(--font-serif); font-weight: 300; font-size: 64px; line-height: 1; margin: 12px 0 0; letter-spacing: -0.02em; }
+  .suggestions-head h2 .italic { color: var(--accent-deep); }
+  .suggestions-head .helper { font-size: 16px; line-height: 1.6; color: var(--ink-80); max-width: 52ch; }
+
+  .summary-bar {
+    margin-top: 28px;
+    display: flex;
+    gap: 48px;
+    padding: 22px 28px;
+    background: rgba(255,255,255,0.5);
+    border: 1px solid var(--ink-20);
+    align-items: center;
+  }
+  .summary-bar .item { display: flex; flex-direction: column; gap: 4px; }
+  .summary-bar .num {
+    font-family: var(--font-serif);
+    font-size: 38px;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .summary-bar .num.yes { color: #5C7A4F; }
+  .summary-bar .num.no { color: #B45A3C; }
+  .summary-bar .lab { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-60); }
+  .summary-bar .reset { margin-left: auto; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-60); border: 1px solid var(--ink-20); background: transparent; padding: 10px 16px; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
+  .summary-bar .reset:hover { border-color: var(--accent); color: var(--accent-deep); }
+
+  .sug-list { display: flex; flex-direction: column; gap: 0; margin-top: 0; }
+  .sug {
+    display: grid;
+    grid-template-columns: 64px 1fr 280px;
+    gap: 36px;
+    padding: 36px 0;
+    border-bottom: 1px solid var(--ink-20);
+    align-items: start;
+    transition: background 0.25s, opacity 0.25s;
+  }
+  .sug.decided-yes { background: rgba(92, 122, 79, 0.05); }
+  .sug.decided-no { background: rgba(180, 90, 60, 0.04); opacity: 0.55; }
+  .sug.decided-no .body h3 { text-decoration: line-through; text-decoration-color: rgba(180,90,60,0.5); }
+
+  .sug .num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--accent-deep);
+    padding-top: 8px;
+  }
+
+  .sug .body { display: flex; flex-direction: column; gap: 12px; }
+  .sug .body .meta-row { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+  .sug .body .stage-tag { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-60); padding: 4px 10px; border: 1px solid var(--ink-20); }
+  .sug .body .effort { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-60); }
+  .sug .body .effort em { color: var(--accent-deep); font-style: normal; }
+  .sug .body h3 { font-family: var(--font-serif); font-weight: 400; font-size: 28px; line-height: 1.15; margin: 0; letter-spacing: -0.01em; }
+  .sug .body h3 .italic { color: var(--accent-deep); }
+  .sug .body p { font-size: 16px; line-height: 1.6; color: var(--ink-80); margin: 4px 0 0; max-width: 62ch; }
+  .sug .body .why { font-family: var(--font-serif); font-style: italic; font-size: 15px; color: var(--ink-60); margin-top: 6px; }
+  .sug .body .why::before { content: "Why · "; font-family: var(--font-mono); font-style: normal; font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-deep); margin-right: 8px; }
+
+  .sug .decision { display: flex; flex-direction: column; gap: 10px; padding-top: 4px; }
+  .sug .decision .row { display: flex; gap: 8px; }
+  .sug .decision button {
+    flex: 1;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    padding: 12px 16px;
+    border: 1px solid var(--ink-20);
+    background: transparent;
+    color: var(--ink-80);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .sug .decision button:hover { border-color: var(--accent); color: var(--accent-deep); }
+  .sug .decision button.yes.active { background: #5C7A4F; border-color: #5C7A4F; color: var(--paper); }
+  .sug .decision button.no.active { background: #B45A3C; border-color: #B45A3C; color: var(--paper); }
+  .sug .decision .status { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-40); text-align: right; }
+  .sug.decided-yes .decision .status { color: #5C7A4F; }
+  .sug.decided-no .decision .status { color: #B45A3C; }
+
+  /* Footer band */
+  .audit-foot {
+    margin-top: 96px;
+    padding: 48px;
+    background: var(--ink-100);
+    color: var(--paper);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+  .audit-foot h3 { font-family: var(--font-serif); font-weight: 300; font-size: 42px; line-height: 1.05; margin: 0; letter-spacing: -0.02em; }
+  .audit-foot h3 .italic { color: var(--accent-warm); }
+  .audit-foot p { font-size: 16px; line-height: 1.6; color: rgba(255,255,255,0.7); margin: 0; }
+  .audit-foot .submit-btn {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    padding: 18px 28px;
+    background: var(--accent);
+    color: var(--paper);
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 18px;
+  }
+  .audit-foot .submit-btn:hover { background: var(--accent-warm); }
+  .audit-foot .summary-output {
+    margin-top: 22px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.85);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 18px;
+    white-space: pre-wrap;
+    line-height: 1.7;
+    max-height: 300px;
+    overflow: auto;
+  }
+  .audit-foot .summary-output:empty { display: none; }
+
+  @media (max-width: 900px) {
+    .audit-shell { padding: 48px 24px 100px; }
+    .audit-head, .suggestions-head, .audit-foot { grid-template-columns: 1fr; gap: 24px; }
+    .audit-head h1 { font-size: 48px; }
+    .funnel-row { grid-template-columns: 1fr; gap: 8px; }
+    .funnel-health { text-align: left; }
+    .findings-grid { grid-template-columns: 1fr; }
+    .finding:nth-child(odd) { padding-right: 0; border-right: none; }
+    .finding:nth-child(even) { padding-left: 0; }
+    .sug { grid-template-columns: 1fr; gap: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="audit-shell">
+
+  <!-- HEAD -->
+  <header class="audit-head">
+    <div class="meta">
+      <span class="mono" style="color: var(--accent-deep);">Internal Memorandum · 03 May 2026</span>
+      <span class="mono">Subject · Sales Funnel · v1.1</span>
+      <span class="mono">Prepared for · Marketing & Concierge</span>
+      <span class="mono" style="margin-top: 18px;">Pages reviewed · 60+</span>
+      <span class="mono">Recommendations · 12</span>
+    </div>
+    <div>
+      <span class="eyebrow"><span class="eyebrow-rule"></span> A funnel review</span>
+      <h1>The funnel,<br/><span class="italic">considered.</span></h1>
+      <p class="lede">
+        BIMC CosMedic v1.1 is editorially mature — the brand reads as a sanctuary, the surgeons are credentialed, and pricing is unusually transparent for the category. What it lacks is a measurable spine: clear conversion events, a tighter awareness-to-enquiry path, and a few quiet pieces of friction-removal in the middle of the funnel. Below, an honest assessment and twelve specific changes — each one yours to accept or decline.
+      </p>
+    </div>
+  </header>
+
+  <!-- FUNNEL DIAGRAM -->
+  <section class="funnel">
+    <div class="funnel-eyebrow"><span class="eyebrow"><span class="eyebrow-rule"></span> Funnel anatomy · As built</span></div>
+    <div class="funnel-rows">
+      <div class="funnel-row" data-health="ok">
+        <div class="funnel-stage"><span class="num">I · Awareness</span><h3>The first <em>visit</em></h3></div>
+        <div class="funnel-note">Hero with single focal point and trust strip directly underneath. Strong brand voice, but Hero H1 ("The care of medicine") buries the proposition; descriptive sub‑h1 carries the load.</div>
+        <div class="funnel-pages">index.html · trust strip</div>
+        <div class="funnel-health" data-h="ok">Functional</div>
+      </div>
+      <div class="funnel-row" data-health="ok">
+        <div class="funnel-stage"><span class="num">II · Interest</span><h3>The <em>repertoire</em></h3></div>
+        <div class="funnel-note">Six treatment cards + 40+ procedure pages. Deep, well organised. Cards are heavy on text and identical in shape — visual rhythm could earn more clicks.</div>
+        <div class="funnel-pages">treatments · procedure-*</div>
+        <div class="funnel-health" data-h="ok">Functional</div>
+      </div>
+      <div class="funnel-row" data-health="weak">
+        <div class="funnel-stage"><span class="num">III · Consideration</span><h3>The <em>proof</em></h3></div>
+        <div class="funnel-note">B&A slider, three packages, eight surgeons. But proof is scattered: results live three clicks away, surgeon credentials are not surfaced where decisions are made (procedure pages), and there is no comparison vs. home‑country pricing.</div>
+        <div class="funnel-pages">results · pricing · surgeons</div>
+        <div class="funnel-health" data-h="weak">Leaking</div>
+      </div>
+      <div class="funnel-row" data-health="weak">
+        <div class="funnel-stage"><span class="num">IV · Intent</span><h3>The <em>enquiry</em></h3></div>
+        <div class="funnel-note">Three entry points (hero quick form, lead magnet, /contact). All three lead to the same long form. No micro‑conversions (estimate, brochure, video consult booking) — it's bloom or bust.</div>
+        <div class="funnel-pages">contact · hero form · lead magnet</div>
+        <div class="funnel-health" data-h="weak">Leaking</div>
+      </div>
+      <div class="funnel-row" data-health="ok">
+        <div class="funnel-stage"><span class="num">V · Decision</span><h3>The <em>quote</em></h3></div>
+        <div class="funnel-note">Concierge replies in 24h with a tailored estimate. Strong promise, but no automated holding pattern: a patient who fills the form gets nothing until a human replies. High‑intent leads drift.</div>
+        <div class="funnel-pages">manual · post-form</div>
+        <div class="funnel-health" data-h="ok">Off‑site</div>
+      </div>
+      <div class="funnel-row" data-health="good">
+        <div class="funnel-stage"><span class="num">VI · Retention</span><h3>The <em>aftercare</em></h3></div>
+        <div class="funnel-note">12‑month telehealth, lymphatic drainage, family accommodation — genuinely best‑in‑class. Underused as a pre‑sale story; barely surfaced before the form.</div>
+        <div class="funnel-pages">aftercare · telehealth · stays</div>
+        <div class="funnel-health" data-h="good">Strong</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINDINGS -->
+  <section class="findings">
+    <div class="funnel-eyebrow"><span class="eyebrow"><span class="eyebrow-rule"></span> Five honest findings</span></div>
+    <div class="findings-grid">
+      <div class="finding">
+        <span class="tag">Finding I</span>
+        <h4>Awareness is editorial; intent is not measurable.</h4>
+        <p>There is no visible analytics surface (events, UTM strategy, scroll depth, form‑abandonment). Every recommendation downstream depends on knowing where the leak is — today, the team is guessing.</p>
+      </div>
+      <div class="finding">
+        <span class="tag">Finding II</span>
+        <h4>The hero asks for a leap, not a step.</h4>
+        <p>Hero quick form is two fields, but the framing ("Plan Your Treatment") presumes commitment. Cold visitors are 6–8 weeks earlier in the buying cycle than that copy assumes. They need a smaller next step.</p>
+      </div>
+      <div class="finding">
+        <span class="tag">Finding III</span>
+        <h4>Procedure pages are unconverted.</h4>
+        <p>40+ procedure pages carry the long tail of organic traffic, yet they share one generic CTA ("contact"). No price‑estimator, no 'compare to home country', no surgeon‑specific booking. This is the highest‑intent surface in the funnel and the least optimised.</p>
+      </div>
+      <div class="finding">
+        <span class="tag">Finding IV</span>
+        <h4>Pricing is honest but cognitively expensive.</h4>
+        <p>Three named packages (Refresh / Edit / Composition) require interpretation. International patients comparing Bali to Sydney want one number, in their currency, for their procedure — not a poetic tier name.</p>
+      </div>
+      <div class="finding">
+        <span class="tag">Finding V</span>
+        <h4>Trust signals are present but front‑loaded.</h4>
+        <p>ACHSI, ISAPS, FICS and 4.9‑star average appear on the homepage trust strip. They do not reappear on procedure pages, contact form, or pricing — exactly where doubt peaks in the journey.</p>
+      </div>
+      <div class="finding">
+        <span class="tag">Finding VI</span>
+        <h4>The international‑patient calculus is invisible.</h4>
+        <p>The single biggest objection ("Why Bali, vs. my own surgeon in Sydney/Singapore/London?") is never answered head‑on. No savings calculator, no flight+villa+procedure total, no "what does this cost at home" comparison.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUGGESTIONS -->
+  <section class="suggestions">
+    <div class="suggestions-head">
+      <div>
+        <span class="eyebrow"><span class="eyebrow-rule"></span> Twelve suggestions</span>
+        <h2>Yes, no, <span class="italic">later.</span></h2>
+      </div>
+      <div class="helper">
+        Each item below is a discrete change — sized to ship in a single sprint or less. Approve the ones you want, reject the rest, and I'll build the approved set as a v1.2 plan. Click <em>Yes</em> to accept, <em>No</em> to decline. You can change your mind.
+      </div>
+    </div>
+
+    <div class="summary-bar">
+      <div class="item"><span class="num yes" data-stat="yes">0</span><span class="lab">Approved</span></div>
+      <div class="item"><span class="num no" data-stat="no">0</span><span class="lab">Declined</span></div>
+      <div class="item"><span class="num" data-stat="pending">12</span><span class="lab">Pending</span></div>
+      <button class="reset" id="reset-btn">Reset</button>
+    </div>
+
+    <div class="sug-list" id="sug-list">
+
+      <article class="sug" data-id="1">
+        <div class="num">№ 01</div>
+        <div class="body">
+          <div class="meta-row">
+            <span class="stage-tag">Awareness</span>
+            <span class="effort">Effort · <em>Medium</em> · Impact · <em>High</em></span>
+          </div>
+          <h3>Add a <span class="italic">"Calculate your saving"</span> module on the homepage.</h3>
+          <p>A short interactive: select procedure → home country → see Bali total (procedure + flights + 14‑night villa) vs. local equivalent. Becomes the single biggest reason a cold visitor reads on.</p>
+          <span class="why">Directly answers the unspoken objection that sinks medical‑tourism enquiries — and creates a sharable artefact.</span>
+        </div>
+        <div class="decision">
+          <div class="row">
+            <button class="yes" data-decision="yes">Yes</button>
+            <button class="no" data-decision="no">No</button>
+          </div>
+          <span class="status">Pending</span>
+        </div>
+      </article>
+
+      <article class="sug" data-id="2">
+        <div class="num">№ 02</div>
+        <div class="body">
+          <div class="meta-row">
+            <span class="stage-tag">Awareness</span>
+            <span class="effort">Effort · <em>Low</em> · Impact · <em>Medium</em></span>
+          </div>
+          <h3>Rewrite the hero <span class="italic">H1</span> for a cold visitor.</h3>
+          <p>Keep "The care of medicine. The grace of Bali." as a brand line, but lead with a descriptive H1 — e.g. <em>"Plastic surgery and aesthetic medicine in Bali — quietly, by ISAPS surgeons."</em> Prose H1 helps both first‑touch comprehension and SEO.</p>
+          <span class="why">Above‑the‑fold should answer "what is this site?" in under two seconds. Today it answers "what mood is this site?"</span>
+        </div>
+        <div class="decision">
+          <div class="row">
+            <button class="yes" data-decision="yes">Yes</button>
+            <button class="no" data-decision="no">No</button>
+          </div>
+          <span class="status">Pending</span>
+        </div>
+      </article>
+
+      <article class="sug" data-id="3">
+        <div class="num">№ 03</div>
+        <div class="body">
+          <div class="meta-row">
+            <span class="stage-tag">Interest → Consideration</span>
+            <span class="effort">Effort · <em>Medium</em> · Impact · <em>High</em></span>
+          </div>
+          <h3>Add a <span class="italic">smaller next step</span> alongside "Plan Your Treatment".</h3>
+          <p>A second CTA throughout the site: <em>"Get a price estimate in 60 seconds"</em> — a 4‑question wizard (procedure, home country, timing, contact) that returns a banded price by email. Captures cold visitors who aren't ready to enquire but will surrender an email for a number.</p>
+          <span class="why">A single big CTA loses 60–70% of the visitors who would have converted on a smaller one.</span>
+        </div>
+        <div class="decision">
+          <div class="row"><button class="yes" data-decision="yes">Yes</button><button class="no" data-decision="no">No</button></div>
+          <span class="status">Pending</span>
+        </div>
+      </article>
+
+      <article class="sug" data-id="4">
+        <div class="num">№ 04</div>
+        <div class="body">
+          <div class="meta-row">
+            <span class="stage-tag">Consideration</span>
+            <span class="effort">Effort · <em>Low</em> · Impact · <em>High</em></span>
+          </div>
+          <h3>Convert procedure pages with <span class="italic">three local CTAs.</span></h3>
+          <p>Each procedure page (40+) currently funnels to a single "contact" link. Add three contextual CTAs in the right rail: (a) "Book a video consult with the lead surgeon", (b) "Get a written estimate for [procedure]", (c) "WhatsApp the concierge about [procedure]". Each pre‑fills the destination form.</p>
+          <span class="why">Procedure pages are your highest‑intent traffic. Today they have the same generic CTA as the homepage.</span>
+        </div>
+        <div class="decision">
+          <div class="row"><button class="yes" data-decision="yes">Yes</button><button class="no" data-decision="no">No</button></div>
+          <span class="status">Pending</span>
+        </div>
+      </article>
+
+      <article class="sug" data-id="5">
+        <div class="num">№ 05</div>
+        <div class="body">
+          <div class="meta-row">
+            <span class="stage-tag">Consideration</span>
+            <span class="effort">Effort · <em>Low</em> · Impact · <em>Medium</em></span>
+          </div>
+          <h3>Surface trust signals at <span class="italic">point of doubt.</span></h3>
+          <p>Repeat the ACHSI / ISAPS / 4.9★ trust strip immediately above the contact form, on every procedure page, and on the pricing page. Currently they sit only on the homepage — exactly where doubt is lowest.</p>
+          <span class="why">Trust is consumed where it is needed, not where it is given. Show it where the form is.</span>
+        </div>
+        <div class="decision">
+          <div class="row"><button class="yes" data-decision="yes">Yes</button><button class="no" data-decision="no">No</button></div>
+          <span class="status">Pending</span>
+        </div>
+      </article>
+
+      <article class="sug" data-id="6">
+        <div class="num">№ 06</div>
+        <div class="body">
+          <div class="meta-row">
+            <span class="stage-tag">Consideration</span>
+            <span class="effort">Effort · <em>Medium</em> · Impact · <em>Medium</em></span>
+          </div>
+          <h3>Move B&A results <span class="italic">into</span> procedure pages.</h3>
+          <p>Today, results live on /results. A patient reading the rhinoplasty page must navigate away to see rhinoplasty results. Embed 2–3 procedure‑specific B&A pairs (with the comparison slider) directly into each procedure page.</p>
+          <span class="why">Proof should sit where the question is asked. Don't make patients hunt.</span>
+        </div>
+        <div class="decision">
+          <div class="row"><button class="yes" data-decision="yes">Yes</button><button class="no" data-decision="no">No</button></div>
+          <span class="status">Pending</span>
+        </div>
+      </article>
+
+      <article class="sug" data-id="7">
+        <div class="num">№ 07</div>
+        <div class="body">
+          <div class="meta-row">
+            <span class="stage-tag">Intent</span>
+            <span class="effort">Effort · <em>Low</em> · Impact · <em>High</em></span>
+          </div>
+          <h3>Shorten the contact form to <span class="italic">three required fields.</span></h3>
+          <p>Current form has 9 fields. Reduce required to: name, email, area of interest. Everything else (country, dates, travelling‑with) becomes optional and progressive. Each removed required field typically lifts completion 5–10%.</p>
+          <span class="why">Friction at the form is the single most measurable conversion lever on any site.</span>
+        </div>
+        <div class="decision">
+          <div class="row"><button class="yes" data-decision="yes">Yes</button><button class="no" data-decision="no">No</button></div>
+          <span class="status">Pending</span>
+        </div>
+      </article>
+
+      <article class="sug" data-id="8">
+        <div class="num">№ 08</div>
+        <div class="body">
+          <div class="meta-row">
+            <span class="stage-tag">Decision</span>
+            <span class="effort">Effort · <em>Medium</em> · Impact · <em>High</em></span>
+          </div>
+          <h3>Build an automated <span class="italic">post‑enquiry</span> sequence.</h3>
+          <p>The moment someone submits the form, send (a) instant confirmation with a calendar link to book a video consult, (b) the Bali Recovery Guide PDF, (c) a 30‑second intro video from the lead surgeon, (d) a 24h follow‑up if no booking. Today: silence until concierge replies.</p>
+          <span class="why">High‑intent leads cool 50% in the first hour. Automation holds the heat while concierge prepares a tailored response.</span>
+        </div>
+        <div class="decision">
+          <div class="row"><button class="yes" data-decision="yes">Yes</button><button class="no" data-decision="no">No</button></div>
+          <span class="status">Pending</span>
+        </div>
+      </article>
+
+      <article class="sug" data-id="9">
+        <div class="num">№ 09</div>
+        <div class="body">
+          <div class="meta-row">
+            <span class="stage-tag">Decision</span>
+            <span class="effort">Effort · <em>Medium</em> · Impact · <em>Medium</em></span>
+          </div>
+          <h3>Add a <span class="italic">"Book a video consult"</span> path with self‑service scheduling.</h3>
+          <p>Embed a calendar (Cal.com / Calendly) for a free 20‑minute video consult with a coordinator — no surgeon time required. Lets high‑intent visitors lock a date without writing an enquiry. Funnels them into the same automated sequence afterwards.</p>
+          <span class="why">A booked call is worth ~10x an unbooked enquiry. Self‑service removes the email tennis.</span>
+        </div>
+        <div class="decision">
+          <div class="row"><button class="yes" data-decision="yes">Yes</button><button class="no" data-decision="no">No</button></div>
+          <span class="status">Pending</span>
+        </div>
+      </article>
+
+      <article class="sug" data-id="10">
+        <div class="num">№ 10</div>
+        <div class="body">
+          <div class="meta-row">
+            <span class="stage-tag">Trust · Cross‑funnel</span>
+            <span class="effort">Effort · <em>Low</em> · Impact · <em>Medium</em></span>
+          </div>
+          <h3>Replace static testimonials with <span class="italic">verified video</span> reviews.</h3>
+          <p>Three written testimonials on home are good but undifferentiated. Two 30‑second video testimonials (one rhinoplasty, one hair) tagged with the verification source (Google review, Trustpilot ID) outperform any quantity of text quotes. Keep the rest as supporting evidence.</p>
+          <span class="why">Video is the highest‑bandwidth proof in cosmetic medicine; written quotes are baseline hygiene.</span>
+        </div>
+        <div class="decision">
+          <div class="row"><button class="yes" data-decision="yes">Yes</button><button class="no" data-decision="no">No</button></div>
+          <span class="status">Pending</span>
+        </div>
+      </article>
+
+      <article class="sug" data-id="11">
+        <div class="num">№ 11</div>
+        <div class="body">
+          <div class="meta-row">
+            <span class="stage-tag">Measurement</span>
+            <span class="effort">Effort · <em>Low</em> · Impact · <em>Foundational</em></span>
+          </div>
+          <h3>Instrument the funnel with <span class="italic">named events.</span></h3>
+          <p>Add lightweight analytics (Plausible / GA4) with named events for: hero‑form‑start, hero‑form‑submit, lead‑magnet‑submit, contact‑form‑submit, video‑consult‑book, whatsapp‑click, pricing‑view, procedure‑view‑(slug). Without this, none of the above can be measured.</p>
+          <span class="why">You cannot improve what you do not measure. This unlocks every later optimisation.</span>
+        </div>
+        <div class="decision">
+          <div class="row"><button class="yes" data-decision="yes">Yes</button><button class="no" data-decision="no">No</button></div>
+          <span class="status">Pending</span>
+        </div>
+      </article>
+
+      <article class="sug" data-id="12">
+        <div class="num">№ 12</div>
+        <div class="body">
+          <div class="meta-row">
+            <span class="stage-tag">Retention → Referral</span>
+            <span class="effort">Effort · <em>Medium</em> · Impact · <em>Medium</em></span>
+          </div>
+          <h3>Build a quiet <span class="italic">referral</span> loop into aftercare.</h3>
+          <p>At month 3 of the 12‑month telehealth follow‑up, send a simple, brand‑appropriate referral note: "If a friend asks where you went, this is the link to send them." Track via unique referral codes. Cosmetic medicine is the highest‑word‑of‑mouth category; today there is no system catching it.</p>
+          <span class="why">A satisfied patient at month 3 is the most credible source of new enquiries you have. Make sharing effortless and tracked.</span>
+        </div>
+        <div class="decision">
+          <div class="row"><button class="yes" data-decision="yes">Yes</button><button class="no" data-decision="no">No</button></div>
+          <span class="status">Pending</span>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="audit-foot">
+    <div>
+      <span class="mono" style="color: var(--accent-warm);">Submit your decisions</span>
+      <h3 style="margin-top: 18px;">Approve, decline,<br/><span class="italic">and we'll plan v1.2.</span></h3>
+    </div>
+    <div>
+      <p>Once you've made your calls, click below for a clean summary of the approved set — ready to paste back to me as a build brief.</p>
+      <button class="submit-btn" id="submit-btn">Generate v1.2 Brief →</button>
+      <pre class="summary-output" id="summary-output"></pre>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+(() => {
+  const STORAGE_KEY = "bimc-funnel-decisions-v1";
+  let decisions = {};
+  try { decisions = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch (_) { decisions = {}; }
+
+  const sugs = document.querySelectorAll(".sug");
+  const yesEl = document.querySelector('[data-stat="yes"]');
+  const noEl = document.querySelector('[data-stat="no"]');
+  const pendingEl = document.querySelector('[data-stat="pending"]');
+  const out = document.getElementById("summary-output");
+
+  function applyState() {
+    let yes = 0, no = 0;
+    sugs.forEach(s => {
+      const id = s.dataset.id;
+      const d = decisions[id];
+      s.classList.remove("decided-yes", "decided-no");
+      const yesBtn = s.querySelector("button.yes");
+      const noBtn = s.querySelector("button.no");
+      const status = s.querySelector(".status");
+      yesBtn.classList.remove("active");
+      noBtn.classList.remove("active");
+      if (d === "yes") { s.classList.add("decided-yes"); yesBtn.classList.add("active"); status.textContent = "Approved"; yes++; }
+      else if (d === "no") { s.classList.add("decided-no"); noBtn.classList.add("active"); status.textContent = "Declined"; no++; }
+      else { status.textContent = "Pending"; }
+    });
+    yesEl.textContent = yes;
+    noEl.textContent = no;
+    pendingEl.textContent = sugs.length - yes - no;
+  }
+
+  sugs.forEach(s => {
+    const id = s.dataset.id;
+    s.querySelectorAll("button[data-decision]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const v = btn.dataset.decision;
+        if (decisions[id] === v) { delete decisions[id]; }
+        else { decisions[id] = v; }
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(decisions));
+        applyState();
+      });
+    });
+  });
+
+  document.getElementById("reset-btn").addEventListener("click", () => {
+    if (!confirm("Clear all decisions?")) return;
+    decisions = {};
+    localStorage.removeItem(STORAGE_KEY);
+    applyState();
+    out.textContent = "";
+  });
+
+  document.getElementById("submit-btn").addEventListener("click", () => {
+    const approved = [];
+    const declined = [];
+    sugs.forEach(s => {
+      const id = s.dataset.id;
+      const title = s.querySelector("h3").innerText.trim();
+      const stage = s.querySelector(".stage-tag").textContent.trim();
+      const d = decisions[id];
+      if (d === "yes") approved.push(`№ ${id.padStart(2,"0")} · [${stage}] ${title}`);
+      else if (d === "no") declined.push(`№ ${id.padStart(2,"0")} · ${title}`);
+    });
+    let txt = "";
+    txt += "BIMC COSMEDIC · v1.2 BUILD BRIEF\n";
+    txt += "Generated " + new Date().toISOString().slice(0, 10) + "\n\n";
+    txt += `APPROVED (${approved.length})\n` + (approved.length ? approved.join("\n") : "— none —") + "\n\n";
+    txt += `DECLINED (${declined.length})\n` + (declined.length ? declined.join("\n") : "— none —") + "\n\n";
+    const pending = sugs.length - approved.length - declined.length;
+    txt += `PENDING · ${pending}\n`;
+    out.textContent = txt;
+  });
+
+  applyState();
+})();
+</script>
+
+</body>
+</html>
