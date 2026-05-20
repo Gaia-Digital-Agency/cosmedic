@@ -46,14 +46,21 @@
 │       └── lifestyle/               ← hero, recovery villa, place imagery (licensed/AI)
 │
 ├── design_reference/                ← original Claude Design source (READ-ONLY reference)
-│   ├── README.md                    ← from design_handoff_bimc_cosmedic/README.md
-│   ├── index.html                   ← + the other 74 .html page shells (Babel-in-browser)
+│   ├── index.html                   ← homepage + the other root .html page shells (Babel-in-browser)
 │   ├── global.css                   ← canonical design tokens
 │   ├── shared.jsx                   ← React primitives + data exports
-│   ├── pages/                       ← per-route .jsx component specs
+│   ├── pages/                       ← per-route .jsx component specs (47 files)
 │   ├── design-canvas.jsx            ← design exploration tooling
 │   ├── wireframes.jsx
-│   └── tweaks-panel.jsx
+│   ├── tweaks-panel.jsx
+│   └── _original-handoff/           ← the original handoff bundle preserved verbatim
+│       ├── README.md                ← canonical handoff README (read first for design questions)
+│       └── design/                  ← older handoff iteration: 41 procedure-*.html flat pages, etc.
+│
+│   Two iterations are preserved because they describe different routing models:
+│   - Root files (`design_reference/*.html`): newer nested model — `treatment-{discipline}-{sub}.html`
+│   - `_original-handoff/design/*.html`: older flat model — `procedure-{slug}.html` (41 files)
+│   Both inform Phase 4 (detail templates).
 │
 ├── discovery/                       ← discovery artifacts (was uploads/)
 │   ├── feedback/                    ← claude-feedback.pdf, gemini-feedback.pdf
