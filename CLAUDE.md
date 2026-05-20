@@ -34,6 +34,7 @@ Every change must respect:
 | [docs/sitemap.md](docs/sitemap.md) | Before adding/removing routes or nav items |
 | [docs/cms_info.md](docs/cms_info.md) | Before changing anything in `packages/cms/src/components/` or `payload.config.ts` admin block (the LOOK) |
 | [docs/cms_ops.md](docs/cms_ops.md) | Before writing Payload hooks, access control, seed scripts, drafts/preview, or email pipeline (the HOW) |
+| [docs/cms_schema.md](docs/cms_schema.md) | Before adding a UI surface — verify it traces to a CMS entity (Non-negotiable #3 audit) |
 | [docs/brand-guidelines.pdf](docs/brand-guidelines.pdf) | Canonical brand source — palette, typography, mark, usage rules |
 | [docs/pricelist.xlsx](docs/pricelist.xlsx) | Canonical clinic price + procedure catalogue — seed source for Phase 6 |
 | [design_reference/](design_reference/) | Original Claude Design source — never modified, only mirrored |

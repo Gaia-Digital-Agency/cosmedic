@@ -19,6 +19,7 @@ Marketing site for **BIMC CosMedic** — Bali International Medical Centre's pla
 | [docs/sitemap.md](./docs/sitemap.md) | Every page · subpage · CTA · button · mega-menu |
 | [docs/cms_info.md](./docs/cms_info.md) | CosMedic Site CMS white-label spec (LOOK) |
 | [docs/cms_ops.md](./docs/cms_ops.md) | Payload init, hooks, access, drafts, media, seed, email (HOW) |
+| [docs/cms_schema.md](./docs/cms_schema.md) | UI ↔ CMS coverage matrix — every page surface mapped to its CMS entity |
 | [docs/brand-guidelines.pdf](./docs/brand-guidelines.pdf) | BIMC CosMedic Brand Guidelines v1.0 (canonical brand source) |
 | [docs/pricelist.xlsx](./docs/pricelist.xlsx) | Clinic's price + procedure catalogue (CMS seed source) |
 | [design_reference/](./design_reference/) | Original Claude Design source (READ-ONLY) |
