@@ -40,6 +40,10 @@
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/seed/runtime.ts",
+    "src/seed/run.ts",
+    "src/seed/parse-pricelist.ts",
+    "src/seed/lexical.ts"
   ]
 }

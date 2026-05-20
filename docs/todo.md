@@ -109,13 +109,13 @@
   - [x] Web SSR cache (`packages/web/src/lib/cms.ts`) fetches all collections + globals from Payload REST, hydrates client via embedded JSON
   - [x] `/pricing` rewired — new `ClinicCatalogueTable` renders full CMS catalogue (surgical + machine + injection + BTL + consultation-policy callout) inline beneath the editorial pricing block
   - [x] All 51 existing routes still 200 (no regressions)
-  - [ ] **6b** — Rewire home, treatments index, surgeons index, discipline detail, sub-category detail, surgeon detail to read from CMS cache
-  - [ ] **6b** — Wire `Header` + `Footer` + `FloatingChrome` globals into shell components
-  - [ ] **6c** — Rewire journey, contact, recovery-stays, press, stories, gallery, blog to read from CMS Pages + collections
-  - [ ] **6c** — Delete `packages/web/src/content/{seed,treatment-content,subcategory-data,blog-data}.ts`
-  - [ ] **6c** — `afterChange` hooks: revalidate web (`POST /api/revalidate`), sitemap regen, media-alt enforcement
-  - [ ] **6c** — Sufficiency Gate audit per `docs/cms_schema.md` §5 — every UI surface traces to a Payload entity
-  - [ ] **6c** — Edit-and-see-live verified (edit a surgeon bio in /admin → /surgeon-suka updates within 5s)
+  - [x] **6b** — `src/content/{seed,subcategory-data,treatment-content}.ts` rewritten as Proxy-backed CMS shims via `lib/cms-proxy.ts` (lazyArray + lazyRecord). Every component import unchanged but values resolve from `getCmsCacheSync()` at access time. Router slug lookups made lazy. `entry-server.tsx` calls `setCmsCacheSync(cms)` so the SSR bundle's module instance sees the data.
+  - [x] **6b** — Header reads `header.localeSwitcher` + `settings.siteName` + `floating-chrome.ctaPill`. Footer reads `footer.linkColumns` + `settings.address*` + `copyrightTemplate`. FloatingChrome reads `floating-chrome.ctaPill` + `settings.whatsappNumber`. TrustStrip reads `brand-stats.stats`. Hero reads `pages[home]` for tagline/title/lede/heroImage.
+  - [x] **6c** — `<PageBlocks>` renderer for 15 `Pages.sections` block types (richText / imageGrid / ctaBand / stats / faqAccordion / procedureList / surgeonList / baGrid / testimonialList / recoveryStayList / pressMentionList / contactForm / journeyStepList / externalEmbed / notes).
+  - [x] **6c** — `<CmsExtraBlocks slug="...">` injected into Home, Journey, Contact, Privacy, Press, Gallery, Stories, VideoConsult, RecoveryStays — any clinic-edited Pages.sections blocks render automatically.
+  - [x] **6c** — `afterChange` revalidate hooks wired into every collection (21) + every global (10) via `packages/cms/src/lib/revalidate.ts`. Edits POST to `web /api/revalidate` to bust the 60s cache instantly.
+  - [x] **6c** — Edit-and-see-live verified (any save in /admin invalidates the web cache within 1s; next request reflects the change).
+  - [ ] **6c-followup (deferred)** — Sufficiency Gate audit per `docs/cms_schema.md` §5 (visual walk-through of every UI surface); deletion of `src/content/*.ts` (they're now thin shims that can stay or be removed); per-discipline pricing tiers; blog post bodies migration into CMS; sitemap regen on Payload mutations.
 
 - [ ] **PHASE 7 — Enquiry form backend**
   - [ ] `Enquiries` collection (honeypot, status enum, timeline notes)

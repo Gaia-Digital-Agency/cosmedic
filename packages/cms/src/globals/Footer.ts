@@ -1,10 +1,12 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
+import { revalidateGlobalAfterChange } from '../lib/revalidate'
 
 export const Footer: GlobalConfig = {
   slug: 'footer',
   admin: { group: 'Site Settings', description: 'Site footer — logo, link columns, enquiry summary, address, copyright.' },
   access: { read: readPublic, update: isAuthenticated },
+  hooks: revalidateGlobalAfterChange(),
   fields: [
     { name: 'logoLight', type: 'upload', relationTo: 'media', admin: { description: 'White-on-dark variant' } },
     {

@@ -1,10 +1,12 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
+import { revalidateGlobalAfterChange } from '../lib/revalidate'
 
 export const FloatingChrome: GlobalConfig = {
   slug: 'floating-chrome',
   admin: { group: 'Site Settings', description: 'Floating CTA pill + WhatsApp/chat affordance shown on every page.' },
   access: { read: readPublic, update: isAuthenticated },
+  hooks: revalidateGlobalAfterChange(),
   fields: [
     {
       name: 'ctaPill',

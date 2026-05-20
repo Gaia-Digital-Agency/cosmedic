@@ -30,8 +30,12 @@ export type Route =
   | { kind: 'privacy' }
   | { kind: 'notfound' }
 
-const DISCIPLINE_SLUGS = new Set(TREATMENT_LIST.map((t) => t.slug))
-const SURGEON_SLUGS = new Set(SURGEON_LIST.map((s) => s.slug))
+// Lazy slug sets — TREATMENT_LIST / SURGEON_LIST are CMS-backed Proxies whose
+// underlying data is empty at module load (cache fills on the first request).
+// We recompute on each route resolve so freshly-edited slugs in the CMS work
+// immediately after the cache TTL bumps.
+const getDisciplineSlugs = (): Set<string> => new Set(TREATMENT_LIST.map((t) => t.slug))
+const getSurgeonSlugs = (): Set<string> => new Set(SURGEON_LIST.map((s) => s.slug))
 
 const STATIC_ROUTES: Record<string, Route> = {
   '/treatments': { kind: 'treatments-index' },
@@ -59,7 +63,7 @@ export function resolveRoute(pathname: string): Route {
   const treatment = path.match(/^\/treatment-([a-z0-9-]+)$/)
   if (treatment) {
     const slug = treatment[1]
-    if (DISCIPLINE_SLUGS.has(slug)) return { kind: 'discipline', slug }
+    if (getDisciplineSlugs().has(slug)) return { kind: 'discipline', slug }
     if (SUBCATEGORY_DATA[slug]) return { kind: 'subcategory', slug }
     return { kind: 'notfound' }
   }
@@ -67,7 +71,7 @@ export function resolveRoute(pathname: string): Route {
   const surgeon = path.match(/^\/surgeon-([a-z0-9-]+)$/)
   if (surgeon) {
     const slug = surgeon[1]
-    if (SURGEON_SLUGS.has(slug)) return { kind: 'surgeon', slug }
+    if (getSurgeonSlugs().has(slug)) return { kind: 'surgeon', slug }
     return { kind: 'notfound' }
   }
 

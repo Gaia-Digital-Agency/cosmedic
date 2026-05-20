@@ -1,10 +1,12 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
+import { revalidateGlobalAfterChange } from '../lib/revalidate'
 
 export const FormDefaults: GlobalConfig = {
   slug: 'form-defaults',
   admin: { group: 'Forms', description: 'Enquiry form labels, placeholders, and feedback messages.' },
   access: { read: readPublic, update: isAuthenticated },
+  hooks: revalidateGlobalAfterChange(),
   fields: [
     {
       name: 'labels',

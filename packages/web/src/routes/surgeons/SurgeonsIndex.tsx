@@ -7,10 +7,6 @@ import { Mono, Eyebrow } from '@/components/primitives/Mono'
 import { Btn } from '@/components/primitives/Btn'
 import { SURGEON_LIST, SURGEON_IMG, IMG, type Surgeon } from '@/content/seed'
 
-const PLASTIC = SURGEON_LIST.filter((s) => s.group === 'Plastic Surgery')
-const AESTHETIC = SURGEON_LIST.filter((s) => s.group === 'Aesthetic Medicine')
-const lead = SURGEON_LIST[0]
-
 const SurgeonCard: React.FC<{ s: Surgeon; idx: number }> = ({ s, idx }) => (
   <Reveal delay={idx * 60} y={20}>
     <a href={`/surgeon-${s.slug}`} style={{ color: 'inherit', display: 'block' }}>
@@ -47,7 +43,11 @@ const SurgeonCard: React.FC<{ s: Surgeon; idx: number }> = ({ s, idx }) => (
   </Reveal>
 )
 
-export const SurgeonsIndex: React.FC = () => (
+export const SurgeonsIndex: React.FC = () => {
+  const PLASTIC = SURGEON_LIST.filter((s) => s.group === 'Plastic Surgery')
+  const AESTHETIC = SURGEON_LIST.filter((s) => s.group === 'Aesthetic Medicine')
+  const lead = SURGEON_LIST[0]
+  return (
   <PageShell activePage="surgeons">
     <ChapterOpener
       chapter="Chapter III — The Practitioners"
@@ -153,4 +153,5 @@ export const SurgeonsIndex: React.FC = () => (
       </div>
     </section>
   </PageShell>
-)
+  )
+}

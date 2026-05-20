@@ -1,10 +1,12 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
+import { revalidateGlobalAfterChange } from '../lib/revalidate'
 
 export const EndorsementMark: GlobalConfig = {
   slug: 'endorsement-mark',
   admin: { group: 'Brand', description: '"Managed by BIMC Hospital" lockup. Sourced from brand.pdf §I.' },
   access: { read: readPublic, update: isAuthenticated },
+  hooks: revalidateGlobalAfterChange(),
   fields: [
     { name: 'endorsementLine', type: 'text', defaultValue: 'Managed by BIMC Hospital · Nusa Dua · Bali' },
     { name: 'primaryLockup', type: 'upload', relationTo: 'media',

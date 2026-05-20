@@ -1,10 +1,12 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
+import { revalidateGlobalAfterChange } from '../lib/revalidate'
 
 export const SeoDefaults: GlobalConfig = {
   slug: 'seo-defaults',
   admin: { group: 'Site Settings', description: 'SEO defaults — title pattern, robots.txt, sitemap base URL, structured-data org info.' },
   access: { read: readPublic, update: isAuthenticated },
+  hooks: revalidateGlobalAfterChange(),
   fields: [
     { name: 'titlePattern', type: 'text', defaultValue: '{page} — BIMC CosMedic',
       admin: { description: '{page} is substituted at render.' } },

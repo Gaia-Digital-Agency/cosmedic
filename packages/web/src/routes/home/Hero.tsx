@@ -3,43 +3,69 @@ import { Img } from '@/components/primitives/Img'
 import { Mono, Eyebrow } from '@/components/primitives/Mono'
 import { Btn } from '@/components/primitives/Btn'
 import { IMG } from '@/content/seed'
+import { useCms } from '@/lib/cms-context'
+import { findPageBySlug } from '@/lib/cms-adapters'
+import { mediaUrl } from '@/lib/cms'
 
 export const Hero: React.FC = () => {
+  const cms = useCms()
+  const page = cms ? findPageBySlug(cms, 'home') : undefined
+  const eyebrow = page?.tagline || 'A sanctuary in Nusa Dua · Est. 1998'
+  const titleA = page?.chapterTitle?.a || 'Plastic surgery'
+  const titleB = page?.chapterTitle?.b || 'in Bali, by ISAPS surgeons.'
+  const lede = page?.lede
+  const heroImage = page?.heroImage ? mediaUrl(page.heroImage, IMG.hero) || IMG.hero : IMG.hero
+
   const [expanded, setExpanded] = useState(false)
   return (
     <section className="hero-v2">
       <div className="hero-image-inner">
-        <Img src={IMG.hero} fallbackLabel="BIMC · NUSA DUA" fallbackHue={3} alt="" />
+        <Img src={heroImage} fallbackLabel="BIMC · NUSA DUA" fallbackHue={3} alt="" />
         <div className="hero-image-vignette" />
       </div>
 
       <div className="hero-v2-content">
         <div className="hero-v2-headline">
-          <Eyebrow>A sanctuary in Nusa Dua · Est. 1998</Eyebrow>
+          <Eyebrow>{eyebrow}</Eyebrow>
           <h1 className="display">
-            <span className="line">Plastic surgery</span>
-            <span className="line italic">in Bali,</span>
-            <span className="line">by ISAPS</span>
-            <span className="line italic accent">surgeons.</span>
+            {page?.chapterTitle ? (
+              <>
+                <span className="line">{titleA}</span>
+                <span className="line italic accent">{titleB}</span>
+              </>
+            ) : (
+              <>
+                <span className="line">Plastic surgery</span>
+                <span className="line italic">in Bali,</span>
+                <span className="line">by ISAPS</span>
+                <span className="line italic accent">surgeons.</span>
+              </>
+            )}
           </h1>
-          <p
-            className="hero-v2-sub-h1"
-            style={{
-              fontFamily: 'var(--font-serif)',
-              fontStyle: 'italic',
-              fontSize: 22,
-              lineHeight: 1.45,
-              marginTop: 18,
-              color: 'rgba(255,255,255,0.86)',
-            }}
-          >
-            The care of medicine. The grace of Bali.
-          </p>
-          <p className="hero-v2-sub-h1">
-            Performed inside Indonesia's first ACHSI-accredited international hospital, with private
-            villa recovery and twelve months of telehealth follow-up included. Procedures from Rp
-            18,900,000 (≈ AUD 1,800).
-          </p>
+          {lede ? (
+            <p className="hero-v2-sub-h1">{lede}</p>
+          ) : (
+            <>
+              <p
+                className="hero-v2-sub-h1"
+                style={{
+                  fontFamily: 'var(--font-serif)',
+                  fontStyle: 'italic',
+                  fontSize: 22,
+                  lineHeight: 1.45,
+                  marginTop: 18,
+                  color: 'rgba(255,255,255,0.86)',
+                }}
+              >
+                The care of medicine. The grace of Bali.
+              </p>
+              <p className="hero-v2-sub-h1">
+                Performed inside Indonesia's first ACHSI-accredited international hospital, with private
+                villa recovery and twelve months of telehealth follow-up included. Procedures from Rp
+                18,900,000 (≈ AUD 1,800).
+              </p>
+            </>
+          )}
 
           <div className="hero-v2-actions">
             <a

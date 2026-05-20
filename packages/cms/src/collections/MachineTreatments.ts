@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
+import { revalidationHooks } from '../lib/revalidate'
 import { sortOrderField } from '../lib/seo'
 
 export const MachineTreatments: CollectionConfig = {
@@ -16,6 +17,7 @@ export const MachineTreatments: CollectionConfig = {
     update: isAuthenticated,
     delete: isAuthenticated,
   },
+  hooks: revalidationHooks(),
   fields: [
     { name: 'slug', type: 'text', required: true, unique: true, index: true,
       admin: { description: 'e.g. "laser-erbium-resurfacing-face"' } },

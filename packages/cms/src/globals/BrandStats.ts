@@ -1,10 +1,12 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
+import { revalidateGlobalAfterChange } from '../lib/revalidate'
 
 export const BrandStats: GlobalConfig = {
   slug: 'brand-stats',
   admin: { group: 'Brand', description: 'Stats strip values (brand.pdf §IV). Used on home + about.' },
   access: { read: readPublic, update: isAuthenticated },
+  hooks: revalidateGlobalAfterChange(),
   fields: [
     {
       name: 'stats',

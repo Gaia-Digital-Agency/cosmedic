@@ -217,8 +217,8 @@ export async function runContentSeed(payload: Payload): Promise<void> {
       {
         label: 'Surgeons', href: '/surgeons', activePattern: '^/surgeon',
         megaMenu: [
-          { heading: 'Plastic Surgery', items: SURGEON_LIST.filter((s) => s.group === 'Plastic Surgery').map((s) => ({ label: 'dr. ' + s.common, href: '/surgeon-' + s.slug })) },
-          { heading: 'Aesthetic Medicine', items: SURGEON_LIST.filter((s) => s.group === 'Aesthetic Medicine').map((s) => ({ label: 'dr. ' + s.common, href: '/surgeon-' + s.slug })) },
+          { heading: 'Plastic Surgery', items: SURGEON_LIST.filter((s: { group: string }) => s.group === 'Plastic Surgery').map((s: { common: string; slug: string }) => ({ label: 'dr. ' + s.common, href: '/surgeon-' + s.slug })) },
+          { heading: 'Aesthetic Medicine', items: SURGEON_LIST.filter((s: { group: string }) => s.group === 'Aesthetic Medicine').map((s: { common: string; slug: string }) => ({ label: 'dr. ' + s.common, href: '/surgeon-' + s.slug })) },
         ],
       },
       { label: 'Your Journey', href: '/journey', activePattern: '^/journey' },
@@ -231,8 +231,8 @@ export async function runContentSeed(payload: Payload): Promise<void> {
 
   await upsertGlobal(payload, 'footer', {
     linkColumns: [
-      { heading: 'Treatments', items: TREATMENT_LIST.map((t) => ({ label: t.t, href: '/treatment-' + t.slug })) },
-      { heading: 'Surgeons', items: SURGEON_LIST.map((s) => ({ label: 'dr. ' + s.common, href: '/surgeon-' + s.slug })) },
+      { heading: 'Treatments', items: TREATMENT_LIST.map((t: { t: string; slug: string }) => ({ label: t.t, href: '/treatment-' + t.slug })) },
+      { heading: 'Surgeons', items: SURGEON_LIST.map((s: { common: string; slug: string }) => ({ label: 'dr. ' + s.common, href: '/surgeon-' + s.slug })) },
       { heading: 'Information', items: [
         { label: 'Your Journey', href: '/journey' },
         { label: 'Gallery', href: '/gallery' },
@@ -297,7 +297,7 @@ export async function runContentSeed(payload: Payload): Promise<void> {
       group: s.group === 'Plastic Surgery' ? 'plastic-surgery' : 'aesthetic-medicine',
       lead: Boolean(s.lead),
       bio: plainTextToLexical(s.bio),
-      specAreas: s.spec_areas.map((value) => ({ value })),
+      specAreas: s.spec_areas.map((value: string) => ({ value })),
       portraitPosition: 'center 30%',
       sortOrder: i,
     })
@@ -324,7 +324,7 @@ export async function runContentSeed(payload: Payload): Promise<void> {
       lede: content?.lede ?? undefined,
       overview: content ? plainTextToLexical(content.overview) : undefined,
       leadSurgeons: leadSurgeonId ? [leadSurgeonId] : [],
-      faqs: content?.faqs?.map(({ q, a }) => ({ q, a })) ?? [],
+      faqs: content?.faqs?.map(({ q, a }: { q: string; a: string }) => ({ q, a })) ?? [],
       sortOrder: i,
     })
     disciplineIdBySlug[t.slug] = doc.id
@@ -348,7 +348,7 @@ export async function runContentSeed(payload: Payload): Promise<void> {
         data.tagline = subData.tagline
         data.lede = subData.lede
         data.overview = plainTextToLexical(subData.overview ?? '')
-        data.sections = (subData.sections ?? []).map((sec) => ({
+        data.sections = (subData.sections ?? []).map((sec: { id: string; t: string; body: string }) => ({
           anchorId: sec.id, t: sec.t, body: plainTextToLexical(sec.body),
         }))
         data.faqs = subData.faqs ?? []
@@ -406,7 +406,7 @@ export async function runContentSeed(payload: Payload): Promise<void> {
   ]
   // Dedupe by slug (the two surgical sheets are duplicates apart from a few faculty differences).
   const seenSurgicalSlugs = new Set<string>()
-  const uniqueSurgical = surgical.filter((row) => {
+  const uniqueSurgical = surgical.filter((row: { slug: string }) => {
     if (seenSurgicalSlugs.has(row.slug)) return false
     seenSurgicalSlugs.add(row.slug)
     return true
@@ -415,7 +415,7 @@ export async function runContentSeed(payload: Payload): Promise<void> {
   let plOrder = 0
   for (const row of uniqueSurgical) {
     // Try to match an editorial Procedure by slug ending
-    const matchedProcSlug = Object.keys(procedureIdBySlug).find((ps) => ps === slugify(row.name))
+    const matchedProcSlug = Object.keys(procedureIdBySlug).find((ps: string) => ps === slugify(row.name))
     await upsert(payload, 'price-list-items', 'slug', row.slug, {
       slug: row.slug,
       sheet: 'surgical',
@@ -627,7 +627,7 @@ export async function runContentSeed(payload: Payload): Promise<void> {
       name: tier.tier,
       descriptor: plainTextToLexical(tier.italic + ' — ' + tier.small),
       priceFromAud: tier.amount === '0' ? 0 : Number(String(tier.amount).replace(/,/g, '')) || undefined,
-      inclusions: tier.items.map((value) => ({ value })),
+      inclusions: tier.items.map((value: string) => ({ value })),
       isFeatured: Boolean(tier.featured),
       sortOrder: i,
     })

@@ -1,11 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { TREATMENT_LIST, SUBCATEGORIES_BY_DISCIPLINE, SURGEON_LIST } from '@/content/seed'
+import { useCms } from '@/lib/cms-context'
 
 type Props = {
   activePage?: string
 }
 
 export const Header: React.FC<Props> = ({ activePage = '' }) => {
+  const cms = useCms()
+  const localeSwitcher = cms?.header?.localeSwitcher
+  const labelEn = localeSwitcher?.labelEn || 'EN'
+  const labelId = localeSwitcher?.labelId || 'ID'
+  const ctaLabel = cms?.floatingChrome?.ctaPill?.label || 'Plan Your Treatment'
+  const ctaHref = cms?.floatingChrome?.ctaPill?.href || '/contact'
+  const siteName = cms?.settings?.siteName || 'BIMC CosMedic'
+
   const [scrolled, setScrolled] = useState(false)
   const [lang, setLang] = useState<'EN' | 'ID'>('EN')
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -57,7 +66,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
     <header className={`site-header ${scrolled ? 'scrolled' : ''}`}>
       <div className="header-inner">
         <a href="/" className="logo">
-          <img src="/assets/logo.png" alt="BIMC CosMedic — Managed by BIMC Hospital" />
+          <img src="/assets/logo.png" alt={`${siteName} — Managed by BIMC Hospital`} />
         </a>
         <nav className="primary-nav">
           <div
@@ -163,19 +172,26 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
           </a>
         </nav>
         <div className="header-right">
-          <div className="lang-switcher">
-            {(['EN', 'ID'] as const).map((l) => (
-              <button
-                key={l}
-                className={`lang-pill ${lang === l ? 'active' : ''}`}
-                onClick={() => setLang(l)}
-              >
-                {l}
-              </button>
-            ))}
-          </div>
-          <a href="/contact" className="header-cta">
-            <span>Plan Your Treatment</span>
+          {localeSwitcher?.enabled !== false ? (
+            <div className="lang-switcher">
+              {(
+                [
+                  ['EN', labelEn],
+                  ['ID', labelId],
+                ] as const
+              ).map(([code, label]) => (
+                <button
+                  key={code}
+                  className={`lang-pill ${lang === code ? 'active' : ''}`}
+                  onClick={() => setLang(code)}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          ) : null}
+          <a href={ctaHref} className="header-cta">
+            <span>{ctaLabel}</span>
             <span className="btn-arrow">→</span>
           </a>
           <button
@@ -300,25 +316,32 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
             </a>
           </div>
 
-          <div className="mobile-menu-lang">
-            {(['EN', 'ID'] as const).map((l) => (
-              <button
-                key={l}
-                type="button"
-                className={`mobile-lang-pill ${lang === l ? 'active' : ''}`}
-                onClick={() => setLang(l)}
-              >
-                {l}
-              </button>
-            ))}
-          </div>
+          {localeSwitcher?.enabled !== false ? (
+            <div className="mobile-menu-lang">
+              {(
+                [
+                  ['EN', labelEn],
+                  ['ID', labelId],
+                ] as const
+              ).map(([code, label]) => (
+                <button
+                  key={code}
+                  type="button"
+                  className={`mobile-lang-pill ${lang === code ? 'active' : ''}`}
+                  onClick={() => setLang(code)}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          ) : null}
 
           <a
-            href="/contact"
+            href={ctaHref}
             className="btn btn-accent"
             style={{ width: '100%', justifyContent: 'center', marginTop: 24 }}
           >
-            <span>Plan Your Treatment</span>
+            <span>{ctaLabel}</span>
             <span className="btn-arrow">→</span>
           </a>
         </div>

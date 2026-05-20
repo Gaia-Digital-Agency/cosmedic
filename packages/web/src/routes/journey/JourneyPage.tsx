@@ -1,5 +1,6 @@
 import React from 'react'
 import { PageShell } from '@/components/shell/PageShell'
+import { CmsExtraBlocks } from '@/components/CmsExtraBlocks'
 import { ChapterOpener } from '@/components/primitives/ChapterOpener'
 import { Reveal } from '@/components/primitives/Reveal'
 import { Img } from '@/components/primitives/Img'
@@ -164,5 +165,6 @@ export const JourneyPage: React.FC = () => (
         </div>
       </Reveal>
     </div>
+    <CmsExtraBlocks slug="journey" />
   </PageShell>
 )

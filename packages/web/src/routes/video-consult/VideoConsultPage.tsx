@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { PageShell } from '@/components/shell/PageShell'
+import { CmsExtraBlocks } from '@/components/CmsExtraBlocks'
 import { ChapterOpener } from '@/components/primitives/ChapterOpener'
 import { Reveal } from '@/components/primitives/Reveal'
 import { Img } from '@/components/primitives/Img'
@@ -525,6 +526,7 @@ export const VideoConsultPage: React.FC = () => {
           )}
         </div>
       </section>
+      <CmsExtraBlocks slug="video-consult" />
     </PageShell>
   )
 }

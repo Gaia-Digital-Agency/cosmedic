@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { isAuthenticated, publishedOrAuthed } from '../lib/access'
+import { revalidationHooks } from '../lib/revalidate'
 import { seoGroup, publishStatusField } from '../lib/seo'
 
 /**
@@ -32,6 +33,7 @@ export const Pages: CollectionConfig = {
     update: isAuthenticated,
     delete: isAuthenticated,
   },
+  hooks: revalidationHooks(),
   fields: [
     { name: 'title', type: 'text', required: true, admin: { description: 'Admin label only' } },
     { name: 'slug', type: 'text', required: true, unique: true, index: true, admin: { description: 'e.g. "home", "journey", "contact"' } },

@@ -1,10 +1,12 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
+import { revalidateGlobalAfterChange } from '../lib/revalidate'
 
 export const EmailTemplates: GlobalConfig = {
   slug: 'email-templates',
   admin: { group: 'Forms', description: 'Transactional + notification email copy.' },
   access: { read: readPublic, update: isAuthenticated },
+  hooks: revalidateGlobalAfterChange(),
   fields: [
     {
       name: 'templates',

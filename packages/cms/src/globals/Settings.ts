@@ -1,5 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
+import { revalidateGlobalAfterChange } from '../lib/revalidate'
 
 export const Settings: GlobalConfig = {
   slug: 'settings',
@@ -8,6 +9,7 @@ export const Settings: GlobalConfig = {
     description: 'Site-wide configuration — name, currency rate, contact, hours, social, defaults.',
   },
   access: { read: readPublic, update: isAuthenticated },
+  hooks: revalidateGlobalAfterChange(),
   fields: [
     { name: 'siteName', type: 'text', defaultValue: 'BIMC CosMedic' },
     { name: 'siteTagline', type: 'text' },

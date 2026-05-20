@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
+import { revalidationHooks } from '../lib/revalidate'
 import { seoGroup, sortOrderField } from '../lib/seo'
 
 export const BeforeAfterCases: CollectionConfig = {
@@ -16,6 +17,7 @@ export const BeforeAfterCases: CollectionConfig = {
     update: isAuthenticated,
     delete: isAuthenticated,
   },
+  hooks: revalidationHooks(),
   fields: [
     { name: 'slug', type: 'text', required: true, unique: true, index: true },
     { name: 'caseLabel', type: 'text', required: true, admin: { description: 'Anonymous label, e.g. "Case 014 — Rhinoplasty"' } },

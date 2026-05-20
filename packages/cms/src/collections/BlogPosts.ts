@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { isAuthenticated, publishedOrAuthed, isAuthenticated as canMutate } from '../lib/access'
+import { revalidationHooks } from '../lib/revalidate'
 import { seoGroup, publishStatusField, sortOrderField } from '../lib/seo'
 
 export const BlogPosts: CollectionConfig = {
@@ -16,6 +17,7 @@ export const BlogPosts: CollectionConfig = {
     update: canMutate,
     delete: isAuthenticated,
   },
+  hooks: revalidationHooks(),
   fields: [
     { name: 'slug', type: 'text', required: true, unique: true, index: true },
     { name: 'title', type: 'text', required: true },

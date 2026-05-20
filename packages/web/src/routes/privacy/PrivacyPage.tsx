@@ -1,5 +1,6 @@
 import React from 'react'
 import { PageShell } from '@/components/shell/PageShell'
+import { CmsExtraBlocks } from '@/components/CmsExtraBlocks'
 import { ChapterOpener } from '@/components/primitives/ChapterOpener'
 import { Reveal } from '@/components/primitives/Reveal'
 import { Mono, Eyebrow } from '@/components/primitives/Mono'
@@ -220,5 +221,6 @@ export const PrivacyPage: React.FC = () => (
         </div>
       </Reveal>
     </section>
+    <CmsExtraBlocks slug="privacy" />
   </PageShell>
 )
