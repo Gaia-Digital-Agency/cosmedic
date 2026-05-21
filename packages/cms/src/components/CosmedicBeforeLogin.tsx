@@ -75,8 +75,10 @@ const CosmedicBeforeLogin: React.FC = () => (
       Managed by BIMC Hospital · Nusa Dua · Bali
     </p>
 
-    {/* Pre-launch sign-in helper — bootstrap super-admin credentials.
-        Will be removed before clinic editor handover (Phase 12). */}
+    {showHelper ? (
+    /* Pre-launch sign-in helper — bootstrap super-admin credentials.
+       Hidden by setting `PAYLOAD_SHOW_SIGNIN_HELPER=false` in the cms
+       env after Phase 12.2 password rotation. */
     <div
       role="note"
       style={{
@@ -114,7 +116,13 @@ const CosmedicBeforeLogin: React.FC = () => (
         Teameditor@123
       </div>
     </div>
+    ) : null}
   </div>
 )
+
+// SSR-side env check. Defaults to ON so dev/pre-launch keep working;
+// flip `PAYLOAD_SHOW_SIGNIN_HELPER=false` in cms .env after rotating
+// the bootstrap password (Phase 12.2).
+const showHelper = (process.env.PAYLOAD_SHOW_SIGNIN_HELPER ?? 'true') !== 'false'
 
 export default CosmedicBeforeLogin
