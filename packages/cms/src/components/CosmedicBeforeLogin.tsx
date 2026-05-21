@@ -50,10 +50,11 @@ const CosmedicBeforeLogin: React.FC = () => (
         textAlign: 'center',
         fontFamily: '"Cormorant Garamond", Georgia, serif',
         fontWeight: 500,
-        fontSize: '2.4rem',
-        lineHeight: 1.1,
-        letterSpacing: '0.02em',
+        fontSize: 'clamp(1.2rem, 4.8vw, 1.7rem)',
+        lineHeight: 1.2,
+        letterSpacing: '0.01em',
         color: 'var(--theme-text)',
+        whiteSpace: 'nowrap',
       }}
     >
       Content Management System

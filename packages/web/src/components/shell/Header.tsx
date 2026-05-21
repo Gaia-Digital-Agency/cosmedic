@@ -57,6 +57,16 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
     }
   }, [mobileOpen])
 
+  // ESC closes the mobile drawer; ignored when drawer is closed.
+  useEffect(() => {
+    if (!mobileOpen) return
+    const onKey = (e: KeyboardEvent): void => {
+      if (e.key === 'Escape') setMobileOpen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [mobileOpen])
+
   const surgeonCols = [
     { key: 'surgical', label: 'Surgical Doctors', group: 'Plastic Surgery', anchor: 'surgical' },
     { key: 'aesthetic', label: 'Aesthetic Doctors', group: 'Aesthetic Medicine', anchor: 'aesthetic' },
@@ -199,6 +209,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
             className={`burger-btn ${mobileOpen ? 'open' : ''}`}
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileOpen}
+            aria-controls="mobile-menu"
             onClick={() => setMobileOpen((o) => !o)}
           >
             <span />
@@ -208,7 +219,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
         </div>
       </div>
 
-      <div className={`mobile-menu ${mobileOpen ? 'open' : ''}`} aria-hidden={!mobileOpen}>
+      <div id="mobile-menu" className={`mobile-menu ${mobileOpen ? 'open' : ''}`} aria-hidden={!mobileOpen}>
         <div className="mobile-menu-inner">
           <div className="mobile-menu-section">
             <button

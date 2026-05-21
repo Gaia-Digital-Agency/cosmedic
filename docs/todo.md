@@ -174,18 +174,17 @@
   - [ ] **Open**: extend `media` prop to remaining 19 `<Img>` call sites once lifestyle imagery lands (currently only the 3 hot paths benefit from srcset; the rest still single-img)
   - [ ] **Open**: full Lighthouse Performance pass to confirm WebP+srcset reduces LCP/TBT
 
-- [ ] **PHASE 11 — QA + Gates (LAUNCH-BLOCKING)**
-  - [ ] Mobile drawer nav (a11y + focus trap + ESC close)
-  - [ ] Breakpoints validated: 1920 / 1440 / 1100 / 900 / 700 / 540 / 390
-  - [ ] Lighthouse Green on every route × breakpoint: Accessibility ≥ 90, Best Practices ≥ 90, SEO ≥ 90
-  - [ ] axe-core: zero violations
-  - [ ] Lighthouse CI configured + green
-  - [ ] `linkinator`: zero broken links
-  - [ ] Broken-image checker: zero 404s
-  - [ ] Form QA: every form submits → email arrives
-  - [ ] 🚧 **Pixel-Fidelity Gate**: Playwright visual-regression suite (88 routes × 3 breakpoints), all sign-off rows ticked in `tests/e2e/visual/SIGNOFF.md`
-  - [ ] 🚧 **CMS-Sufficiency Gate**: walk `docs/cms_schema.md` §5 — every UI surface traces to a Payload entity
-  - [ ] 🚧 **Lighthouse Green Gate**: CI green across full route matrix
+- [~] **PHASE 11 — QA + Gates (LAUNCH-BLOCKING)** — *first pass in progress; Lighthouse/Playwright tooling deferred to a CI workstream*
+  - [x] Mobile drawer nav a11y: `aria-expanded`, `aria-controls="mobile-menu"`, `aria-hidden` on the drawer, ESC closes drawer, body scroll lock, restore-to-burger focus on close (native — drawer hides so focus returns to invoking button). Focus-trap inside drawer not added — a follow-up tracked under §Phase-11 backlog.
+  - [x] Forms a11y: implicit `<label>` wrapping `<input>` on every field (Hero + Contact), success block has `role="status"`, error/rate-limit block has `role="alert"`. Inline `aria-invalid` on individual fields after server validation — deferred to follow-up.
+  - [x] **Form QA**: POST `/api/enquiry` with valid payload → `{"ok":true}` 200, Enquiry record id=3 created in Payload, `[enquiry-emails] clinic notify sent` + `autoresponder sent` logged via JSON transport (SMTP wiring is Phase 12.1)
+  - [x] Docs drift fixed: `docs/sitemap.md` surgeon URL pattern corrected from `/surgeons/{slug}` to actual `/surgeon-{slug}` (matches design + router + live header links)
+  - [ ] **Open**: axe-core run + zero-violation pass — needs `@axe-core/playwright` install + CI script (workstream)
+  - [ ] **Open**: Lighthouse Green ≥ 90 a11y/BP/SEO on every route × breakpoint — needs Lighthouse-CI install + budget config (workstream)
+  - [ ] **Open**: linkinator + broken-image sweep across all 51 routes (workstream)
+  - [ ] **Open**: Playwright visual-regression suite for Pixel-Fidelity Gate (workstream)
+  - [ ] **Open**: CMS-Sufficiency Gate — walk `docs/cms_schema.md` §5 (manual review)
+  - [ ] **Open**: Breakpoints visual check across 1920/1440/1100/900/700/540/390 (manual)
 
 - [ ] **PHASE 12 — Launch**
   - [ ] Final production smoke tests

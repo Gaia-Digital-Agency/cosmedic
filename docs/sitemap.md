@@ -121,14 +121,17 @@ Under each sub-category — these are the **editorial** procedures from `pages/s
 
 ### Surgeon pages (8 routes)
 
-- `/surgeons/suka`
-- `/surgeons/astri`
-- `/surgeons/indra`
-- `/surgeons/wara`
-- `/surgeons/sissy`
-- `/surgeons/rosa`
-- `/surgeons/risma`
-- `/surgeons/theresia`
+Production uses **flat-slug URLs** (single dash, not slash) — matches the
+design source. Same pattern as `/treatment-{slug}` for disciplines + sub-categories.
+
+- `/surgeon-suka`
+- `/surgeon-astri`
+- `/surgeon-indra`
+- `/surgeon-wara`
+- `/surgeon-sissy`
+- `/surgeon-rosa`
+- `/surgeon-risma`
+- `/surgeon-theresia`
 
 ### Localised mirrors
 
