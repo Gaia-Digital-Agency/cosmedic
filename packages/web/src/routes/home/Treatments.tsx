@@ -30,7 +30,14 @@ export const Treatments: React.FC = () => (
           <a href={`/treatment-${t.slug}`} style={{ display: 'block', color: 'inherit' }}>
             <article className="treatment-card">
               <div className="treatment-image">
-                <Img src={TREATMENT_IMG(t.slug)} fallbackLabel={t.t.toUpperCase()} fallbackHue={t.hue} alt="" />
+                <Img
+                  media={t.heroImage}
+                  src={TREATMENT_IMG(t.slug)}
+                  fallbackLabel={t.t.toUpperCase()}
+                  fallbackHue={t.hue}
+                  alt={`${t.t} discipline imagery`}
+                  sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                />
                 <div className="treatment-num">
                   <Mono>{t.n}</Mono>
                 </div>

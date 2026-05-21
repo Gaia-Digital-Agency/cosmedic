@@ -20,10 +20,12 @@ export const Surgeons: React.FC = () => {
         <Reveal delay={120}>
           <div className="surgeons-feature-img" data-surgeon={lead.slug}>
             <Img
+              media={lead.portrait}
               src={SURGEON_IMG(lead.slug)}
               fallbackLabel={`DR. ${lead.common.toUpperCase()}`}
               fallbackHue={lead.hue}
-              alt=""
+              alt={`Portrait of ${lead.title} ${lead.common}`}
+              sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 600px"
             />
           </div>
         </Reveal>
@@ -83,10 +85,12 @@ export const Surgeons: React.FC = () => {
               <div className="surgeon-card" data-surgeon={s.slug}>
                 <div className="surgeon-card-img">
                   <Img
+                    media={s.portrait}
                     src={SURGEON_IMG(s.slug)}
                     fallbackLabel={`DR. ${s.common.toUpperCase()}`}
                     fallbackHue={s.hue}
-                    alt=""
+                    alt={`Portrait of ${s.title} ${s.common}`}
+                    sizes="(max-width: 700px) 50vw, (max-width: 1100px) 33vw, 280px"
                   />
                 </div>
                 <div className="surgeon-card-meta">

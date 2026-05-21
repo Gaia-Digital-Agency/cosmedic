@@ -42,6 +42,8 @@ export type LegacySurgeon = {
   group: 'Plastic Surgery' | 'Aesthetic Medicine'
   bio: string
   spec_areas: string[]
+  /** Raw CmsMedia for responsive <picture> srcset rendering. */
+  portrait?: number | import('./cms').CmsMedia | null
 }
 
 export function adaptSurgeon(s: Surgeon): LegacySurgeon {
@@ -61,6 +63,7 @@ export function adaptSurgeon(s: Surgeon): LegacySurgeon {
     group: s.group === 'plastic-surgery' ? 'Plastic Surgery' : 'Aesthetic Medicine',
     bio: lexicalToText(s.bio) || '',
     spec_areas: (s.specAreas ?? []).map((a) => a.value),
+    portrait: s.portrait,
   }
 }
 
@@ -81,6 +84,8 @@ export type LegacyTreatment = {
   hue: number
   body: string
   procedures: string[]
+  /** Raw CmsMedia for responsive <picture> srcset rendering. */
+  heroImage?: number | import('./cms').CmsMedia | null
 }
 
 export function adaptDiscipline(d: Discipline, allProcedures: Procedure[]): LegacyTreatment {
@@ -100,6 +105,7 @@ export function adaptDiscipline(d: Discipline, allProcedures: Procedure[]): Lega
     hue: d.hue ?? 0,
     body: lexicalToText(d.body) || '',
     procedures,
+    heroImage: d.heroImage,
   }
 }
 

@@ -157,15 +157,22 @@
   - [ ] Translation pass (clinic-provided or contracted)
   - [ ] Visual regression for ID locale
 
-- [ ] **PHASE 10 — Imagery (self-host + relicense)**
-  - [ ] Download 8 surgeon portraits from cosmedic.bimcbali.com CDN
-  - [ ] Download 29 B&A composites
-  - [ ] Replace Unsplash placeholders (license or AI-generate brand imagery)
-  - [ ] Re-run media seed → Payload Media
-  - [ ] Payload `imageSizes`: 480/768/1280/1920/2560 × AVIF/WebP/JPG
-  - [ ] `<Img>` emits `<picture>`
-  - [ ] nginx caches `/api/media/*` (`expires 30d`)
-  - [ ] No outbound requests to cosmedic.bimcbali.com or unsplash.com
+- [~] **PHASE 10 — Imagery (self-host + relicense)** *(infra complete; lifestyle imagery blocked on user AI generation)*
+  - [x] Audit imagery state — bimcbali.com hot-link plan was stale (assets already self-hosted in Phase 6); 18 of ~50 slots have local files at `packages/web/public/assets/{surgeons,results,treatments}/`. 23 lifestyle/villa/hero/portrait slots still need AI gen — full brief at `docs/phase-10-imagery-gaps.md`
+  - [x] Payload `imageSizes` configured: sm (480w) / md (768) / lg (1280) / xl (1920) / xxl (2560), WebP encoding at descending quality (82/80/78/76/74)
+  - [x] Media seed (`packages/cms/src/seed/media.ts` + `seed:media` standalone runner): idempotent walk over `packages/web/public/assets/{surgeons,results,treatments,lifestyle}/`, find-by-filename, upload to Payload Media, then link Media IDs back onto records by slug
+  - [x] First seed run: **18 files uploaded** (8 surgeon portraits + 4 BA composites + 6 treatment-discipline heroes), **13 linked** (8 surgeons + 5 of 6 disciplines — `concierge.webp` has no matching Discipline record). 4 BA composites unlinked until matching BeforeAfterCases records exist with those slugs.
+  - [x] `<Img>` primitive refactored: accepts optional `media={CmsMedia}` prop. When given, emits `<picture><source type="image/webp" srcset=…><img></picture>` with srcset built from `imageSizes`. Legacy `src`-only callers continue working unchanged.
+  - [x] `mediaSrcSet` + `mediaMime` helpers in `src/lib/cms.ts`; `CmsMedia` type extended with `sizes` field
+  - [x] Adapters extended: `LegacySurgeon.portrait` + `LegacyTreatment.heroImage` pass through the raw CmsMedia object so components can hand it to `<Img>` without re-fetching
+  - [x] 3 hot-path call sites wired: home `<Surgeons>` (lead + associates), home `<Treatments>` (discipline grid); `<Hero>` already consumes `pages[home].heroImage` through `mediaUrl` and now benefits from the srcset path automatically when a hero image is set in admin
+  - [x] Root-relative URL fix: split `PAYLOAD_URL` (server-internal, `http://127.0.0.1:4007` for SSR fetches) from `PUBLIC_PAYLOAD_URL` (browser, empty = root-relative). Was baking the internal port into HTML; nginx now handles `/api/media/*` routing.
+  - [x] nginx 30d immutable cache for `/api/media/*` — added a `location ^~ /api/media/` block above the existing `/api` proxy in `subdomains.gaiada.online`. Verified via `cache-control: max-age=2592000, public, immutable` on a live variant fetch. Backup at `/etc/nginx/backups/subdomains.gaiada.online.bak-phase10-*`.
+  - [x] Smoke: variants `surgical-480x330.webp` / `suka-480x480.webp` / `surgical.webp` all serve 200 from `https://cosmedic.gaiada.online/api/media/file/…` with WebP content-type
+  - [ ] **Open**: 23 lifestyle/villa/hero/portrait slots — user AI generation per `docs/phase-10-imagery-gaps.md` then `pnpm seed:media` re-run
+  - [ ] **Open**: 25 of 29 B&A composites — need clinical sign-off + image set; deferred from this phase
+  - [ ] **Open**: extend `media` prop to remaining 19 `<Img>` call sites once lifestyle imagery lands (currently only the 3 hot paths benefit from srcset; the rest still single-img)
+  - [ ] **Open**: full Lighthouse Performance pass to confirm WebP+srcset reduces LCP/TBT
 
 - [ ] **PHASE 11 — QA + Gates (LAUNCH-BLOCKING)**
   - [ ] Mobile drawer nav (a11y + focus trap + ESC close)

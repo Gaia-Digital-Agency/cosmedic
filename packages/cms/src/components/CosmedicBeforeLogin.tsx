@@ -30,12 +30,15 @@ const CosmedicBeforeLogin: React.FC = () => (
       padding: '0 1rem',
     }}
   >
+    {/* Login page only — full BIMC CosMedic lockup (plus + wordmark +
+        endorsement). Everywhere else in the admin uses just the plus
+        mark (CosmedicIcon, favicons). */}
     <img
-      src="/cosmedic-mark-192.png"
-      alt="BIMC CosMedic"
+      src="/cosmedic-mark-on-light.png"
+      alt="BIMC CosMedic — Managed by BIMC Hospital"
       style={{
-        width: 140,
-        height: 140,
+        width: 'min(260px, 75%)',
+        height: 'auto',
         display: 'block',
         marginInline: 'auto',
       }}
@@ -53,7 +56,7 @@ const CosmedicBeforeLogin: React.FC = () => (
         color: 'var(--theme-text)',
       }}
     >
-      Cosmedic CMS
+      Content Management System
     </h1>
     <p
       style={{
