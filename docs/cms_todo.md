@@ -6,6 +6,26 @@
 
 ---
 
+
+## 2026-05-22 — DO FIRST: CMS image upload fix (carried over from 2026-05-21 incident)
+
+**Issue diagnosed 2026-05-21:** CMS image upload `POST /api/media` is broken by an nginx ↔ Payload redirect loop. nginx 301s `/api/media` → `/api/media/` (trailing-slash convention from prefix-location with `proxy_pass`); Payload 308s `/api/media/` → `/api/media` (no-trailing-slash convention). The 301 strips the POST body, browser ends up in an infinite GET loop. Introduced by **Phase 10** nginx edit at 2026-05-21 00:54 UTC.
+
+**Affected:** `https://cosmedic.gaiada.online/admin/collections/pages/1` (and any other admin upload path that POSTs to `/api/media`).
+
+### Checks for 2026-05-22 (in order)
+
+- [ ] Read `/etc/nginx/sites-enabled/subdomains.gaiada.online` line 49 — confirm the `location ^~ /api/media/ { ... proxy_pass http://127.0.0.1:4007; ... expires 30d; ... }` block is still the culprit.
+- [ ] Backup current config: `sudo cp /etc/nginx/sites-enabled/subdomains.gaiada.online /etc/nginx/backups/subdomains.gaiada.online.bak-cmsfix-$(date +%Y%m%d-%H%M%S)`
+- [ ] Apply fix: change `location ^~ /api/media/` to `location ^~ /api/media/file/` (one-line edit at line 49). Payload serves actual files under `/api/media/file/<name>.webp`, so Phase 10 30d caching intent is preserved; the `/api/media` collection API is freed for POST.
+- [ ] `sudo nginx -t` — must pass.
+- [ ] `sudo systemctl reload nginx` — reload (no full restart).
+- [ ] Verify upload via CMS UI: log into `/admin/collections/pages/1`, attempt to upload a test image. Expect HTTP 200, no redirect loop, file appears in media library.
+- [ ] Sanity check caching still works: `curl -I https://cosmedic.gaiada.online/api/media/file/<known-existing-asset>.webp` should show `Cache-Control: max-age=2592000` (30 days).
+- [ ] If everything green, note the fix in `phase-10-imagery-gaps.md` and close this section.
+
+**Note:** the cosmedic-cms PM2 app restarted 103 times on 2026-05-21 02:00 UTC due to a separate Next.js build issue (`.next/prerender-manifest.json` missing). That resolved at 01:59:43 deploy. Do not conflate — the redirect-loop bug is config-only and independent.
+
 ## Phase M — Mobile-Responsive Sweep (paused 2026-05-21, resuming)
 
 Audit script lives at `/tmp/cosmedic-audit/audit.mjs`. Re-run with:
