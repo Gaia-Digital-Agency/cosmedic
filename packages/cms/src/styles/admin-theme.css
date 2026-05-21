@@ -57,9 +57,12 @@ code,
  * on a slightly tinted background.
  * ─────────────────────────────────────────────────────────────────── */
 
-.field-type.upload,
-.upload__dropzoneAndUpload,
-.upload-collection-action {
+/* Outer upload wrapper only — light bronze hairline + label pill so editors
+ * can find the field in a long form. The inner `.upload__dropzoneAndUpload`
+ * is left to Payload's default styling so the preview thumbnail + Choose
+ * File button render correctly. */
+
+.field-type.upload {
   position: relative;
   border: 1.5px dashed var(--cs-accent);
   background: rgba(166, 124, 82, 0.05);
@@ -69,8 +72,7 @@ code,
   transition: border-color 0.2s ease, background 0.2s ease;
 }
 
-.field-type.upload:hover,
-.upload__dropzoneAndUpload:hover {
+.field-type.upload:hover {
   border-color: var(--cs-brown);
   background: rgba(166, 124, 82, 0.09);
 }
@@ -91,7 +93,58 @@ code,
   pointer-events: none;
 }
 
-[data-theme='dark'] .field-type.upload,
-[data-theme='dark'] .upload__dropzoneAndUpload {
+[data-theme='dark'] .field-type.upload {
   background: rgba(230, 220, 200, 0.04);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Sidebar nav — BOLD + CAPS group titles, indented items with a bullet
+ * prefix. Mirrors the "COLLECTIONS / - Users / - Media" layout from
+ * brand spec.
+ * ─────────────────────────────────────────────────────────────────── */
+
+.nav__wrap .nav-group__label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cs-brown);
+  padding: 14px 0 6px;
+  opacity: 1;
+}
+
+[data-theme='dark'] .nav__wrap .nav-group__label {
+  color: var(--cs-cream);
+}
+
+.nav__wrap .nav-group + .nav-group {
+  margin-top: 8px;
+}
+
+.nav__wrap .nav-group__content {
+  padding-left: 0;
+}
+
+.nav__wrap .nav-group__content .nav__link {
+  position: relative;
+  padding-left: 24px;
+  font-size: 0.92rem;
+  line-height: 1.4;
+}
+
+.nav__wrap .nav-group__content .nav__link::before {
+  content: '–';
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--cs-accent);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.9rem;
+  opacity: 0.65;
+}
+
+.nav__wrap .nav-group__content .nav__link.active::before {
+  opacity: 1;
 }

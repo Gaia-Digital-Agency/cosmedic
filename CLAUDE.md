@@ -37,6 +37,7 @@ Every change must respect:
 | [docs/cms_schema.md](docs/cms_schema.md) | Before adding a UI surface — verify it traces to a CMS entity (Non-negotiable #3 audit) |
 | [docs/plan.md](docs/plan.md) | Before starting any phase — the 14-phase execution plan + locked decisions |
 | [docs/todo.md](docs/todo.md) | Master TODO — phase checklist + 47-page CMS record tracker |
+| [docs/cms_todo.md](docs/cms_todo.md) | Working TODO — Phase M (mobile sweep) + Phase N (header/FAB/pricing fixes), updated 2026-05-21 |
 | [docs/brand-guidelines.pdf](docs/brand-guidelines.pdf) | Canonical brand source — palette, typography, mark, usage rules |
 | [docs/pricelist.xlsx](docs/pricelist.xlsx) | Canonical clinic price + procedure catalogue — seed source for Phase 6 |
 | [design/](design/) | Original Claude Design source — never modified, only mirrored |
@@ -96,6 +97,54 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
 - **Phase 8**: Live at **https://cosmedic.gaiada.online** with green padlock. DNS A record points to `34.124.244.233`; Let's Encrypt cert at `/etc/letsencrypt/live/cosmedic.gaiada.online/` (issued 2026-05-20, expires 2026-08-18). nginx block in `/etc/nginx/sites-enabled/subdomains.gaiada.online` mirrors the christos VRTPN pattern — HTTP→HTTPS 301, web-owned `/api/{page-data,preview,exit-preview,revalidate,enquiry}` → `:3007`, Payload `/admin` + `/_next` + `/api` → `:4007` (25M client_max_body_size for media uploads), `/` → `:3007` (Vite SSR). Backup of pre-Phase-8 nginx config stashed at `/etc/nginx/backups/subdomains.gaiada.online.bak-phase8-*`. Smoke-tested: homepage 200, `/admin` 200, `/api/revalidate` `{ok:true}`, `/api/enquiry` returns Zod validation errors, all sibling sites unchanged. **Pending pre-launch**: SMTP provider for enquiry emails (currently JSON transport — no delivery).
 
 **Known issue surfaced during Phase 8 smoke**: SSR router uses `/surgeon-<slug>` but sitemap + header links use `/surgeons/<slug>` — surgeon detail pages 404. Fix during Phase 11.
+
+## Phase M (Mobile-Responsive Sweep) — IN PROGRESS, paused 2026-05-21
+
+User-set acceptance criterion: **no horizontal scroll at any width on any route. Only vertical scroll.** User confirmed scope: header + all 51 routes. Burger contents: nav links only (logo + lang switcher + CTA stay visible in header bar at widths where they fit).
+
+### Already shipped (live)
+- **Logo white-smudge fix** — `.logo .logo-img-dark { display: none }` was being overridden by `.logo img { display: block }` (higher specificity). Both logo `<img>` elements were rendering side-by-side; the all-white variant created a faint smudge next to the dark logo. Scoped the swap selectors under `.logo`. (`packages/web/src/styles/globals.css:196-201`)
+- **Logo-swap-on-scroll removed** — Header background stays cream at all scroll positions, but the CSS was swapping to the white logo when `.site-header.scrolled` — making the logo invisible. Removed the scrolled-state swap entirely. CMS `Header.logoDark` field is preserved (Rule 4) but no longer rendered until a real dark-header state is introduced. (`packages/web/src/styles/globals.css:196-204`)
+- **M2 partial — burger threshold + header collapse rules** — at `max-width: 1100px`, primary nav now collapses to burger BUT lang switcher + CTA remain visible (previously they were hidden). At `max-width: 700px`, the inline `logo-endorsement-line` / `logo-endorsement-mark` are hidden (the logo PNG already includes "Managed by BIMC Hospital"), `lang-switcher` hides, header padding tightens, CTA shrinks. (`packages/web/src/styles/globals.css:1349-1380`)
+
+### Known broken at pause point (must fix next session)
+- **320–375px header overflow** — the CTA "Plan Your Treatment" still pushes the burger button off-screen. The `@media (max-width: 420px) { .header-cta span:not(.btn-arrow) { display: none } }` rule I added to collapse the CTA to icon-only was NOT applied at runtime (verified via screenshot: CTA text still rendering full at 320). Needs investigation — possibly specificity, possibly the inner `<span>` selector mismatching the rendered DOM. (`packages/web/src/styles/globals.css:1383-1388`)
+
+### Audit-in-flight results (incomplete — 45 of 51 routes scanned)
+Audit script: `/tmp/cosmedic-audit/audit.mjs` (uses chromium + CDP, measures `documentElement.scrollWidth > innerWidth` and lists offending elements). Run log: `/tmp/cosmedic-audit/run.log`. Re-run with `cd /tmp/cosmedic-audit && stdbuf -oL node audit.mjs > run.log 2>&1 &`.
+
+Routes with confirmed horizontal overflow (so far):
+- `/video-consult` — overflows by 97px at 768px viewport
+- `/surgeon-risma` — overflows by 30px at 768px viewport
+- `/surgeon-wara` — overflows by 21px at 768px viewport
+
+Routes NOT yet audited at pause point: the remaining `/treatment-reconstructive-trauma`, `/treatment-recovery`, `/treatment-surgical`, `/treatment-surgical-body`, `/treatment-surgical-breast`, `/treatment-surgical-face`, `/treatment-weight-loss-*`. Resume by re-running the audit script — should take ~5 minutes wall-clock.
+
+Note: most routes report OK on the document-level overflow check, but visual inspection of the homepage at 375px showed text that *appeared* clipped (e.g. hero headline "Considered work…in considered hands" cut mid-word). That clipping is caused by `overflow: hidden` on a parent, not by horizontal scroll. User criterion is no horizontal scroll, but clipped content is still a UX defect to address in M3.
+
+### Task list snapshot
+- #1 M1 (in_progress) — Multi-breakpoint audit of all 51 routes
+- #2 M2 (pending) — Tighten nav→burger threshold (mostly done; 320–375 burger-missing bug remains)
+- #3 M3 (pending, blocked by #1) — Per-route responsive fixes
+- #4 M4 (pending, blocked by #2 + #3) — Re-screenshot + sign-off
+
+### Resume protocol
+1. Re-run audit, capture complete `OVERFLOW` list across all 51 routes.
+2. Fix the 320–375 burger-missing bug first (smallest, most visible).
+3. Tackle `/video-consult` (97px overflow — largest signal of structural issue).
+4. Spot-check surgeon detail pages at 768 (`/surgeon-risma`, `/surgeon-wara`).
+5. Run audit again; require zero overflows before declaring M4 done.
+
+## Phase N (Header + Chrome + Pricing polish) — queued 2026-05-21
+
+User added these alongside the Phase M resume work. Detail in [docs/cms_todo.md](docs/cms_todo.md).
+
+- **N0 — Mobile-view spot check** across 320 / 375 / 414 / 640 / 768. Overlaps with M1 + M4 but specifically includes golden-path UX (clipped headlines, broken stacking, touch targets < 44px), not just document-level horizontal overflow.
+- **N1 — "MANAGED BY BIMC HOSPITAL" endorsement alignment.** Vertically centre `logo-endorsement-line` / `logo-endorsement-mark` to the COSMEDIC brand logo glyph in the nav bar; resize for visual balance. Affected: `packages/web/src/components/shell/Header.tsx` + `globals.css` (`.logo`, `.logo-endorsement-line`, `.logo-endorsement-mark`).
+- **N2 — Back-to-Top = WhatsApp FAB size.** In `FloatingChrome`, make the Back-to-Top button match the WA FAB's width / height / border-radius / shadow exactly so they read as a paired chrome cluster. Affected: `packages/web/src/components/shell/FloatingChrome.tsx` + floating-chrome rules in `globals.css`.
+- **N3 — `/pricing` table consistency.** Inside the `ClinicCatalogueTable` block at `https://cosmedic.gaiada.online/pricing`: enforce consistent column widths across every category table, left-align all text columns (procedure name, notes, anaesthesia type). Numeric columns (IDR / AUD) stay right-aligned per currency convention. Affected: the `ClinicCatalogueTable` block component + its styles. Trace from `packages/web/src/routes/pricing/`.
+
+**Order of work next session:** N1 → N2 → N3 (small, isolated, high-visibility wins) → resume M1 → M2 → M3 → M4.
 
 ## Common ops
 

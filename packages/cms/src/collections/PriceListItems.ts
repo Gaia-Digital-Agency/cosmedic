@@ -9,8 +9,8 @@ export const PriceListItems: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'sheet', 'category', 'priceIdr2026', 'sortOrder'],
-    group: 'Pricing Catalogue',
-    description: 'The full clinic price list (~200 rows) parsed from docs/pricelist.xlsx. Powers /pricing page transparency. Each row is editable in the CMS.',
+    group: 'Treatments & Pricing',
+    description: 'The complete clinic price catalogue (~200 rows from docs/pricelist.xlsx). Renders as the big tables on /pricing, grouped by Sheet (Surgical / Non-Surgical / Machine / Injection / BTL) and then by Category. This is the canonical source for every price on the site.',
   },
   access: {
     read: readPublic,

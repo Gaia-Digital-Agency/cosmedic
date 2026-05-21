@@ -9,8 +9,8 @@ export const HairRemovalAreas: CollectionConfig = {
   admin: {
     useAsTitle: 'area',
     defaultColumns: ['area', 'bodyZone', 'priceIdr', 'sortOrder'],
-    group: 'Pricing Catalogue',
-    description: 'BTL hair removal areas + non-hair BTL services from pricelist BTL sheet.',
+    group: 'Treatments & Pricing',
+    description: 'BTL hair-removal areas and other BTL services. Renders as rows in the BTL Hair Removal section of /pricing, grouped by body zone (Face / Upper Body / Lower Body / Package / Other).',
   },
   access: {
     read: readPublic,

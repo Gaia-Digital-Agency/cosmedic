@@ -9,8 +9,8 @@ export const Enquiries: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'email', 'treatmentInterest', 'status', 'submittedAt'],
-    group: 'Enquiries',
-    description: 'Lead submissions. Public can create; only authed users can read/update. Never deleted (audit trail).',
+    group: 'Forms & Email',
+    description: 'Incoming leads. Each row is a submission from the /contact form or the homepage hero quick-form. ADMIN-ONLY — never rendered on the public site. Public visitors can CREATE only; only logged-in staff can read/update. Never deleted (audit trail).',
   },
   access: {
     read: isAuthenticated,

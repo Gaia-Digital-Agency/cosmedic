@@ -192,6 +192,28 @@
   .logo:hover { opacity: 1; }
   .logo img { height: 56px; width: auto; display: block; }
   .site-header.scrolled .logo img { height: 48px; transition: height .3s ease; }
+
+  /* Logo: the header background stays cream (`var(--paper)`) at all scroll
+   * positions, so the primary logo (logoLight = dark mark on cream) is the
+   * only correct rendering. The second <img> (logoDark = white-on-dark
+   * variant) is kept in the DOM for a future dark-header state but is
+   * permanently hidden today — swapping to it on scroll would render an
+   * invisible white logo on a still-cream header. CMS field is preserved. */
+  .logo .logo-img-dark { display: none; }
+
+  /* EndorsementMark — small "Managed by BIMC Hospital" tag rendered under
+   * primary logo. Either inline lockup image (preferred when uploaded) or
+   * fallback text line. Brand guidelines §I. */
+  .logo-endorsement-mark { height: 14px !important; margin-left: 10px; opacity: 0.65; align-self: center; }
+  .logo-endorsement-line {
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--ink-60);
+    margin-left: 10px;
+    align-self: center;
+  }
   .logo-mark {
     font-family: var(--font-serif);
     font-size: 22px;
@@ -1035,6 +1057,18 @@
     position: relative;
   }
   .site-footer > * { position: relative; z-index: 3; }
+  /* Footer EndorsementMark — white-on-dark variant of "Managed by BIMC Hospital"
+   * lockup, rendered next to the inverse footer logo. */
+  .footer-endorsement-mark { height: 16px !important; margin-left: 12px; opacity: 0.75; align-self: center; }
+  .footer-endorsement-line {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin-left: 12px;
+    align-self: center;
+  }
   .footer-top {
     display: grid;
     grid-template-columns: 1.8fr 1.2fr 1fr 1fr;
@@ -1313,10 +1347,12 @@
      RESPONSIVE — light coverage; designed for desktop
      ============================================ */
   @media (max-width: 1100px) {
-    .header-inner { grid-template-columns: 1fr 1fr; }
+    /* Two-cell header: logo | right-cluster (lang + CTA + burger).
+     * Per user requirement: logo + CTA + lang switcher remain visible at all
+     * widths above the narrow-viewport breakpoint below. Only the primary
+     * nav links collapse into the burger drawer. */
+    .header-inner { grid-template-columns: auto 1fr; }
     .primary-nav { display: none; }
-    .header-right .lang-switcher,
-    .header-right .header-cta { display: none !important; }
     .burger-btn { display: flex !important; }
     .hero { grid-template-columns: 1fr; }
     .hero-image { min-height: 60vh; }
@@ -1339,10 +1375,25 @@
     .hero-headline { left: 32px; bottom: 60px; }
     .hero-aside { padding: 40px 28px; }
     .treatments-grid, .gallery-grid, .stories-grid, .surgeons-grid, .journey-steps, .footer-top { grid-template-columns: 1fr; }
-    .header-inner { padding: 16px 20px; }
+    .header-inner { padding: 16px 20px; gap: 12px; }
     .lang-switcher { display: none; }
+    /* Endorsement line is redundant on narrow viewports — the primary logo
+     * image already includes "Managed by BIMC Hospital" beneath the wordmark,
+     * and the inline mono line wraps to 3 lines at this width which inflates
+     * header height + pushes the burger off-screen. */
+    .logo-endorsement-line,
+    .logo-endorsement-mark { display: none; }
+    /* Shrink CTA to icon + short label so it stays in the bar without
+     * blowing out the width. Logo + CTA + burger remain visible. */
+    .header-cta { padding: 10px 14px; font-size: 11px; letter-spacing: 0.14em; }
     .intro-cols { grid-template-columns: 1fr; gap: 24px; }
     .surgeon-stats { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 420px) {
+    /* Very narrow viewports — hide the CTA text label and keep only the
+     * arrow so logo + burger + CTA-icon all fit at 320px. */
+    .header-cta span:not(.btn-arrow) { display: none; }
+    .header-cta { padding: 10px; }
   }
 
 /* ============================================

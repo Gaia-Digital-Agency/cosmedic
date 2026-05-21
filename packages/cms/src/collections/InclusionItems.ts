@@ -9,8 +9,8 @@ export const InclusionItems: CollectionConfig = {
   admin: {
     useAsTitle: 'text',
     defaultColumns: ['text', 'scope', 'sortOrder'],
-    group: 'Editorial',
-    description: 'Universal "what surgery includes" items. Linked from Procedures.included. Seeded from pricelist Further Info.',
+    group: 'Treatments & Pricing',
+    description: 'Curated "what\'s included" line items shared across procedures. Procedures pick relevant ones via the Included relation. Editing a line here updates every procedure card that references it. Seeded from pricelist Further Info.',
   },
   access: {
     read: readPublic,

@@ -5,12 +5,24 @@ import { Img } from '@/components/primitives/Img'
 import { Mono, Eyebrow } from '@/components/primitives/Mono'
 import { Btn } from '@/components/primitives/Btn'
 import { SURGEON_LIST, TREATMENT_LIST, SURGEON_IMG } from '@/content/seed'
+import { useCms } from '@/lib/cms-context'
+
+const DAY_LABEL: Record<string, string> = {
+  mon: 'Mon', tue: 'Tue', wed: 'Wed', thu: 'Thu', fri: 'Fri', sat: 'Sat', sun: 'Sun',
+}
 
 type Props = { slug: string }
 
 export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
   const s = SURGEON_LIST.find((x) => x.slug === slug)
   if (!s) return null
+
+  const cms = useCms()
+  // Pull the raw CMS Surgeon record so we can render fields that aren't
+  // exposed via the seed proxy (availabilitySchedule, languages).
+  const cmsSurgeon = cms?.surgeons.find((x) => x.slug === slug)
+  const schedule = cmsSurgeon?.availabilitySchedule || []
+  const languages = (cmsSurgeon?.languages || []).map((l) => l.code).filter(Boolean)
 
   const relSlug = s.group === 'Plastic Surgery' ? 'surgical' : 'non-surgical'
   const relTreatment = TREATMENT_LIST.find((t) => t.slug === relSlug)
@@ -108,13 +120,31 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
                   <dt>
                     <Mono>Languages</Mono>
                   </dt>
-                  <dd>English · Bahasa Indonesia</dd>
+                  <dd>
+                    {languages.length > 0
+                      ? languages.map((c) => c.toUpperCase()).join(' · ')
+                      : 'English · Bahasa Indonesia'}
+                  </dd>
                 </div>
                 <div>
                   <dt>
-                    <Mono>Consults</Mono>
+                    <Mono>Availability</Mono>
                   </dt>
-                  <dd>Mon &amp; Thu in person · weekday mornings by video</dd>
+                  <dd>
+                    {schedule.length > 0 ? (
+                      <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                        {schedule.map((row, i) => (
+                          <li key={i}>
+                            <strong>{DAY_LABEL[row.day] || row.day.toUpperCase()}</strong>
+                            {row.windowStart && row.windowEnd ? ` · ${row.windowStart}–${row.windowEnd}` : ''}
+                            {row.byAppointment ? ' · by appointment' : ''}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      'Mon & Thu in person · weekday mornings by video'
+                    )}
+                  </dd>
                 </div>
               </dl>
             </Reveal>

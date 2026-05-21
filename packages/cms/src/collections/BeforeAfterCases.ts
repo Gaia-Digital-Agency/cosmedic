@@ -9,8 +9,8 @@ export const BeforeAfterCases: CollectionConfig = {
   admin: {
     useAsTitle: 'caseLabel',
     defaultColumns: ['caseLabel', 'procedure', 'isFeatured', 'sortOrder'],
-    group: 'Editorial',
-    description: 'Before/after composites. Powers /gallery + home teaser. Anonymous-friendly labels only.',
+    group: 'Results & Stories',
+    description: 'Before/after composite images. Renders on /gallery (full grid), /results (curated set), and the homepage Gallery teaser. Each composite is a single image split visually between before (left) and after (right). Use anonymous-friendly labels only.',
   },
   access: {
     read: readPublic,

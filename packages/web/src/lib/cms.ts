@@ -61,6 +61,8 @@ export type CmsMedia = {
   width?: number
   height?: number
   mimeType?: string
+  /** Seeded placeholder — suppressed from public rendering. */
+  isPlaceholder?: boolean
   /**
    * Payload imageSizes outputs — produced by Sharp at upload time per
    * Media.upload.imageSizes config. Keys match the `name` of each size
@@ -89,6 +91,14 @@ export type Surgeon = {
   portrait?: number | CmsMedia
   portraitPosition?: string
   credentialedProcedures?: Array<number | Procedure>
+  /** Surgeon availability schedule — array of { day, windowStart, windowEnd, byAppointment }. */
+  availabilitySchedule?: Array<{
+    day: 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun'
+    windowStart?: string
+    windowEnd?: string
+    byAppointment?: boolean
+  }>
+  languages?: Array<{ code: string }>
   sortOrder?: number
 }
 
@@ -158,6 +168,18 @@ export type Procedure = {
     included?: Array<{ value: string }>
   }
   sortOrder?: number
+  heroImage?: number | CmsMedia
+  surgeonsCredentialed?: Array<number | Surgeon>
+  /** What's covered — relation to InclusionItems global. */
+  included?: Array<number | { id: number; slug?: string; label?: string }>
+  /** What's NOT included — relation to ExclusionItems global. */
+  excluded?: Array<number | { id: number; slug?: string; label?: string }>
+  /** Per-procedure recovery timeline (relation to JourneySteps). */
+  recoveryTimeline?: Array<number | { id: number; slug?: string; title?: string; body?: string }>
+  /** Related before/after composites. */
+  relatedBA?: Array<number | BeforeAfterCase>
+  /** Related procedures cross-links. */
+  relatedProcedures?: Array<number | { id: number; slug?: string; name?: string }>
 }
 
 export type PriceListItem = {
@@ -179,6 +201,10 @@ export type PriceListItem = {
   featuredRank?: number
   includesImplant?: boolean
   sortOrder?: number
+  /** Optional relation to the matching Procedure record (for "Learn more"). */
+  linkedProcedure?: { id: number; slug?: string; name?: string } | number | null
+  linkedInjectableProduct?: { id: number; slug?: string; name?: string } | number | null
+  linkedMachineTreatment?: { id: number; slug?: string; machineName?: string; area?: string } | number | null
 }
 
 export type InjectableProduct = {
@@ -192,6 +218,10 @@ export type InjectableProduct = {
   priceIdr?: number
   priceAud?: number
   notes?: string
+  /** Free-text manufacturer name (rendered as small caption on pricing rows). */
+  manufacturer?: string
+  /** True when the product carries FDA clearance — surfaced as a small badge. */
+  fdaApproved?: boolean
 }
 
 export type MachineTreatment = {
@@ -201,6 +231,8 @@ export type MachineTreatment = {
   area: string
   pricing?: { standardIdr?: number; kitasKtpIdr?: number; packageIdr?: number }
   notes?: string
+  /** Optional relation to the matching Procedure record. */
+  linkedProcedure?: { id: number; slug?: string; name?: string } | number | null
 }
 
 export type HairRemovalArea = {
@@ -303,7 +335,7 @@ export type BlogPost = {
   lede?: string
   body?: Lexical
   heroImage?: number | CmsMedia
-  author?: number | { name: string; portrait?: number | CmsMedia }
+  author?: number | { id?: number; name: string; role?: string; portrait?: number | CmsMedia; surgeonProfile?: number | { id: number; slug?: string; name?: string; commonName?: string } }
   publishedAt?: string
   tags?: Array<number | { slug: string; name: string }>
   readingTimeMinutes?: number
@@ -381,6 +413,8 @@ export type Settings = {
 }
 
 export type HeaderGlobal = {
+  logoLight?: CmsMedia | number | null
+  logoDark?: CmsMedia | number | null
   navItems?: Array<{
     label: string
     href: string
@@ -391,6 +425,7 @@ export type HeaderGlobal = {
 }
 
 export type FooterGlobal = {
+  logoLight?: CmsMedia | number | null
   linkColumns?: Array<{ heading: string; items: Array<{ label: string; href: string }> }>
   enquirySummary?: Lexical
   addressBlock?: Lexical
@@ -422,11 +457,35 @@ export type FormDefaults = {
   rateLimitMessage?: string
 }
 
+export type Author = {
+  id: number
+  slug: string
+  name: string
+  role?: string
+  bio?: Lexical
+  portrait?: number | CmsMedia
+  /** Optional link to a Surgeon profile — used to badge clinician-authored posts. */
+  surgeonProfile?: number | { id: number; slug: string; name?: string; commonName?: string }
+}
+
 export type EndorsementMarkGlobal = {
   endorsementLine?: string
+  primaryLockup?: CmsMedia | number | null
+  inverseLockup?: CmsMedia | number | null
   clearspaceUnit?: string
   minScreenWidthPx?: number
   minPrintMmWidth?: number
+}
+
+export type SeoDefaultsGlobal = {
+  titlePattern?: string
+  robotsTxt?: string
+  sitemapBaseUrl?: string
+  organizationSchema?: unknown
+}
+
+export type EmailTemplatesGlobal = {
+  templates?: Array<{ key: string; subject: string; bodyMjml?: string }>
 }
 
 /* ─── Cache shape ──────────────────────────────────────────────────────── */
@@ -450,6 +509,7 @@ export type CmsCache = {
   recoveryStays: RecoveryStay[]
   pricingTiers: PricingTier[]
   blogPosts: BlogPost[]
+  authors: Author[]
   journeySteps: JourneyStep[]
   inclusions: InclusionItem[]
   exclusions: ExclusionItem[]
@@ -463,6 +523,7 @@ export type CmsCache = {
   endorsementMark: EndorsementMarkGlobal
   consultationPolicy: ConsultationPolicy
   formDefaults: FormDefaults
+  seoDefaults: SeoDefaultsGlobal
 }
 
 const EMPTY_CACHE: CmsCache = {
@@ -483,6 +544,7 @@ const EMPTY_CACHE: CmsCache = {
   recoveryStays: [],
   pricingTiers: [],
   blogPosts: [],
+  authors: [],
   journeySteps: [],
   inclusions: [],
   exclusions: [],
@@ -495,6 +557,7 @@ const EMPTY_CACHE: CmsCache = {
   endorsementMark: {},
   consultationPolicy: {},
   formDefaults: {},
+  seoDefaults: {},
 }
 
 let cache: CmsCache = EMPTY_CACHE
@@ -525,15 +588,15 @@ async function doLoad(): Promise<CmsCache> {
       surgeons, disciplines, subCategories, procedures,
       priceListItems, injectableProducts, machineTreatments, hairRemovalAreas,
       beforeAfterCases, stories, pressMentions, awards, recoveryStays,
-      pricingTiers, blogPosts, journeySteps, inclusions, exclusions, pages,
+      pricingTiers, blogPosts, authors, journeySteps, inclusions, exclusions, pages,
       settings, header, footer, floatingChrome, brandStats, endorsementMark,
-      consultationPolicy, formDefaults,
+      consultationPolicy, formDefaults, seoDefaults,
     ] = await Promise.all([
-      fetchAll<Surgeon>('surgeons'),
+      fetchAll<Surgeon>('surgeons', 100, 1),
       fetchAll<Discipline>('disciplines'),
       fetchAll<SubCategory>('sub-categories'),
-      fetchAll<Procedure>('procedures'),
-      fetchAll<PriceListItem>('price-list-items', 500, 0),
+      fetchAll<Procedure>('procedures', 200, 2),
+      fetchAll<PriceListItem>('price-list-items', 500, 1),
       fetchAll<InjectableProduct>('injectable-products'),
       fetchAll<MachineTreatment>('machine-treatments'),
       fetchAll<HairRemovalArea>('hair-removal-areas'),
@@ -543,7 +606,8 @@ async function doLoad(): Promise<CmsCache> {
       fetchAll<Award>('awards'),
       fetchAll<RecoveryStay>('recovery-stays'),
       fetchAll<PricingTier>('pricing-tiers'),
-      fetchAll<BlogPost>('blog-posts'),
+      fetchAll<BlogPost>('blog-posts', 100, 2),
+      fetchAll<Author>('authors', 100, 1),
       fetchAll<JourneyStep>('journey-steps'),
       fetchAll<InclusionItem>('inclusion-items'),
       fetchAll<ExclusionItem>('exclusion-items'),
@@ -556,6 +620,7 @@ async function doLoad(): Promise<CmsCache> {
       fetchGlobal<EndorsementMarkGlobal>('endorsement-mark'),
       fetchGlobal<ConsultationPolicy>('consultation-policy'),
       fetchGlobal<FormDefaults>('form-defaults'),
+      fetchGlobal<SeoDefaultsGlobal>('seo-defaults'),
     ])
     return {
       loaded: true,
@@ -563,9 +628,9 @@ async function doLoad(): Promise<CmsCache> {
       surgeons, disciplines, subCategories, procedures,
       priceListItems, injectableProducts, machineTreatments, hairRemovalAreas,
       beforeAfterCases, stories, pressMentions, awards, recoveryStays,
-      pricingTiers, blogPosts, journeySteps, inclusions, exclusions, pages,
+      pricingTiers, blogPosts, authors, journeySteps, inclusions, exclusions, pages,
       settings, header, footer, floatingChrome, brandStats, endorsementMark,
-      consultationPolicy, formDefaults,
+      consultationPolicy, formDefaults, seoDefaults,
     }
   } catch (err) {
     console.warn('[cms] load failed, using empty cache:', err)
@@ -634,6 +699,10 @@ export function lexicalToParagraphs(value: Lexical): string[] {
 export function mediaUrl(m: number | CmsMedia | undefined | null, fallback?: string): string | undefined {
   if (!m) return fallback
   if (typeof m === 'number') return fallback
+  // Suppress seed placeholders on the public site. Editors flip the
+  // `isPlaceholder` flag off in the CMS once they upload a real photo.
+  // Record remains editable; only public rendering is hidden.
+  if ((m as { isPlaceholder?: boolean }).isPlaceholder === true) return fallback
   if (m.url) {
     return m.url.startsWith('http') ? m.url : `${PUBLIC_PAYLOAD_URL}${m.url}`
   }
@@ -654,6 +723,7 @@ export function mediaAlt(m: number | CmsMedia | undefined | null, fallback = '')
  */
 export function mediaSrcSet(m: number | CmsMedia | undefined | null): string | undefined {
   if (!m || typeof m === 'number' || !m.sizes) return undefined
+  if ((m as { isPlaceholder?: boolean }).isPlaceholder === true) return undefined
   const parts: string[] = []
   for (const size of Object.values(m.sizes)) {
     if (!size || !size.url || !size.width) continue

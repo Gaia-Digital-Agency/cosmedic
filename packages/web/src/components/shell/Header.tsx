@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { TREATMENT_LIST, SUBCATEGORIES_BY_DISCIPLINE, SURGEON_LIST } from '@/content/seed'
 import { withLocale, localeFromPath } from '@/i18n'
 import { useCms } from '@/lib/cms-context'
+import { mediaUrl, mediaAlt } from '@/lib/cms'
 
 type Props = {
   activePage?: string
@@ -15,6 +16,17 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
   const ctaLabel = cms?.floatingChrome?.ctaPill?.label || 'Plan Your Treatment'
   const ctaHref = cms?.floatingChrome?.ctaPill?.href || '/contact'
   const siteName = cms?.settings?.siteName || 'BIMC CosMedic'
+  // CMS-driven logos with static fallback. logoDark is rendered when the
+  // header has scrolled past the hero (`.scrolled`) via CSS swap; we emit
+  // both <img>s and let the stylesheet show/hide based on header state.
+  const logoLightSrc = mediaUrl(cms?.header?.logoLight, '/assets/logo.png') || '/assets/logo.png'
+  const logoDarkSrc = mediaUrl(cms?.header?.logoDark, '/assets/logo-light.png') || '/assets/logo-light.png'
+  const logoAlt = mediaAlt(cms?.header?.logoLight, `${siteName} — Managed by BIMC Hospital`)
+  // EndorsementMark: small "Managed by BIMC Hospital" line + optional lockup
+  // image rendered immediately under the primary logo. Brand-guideline §I.
+  const endorsementLine = cms?.endorsementMark?.endorsementLine
+  const endorsementLockup = mediaUrl(cms?.endorsementMark?.primaryLockup, '') || ''
+  const endorsementLockupAlt = mediaAlt(cms?.endorsementMark?.primaryLockup, endorsementLine || '')
 
   const [scrolled, setScrolled] = useState(false)
   const [lang, setLang] = useState<'EN' | 'ID'>('EN')
@@ -77,7 +89,13 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
     <header className={`site-header ${scrolled ? 'scrolled' : ''}`}>
       <div className="header-inner">
         <a href="/" className="logo">
-          <img src="/assets/logo.png" alt={`${siteName} — Managed by BIMC Hospital`} />
+          <img src={logoLightSrc} alt={logoAlt} className="logo-img logo-img-light" />
+          <img src={logoDarkSrc} alt={logoAlt} className="logo-img logo-img-dark" />
+          {endorsementLockup ? (
+            <img src={endorsementLockup} alt={endorsementLockupAlt} className="logo-endorsement-mark" />
+          ) : endorsementLine ? (
+            <span className="logo-endorsement-line">{endorsementLine}</span>
+          ) : null}
         </a>
         <nav className="primary-nav">
           <div

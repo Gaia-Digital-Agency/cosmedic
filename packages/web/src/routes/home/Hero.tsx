@@ -14,7 +14,13 @@ export const Hero: React.FC = () => {
   const titleA = page?.chapterTitle?.a || 'Plastic surgery'
   const titleB = page?.chapterTitle?.b || 'in Bali, by ISAPS surgeons.'
   const lede = page?.lede
-  const heroImage = page?.heroImage ? mediaUrl(page.heroImage, IMG.hero) || IMG.hero : IMG.hero
+  // If the linked media is flagged isPlaceholder, render no image at all —
+  // the vignette + dark background carry the section. Stops the "Editorial
+  // Hero / placeholder" seed file from being visible to public visitors.
+  const heroMedia = page?.heroImage
+  const isPlaceholderHero =
+    heroMedia && typeof heroMedia === 'object' && (heroMedia as { isPlaceholder?: boolean }).isPlaceholder === true
+  const heroImage = !isPlaceholderHero && heroMedia ? mediaUrl(heroMedia, '') : ''
 
   const [expanded, setExpanded] = useState(false)
   const [heroName, setHeroName] = useState('')
@@ -56,7 +62,9 @@ export const Hero: React.FC = () => {
   return (
     <section className="hero-v2">
       <div className="hero-image-inner">
-        <Img src={heroImage} fallbackLabel="BIMC · NUSA DUA" fallbackHue={3} alt="" />
+        {heroImage ? (
+          <Img src={heroImage} fallbackLabel="BIMC · NUSA DUA" fallbackHue={3} alt="" />
+        ) : null}
         <div className="hero-image-vignette" />
       </div>
 

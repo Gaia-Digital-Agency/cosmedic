@@ -6,12 +6,31 @@ export const Media: CollectionConfig = {
   access: {
     read: () => true,
   },
+  admin: {
+    useAsTitle: 'filename',
+    defaultColumns: ['filename', 'alt', 'isPlaceholder', 'updatedAt'],
+    listSearchableFields: ['filename', 'alt'],
+    group: 'Media Library',
+    description: 'Every image used anywhere on the site — hero images, doctor portraits, before/after composites, logos, OG/share previews, lifestyle imagery. Filter by "Placeholder" to see the seed-shipped images still awaiting real photos from the clinic. Upload here once → reference everywhere via Upload fields on other collections.',
+  },
   fields: [
     apiWarningField,
     {
       name: 'alt',
       type: 'text',
       required: true,
+    },
+    {
+      name: 'isPlaceholder',
+      type: 'checkbox',
+      defaultValue: false,
+      index: true,
+      admin: {
+        position: 'sidebar',
+        description:
+          'Flagged TRUE on every seed-shipped placeholder. UNCHECK after replacing with a real clinic photo. Filter the Media list by this flag to see the launch backlog.',
+      },
+      label: 'Placeholder — replace before launch',
     },
     {
       name: 'credit',

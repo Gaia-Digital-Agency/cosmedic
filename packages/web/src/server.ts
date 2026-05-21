@@ -128,20 +128,24 @@ async function createServer() {
   })
 
   // ─── SEO infra (Phase 13) ────────────────────────────────────────────
-  // robots.txt — allow all, point at sitemap. Hosts that allow disallow:
-  // sensitive paths (admin lives on the cms host but we still hint it).
-  app.get('/robots.txt', (_req, res) => {
+  // robots.txt — sourced from SeoDefaults.robotsTxt in the CMS, falling
+  // back to a sensible default. Clinic can edit via Globals → SEO Defaults.
+  app.get('/robots.txt', async (_req, res) => {
+    const cms = await loadCmsCache()
+    const cmsRobots = cms.seoDefaults?.robotsTxt
     res.type('text/plain').send(
-      `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin\n\nSitemap: https://cosmedic.gaiada.online/sitemap.xml\n`,
+      (cmsRobots && cmsRobots.trim()) ||
+        `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin\n\nSitemap: https://cosmedic.gaiada.online/sitemap.xml\n`,
     )
   })
 
   // sitemap.xml — every known route. Static base list + per-CMS-collection
   // slugs (surgeons, disciplines, sub-categories, blog posts) so freshly-
-  // added content is discoverable without a redeploy.
+  // added content is discoverable without a redeploy. Base URL pulled from
+  // SeoDefaults.sitemapBaseUrl with a fallback.
   app.get('/sitemap.xml', async (_req, res) => {
     const cms = await loadCmsCache()
-    const base = 'https://cosmedic.gaiada.online'
+    const base = (cms.seoDefaults?.sitemapBaseUrl || '').trim() || 'https://cosmedic.gaiada.online'
     const staticRoutes = [
       '/',
       '/treatments',

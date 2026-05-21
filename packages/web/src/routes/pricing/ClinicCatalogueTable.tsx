@@ -52,6 +52,29 @@ function groupBy<T, K extends string>(items: T[], key: (t: T) => K): Record<K, T
   return out as Record<K, T[]>
 }
 
+// Helper — formats a relation field (number-id or hydrated object) into a
+// caption string and optional href. Used for linkedProcedure / linkedInjectable
+// / linkedMachineTreatment cross-references on pricing rows.
+type LinkedRef =
+  | { id: number; slug?: string; name?: string; machineName?: string; area?: string }
+  | number
+  | null
+  | undefined
+
+function describeLink(ref: LinkedRef, kind: 'procedure' | 'injectable' | 'machine'): { label: string; href?: string } | null {
+  if (!ref || typeof ref === 'number') return null
+  const name =
+    ref.name ||
+    (ref.machineName && ref.area ? `${ref.machineName} — ${ref.area}` : ref.machineName) ||
+    null
+  if (!name) return null
+  const prefix = kind === 'procedure' ? 'procedure' : kind === 'injectable' ? 'injectable' : 'machine'
+  // No /procedure-X /injectable-X /machine-X routes yet — surface as a label
+  // without href so the data is visible and editors can confirm relations.
+  // Future: wire href to a real detail route when those pages ship.
+  return { label: name, href: undefined, _kind: prefix } as { label: string; href?: string }
+}
+
 const TableRow: React.FC<{
   name: string
   notes?: string
@@ -60,7 +83,12 @@ const TableRow: React.FC<{
   priceRange?: { low: number; high: number }
   badge?: string
   featured?: boolean
-}> = ({ name, notes, priceIdr, priceAud, priceRange, badge, featured }) => (
+  linkedProcedure?: LinkedRef
+  linkedInjectable?: LinkedRef
+  linkedMachine?: LinkedRef
+  manufacturer?: string
+  fdaApproved?: boolean
+}> = ({ name, notes, priceIdr, priceAud, priceRange, badge, featured, linkedProcedure, linkedInjectable, linkedMachine, manufacturer, fdaApproved }) => (
   <div
     style={{
       display: 'grid',
@@ -89,6 +117,26 @@ const TableRow: React.FC<{
       {badge ? (
         <Mono style={{ fontSize: 10, color: 'var(--accent-deep)' }}>{badge}</Mono>
       ) : null}
+      {fdaApproved ? (
+        <Mono style={{ fontSize: 9, color: 'var(--accent-deep)', border: '1px solid var(--accent)', padding: '1px 6px', borderRadius: 2 }}>FDA</Mono>
+      ) : null}
+      {manufacturer ? (
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--ink-60)', letterSpacing: '0.08em' }}>{manufacturer}</span>
+      ) : null}
+      {(() => {
+        const proc = describeLink(linkedProcedure, 'procedure')
+        const inj = describeLink(linkedInjectable, 'injectable')
+        const mach = describeLink(linkedMachine, 'machine')
+        const parts = [proc, inj, mach].filter(Boolean) as { label: string; href?: string }[]
+        if (parts.length === 0) return null
+        return (
+          <span style={{ display: 'inline-flex', gap: 8, fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--ink-40)', letterSpacing: '0.14em', textTransform: 'uppercase', flexBasis: '100%', marginTop: 2 }}>
+            {parts.map((p, i) => (
+              <span key={i}>→ {p.label}</span>
+            ))}
+          </span>
+        )
+      })()}
     </div>
     <p
       style={{
@@ -207,6 +255,9 @@ export const ClinicCatalogueTable: React.FC = () => {
                   priceAud={p.priceAud2026 ?? p.priceAud2025}
                   badge={p.featuredRank ? `Top ${p.featuredRank}` : p.includesImplant ? 'Includes implant' : undefined}
                   featured={Boolean(p.featuredRank)}
+                  linkedProcedure={p.linkedProcedure}
+                  linkedInjectable={p.linkedInjectableProduct}
+                  linkedMachine={p.linkedMachineTreatment}
                 />
               ))}
             </CategoryGroup>
@@ -224,6 +275,7 @@ export const ClinicCatalogueTable: React.FC = () => {
                   notes={m.pricing?.kitasKtpIdr ? `Kitas + KTP: ${fmtIdr(m.pricing.kitasKtpIdr)}` : undefined}
                   priceIdr={m.pricing?.standardIdr}
                   badge={m.pricing?.packageIdr ? `Package: ${fmtIdr(m.pricing.packageIdr)}` : undefined}
+                  linkedProcedure={m.linkedProcedure}
                 />
               ))}
             </CategoryGroup>
@@ -241,6 +293,8 @@ export const ClinicCatalogueTable: React.FC = () => {
                   notes={[p.unit, p.notes].filter(Boolean).join(' · ')}
                   priceIdr={p.priceIdr}
                   badge={p.brand}
+                  manufacturer={p.manufacturer}
+                  fdaApproved={p.fdaApproved}
                 />
               ))}
             </CategoryGroup>

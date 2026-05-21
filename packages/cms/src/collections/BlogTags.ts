@@ -6,7 +6,11 @@ import { apiWarningField } from '../lib/api-warning'
 
 export const BlogTags: CollectionConfig = {
   slug: 'blog-tags',
-  admin: { useAsTitle: 'name', group: 'Editorial' },
+  admin: {
+    useAsTitle: 'name',
+    group: 'Blog',
+    description: 'Topic tags applied to blog posts. Rendered as filter chips on /blog and as the "Filed under" label on each post page.',
+  },
   access: {
     read: readPublic,
     create: isAuthenticated,

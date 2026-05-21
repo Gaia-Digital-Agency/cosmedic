@@ -25,8 +25,8 @@ export const Pages: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'route', 'publishStatus'],
-    group: 'Editorial',
-    description: 'Per-route editorial overrides — hero / lede / body sections / SEO. Used wherever the page is not driven by a catalogue collection.',
+    group: 'Pages',
+    description: 'One record per URL that needs hand-crafted hero + body and isn\'t driven by a catalogue collection. Covers: / (home), /journey, /gallery, /stories, /press, /privacy, /contact, /video-consult, /pricing (hero text only — the table reads from PriceListItems). Each record controls: chapter title, tagline, lede, hero image, composable body sections, per-page SEO.',
   },
   access: {
     read: publishedOrAuthed,

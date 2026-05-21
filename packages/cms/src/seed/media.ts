@@ -79,7 +79,7 @@ async function uploadOne(payload: Payload, absPath: string, alt: string): Promis
   const stats = await stat(absPath)
   const created = await payload.create({
     collection: 'media',
-    data: { alt },
+    data: { alt, isPlaceholder: true },
     file: {
       data: buf,
       mimetype: mimeFor(absPath),

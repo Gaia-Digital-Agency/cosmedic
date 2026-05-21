@@ -7,6 +7,7 @@ import { Mono, Eyebrow } from '@/components/primitives/Mono'
 import { Btn } from '@/components/primitives/Btn'
 import { SURGEON_LIST, SURGEON_IMG } from '@/content/seed'
 import { BLOG_POST_BODIES, BLOG_POSTS } from '@/content/blog-data'
+import { useCms } from '@/lib/cms-context'
 
 type Props = { slug: string }
 
@@ -21,6 +22,22 @@ export const BlogPost: React.FC<Props> = ({ slug }) => {
   if (!post) return null
   const author = SURGEON_LIST.find((s) => s.slug === post.authorSlug)
   if (!author) return null
+
+  // Resolve any matching CMS Author record (by name match) so we can surface
+  // the Authors.surgeonProfile relation — e.g. when a clinician-author has a
+  // surgeon profile, badge the byline with a "View clinician profile" link.
+  const cms = useCms()
+  const matchedAuthor = cms?.authors.find(
+    (a) => a.name.toLowerCase().includes(author.common.toLowerCase()) ||
+      author.name.toLowerCase().includes(a.name.toLowerCase()),
+  )
+  const surgeonProfile = matchedAuthor?.surgeonProfile
+  const linkedSurgeonSlug =
+    surgeonProfile && typeof surgeonProfile !== 'number' ? surgeonProfile.slug : null
+  const linkedSurgeonLabel =
+    surgeonProfile && typeof surgeonProfile !== 'number'
+      ? `${surgeonProfile.commonName || surgeonProfile.name || 'Surgeon profile'}`
+      : null
 
   return (
     <PageShell activePage="blog">
@@ -60,6 +77,25 @@ export const BlogPost: React.FC<Props> = ({ slug }) => {
                   {author.title} {author.name}
                 </div>
                 <span className="blog-byline-role">{author.group}</span>
+                {linkedSurgeonSlug ? (
+                  <a
+                    href={`/surgeon-${linkedSurgeonSlug}`}
+                    style={{
+                      display: 'inline-block',
+                      marginTop: 6,
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 10,
+                      letterSpacing: '0.18em',
+                      textTransform: 'uppercase',
+                      color: 'var(--accent-deep)',
+                      textDecoration: 'none',
+                      borderBottom: '1px solid var(--accent)',
+                      paddingBottom: 2,
+                    }}
+                  >
+                    View clinician profile · {linkedSurgeonLabel} →
+                  </a>
+                ) : null}
               </div>
             </div>
             <div className="blog-byline-meta">

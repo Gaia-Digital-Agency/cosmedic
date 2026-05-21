@@ -9,8 +9,8 @@ export const JourneySteps: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'dayLabel', 'category', 'sortOrder'],
-    group: 'Editorial',
-    description: 'Patient journey steps. Reused on /journey and as recovery timeline on procedure pages. Seeded from pricelist Day 1/2/4/7/10/14 + design 8-step.',
+    group: 'Pages',
+    description: 'Patient-journey steps shown as the timeline on /journey AND reused as the "Recovery timeline" block on procedure detail. Each step has a day label, title, body, and category.',
   },
   access: {
     read: readPublic,

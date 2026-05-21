@@ -45,10 +45,19 @@ function clampDescription(s: string): string {
 }
 
 export function seoFor(pathname: string, cms: CmsCache): SeoFields {
-  const defaults = (cms.globals?.['seo-defaults'] || {}) as Record<string, unknown>
-  const fallbackTitleSuffix = (defaults.titleSuffix as string) || ' — BIMC CosMedic'
-  const fallbackDescription = (defaults.description as string) || DEFAULT_DESCRIPTION
-  const fallbackOgUrl = (defaults.defaultOgImage as { url?: string } | undefined)?.url
+  // Pull from SeoDefaults global (titlePattern, organizationSchema) and
+  // Settings global (defaultOgImage, siteName). Both are warmed into the
+  // CMS cache during SSR boot.
+  const seoDefaults = cms.seoDefaults || {}
+  const settings = (cms.settings || {}) as Record<string, unknown>
+  // titlePattern uses {page} substitution. Anything outside the {page} token
+  // is the suffix when we render page-name-prefixed titles below.
+  const titlePattern = seoDefaults.titlePattern || '{page} — BIMC CosMedic'
+  const fallbackTitleSuffix = titlePattern.includes('{page}')
+    ? titlePattern.replace('{page}', '').trim()
+    : ' — BIMC CosMedic'
+  const fallbackDescription = DEFAULT_DESCRIPTION
+  const fallbackOgUrl = (settings.defaultOgImage as { url?: string } | undefined)?.url
 
   let title = DEFAULT_TITLE
   let description = fallbackDescription
@@ -137,28 +146,32 @@ export function seoFor(pathname: string, cms: CmsCache): SeoFields {
     }
   }
 
-  // Homepage gets MedicalClinic schema by default
+  // Homepage gets MedicalClinic schema by default — prefer CMS-curated
+  // organizationSchema from SeoDefaults global if the clinic has populated it.
   if (pathname === '/' && !jsonLd) {
-    jsonLd = {
-      '@context': 'https://schema.org',
-      '@type': 'MedicalClinic',
-      name: 'BIMC CosMedic',
-      url: SITE_ORIGIN,
-      logo: `${SITE_ORIGIN}/cosmedic-mark-on-light.png`,
-      image: ogImage,
-      description: DEFAULT_DESCRIPTION,
-      parentOrganization: {
-        '@type': 'Hospital',
-        name: 'BIMC Hospital Nusa Dua',
-      },
-      address: {
-        '@type': 'PostalAddress',
-        addressLocality: 'Nusa Dua',
-        addressRegion: 'Bali',
-        addressCountry: 'ID',
-      },
-      medicalSpecialty: ['PlasticSurgery', 'CosmeticDentistry', 'Dermatology'],
-    }
+    const cmsOrgSchema = seoDefaults.organizationSchema as object | undefined
+    jsonLd = cmsOrgSchema && typeof cmsOrgSchema === 'object'
+      ? cmsOrgSchema
+      : {
+          '@context': 'https://schema.org',
+          '@type': 'MedicalClinic',
+          name: 'BIMC CosMedic',
+          url: SITE_ORIGIN,
+          logo: `${SITE_ORIGIN}/cosmedic-mark-on-light.png`,
+          image: ogImage,
+          description: DEFAULT_DESCRIPTION,
+          parentOrganization: {
+            '@type': 'Hospital',
+            name: 'BIMC Hospital Nusa Dua',
+          },
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: 'Nusa Dua',
+            addressRegion: 'Bali',
+            addressCountry: 'ID',
+          },
+          medicalSpecialty: ['PlasticSurgery', 'CosmeticDentistry', 'Dermatology'],
+        }
   }
 
   const canonical = `${SITE_ORIGIN}${pathname === '/' ? '' : pathname}`

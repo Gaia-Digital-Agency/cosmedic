@@ -215,6 +215,10 @@ export interface User {
 export interface Media {
   id: number;
   alt: string;
+  /**
+   * Flagged TRUE on every seed-shipped placeholder. UNCHECK after replacing with a real clinic photo. Filter the Media list by this flag to see the launch backlog.
+   */
+  isPlaceholder?: boolean | null;
   credit?: string | null;
   caption?: string | null;
   updatedAt: string;
@@ -1834,6 +1838,7 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  isPlaceholder?: T;
   credit?: T;
   caption?: T;
   updatedAt?: T;
