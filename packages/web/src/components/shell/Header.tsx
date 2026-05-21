@@ -184,28 +184,36 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
         </nav>
         <div className="header-right">
           {localeSwitcher?.enabled !== false ? (
-            <div className="lang-switcher" role="group" aria-label="Language">
+            // EN | ID switcher — visually present, functionally disabled
+            // until Phase 9 lengthy ships (Payload localization + /id/*
+            // SSR routing + ID editorial content). Keeping the chrome in
+            // place so the header layout matches design + the position is
+            // ready when the locale wiring lands.
+            <div
+              className="lang-switcher"
+              role="group"
+              aria-label="Language"
+              title="Indonesian locale coming soon"
+              style={{ opacity: 0.55, cursor: 'not-allowed' }}
+            >
               {(
                 [
-                  ['en', 'EN', labelEn],
-                  ['id', 'ID', labelId],
+                  ['en', labelEn],
+                  ['id', labelId],
                 ] as const
-              ).map(([code, codeUpper, label]) => {
-                const currentPath = typeof window !== 'undefined' ? window.location.pathname : '/'
-                const currentLocale = localeFromPath(currentPath)
-                const targetPath = withLocale(currentPath, code)
-                const active = currentLocale === code
+              ).map(([code, label]) => {
+                const active = code === 'en'
                 return (
-                  <a
+                  <span
                     key={code}
-                    href={targetPath}
                     className={`lang-pill ${active ? 'active' : ''}`}
+                    aria-disabled="true"
                     aria-current={active ? 'true' : undefined}
-                    onClick={() => setLang(codeUpper as 'EN' | 'ID')}
                     lang={code}
+                    style={{ pointerEvents: 'none', userSelect: 'none' }}
                   >
                     {label}
-                  </a>
+                  </span>
                 )
               })}
             </div>

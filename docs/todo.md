@@ -185,6 +185,7 @@
   - [ ] **Open**: Playwright visual-regression suite for Pixel-Fidelity Gate (workstream)
   - [ ] **Open**: CMS-Sufficiency Gate — walk `docs/cms_schema.md` §5 (manual review)
   - [ ] **Open**: Breakpoints visual check across 1920/1440/1100/900/700/540/390 (manual)
+  - [ ] **Open**: Re-activate EN|ID language switcher in `<Header>` — currently visible-but-disabled (`aria-disabled`, `pointer-events: none`, 55% opacity, "Indonesian locale coming soon" tooltip). Was causing CSS inconsistency because clicking it linked to `/id/*` routes that don't have SSR support yet. Re-activate alongside Phase 9 lengthy when locale routing + ID editorial content land.
 
 - [~] **PHASE 12 — Launch** *(infra + docs done; SMTP / editor accounts / pw rotation blocked on user input)*
   - [x] `docs/runbook.md` written — full ops playbook (deploy / restart / logs / nginx / TLS / Postgres / enquiry pipeline / incident / rollback / health endpoints)
