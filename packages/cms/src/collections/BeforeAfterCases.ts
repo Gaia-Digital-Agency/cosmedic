@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
 import { seoGroup, sortOrderField } from '../lib/seo'
+import { apiWarningField } from '../lib/api-warning'
 
 export const BeforeAfterCases: CollectionConfig = {
   slug: 'before-after-cases',
@@ -19,6 +20,7 @@ export const BeforeAfterCases: CollectionConfig = {
   },
   hooks: revalidationHooks(),
   fields: [
+    apiWarningField,
     { name: 'slug', type: 'text', required: true, unique: true, index: true },
     { name: 'caseLabel', type: 'text', required: true, admin: { description: 'Anonymous label, e.g. "Case 014 — Rhinoplasty"' } },
     { name: 'procedure', type: 'relationship', relationTo: 'procedures' },

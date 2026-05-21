@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated, publishedOrAuthed, isAuthenticated as canMutate } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
 import { seoGroup, publishStatusField, sortOrderField } from '../lib/seo'
+import { apiWarningField } from '../lib/api-warning'
 
 export const BlogPosts: CollectionConfig = {
   slug: 'blog-posts',
@@ -19,6 +20,7 @@ export const BlogPosts: CollectionConfig = {
   },
   hooks: revalidationHooks(),
   fields: [
+    apiWarningField,
     { name: 'slug', type: 'text', required: true, unique: true, index: true },
     { name: 'title', type: 'text', required: true },
     { name: 'lede', type: 'textarea' },

@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidateGlobalAfterChange } from '../lib/revalidate'
+import { apiWarningField } from '../lib/api-warning'
 
 export const Footer: GlobalConfig = {
   slug: 'footer',
@@ -8,6 +9,7 @@ export const Footer: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
+    apiWarningField,
     { name: 'logoLight', type: 'upload', relationTo: 'media', admin: { description: 'White-on-dark variant' } },
     {
       name: 'linkColumns',

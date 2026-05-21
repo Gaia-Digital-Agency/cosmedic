@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
 import { seoGroup, sortOrderField } from '../lib/seo'
+import { apiWarningField } from '../lib/api-warning'
 
 export const Surgeons: CollectionConfig = {
   slug: 'surgeons',
@@ -19,6 +20,7 @@ export const Surgeons: CollectionConfig = {
   },
   hooks: revalidationHooks(),
   fields: [
+    apiWarningField,
     { name: 'slug', type: 'text', required: true, unique: true, index: true,
       admin: { description: 'URL slug, e.g. "suka" → /surgeon-suka' } },
     { name: 'name', type: 'text', required: true, admin: { description: 'Full formal name, e.g. "dr. I Made Suka Adnyana, SpBP-RE (K)"' } },

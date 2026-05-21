@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidateGlobalAfterChange } from '../lib/revalidate'
+import { apiWarningField } from '../lib/api-warning'
 
 export const FloatingChrome: GlobalConfig = {
   slug: 'floating-chrome',
@@ -8,6 +9,7 @@ export const FloatingChrome: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
+    apiWarningField,
     {
       name: 'ctaPill',
       type: 'group',

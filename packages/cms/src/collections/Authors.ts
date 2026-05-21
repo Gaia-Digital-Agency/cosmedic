@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
+import { apiWarningField } from '../lib/api-warning'
 
 export const Authors: CollectionConfig = {
   slug: 'authors',
@@ -13,6 +14,7 @@ export const Authors: CollectionConfig = {
   },
   hooks: revalidationHooks(),
   fields: [
+    apiWarningField,
     { name: 'slug', type: 'text', required: true, unique: true, index: true },
     { name: 'name', type: 'text', required: true },
     { name: 'role', type: 'text' },

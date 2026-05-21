@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidateGlobalAfterChange } from '../lib/revalidate'
+import { apiWarningField } from '../lib/api-warning'
 
 export const EmailTemplates: GlobalConfig = {
   slug: 'email-templates',
@@ -8,6 +9,7 @@ export const EmailTemplates: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
+    apiWarningField,
     {
       name: 'templates',
       type: 'array',

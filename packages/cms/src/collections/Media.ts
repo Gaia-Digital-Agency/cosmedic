@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { apiWarningField } from '../lib/api-warning'
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -6,6 +7,7 @@ export const Media: CollectionConfig = {
     read: () => true,
   },
   fields: [
+    apiWarningField,
     {
       name: 'alt',
       type: 'text',

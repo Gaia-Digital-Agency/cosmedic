@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
 import { sortOrderField } from '../lib/seo'
+import { apiWarningField } from '../lib/api-warning'
 
 export const JourneySteps: CollectionConfig = {
   slug: 'journey-steps',
@@ -19,6 +20,7 @@ export const JourneySteps: CollectionConfig = {
   },
   hooks: revalidationHooks(),
   fields: [
+    apiWarningField,
     { name: 'slug', type: 'text', required: true, unique: true, index: true },
     { name: 'order', type: 'number', required: true, defaultValue: 0 },
     { name: 'dayLabel', type: 'text', admin: { description: 'e.g. "Day 1", "Week 1", "Before you fly"' } },

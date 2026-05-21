@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
 import { sortOrderField } from '../lib/seo'
+import { apiWarningField } from '../lib/api-warning'
 
 export const ExclusionItems: CollectionConfig = {
   slug: 'exclusion-items',
@@ -19,6 +20,7 @@ export const ExclusionItems: CollectionConfig = {
   },
   hooks: revalidationHooks(),
   fields: [
+    apiWarningField,
     { name: 'text', type: 'text', required: true },
     {
       name: 'scope',

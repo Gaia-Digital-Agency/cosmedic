@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidateGlobalAfterChange } from '../lib/revalidate'
+import { apiWarningField } from '../lib/api-warning'
 
 export const Settings: GlobalConfig = {
   slug: 'settings',
@@ -11,6 +12,7 @@ export const Settings: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
+    apiWarningField,
     { name: 'siteName', type: 'text', defaultValue: 'BIMC CosMedic' },
     { name: 'siteTagline', type: 'text' },
     { name: 'defaultOgImage', type: 'upload', relationTo: 'media' },

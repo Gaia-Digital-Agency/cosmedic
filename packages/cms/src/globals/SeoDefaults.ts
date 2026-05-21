@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidateGlobalAfterChange } from '../lib/revalidate'
+import { apiWarningField } from '../lib/api-warning'
 
 export const SeoDefaults: GlobalConfig = {
   slug: 'seo-defaults',
@@ -8,6 +9,7 @@ export const SeoDefaults: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
+    apiWarningField,
     { name: 'titlePattern', type: 'text', defaultValue: '{page} — BIMC CosMedic',
       admin: { description: '{page} is substituted at render.' } },
     { name: 'robotsTxt', type: 'textarea',

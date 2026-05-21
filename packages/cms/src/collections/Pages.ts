@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated, publishedOrAuthed } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
 import { seoGroup, publishStatusField } from '../lib/seo'
+import { apiWarningField } from '../lib/api-warning'
 
 /**
  * Pages = the "even beyond what's on db" surface.
@@ -35,6 +36,7 @@ export const Pages: CollectionConfig = {
   },
   hooks: revalidationHooks(),
   fields: [
+    apiWarningField,
     { name: 'title', type: 'text', required: true, admin: { description: 'Admin label only' } },
     { name: 'slug', type: 'text', required: true, unique: true, index: true, admin: { description: 'e.g. "home", "journey", "contact"' } },
     { name: 'route', type: 'text', required: true, unique: true, admin: { description: 'URL route, e.g. "/", "/journey", "/contact"' } },

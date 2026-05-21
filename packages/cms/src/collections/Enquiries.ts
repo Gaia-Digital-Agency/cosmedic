@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
 import { sendEnquiryEmails } from '../lib/enquiry-emails'
+import { apiWarningField } from '../lib/api-warning'
 
 export const Enquiries: CollectionConfig = {
   slug: 'enquiries',
@@ -37,6 +38,7 @@ export const Enquiries: CollectionConfig = {
     afterDelete: revalidationHooks().afterDelete,
   },
   fields: [
+    apiWarningField,
     { name: 'name', type: 'text', required: true },
     { name: 'email', type: 'text', required: true },
     { name: 'phone', type: 'text' },

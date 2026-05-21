@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
 import { seoGroup, sortOrderField } from '../lib/seo'
+import { apiWarningField } from '../lib/api-warning'
 
 export const Procedures: CollectionConfig = {
   slug: 'procedures',
@@ -19,6 +20,7 @@ export const Procedures: CollectionConfig = {
   },
   hooks: revalidationHooks(),
   fields: [
+    apiWarningField,
     { name: 'slug', type: 'text', required: true, unique: true, index: true,
       admin: { description: 'e.g. "breast-augmentation"' } },
     { name: 'name', type: 'text', required: true },

@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
 import { sortOrderField } from '../lib/seo'
+import { apiWarningField } from '../lib/api-warning'
 
 export const InjectableProducts: CollectionConfig = {
   slug: 'injectable-products',
@@ -19,6 +20,7 @@ export const InjectableProducts: CollectionConfig = {
   },
   hooks: revalidationHooks(),
   fields: [
+    apiWarningField,
     { name: 'slug', type: 'text', required: true, unique: true, index: true },
     { name: 'name', type: 'text', required: true },
     { name: 'brand', type: 'text', admin: { description: 'e.g. "Juvederm"' } },
