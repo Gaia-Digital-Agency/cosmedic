@@ -3,14 +3,16 @@ import React from 'react'
 /**
  * Login-page hero for Cosmedic CMS.
  *
- * Centred via explicit `marginInline: auto` + `width: 100%` because Payload's
- * default login wrapper does not always centre its `beforeLogin` slot when
- * the parent container has a constrained max-width.
- *
- * Stacked layout per brand.pdf §I:
- *   1. BIMC CosMedic lockup mark (bronze on light)
+ * Stacked layout per brand.pdf section I:
+ *   1. BIMC CosMedic lockup mark
  *   2. "Cosmedic CMS" wordmark in Cormorant Garamond
- *   3. Mono endorsement tagline in JetBrains Mono with +22% tracking
+ *   3. Mono endorsement tagline
+ *   4. Pre-launch sign-in helper (bootstrap credentials)
+ *
+ * The sign-in helper card is dev/pre-launch convenience only. Per
+ * docs/plan.md phase 12 step 2, the bootstrap super-admin password
+ * (Teameditor@123) gets rotated before clinic editor handover — this
+ * component will be edited to remove the helper at the same time.
  */
 const CosmedicBeforeLogin: React.FC = () => (
   <div
@@ -29,11 +31,11 @@ const CosmedicBeforeLogin: React.FC = () => (
     }}
   >
     <img
-      src="/cosmedic-mark-on-light.png"
+      src="/cosmedic-mark-192.png"
       alt="BIMC CosMedic"
       style={{
-        width: 'min(220px, 70%)',
-        height: 'auto',
+        width: 140,
+        height: 140,
         display: 'block',
         marginInline: 'auto',
       }}
@@ -68,6 +70,46 @@ const CosmedicBeforeLogin: React.FC = () => (
     >
       Managed by BIMC Hospital · Nusa Dua · Bali
     </p>
+
+    {/* Pre-launch sign-in helper — bootstrap super-admin credentials.
+        Will be removed before clinic editor handover (Phase 12). */}
+    <div
+      role="note"
+      style={{
+        width: '100%',
+        marginTop: '0.5rem',
+        padding: '0.85rem 1rem',
+        borderRadius: 8,
+        border: '1px solid var(--theme-elevation-100)',
+        background: 'var(--theme-elevation-50)',
+        color: 'var(--theme-text)',
+        fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+        fontSize: '0.7rem',
+        letterSpacing: '0.04em',
+        textAlign: 'left',
+        lineHeight: 1.5,
+      }}
+    >
+      <div
+        style={{
+          fontSize: '0.62rem',
+          letterSpacing: '0.18em',
+          textTransform: 'uppercase',
+          color: 'var(--theme-elevation-500)',
+          marginBottom: '0.4rem',
+        }}
+      >
+        Pre-launch · super_admin
+      </div>
+      <div>
+        <span style={{ color: 'var(--theme-elevation-500)' }}>email&nbsp;</span>
+        super_admin@email.com
+      </div>
+      <div>
+        <span style={{ color: 'var(--theme-elevation-500)' }}>pass&nbsp;&nbsp;</span>
+        Teameditor@123
+      </div>
+    </div>
   </div>
 )
 

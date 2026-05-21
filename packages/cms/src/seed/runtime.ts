@@ -716,6 +716,5 @@ export async function runContentSeed(payload: Payload): Promise<void> {
     await upsert(payload, 'pages', 'slug', p.slug, { ...p, publishStatus: 'published' })
   }
   payload.logger.info(`[seed] pages=${pages.length}`)
-
-  payload.logger.info('[seed] content: done')
+  payload.logger.info('[seed] content: done — run `pnpm seed:media` for imagery')
 }

@@ -12,11 +12,12 @@
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
     "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint .",
-    "migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
+    "migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate --force-accept-warning",
     "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "seed": "cross-env NODE_OPTIONS=--no-deprecation tsx src/seed/run.ts",
-    "start": "pnpm migrate && cross-env NODE_OPTIONS=--no-deprecation next start -p 4007"
+    "seed:media": "cross-env NODE_OPTIONS=--no-deprecation tsx src/seed/run-media.ts",
+    "start": "cross-env NODE_OPTIONS=--no-deprecation next start -p 4007"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.84.1",
