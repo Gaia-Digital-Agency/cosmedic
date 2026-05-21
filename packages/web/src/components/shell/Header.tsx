@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { TREATMENT_LIST, SUBCATEGORIES_BY_DISCIPLINE, SURGEON_LIST } from '@/content/seed'
+import { withLocale, localeFromPath } from '@/i18n'
 import { useCms } from '@/lib/cms-context'
 
 type Props = {
@@ -183,21 +184,30 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
         </nav>
         <div className="header-right">
           {localeSwitcher?.enabled !== false ? (
-            <div className="lang-switcher">
+            <div className="lang-switcher" role="group" aria-label="Language">
               {(
                 [
-                  ['EN', labelEn],
-                  ['ID', labelId],
+                  ['en', 'EN', labelEn],
+                  ['id', 'ID', labelId],
                 ] as const
-              ).map(([code, label]) => (
-                <button
-                  key={code}
-                  className={`lang-pill ${lang === code ? 'active' : ''}`}
-                  onClick={() => setLang(code)}
-                >
-                  {label}
-                </button>
-              ))}
+              ).map(([code, codeUpper, label]) => {
+                const currentPath = typeof window !== 'undefined' ? window.location.pathname : '/'
+                const currentLocale = localeFromPath(currentPath)
+                const targetPath = withLocale(currentPath, code)
+                const active = currentLocale === code
+                return (
+                  <a
+                    key={code}
+                    href={targetPath}
+                    className={`lang-pill ${active ? 'active' : ''}`}
+                    aria-current={active ? 'true' : undefined}
+                    onClick={() => setLang(codeUpper as 'EN' | 'ID')}
+                    lang={code}
+                  >
+                    {label}
+                  </a>
+                )
+              })}
             </div>
           ) : null}
           <a href={ctaHref} className="header-cta">

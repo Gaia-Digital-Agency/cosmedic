@@ -186,27 +186,89 @@
   - [ ] **Open**: CMS-Sufficiency Gate — walk `docs/cms_schema.md` §5 (manual review)
   - [ ] **Open**: Breakpoints visual check across 1920/1440/1100/900/700/540/390 (manual)
 
-- [ ] **PHASE 12 — Launch**
-  - [ ] Final production smoke tests
-  - [ ] CMS editor accounts created with roles
-  - [ ] Bootstrap admin password rotated (Teameditor@123 → strong random)
-  - [ ] Monitoring: uptime + nginx error log alerting + `pm2 monit` baseline
-  - [ ] Handover doc `docs/runbook.md` written
-  - [ ] 48-hour soak, zero unresolved incidents
+- [~] **PHASE 12 — Launch** *(infra + docs done; SMTP / editor accounts / pw rotation blocked on user input)*
+  - [x] `docs/runbook.md` written — full ops playbook (deploy / restart / logs / nginx / TLS / Postgres / enquiry pipeline / incident / rollback / health endpoints)
+  - [x] `ops/smoke.sh` — curl-based smoke checker (10 cosmedic endpoints + every sibling site). Exits non-zero on failure. Use pre/post-deploy.
+  - [x] BeforeLogin sign-in helper is now env-gated (`PAYLOAD_SHOW_SIGNIN_HELPER=false` in cms `.env` hides the card after password rotation)
+  - [x] Production smoke (Phase 12.6 first pass): bash ops/smoke.sh — all 10 cosmedic checks green; sibling sites unaffected (`gtec` pre-existing red, not us)
+  - [ ] **Open · BLOCKER**: SMTP provider + credentials. **See "SMTP hookup recipe" section below for the exact steps when ready.**
+  - [ ] **Open · BLOCKER**: Per-editor CMS accounts. Needs clinic team list (name + email + role). Roles to define: `admin` (Users), `editor` (Catalogue + Editorial collections), `reader` (read-only).
+  - [ ] **Open · BLOCKER**: Rotate bootstrap super_admin password (after SMTP works so password-reset email delivers). Then flip `PAYLOAD_SHOW_SIGNIN_HELPER=false` and `pm2 restart cosmedic-cms --update-env`.
+  - [ ] **Open**: External uptime ping (e.g. UptimeRobot 5-min HTTPS probe against `/` + `/admin/login` + 2x sibling test URLs)
+  - [ ] **Open**: nginx-error alerting (tail `/var/log/nginx/error.log` for cosmedic; send to alerting webhook)
+  - [ ] **Open**: 48-hour soak post-launch (no unresolved incidents)
 
-- [ ] **PHASE 13 — SEO + analytics**
-  - [ ] `sitemap.xml` auto-regenerated on Payload mutations (with hreflang)
-  - [ ] `robots.txt`
-  - [ ] Per-page meta (title, description, canonical, OG, Twitter)
-  - [ ] JSON-LD: `MedicalClinic`, `Physician` (per surgeon), `MedicalProcedure` (per procedure), `BlogPosting`
-  - [ ] Analytics (GA4 or Plausible) + custom events (enquiry, surgeon_view, language_switch, etc.)
-  - [ ] Google Search Console + Bing Webmaster verified
+- [x] **PHASE 13 — SEO + analytics** *(scaffold complete; analytics provider envs blank until user picks one)*
+  - [x] `/robots.txt` route — Express handler in `server.ts`. Allow `/`, disallow `/api/` and `/admin`, sitemap pointer.
+  - [x] `/sitemap.xml` route — Express handler. 14 static routes + dynamic slugs from CMS cache (every Surgeon, Discipline, SubCategory, BlogPost). Re-generated on every request (CMS cache is the source of truth, busted on every record save via `afterChange` hooks).
+  - [x] Per-route SEO meta in `<head>` — `src/lib/seo.ts` `seoFor(pathname, cms)` returns `{title, description, canonical, ogImage, jsonLd}`. SSR pipeline injects via `<!--seo-outlet-->` replacement marker in `index.html`. Pulls page-record overrides from `Pages.title`/`lede`/`heroImage` + surgeon name+spec + discipline title — falls back to `seo-defaults` global.
+  - [x] JSON-LD structured data — `MedicalClinic` on homepage; `Physician` on `/surgeon-<slug>` (linked to BIMC Hospital affiliation); `MedicalProcedure` on `/treatment-<slug>`; `BlogPosting` on `/blog-<slug>`. Emitted as `<script type="application/ld+json">` per route.
+  - [x] Analytics scaffold — `src/lib/seo.ts` `renderAnalytics()` emits a Plausible snippet when `PLAUSIBLE_DOMAIN` env is set, OR a GA4 snippet when `GA4_MEASUREMENT_ID` env is set. Both off by default. Injected via `<!--analytics-outlet-->` marker in `<body>`.
+  - [ ] **Open · user decision**: pick Plausible vs GA4. To enable: set the matching env var in `packages/web/.env` and `pm2 restart cosmedic-web --update-env`. Per-event custom tracking (`enquiry_submit`, `surgeon_view`, `language_switch`) is a follow-up wire-up once a provider is chosen.
+  - [ ] **Open**: Google Search Console + Bing Webmaster — verify ownership via `<meta name="google-site-verification">` once a Search Console account is created. Add to `SeoDefaults` global so it ships on every page.
 
-- [ ] **PHASE 14 — Post-launch ops**
-  - [ ] Postgres backup cron (daily, retention 14/8/6)
-  - [ ] Payload media backup (daily rsync off-server)
-  - [ ] Cert renewal sanity (certbot timer, weekly check)
-  - [ ] Editor training (1-hour walkthrough)
+- [~] **PHASE 14 — Post-launch ops** *(scripts + docs ready; cron-install + media backup blocked on user)*
+  - [x] `ops/postgres-backup.sh` — weekly pg_dump (Sunday 03:00) + gzip + 12-week retention + corruption smoke test. Reads DB password from `packages/cms/.env`. Cron install instructions inline.
+  - [x] `docs/editor_cheatsheet.md` — clinic-facing 1-pager: sign in, find collections, update surgeons / treatments / imagery / blog, what the API button is, what NOT to touch.
+  - [x] Cert renewal — `certbot.timer` is already running on the host (weekly). `sudo systemctl status certbot.timer` to verify; no manual cron needed.
+  - [ ] **Open**: install the postgres backup cron. As `azlan`, `crontab -e` and add:
+        `0 3 * * 0 /var/www/cosmedic/ops/postgres-backup.sh >> /var/log/cosmedic-backup.log 2>&1`
+        Then verify after the first Sunday: `ls -la /var/backups/cosmedic/`.
+  - [ ] **Open**: Payload media backup — weekly rsync of `/var/www/cosmedic/packages/cms/media/` to off-server location. Same cron slot, separate script.
+  - [ ] **Open**: editor training session (1h walkthrough) — use `docs/editor_cheatsheet.md` as agenda.
+  - [ ] **Open**: quarterly audit cycle (cert expiry / npm audit / lighthouse drift / backup-restore drill).
+
+---
+
+## SMTP hookup recipe (Phase 12.1)
+
+Enquiry emails currently land in the cms stdout as JSON-formatted payloads (the nodemailer "json" transport fallback). Real delivery needs SMTP credentials wired in. **All other email infra is already in place** — the `Enquiries.afterChange` hook calls `sendEnquiryEmails`, which reads the `email-templates` global, formats clinic-notify + autoresponder, and sends via `nodemailerAdapter` in `packages/cms/src/lib/email-adapter.ts`.
+
+To activate:
+
+1. **Pick a provider** (recommended: Postmark or AWS SES; cheap, deliverable, supports DKIM).
+2. **DNS** — add the provider's SPF (`v=spf1 include:spf.example.com -all`) + DKIM records (`postmark._domainkey` or `selector._domainkey`) for `cosmedic.gaiada.online` (sender domain). DMARC alignment recommended (`p=none` to start; tighten later).
+3. **Edit `packages/cms/.env`** (gitignored — never commit):
+   ```
+   SMTP_HOST=smtp.postmarkapp.com
+   SMTP_PORT=587
+   SMTP_SECURE=false
+   SMTP_USER=<provider api token>
+   SMTP_PASS=<same as user for Postmark>
+   MAIL_FROM_NAME="Cosmedic CMS"
+   MAIL_FROM_ADDRESS=no-reply@cosmedic.gaiada.online
+   MAIL_CLINIC_TO=cosmedic@bimcbali.com
+   ```
+4. **Restart** the cms with env reload: `pm2 restart cosmedic-cms --update-env`
+5. **Verify** end-to-end:
+   ```bash
+   curl -s -X POST https://cosmedic.gaiada.online/api/enquiry \
+     -H 'content-type: application/json' \
+     -d '{"name":"SMTP test","email":"<your-real-inbox>","areaOfInterest":"surgical","message":"smoke"}'
+   pm2 logs cosmedic-cms --lines 30 --nostream | grep enquiry-emails
+   ```
+   Expect: `clinic notify sent to cosmedic@bimcbali.com` + `autoresponder sent to <your-inbox>`. Confirm both arrive in real inboxes (check spam folder on the autoresponder side; SPF/DKIM correct = no spam).
+6. **Once delivery verified**: rotate the super_admin password via admin UI (top-right avatar → Account), then add `PAYLOAD_SHOW_SIGNIN_HELPER=false` to `.env` and restart cms again. The pre-launch sign-in helper card disappears from `/admin/login`.
+
+If delivery fails:
+- `nslookup -type=txt cosmedic.gaiada.online` shows SPF? DKIM selectors resolve?
+- `pm2 logs cosmedic-cms --lines 50 --nostream --err | grep -i nodemailer` for SMTP-level errors
+- Postmark/SES dashboard shows the failed send with a specific reason (bounce, blocked, suspended)
+
+## Future actions — clear list
+
+| What | Who | When |
+|---|---|---|
+| Pick SMTP provider + add creds | Dev | Before clinic editor handover |
+| Pick analytics (Plausible / GA4) + set env | Dev | Pre-launch |
+| Provide clinic team list (names + emails + roles) | Dev | Pre-launch |
+| Generate AI imagery per `docs/phase-10-imagery-gaps.md` | Dev | Replaces 24 placeholders + ~25 B&A composites |
+| Approve / regenerate Indonesian translations | Dev | Phase 9 lengthy (post-launch OK) |
+| Install postgres backup cron | Dev | Pre-launch |
+| Set up UptimeRobot / external pinger | Dev | Pre-launch |
+| Verify Search Console + Bing | Dev | Post-launch |
+| Run Lighthouse CI + axe + Playwright visual regression | Dev | Phase 11 backlog |
+| Phase 9 lengthy (Payload localization config + localized:true flags on every editorial field + Indonesian editorial copy drafted via ML and reviewed by clinic) | Dev + clinic | Deferred per user; resumes after launch + at least one editorial-team training |
   - [ ] `docs/editor_cheatsheet.md` written
   - [ ] `docs/runbook.md` finalized (deploy / incident / rollback / restore)
   - [ ] Quarterly audit cycle set up

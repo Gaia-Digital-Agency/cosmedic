@@ -1,0 +1,56 @@
+{
+  "$comment": "EN locale catalogue. Static UI strings only (button labels, form messages, nav primitives). Editorial content lives in Payload collections — never hard-code that here.",
+  "nav": {
+    "treatments": "Treatments",
+    "surgeons": "Surgeons",
+    "journey": "Your Journey",
+    "gallery": "Gallery",
+    "stories": "Stories",
+    "contact": "Contact",
+    "more": "More",
+    "close": "Close",
+    "menu": "Menu",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "cta": {
+    "planYourTreatment": "Plan your treatment",
+    "speakWithConcierge": "Speak with a Concierge",
+    "beginYourJourney": "Begin your journey",
+    "sendEnquiry": "Send enquiry",
+    "viewAll": "View all",
+    "readMore": "Read more",
+    "readArrow": "READ →",
+    "chat": "Chat",
+    "whatsapp": "WhatsApp"
+  },
+  "form": {
+    "name": "Your name",
+    "email": "Email",
+    "phone": "Phone",
+    "country": "Country & city",
+    "areaOfInterest": "Area of interest",
+    "message": "Message",
+    "required": "(required)",
+    "optional": "(optional)",
+    "sending": "Sending…",
+    "sent": "Sent — thank you",
+    "thankYou": "Thank you — your concierge will reply within one business day.",
+    "errorGeneric": "Something went wrong. Please email cosmedic@bimcbali.com if it persists.",
+    "errorNetwork": "Network error. Please try again or email cosmedic@bimcbali.com.",
+    "errorRateLimit": "Too many requests. Please wait a moment and try again."
+  },
+  "pricing": {
+    "fromAud": "from",
+    "perTreatment": "per treatment",
+    "asQuoted": "as quoted",
+    "complimentary": "complimentary",
+    "included": "included"
+  },
+  "footer": {
+    "treatments": "Treatments",
+    "surgeons": "Surgeons",
+    "information": "Information",
+    "copyright": "BIMC CosMedic. Managed by BIMC Hospital."
+  }
+}

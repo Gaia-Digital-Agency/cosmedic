@@ -47,6 +47,25 @@ export const SurgeonsIndex: React.FC = () => {
   const PLASTIC = SURGEON_LIST.filter((s) => s.group === 'Plastic Surgery')
   const AESTHETIC = SURGEON_LIST.filter((s) => s.group === 'Aesthetic Medicine')
   const lead = SURGEON_LIST[0]
+  // Defensive: during a CMS cache cold-start the lazy proxy can briefly
+  // hand back an empty array. Return a minimal placeholder instead of
+  // crashing the SSR render — the next request (after cache warm) renders
+  // the full page.
+  if (!lead) {
+    return (
+      <PageShell activePage="surgeons">
+        <ChapterOpener
+          chapter="Chapter III — The Practitioners"
+          title={['Hands you', 'can trust.']}
+          lede="Loading surgeon roster…"
+          image={IMG.clinic}
+          imageHue={2}
+          imageLabel="THE PRACTITIONERS"
+          breadcrumbs={[{ label: 'BIMC CosMedic', href: '/' }, { label: 'Surgeons' }]}
+        />
+      </PageShell>
+    )
+  }
   return (
   <PageShell activePage="surgeons">
     <ChapterOpener

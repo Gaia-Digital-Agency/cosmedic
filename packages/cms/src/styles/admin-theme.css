@@ -49,3 +49,49 @@ code,
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   letter-spacing: 0.05em;
 }
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Image upload fields — visual emphasis so editors can spot them in
+ * a long form. Wraps every Payload upload-field (Portrait / Hero Image
+ * / Composite / heroImage / Media records) with a brand-bronze hairline
+ * on a slightly tinted background.
+ * ─────────────────────────────────────────────────────────────────── */
+
+.field-type.upload,
+.upload__dropzoneAndUpload,
+.upload-collection-action {
+  position: relative;
+  border: 1.5px dashed var(--cs-accent);
+  background: rgba(166, 124, 82, 0.05);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-block: 0.5rem;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.field-type.upload:hover,
+.upload__dropzoneAndUpload:hover {
+  border-color: var(--cs-brown);
+  background: rgba(166, 124, 82, 0.09);
+}
+
+.field-type.upload::before {
+  content: 'image upload';
+  position: absolute;
+  top: -10px;
+  left: 12px;
+  padding: 2px 8px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cs-paper);
+  background: var(--cs-accent);
+  border-radius: 3px;
+  pointer-events: none;
+}
+
+[data-theme='dark'] .field-type.upload,
+[data-theme='dark'] .upload__dropzoneAndUpload {
+  background: rgba(230, 220, 200, 0.04);
+}

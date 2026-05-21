@@ -3,6 +3,7 @@ import { Header } from './Header'
 import { Footer } from './Footer'
 import { FloatingChrome } from './FloatingChrome'
 import { CTABandSlim } from '@/components/primitives/CTABandSlim'
+import { BackToTop } from '@/components/primitives/BackToTop'
 
 type Props = {
   activePage?: string
@@ -19,5 +20,6 @@ export const PageShell: React.FC<Props> = ({ activePage, hideCTA = false, childr
       <Footer />
     </div>
     <FloatingChrome />
+    <BackToTop />
   </>
 )

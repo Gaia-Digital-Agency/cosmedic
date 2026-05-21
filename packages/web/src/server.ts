@@ -5,6 +5,7 @@ import express from 'express'
 import { loadCmsCache } from './lib/cms'
 import { enquirySchema, type EnquiryResponse } from './lib/enquiry-schema'
 import { checkRateLimit } from './lib/enquiry-rate-limit'
+import { seoFor, renderSeoTags, renderAnalytics } from './lib/seo'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -126,6 +127,63 @@ async function createServer() {
     }
   })
 
+  // ─── SEO infra (Phase 13) ────────────────────────────────────────────
+  // robots.txt — allow all, point at sitemap. Hosts that allow disallow:
+  // sensitive paths (admin lives on the cms host but we still hint it).
+  app.get('/robots.txt', (_req, res) => {
+    res.type('text/plain').send(
+      `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin\n\nSitemap: https://cosmedic.gaiada.online/sitemap.xml\n`,
+    )
+  })
+
+  // sitemap.xml — every known route. Static base list + per-CMS-collection
+  // slugs (surgeons, disciplines, sub-categories, blog posts) so freshly-
+  // added content is discoverable without a redeploy.
+  app.get('/sitemap.xml', async (_req, res) => {
+    const cms = await loadCmsCache()
+    const base = 'https://cosmedic.gaiada.online'
+    const staticRoutes = [
+      '/',
+      '/treatments',
+      '/surgeons',
+      '/journey',
+      '/gallery',
+      '/results',
+      '/stories',
+      '/press',
+      '/pricing',
+      '/recovery-stays',
+      '/contact',
+      '/video-consult',
+      '/blog',
+      '/privacy',
+    ]
+    const dynamic: string[] = []
+    for (const d of cms.disciplines || []) {
+      dynamic.push(`/treatment-${d.slug}`)
+    }
+    for (const sc of cms.subCategories || []) {
+      dynamic.push(`/treatment-${sc.slug}`)
+    }
+    for (const s of cms.surgeons || []) {
+      dynamic.push(`/surgeon-${s.slug}`)
+    }
+    for (const bp of cms.blogPosts || []) {
+      dynamic.push(`/blog-${bp.slug}`)
+    }
+    const all = [...staticRoutes, ...dynamic]
+    const now = new Date().toISOString()
+    const urlEntries = all
+      .map(
+        (path) =>
+          `  <url>\n    <loc>${base}${path}</loc>\n    <lastmod>${now}</lastmod>\n  </url>`,
+      )
+      .join('\n')
+    res.type('application/xml').send(
+      `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urlEntries}\n</urlset>\n`,
+    )
+  })
+
   app.use('*', async (req, res, next) => {
     try {
       // Refresh CMS cache (TTL'd in lib/cms; effectively no-op when warm).
@@ -146,7 +204,13 @@ async function createServer() {
 
       const pathname = (req.originalUrl || '/').split('?')[0]
       const { html: appHtml, status } = render(pathname, cms)
-      const html = template.replace('<!--ssr-outlet-->', appHtml)
+      const seo = seoFor(pathname, cms)
+      const seoHtml = renderSeoTags(seo)
+      const analyticsHtml = renderAnalytics()
+      const html = template
+        .replace('<!--ssr-outlet-->', appHtml)
+        .replace('<!--seo-outlet-->', seoHtml)
+        .replace('<!--analytics-outlet-->', analyticsHtml)
       res
         .status(status)
         .set({ 'Content-Type': 'text/html' })

@@ -1,4 +1,9 @@
 import React from 'react'
+// Bundle the admin theme CSS via Next.js's CSS loader. The brand palette,
+// font overrides, and image-upload-field border styling all flow from this
+// single file; loading it from an admin component guarantees it ships with
+// the Payload admin bundle regardless of which admin page renders first.
+import '../styles/admin-theme.css'
 
 /**
  * Login-page hero for Cosmedic CMS.

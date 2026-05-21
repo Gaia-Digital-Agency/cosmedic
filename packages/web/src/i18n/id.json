@@ -1,0 +1,56 @@
+{
+  "$comment": "ID locale catalogue. Stubs only — drafts pending Phase 9 lengthy work (ML-drafted Indonesian copy + clinic review). Keys that aren't translated yet fall back to en.json via the t() helper.",
+  "nav": {
+    "treatments": "Perawatan",
+    "surgeons": "Dokter Bedah",
+    "journey": "Perjalanan Anda",
+    "gallery": "Galeri",
+    "stories": "Cerita",
+    "contact": "Kontak",
+    "more": "Lainnya",
+    "close": "Tutup",
+    "menu": "Menu",
+    "openMenu": "Buka menu",
+    "closeMenu": "Tutup menu"
+  },
+  "cta": {
+    "planYourTreatment": "Rencanakan perawatan Anda",
+    "speakWithConcierge": "Hubungi Konsultan",
+    "beginYourJourney": "Mulai perjalanan Anda",
+    "sendEnquiry": "Kirim pertanyaan",
+    "viewAll": "Lihat semua",
+    "readMore": "Selengkapnya",
+    "readArrow": "BACA →",
+    "chat": "Obrolan",
+    "whatsapp": "WhatsApp"
+  },
+  "form": {
+    "name": "Nama Anda",
+    "email": "Email",
+    "phone": "Telepon",
+    "country": "Negara & kota",
+    "areaOfInterest": "Bidang yang diminati",
+    "message": "Pesan",
+    "required": "(wajib)",
+    "optional": "(opsional)",
+    "sending": "Mengirim…",
+    "sent": "Terkirim — terima kasih",
+    "thankYou": "Terima kasih — konsultan kami akan membalas dalam satu hari kerja.",
+    "errorGeneric": "Terjadi kesalahan. Silakan email cosmedic@bimcbali.com jika berlanjut.",
+    "errorNetwork": "Kesalahan jaringan. Coba lagi atau email cosmedic@bimcbali.com.",
+    "errorRateLimit": "Terlalu banyak permintaan. Mohon tunggu sebentar dan coba lagi."
+  },
+  "pricing": {
+    "fromAud": "dari",
+    "perTreatment": "per perawatan",
+    "asQuoted": "sesuai penawaran",
+    "complimentary": "gratis",
+    "included": "termasuk"
+  },
+  "footer": {
+    "treatments": "Perawatan",
+    "surgeons": "Dokter Bedah",
+    "information": "Informasi",
+    "copyright": "BIMC CosMedic. Dikelola oleh Rumah Sakit BIMC."
+  }
+}
