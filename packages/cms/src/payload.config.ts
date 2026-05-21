@@ -57,7 +57,17 @@ export default buildConfig({
     meta: {
       titleSuffix: ' — Cosmedic CMS',
       description: 'BIMC CosMedic — content management for the clinic team.',
-      icons: [{ rel: 'icon', type: 'image/png', url: '/cosmedic-favicon.png' }],
+      // Next.js Metadata.icons shape (Payload MetaConfig extends Metadata).
+      // The {icon, shortcut, apple} object form emits <link rel="icon"> etc.
+      // automatically; the older [{rel, url}] array form is silently ignored.
+      icons: {
+        icon: [
+          { url: '/cosmedic-mark-32.png', type: 'image/png', sizes: '32x32' },
+          { url: '/cosmedic-mark-192.png', type: 'image/png', sizes: '192x192' },
+        ],
+        shortcut: { url: '/favicon.ico' },
+        apple: { url: '/cosmedic-apple-180.png', sizes: '180x180' },
+      },
       openGraph: {
         siteName: 'Cosmedic CMS',
         description: 'BIMC CosMedic — content management for the clinic team.',
