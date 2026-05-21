@@ -51,6 +51,9 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     theme: 'all',
+    avatar: {
+      Component: '@/components/CosmedicUserAvatar',
+    },
     meta: {
       titleSuffix: ' — Cosmedic CMS',
       description: 'BIMC CosMedic — content management for the clinic team.',

@@ -21,6 +21,7 @@ import { StrikethroughFeatureClient as StrikethroughFeatureClient_e70f5e05f09f93
 import { UnderlineFeatureClient as UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
+import { default as default_45b96fa7077d7e61c37929e460e4fc37 } from '@/components/CosmedicUserAvatar'
 import { default as default_7aaff18b36e70d9210e24ae88ec57457 } from '@/components/CosmedicIcon'
 import { default as default_70443325cec6146905e7ff94dd88f51b } from '@/components/CosmedicLogo'
 import { default as default_1af07b3c71f0d2f23dbf601e35d67213 } from '@/components/CosmedicBeforeLogin'
@@ -51,6 +52,7 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#UnderlineFeatureClient": UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#BoldFeatureClient": BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
+  "@/components/CosmedicUserAvatar#default": default_45b96fa7077d7e61c37929e460e4fc37,
   "@/components/CosmedicIcon#default": default_7aaff18b36e70d9210e24ae88ec57457,
   "@/components/CosmedicLogo#default": default_70443325cec6146905e7ff94dd88f51b,
   "@/components/CosmedicBeforeLogin#default": default_1af07b3c71f0d2f23dbf601e35d67213,
