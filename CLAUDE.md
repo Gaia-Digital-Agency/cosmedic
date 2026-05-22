@@ -37,7 +37,7 @@ Every change must respect:
 | [docs/cms_schema.md](docs/cms_schema.md) | Before adding a UI surface — verify it traces to a CMS entity (Non-negotiable #3 audit) |
 | [docs/plan.md](docs/plan.md) | Before starting any phase — the 14-phase execution plan + locked decisions |
 | [docs/todo.md](docs/todo.md) | Master TODO — phase checklist + 47-page CMS record tracker |
-| [docs/cms_todo.md](docs/cms_todo.md) | Working TODO — Phase M (mobile sweep) + Phase N (header/FAB/pricing fixes), updated 2026-05-21 |
+| [docs/cms_todo.md](docs/cms_todo.md) | Working TODO — Items 1-9 worklist. Item 1 (nginx upload fix) + Item 2 (Pages → 14 Globals refactor, Steps 1-9) shipped 2026-05-22. Items 3-9 (Phase N + Phase M) still queued. Updated 2026-05-22. |
 | [docs/brand-guidelines.pdf](docs/brand-guidelines.pdf) | Canonical brand source — palette, typography, mark, usage rules |
 | [docs/pricelist.xlsx](docs/pricelist.xlsx) | Canonical clinic price + procedure catalogue — seed source for Phase 6 |
 | [design/](design/) | Original Claude Design source — never modified, only mirrored |
@@ -66,11 +66,12 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
 - Pixel-Fidelity Gate + Lighthouse Green Gate are launch-blocking. Don't bypass them.
 - This server is the dev environment (user chose server-first). Edits happen here; commits + pushes happen here.
 
-## Current state (Phase 8 complete)
+## Current state (Phase 8 complete + 2026-05-22 CMS UI restructure)
 
 - `packages/cms` — Payload 3.84.1 on Next.js 15.4.11 + Postgres adapter, port **4007**. Admin white-labelled as **Cosmedic CMS** (Cormorant Garamond + JetBrains Mono, brand-beige palette from `docs/brand-guidelines.pdf`). Light/dark toggle.
-  - **23 collections** in `src/collections/`: Users · Media · Surgeons · Disciplines · SubCategories · Procedures · PriceListItems · InjectableProducts · MachineTreatments · HairRemovalAreas · BeforeAfterCases · Stories · PressMentions · Awards · RecoveryStays · PricingTiers · BlogPosts · BlogTags · Authors · JourneySteps · InclusionItems · ExclusionItems · Pages · Enquiries.
-  - **10 globals** in `src/globals/`: Settings · Header · Footer · FloatingChrome · BrandStats · EndorsementMark · ConsultationPolicy · FormDefaults · EmailTemplates · SeoDefaults.
+  - **23 collections** in `src/collections/` (Pages collection now orphaned — pending Rule 4 removal in Step 10): Users · Media · Surgeons · Disciplines · SubCategories · Procedures · PriceListItems · InjectableProducts · MachineTreatments · HairRemovalAreas · BeforeAfterCases · Stories · PressMentions · Awards · RecoveryStays · PricingTiers · BlogPosts · BlogTags · Authors · JourneySteps · InclusionItems · ExclusionItems · Pages · Enquiries.
+  - **24 globals**: 10 in `src/globals/` (Settings · Header · Footer · FloatingChrome · BrandStats · EndorsementMark · ConsultationPolicy · FormDefaults · EmailTemplates · SeoDefaults) + **14 Page Globals** in `src/globals/pages/` (HomePage · PressPage · PrivacyPage · TreatmentsPage · SurgeonsPage · ResultsPage · GalleryPage · PricingPage · JourneyPage · StoriesPage · RecoveryStaysPage · ContactPage · VideoConsultPage · BlogPage). Each Page Global is a singleton holding one route's editorial hero + sections.
+  - **Admin taxonomy (9 buckets, mirrors site IA)**: Homepage · Treatments · Doctors · Results · Pricing · Journey · Contact · Blog · Media Library. Every collection + global has `admin.group` set to its bucket — open Pricing, see everything to manage `/pricing` (line items, tiers, consultation policy, the page global itself).
   - Phase-6 seed (`src/seed/runtime.ts` + `src/seed/parse-pricelist.ts`) parses all 7 sheets of `docs/pricelist.xlsx` and idempotently upserts into Payload via Local API. Run with `pnpm --filter @cosmedic/cms seed`. Seed source files are imported from `packages/web/src/content/*` via relative path (will be deleted after Phase 6c rewires every web page).
   - Counts seeded: **149 PriceListItems**, 93 Procedures, 8 Surgeons, 6 Disciplines, 17 SubCategories, 24 MachineTreatments, 43 HairRemovalAreas, 34 InjectableProducts, 6 JourneySteps, 5 Inclusions, 7 Exclusions, 5 Awards, 3 PressMentions, 6 RecoveryStays, 3 PricingTiers, 7 BlogPosts, 8 Pages, 10 globals.
 - `packages/web` — Vite 6 SSR + React 19 + Express, port **3007**. Renders the full homepage matching the Claude Design source.
@@ -97,6 +98,35 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
 - **Phase 8**: Live at **https://cosmedic.gaiada.online** with green padlock. DNS A record points to `34.124.244.233`; Let's Encrypt cert at `/etc/letsencrypt/live/cosmedic.gaiada.online/` (issued 2026-05-20, expires 2026-08-18). nginx block in `/etc/nginx/sites-enabled/subdomains.gaiada.online` mirrors the christos VRTPN pattern — HTTP→HTTPS 301, web-owned `/api/{page-data,preview,exit-preview,revalidate,enquiry}` → `:3007`, Payload `/admin` + `/_next` + `/api` → `:4007` (25M client_max_body_size for media uploads), `/` → `:3007` (Vite SSR). Backup of pre-Phase-8 nginx config stashed at `/etc/nginx/backups/subdomains.gaiada.online.bak-phase8-*`. Smoke-tested: homepage 200, `/admin` 200, `/api/revalidate` `{ok:true}`, `/api/enquiry` returns Zod validation errors, all sibling sites unchanged. **Pending pre-launch**: SMTP provider for enquiry emails (currently JSON transport — no delivery).
 
 **Known issue surfaced during Phase 8 smoke**: SSR router uses `/surgeon-<slug>` but sitemap + header links use `/surgeons/<slug>` — surgeon detail pages 404. Fix during Phase 11.
+
+## 2026-05-22 — Item 1 + Item 2 shipped
+
+### Item 1 — CMS image upload nginx fix (commit `6c5299b`)
+- `location ^~ /api/media/` → `location ^~ /api/media/file/` in `/etc/nginx/sites-enabled/subdomains.gaiada.online` line 513. Breaks the nginx 301 → Payload 308 redirect loop that ate POST bodies.
+- Phase-10 30d file cache preserved on `/api/media/file/*`; collection API `/api/media` freed for POST.
+- Backup: `/etc/nginx/backups/subdomains.gaiada.online.bak-cmsfix-20260522-065211`.
+
+### Item 2 — Pages → 14 Globals refactor (commit `3bc02e5`, Steps 1-9)
+- The single `Pages` collection became 14 individual Payload Globals (one per static route). Each Global's `admin.group` matches its bucket in the new 9-bucket taxonomy → admin nav is one-to-one with the site IA.
+- 28 collection + global `admin.group` strings re-grouped. Notable: PriceListItems moved from Treatments to **Pricing** (where editors expect to find prices); Stories + JourneySteps + RecoveryStays moved to **Journey**; PressMentions + Awards moved to **Homepage** (trust marks); all shell globals (Header / Footer / Settings / SeoDefaults / BrandStats / EndorsementMark / FloatingChrome) moved to **Homepage**.
+- Media: added `folders: true` + a `category` select field (homepage / treatments / doctors / results / pricing / journey / contact / blog / uncategorised) so the asset library can be browsed by bucket.
+- Postgres schema migration `20260522_072509_pages_to_globals` applied — adds 266 new tables/sequences/enums for the 14 globals + media folders. Marked applied in `payload_migrations` table as batch 4.
+- Data migration: 8 existing Pages rows copied to corresponding Globals via `migrate-pages-to-globals.ts` (idempotent — skips already-populated globals). 6 new globals (treatments/surgeons/results/recovery-stays/video-consult/blog) seeded fresh via `seed-new-page-globals.ts`.
+- Web data layer (`packages/web/src/lib/cms.ts`): the `CmsCache.pages: CmsPage[]` interface is preserved. Internally `fetchAll<CmsPage>('pages')` was replaced with `fetchAllPageGlobals()` (14 parallel `fetchGlobal` calls). `cms-adapters.ts` and route components untouched.
+- `packages/cms/src/seed/runtime.ts`: pages array loop replaced with 14 `upsertGlobal()` calls. Fresh installs now seed Globals, not the Pages collection.
+- All 14 globals respond 200, all 14 static routes serve 200, editorial copy rendering live from globals (Rule 3 preserved — site bytewise identical to pre-refactor).
+
+### Gotchas to remember next session
+
+- **`payload migrate` hangs silently on large migrations** even with `--force-accept-warning`. The 4800-LOC migration sat for 20+ min using 12 sec of CPU, never submitting any DDL. **Workaround**: extract the `await db.execute(sql\`...\`)` body via `awk 'NR>=5 && NR<=N { sub close-backtick from last line }'` to a `.sql` file and pipe to `psql --single-transaction -v ON_ERROR_STOP=1`. Applies in seconds. Then `INSERT INTO payload_migrations (name, batch, created_at, updated_at) VALUES ('<migration-name>', <next-batch>, NOW(), NOW())` to register it as applied.
+- **Postgres 63-char identifier limit** — block field enums named `enum_<gslug>_blocks_<bslug>_<field>` can exceed it when the global slug is long. `recovery-stays-page` and `video-consult-page` needed `dbName: 'rec_stays_pg'` / `dbName: 'vid_consult_pg'` overrides on the GlobalConfig.
+- **Direct psql DDL leaves objects owned by `postgres`** — the Payload runtime connects as `cosmedic` and gets `permission denied` on `ALTER`. After applying schema directly, run `ALTER TABLE/SEQUENCE/TYPE OWNER TO cosmedic` for every new public-schema object. One-shot pattern: `psql -tAc "SELECT 'ALTER TABLE \"' || tablename || '\" OWNER TO cosmedic;' FROM pg_tables WHERE schemaname='public'" | psql`. Also set default privileges: `ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO cosmedic`.
+- **`tsx` scripts that call `getPayload()` trigger `pushDevSchema`** unless `NODE_ENV=production` is set. The drizzle push tries `ALTER TABLE ... DROP CONSTRAINT` and fails on non-owner. Always invoke one-off migration scripts as `NODE_ENV=production pnpm --filter @cosmedic/cms exec tsx <script>`.
+- **`git stash -u` will sweep untracked top-level directories** — `changes/` got vacuumed into the stash during rollback. Recoverable via `git checkout stash@{0}^3 -- <path>`. `/changes/` is now in `.gitignore` for scratch uploads.
+
+### Item 2 Step 10 — Rule 4 gate, still pending
+
+Old `Pages` collection still registered in `payload.config.ts` and still has its 8 rows in DB. Removing it from the config needs explicit user yes. DB table `pages` stays as data backup. One-line removal when approved.
 
 ## Phase M (Mobile-Responsive Sweep) — IN PROGRESS, paused 2026-05-21
 
