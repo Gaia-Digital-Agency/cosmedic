@@ -25,7 +25,7 @@ export const Pages: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'route', 'publishStatus'],
-    group: 'Pages',
+    group: 'Homepage',
     description: 'One record per URL that needs hand-crafted hero + body and isn\'t driven by a catalogue collection. Covers: / (home), /journey, /gallery, /stories, /press, /privacy, /contact, /video-consult, /pricing (hero text only — the table reads from PriceListItems). Each record controls: chapter title, tagline, lede, hero image, composable body sections, per-page SEO.',
   },
   access: {

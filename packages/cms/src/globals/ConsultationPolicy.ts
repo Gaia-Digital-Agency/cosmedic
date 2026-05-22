@@ -6,7 +6,7 @@ import { apiWarningField } from '../lib/api-warning'
 export const ConsultationPolicy: GlobalConfig = {
   slug: 'consultation-policy',
   admin: {
-    group: 'Treatments & Pricing',
+    group: 'Pricing',
     description: 'Consultation fee + waiver callout displayed at the bottom of /pricing (and selectable for /contact + procedure-detail pages). Sourced from pricelist.xlsx "Further Info" sheet.',
   },
   access: { read: readPublic, update: isAuthenticated },

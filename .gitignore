@@ -39,3 +39,6 @@ public/sitemap*.xml
 
 # graphify (laptop only — would not appear on server, but match sibling sites)
 /graphify-out/
+
+# Scratch uploads from user (scp'd into the server, not project code)
+/changes/

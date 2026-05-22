@@ -9,7 +9,7 @@ export const Procedures: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'parentSubCategory', 'featuredRank', 'sortOrder'],
-    group: 'Treatments & Pricing',
+    group: 'Treatments',
     description: 'Editorial detail for each individual procedure (Rhinoplasty, Breast Augmentation, …). Renders as the accordion items on the relevant sub-category page (/treatment-{sub-slug}) and supplies pricing/cross-link data shown on /pricing rows.',
   },
   access: {

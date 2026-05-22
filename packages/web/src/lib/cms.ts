@@ -573,6 +573,45 @@ async function fetchAll<T>(collection: string, limit = 500, depth = 1): Promise<
   return json.docs || []
 }
 
+/**
+ * The 14 Payload Globals that replaced the Pages collection in the
+ * 2026-05-22 admin restructure. Each is a singleton holding the editorial
+ * hero + sections for one static route. The CmsCache.pages[] array is
+ * assembled from these — downstream adapters (findPageBySlug, etc.) keep
+ * their existing signature.
+ */
+const PAGE_GLOBAL_SLUGS = [
+  'home-page',
+  'press-page',
+  'privacy-page',
+  'treatments-page',
+  'surgeons-page',
+  'results-page',
+  'gallery-page',
+  'pricing-page',
+  'journey-page',
+  'stories-page',
+  'recovery-stays-page',
+  'contact-page',
+  'video-consult-page',
+  'blog-page',
+] as const
+
+async function fetchAllPageGlobals(): Promise<CmsPage[]> {
+  const results = await Promise.all(
+    PAGE_GLOBAL_SLUGS.map((slug) =>
+      fetchGlobal<CmsPage>(slug, 1).catch((err) => {
+        // Don't fail the whole cache load if one global is missing — log + skip.
+        console.warn(`[cms] page global ${slug} failed:`, (err as Error)?.message)
+        return null
+      }),
+    ),
+  )
+  // Drop globals that have no editorial slug populated (treatments/surgeons/blog
+  // etc. before Step 9 seed runs). findPageBySlug ignores them anyway.
+  return results.filter((p): p is CmsPage => p !== null && Boolean(p?.slug))
+}
+
 async function fetchGlobal<T>(slug: string, depth = 1): Promise<T> {
   const url = `${PAYLOAD_URL}/api/globals/${slug}?depth=${depth}`
   const res = await fetch(url, { headers: { Accept: 'application/json' } })
@@ -611,7 +650,7 @@ async function doLoad(): Promise<CmsCache> {
       fetchAll<JourneyStep>('journey-steps'),
       fetchAll<InclusionItem>('inclusion-items'),
       fetchAll<ExclusionItem>('exclusion-items'),
-      fetchAll<CmsPage>('pages'),
+      fetchAllPageGlobals(),
       fetchGlobal<Settings>('settings'),
       fetchGlobal<HeaderGlobal>('header'),
       fetchGlobal<FooterGlobal>('footer'),

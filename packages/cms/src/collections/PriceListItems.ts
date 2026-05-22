@@ -9,7 +9,7 @@ export const PriceListItems: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'sheet', 'category', 'priceIdr2026', 'sortOrder'],
-    group: 'Treatments & Pricing',
+    group: 'Pricing',
     description: 'The complete clinic price catalogue (~200 rows from docs/pricelist.xlsx). Renders as the big tables on /pricing, grouped by Sheet (Surgical / Non-Surgical / Machine / Injection / BTL) and then by Category. This is the canonical source for every price on the site.',
   },
   access: {

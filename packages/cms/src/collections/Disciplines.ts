@@ -9,7 +9,7 @@ export const Disciplines: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'sortOrder'],
-    group: 'Treatments & Pricing',
+    group: 'Treatments',
     description: 'The 6 top-level treatment disciplines (Surgical / Reconstructive / Non-surgical / Hair / Dental / Concierge). Each renders at /treatment-{slug} AND drives the top level of the Treatments mega-menu, the homepage Treatments grid, and the /treatments index cards.',
   },
   access: {

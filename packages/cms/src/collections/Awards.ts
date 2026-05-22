@@ -9,7 +9,7 @@ export const Awards: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'year', 'issuer'],
-    group: 'Results & Stories',
+    group: 'Homepage',
     description: 'Accreditations + awards (ACHSI, ISAPS, IPRAS, "#1 Hospital 2026", …). Renders as the awards strip on /press.',
   },
   access: {

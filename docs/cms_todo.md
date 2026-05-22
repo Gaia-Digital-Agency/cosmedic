@@ -28,7 +28,35 @@
 
 ---
 
-## 2026-05-22 — DO SECOND: CMS UI Restructure (Pages → 14 Globals refactor)
+## 2026-05-22 — DO SECOND: CMS UI Restructure (Pages → 14 Globals refactor) ✅ STEPS 1-9 COMPLETE
+
+**Shipped 2026-05-22.** Steps 1-9 of the 10-step plan applied; Step 10 (Rule 4 gate — remove orphaned `Pages` collection) awaits explicit user yes in a follow-up session.
+
+### What landed
+
+- 14 Page Globals (`globals/pages/`): HomePage, PressPage, PrivacyPage, TreatmentsPage, SurgeonsPage, ResultsPage, GalleryPage, PricingPage, JourneyPage, StoriesPage, RecoveryStaysPage, ContactPage, VideoConsultPage, BlogPage — each in its bucket's admin.group.
+- 28 collection/global `admin.group` strings re-grouped to the 9-bucket taxonomy.
+- Media gained `folders: true` + a `category` select field (homepage/treatments/doctors/results/pricing/journey/contact/blog/uncategorised).
+- Postgres migration `20260522_072509_pages_to_globals` applied (266 new tables/sequences/types). Schema migration was applied directly via `psql --single-transaction` because `payload migrate` hung silently in JS — registered in `payload_migrations` table as batch 4.
+- All Postgres objects re-owned from `postgres` → `cosmedic` (table+sequence+enum); default privileges set.
+- Data migration `migrate-pages-to-globals.ts` copied 8 existing Pages rows → 8 Globals (migrated=8 skipped=0 errors=0).
+- 6 new globals (treatments/surgeons/results/recovery-stays/video-consult/blog) seeded via one-off `seed-new-page-globals.ts`.
+- `packages/web/src/lib/cms.ts` now assembles `pages: CmsPage[]` from 14 parallel `fetchGlobal()` calls. `cms-adapters.ts` untouched (signature preserved). Route components untouched.
+- `packages/cms/src/seed/runtime.ts` rewritten: `pages` array loop replaced with `pageGlobals` loop calling `upsertGlobal()` × 14.
+- All 14 globals respond 200, all 14 static routes serve 200, all dynamic routes still 200. Editorial copy ("Considered work in considered hands", "Transparent pricing", etc.) confirmed live from the new globals.
+
+### Gotchas captured
+
+- `recovery-stays-page` and `video-consult-page` need `dbName` override to stay under Postgres' 63-char identifier limit (used `rec_stays_pg` and `vid_consult_pg`).
+- `payload migrate` runner hangs at ~4800 LOC migrations even with `--force-accept-warning`. Workaround: extract the UP SQL via `awk 'NR>=5 && NR<=4181 ...'` and pipe to `psql --single-transaction`. Faster than waiting and avoids the silent JS hang.
+- `tsx` scripts that use `getPayload()` trigger `pushDevSchema` unless `NODE_ENV=production` is set. Pass it explicitly for any one-off migration script.
+- Direct psql DDL leaves tables owned by `postgres`; the Payload runtime connects as `cosmedic` and gets `permission denied` on ALTER. After applying schema directly, must `ALTER TABLE/SEQUENCE/TYPE OWNER TO cosmedic` for all public-schema objects.
+
+### Step 10 — RULE 4 GATE — still pending
+
+Old `Pages` collection still registered in `payload.config.ts` and still has 8 rows in DB. Removing it requires user's explicit yes. Until then it sits in the admin sidebar under "Homepage" group (the temp re-group from Step 4), accessible but redundant. After approval: one-line removal from `payload.config.ts`; DB table `pages` stays for safety (orphaned data preserved).
+
+### Original plan below (kept for reference)
 
 **Approved 2026-05-22 after multi-turn discussion.** Converts the single `Pages` collection (8 rows today, 14 after extension) into 14 individual Payload Globals — each living in its bucket. Re-groups all 23 collections + 10 existing globals into a 9-bucket admin taxonomy that mirrors the site IA one-to-one. Adds Media folders + category field. Site rendering byte-identical (Rule 3). Zero custom React/admin code.
 

@@ -9,7 +9,7 @@ export const PressMentions: CollectionConfig = {
   admin: {
     useAsTitle: 'publication',
     defaultColumns: ['publication', 'headline', 'publishedDate', 'isFeatured'],
-    group: 'Results & Stories',
+    group: 'Homepage',
     description: 'External press / editorial mentions of the clinic. Renders as the logo + headline grid on /press.',
   },
   access: {

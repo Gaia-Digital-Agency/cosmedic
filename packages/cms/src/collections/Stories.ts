@@ -9,7 +9,7 @@ export const Stories: CollectionConfig = {
   admin: {
     useAsTitle: 'patientLabel',
     defaultColumns: ['patientLabel', 'procedure', 'country', 'isFeatured'],
-    group: 'Results & Stories',
+    group: 'Journey',
     description: 'Patient testimonials. Renders on /stories (full set) and the homepage Stories section. Use anonymous labels (e.g. "Sarah, 42, Sydney") — no full names.',
   },
   access: {

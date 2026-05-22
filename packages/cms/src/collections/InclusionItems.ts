@@ -9,7 +9,7 @@ export const InclusionItems: CollectionConfig = {
   admin: {
     useAsTitle: 'text',
     defaultColumns: ['text', 'scope', 'sortOrder'],
-    group: 'Treatments & Pricing',
+    group: 'Treatments',
     description: 'Curated "what\'s included" line items shared across procedures. Procedures pick relevant ones via the Included relation. Editing a line here updates every procedure card that references it. Seeded from pricelist Further Info.',
   },
   access: {

@@ -3,15 +3,16 @@ import { apiWarningField } from '../lib/api-warning'
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  folders: true,
   access: {
     read: () => true,
   },
   admin: {
     useAsTitle: 'filename',
-    defaultColumns: ['filename', 'alt', 'isPlaceholder', 'updatedAt'],
+    defaultColumns: ['filename', 'category', 'alt', 'isPlaceholder', 'updatedAt'],
     listSearchableFields: ['filename', 'alt'],
     group: 'Media Library',
-    description: 'Every image used anywhere on the site — hero images, doctor portraits, before/after composites, logos, OG/share previews, lifestyle imagery. Filter by "Placeholder" to see the seed-shipped images still awaiting real photos from the clinic. Upload here once → reference everywhere via Upload fields on other collections.',
+    description: 'Every image used anywhere on the site — hero images, doctor portraits, before/after composites, logos, OG/share previews, lifestyle imagery. Filter by "Placeholder" to see the seed-shipped images still awaiting real photos from the clinic. Use the Category field to group assets by the bucket they belong to (Homepage, Treatments, Doctors, etc.). Upload here once → reference everywhere via Upload fields on other collections.',
   },
   fields: [
     apiWarningField,
@@ -19,6 +20,28 @@ export const Media: CollectionConfig = {
       name: 'alt',
       type: 'text',
       required: true,
+    },
+    {
+      name: 'category',
+      type: 'select',
+      defaultValue: 'uncategorised',
+      index: true,
+      admin: {
+        position: 'sidebar',
+        description:
+          'Which bucket this asset belongs to. Filter the Media list by Category to see all assets used in a given site section. Existing assets default to "Uncategorised" — sort over time.',
+      },
+      options: [
+        { label: 'Homepage', value: 'homepage' },
+        { label: 'Treatments', value: 'treatments' },
+        { label: 'Doctors', value: 'doctors' },
+        { label: 'Results', value: 'results' },
+        { label: 'Pricing', value: 'pricing' },
+        { label: 'Journey', value: 'journey' },
+        { label: 'Contact', value: 'contact' },
+        { label: 'Blog', value: 'blog' },
+        { label: 'Uncategorised', value: 'uncategorised' },
+      ],
     },
     {
       name: 'isPlaceholder',

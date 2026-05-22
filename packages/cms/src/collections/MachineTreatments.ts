@@ -9,7 +9,7 @@ export const MachineTreatments: CollectionConfig = {
   admin: {
     useAsTitle: 'machineName',
     defaultColumns: ['machineName', 'area', 'pricing.standardIdr', 'sortOrder'],
-    group: 'Treatments & Pricing',
+    group: 'Treatments',
     description: 'Laser / RF / non-injection machine treatments. Renders as rows in the Machine Treatments section of /pricing, grouped by machine name. Three-tier pricing per row (Tourist standard / Kitas+KTP / optional Package).',
   },
   access: {

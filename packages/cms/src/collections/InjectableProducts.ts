@@ -9,7 +9,7 @@ export const InjectableProducts: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'brand', 'category', 'priceIdr', 'sortOrder'],
-    group: 'Treatments & Pricing',
+    group: 'Treatments',
     description: 'Named injectable products (Restylane, Juvederm, Teosyal, Botox, …). Renders as rows in the Injectable Catalogue section of /pricing, grouped by category. Each row shows brand, name, price, manufacturer, and FDA badge.',
   },
   access: {

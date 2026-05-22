@@ -9,7 +9,7 @@ export const RecoveryStays: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'location', 'priceFromAudPerNight', 'sortOrder'],
-    group: 'Pages',
+    group: 'Journey',
     description: 'Villa partner accommodations for post-op recovery. Renders as the villa-card grid on /recovery-stays. Each card shows hero image, location, price-from, descriptor, amenities.',
   },
   access: {

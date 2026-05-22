@@ -41,6 +41,21 @@ import { FormDefaults } from './globals/FormDefaults'
 import { EmailTemplates } from './globals/EmailTemplates'
 import { SeoDefaults } from './globals/SeoDefaults'
 
+import { HomePage } from './globals/pages/HomePage'
+import { PressPage } from './globals/pages/PressPage'
+import { PrivacyPage } from './globals/pages/PrivacyPage'
+import { TreatmentsPage } from './globals/pages/TreatmentsPage'
+import { SurgeonsPage } from './globals/pages/SurgeonsPage'
+import { ResultsPage } from './globals/pages/ResultsPage'
+import { GalleryPage } from './globals/pages/GalleryPage'
+import { PricingPage } from './globals/pages/PricingPage'
+import { JourneyPage } from './globals/pages/JourneyPage'
+import { StoriesPage } from './globals/pages/StoriesPage'
+import { RecoveryStaysPage } from './globals/pages/RecoveryStaysPage'
+import { ContactPage } from './globals/pages/ContactPage'
+import { VideoConsultPage } from './globals/pages/VideoConsultPage'
+import { BlogPage } from './globals/pages/BlogPage'
+
 import { seedSuperAdmin } from './seed/admin'
 import { emailAdapter } from './lib/email-adapter'
 
@@ -122,6 +137,22 @@ export default buildConfig({
     FormDefaults,
     EmailTemplates,
     SeoDefaults,
+    // 14 per-page Globals (replaces the Pages collection's per-row records).
+    // Each lives in its bucket's admin.group for site-mirror navigation.
+    HomePage,
+    PressPage,
+    PrivacyPage,
+    TreatmentsPage,
+    SurgeonsPage,
+    ResultsPage,
+    GalleryPage,
+    PricingPage,
+    JourneyPage,
+    StoriesPage,
+    RecoveryStaysPage,
+    ContactPage,
+    VideoConsultPage,
+    BlogPage,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
