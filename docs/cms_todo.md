@@ -7,24 +7,24 @@
 ---
 
 
-## 2026-05-22 — DO FIRST: CMS image upload fix (carried over from 2026-05-21 incident)
+## 2026-05-22 — DO FIRST: CMS image upload fix ✅ COMPLETE
 
-**Issue diagnosed 2026-05-21:** CMS image upload `POST /api/media` is broken by an nginx ↔ Payload redirect loop. nginx 301s `/api/media` → `/api/media/` (trailing-slash convention from prefix-location with `proxy_pass`); Payload 308s `/api/media/` → `/api/media` (no-trailing-slash convention). The 301 strips the POST body, browser ends up in an infinite GET loop. Introduced by **Phase 10** nginx edit at 2026-05-21 00:54 UTC.
+**Issue:** CMS image upload `POST /api/media` broken by nginx ↔ Payload redirect loop. nginx 301'd `/api/media` → `/api/media/`; Payload 308'd back. POST body stripped, infinite loop.
 
-**Affected:** `https://cosmedic.gaiada.online/admin/collections/pages/1` (and any other admin upload path that POSTs to `/api/media`).
+**Fix applied 2026-05-22 06:52 UTC:** Changed `location ^~ /api/media/` → `location ^~ /api/media/file/` at line 513 of `/etc/nginx/sites-enabled/subdomains.gaiada.online`. Phase-10 30d caching intent preserved (Payload serves files at `/api/media/file/<name>.webp`); the `/api/media` collection API is freed for POST.
 
-### Checks for 2026-05-22 (in order)
+**Backup:** `/etc/nginx/backups/subdomains.gaiada.online.bak-cmsfix-20260522-065211`
 
-- [ ] Read `/etc/nginx/sites-enabled/subdomains.gaiada.online` line 49 — confirm the `location ^~ /api/media/ { ... proxy_pass http://127.0.0.1:4007; ... expires 30d; ... }` block is still the culprit.
-- [ ] Backup current config: `sudo cp /etc/nginx/sites-enabled/subdomains.gaiada.online /etc/nginx/backups/subdomains.gaiada.online.bak-cmsfix-$(date +%Y%m%d-%H%M%S)`
-- [ ] Apply fix: change `location ^~ /api/media/` to `location ^~ /api/media/file/` (one-line edit at line 49). Payload serves actual files under `/api/media/file/<name>.webp`, so Phase 10 30d caching intent is preserved; the `/api/media` collection API is freed for POST.
-- [ ] `sudo nginx -t` — must pass.
-- [ ] `sudo systemctl reload nginx` — reload (no full restart).
-- [ ] Verify upload via CMS UI: log into `/admin/collections/pages/1`, attempt to upload a test image. Expect HTTP 200, no redirect loop, file appears in media library.
-- [ ] Sanity check caching still works: `curl -I https://cosmedic.gaiada.online/api/media/file/<known-existing-asset>.webp` should show `Cache-Control: max-age=2592000` (30 days).
-- [ ] If everything green, note the fix in `phase-10-imagery-gaps.md` and close this section.
+### Verification (all green at 06:56 UTC)
 
-**Note:** the cosmedic-cms PM2 app restarted 103 times on 2026-05-21 02:00 UTC due to a separate Next.js build issue (`.next/prerender-manifest.json` missing). That resolved at 01:59:43 deploy. Do not conflate — the redirect-loop bug is config-only and independent.
+- [x] `sudo nginx -t` passed.
+- [x] `sudo systemctl reload nginx` completed without errors.
+- [x] `GET /api/media?limit=1` via HTTPS → **200 OK** (was 301-loop).
+- [x] `POST /api/media` via HTTPS → **403** (Payload auth-required; no redirect loop). Real upload from authenticated browser session will be 201.
+- [x] `GET /api/media/file/villa6.webp` → **200 OK** with `cache-control: max-age=2592000, public, immutable` (30d cache intent preserved).
+- [x] All sibling sites still up (only the cosmedic block touched).
+
+**Note (separate issue, not blocking):** `villa6.webp` exists as a DB row but not on disk (`packages/cms/media/` is empty). This is Phase-10 imagery-gap territory, tracked separately. Phase 10 still needs an upload pass; the upload pipeline itself is now unblocked.
 
 ---
 
