@@ -4,8 +4,12 @@ import { ChapterOpener } from '@/components/primitives/ChapterOpener'
 import { Reveal } from '@/components/primitives/Reveal'
 import { Img } from '@/components/primitives/Img'
 import { Mono, Eyebrow } from '@/components/primitives/Mono'
+import { CmsExtraBlocks } from '@/components/CmsExtraBlocks'
 import { IMG } from '@/content/seed'
 import { BLOG_POSTS, BLOG_CATEGORIES, type BlogPostMeta } from '@/content/blog-data'
+import { useCms } from '@/lib/cms-context'
+import { findPageBySlug } from '@/lib/cms-adapters'
+import { mediaUrl } from '@/lib/cms'
 
 const PostCard: React.FC<{ p: BlogPostMeta; i: number }> = ({ p, i }) => (
   <Reveal delay={i * 60}>
@@ -36,13 +40,26 @@ export const BlogIndex: React.FC = () => {
   const [filter, setFilter] = useState<string>('All')
   const shown = filter === 'All' ? rest : rest.filter((p) => p.category === filter)
 
+  // Phase C5: /blog index hero reads from the blog-page Global. Fallbacks
+  // mirror the exact previously-hardcoded copy so R5 byte-identical holds
+  // when the CMS field is empty.
+  const cms = useCms()
+  const page = cms ? findPageBySlug(cms, 'blog') : undefined
+  const chapter = page?.tagline || 'Chapter X — Journal'
+  const titleA = page?.chapterTitle?.a || 'Notes from'
+  const titleB = page?.chapterTitle?.b || 'the practice.'
+  const lede =
+    page?.lede ||
+    "Quarterly dispatches from our surgeons, aestheticians, and concierge — on technique, recovery, restraint, and the small decisions that add up to a good result."
+  const heroImage = mediaUrl(page?.heroImage, '') || IMG.texture
+
   return (
     <PageShell activePage="blog">
       <ChapterOpener
-        chapter="Chapter X — Journal"
-        title={['Notes from', 'the practice.']}
-        lede="Quarterly dispatches from our surgeons, aestheticians, and concierge — on technique, recovery, restraint, and the small decisions that add up to a good result."
-        image={IMG.texture}
+        chapter={chapter}
+        title={[titleA, titleB]}
+        lede={lede}
+        image={heroImage}
         imageHue={2}
         imageLabel="JOURNAL"
         breadcrumbs={[{ label: 'BIMC CosMedic', href: '/' }, { label: 'Journal' }]}
@@ -141,6 +158,8 @@ export const BlogIndex: React.FC = () => {
           </Reveal>
         )}
       </section>
+
+      <CmsExtraBlocks slug="blog" />
     </PageShell>
   )
 }

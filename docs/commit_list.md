@@ -63,16 +63,24 @@
 
 ---
 
-## STANDING RULE — site UI frontend design must not change from CURRENT state
+## STANDING RULE — visual invariance (Rule R5) applies to CMS refactor phases only
 
-**Visual baseline = the production site at start of Phase D (commit `cfa64e8` → `5e5ece1`, 2026-05-23).** Every subsequent commit must leave `/`, `/admin`, `/pricing`, `/gallery`, `/results`, `/blog`, and every other route rendering byte-identically to that baseline. This is **Rule R5** (visual invariance) reinforced — the reference is CURRENT live, not any pre-refactor state.
+**Visual baseline = the production site at start of Phase D (commit `cfa64e8` → `5e5ece1`, 2026-05-23).**
 
-Pre-flight before every C/P/N/Q/M commit:
+| Phase group | UI change allowed? | Why |
+|---|---|---|
+| **D · C2 · C3 · C4 · C5 · C6 · C7 · C8 · C9 · C10** | **NO — must stay byte-identical** | CMS refactors. Seed CMS with EXACT existing copy BEFORE swapping renderer. |
+| **P (favicon)** | **YES — deliberate UI change** | Browser tab icon + iOS PWA preview |
+| **N1 · N2 · N3** | **YES — deliberate UI polish** | Endorsement centring, FAB size match, `/pricing` column widths |
+| **Q (changes01.docx cluster commits)** | **YES — substantial UI changes** | Brown logo, breadcrumb fixes, footer redesign, B&A extras |
+| **M1 · M2 · M3 · M4** | **YES — deliberate UI fixes** | Removing horizontal overflow on mobile breakpoints |
+
+Pre-flight before every CMS-refactor commit (D + C-series):
 1. `curl -sI https://cosmedic.gaiada.online/<route>` — expect 200
 2. Visual diff vs baseline screenshot (manual or playwright)
 3. CMS save → revalidate → re-render still byte-identical
 
-Site-break = commit reverted immediately. No exceptions.
+Site-break (route returns 500 / blank / wrong content) = commit reverted immediately. UI changes within scope of P/N/Q/M are expected and reviewed against their own intent, not R5.
 
 ---
 

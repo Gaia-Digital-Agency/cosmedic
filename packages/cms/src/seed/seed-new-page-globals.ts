@@ -65,9 +65,12 @@ const NEW_PAGE_GLOBALS: Array<{ slug: string; data: Record<string, unknown> }> =
     slug: 'blog-page',
     data: {
       slug: 'blog', route: '/blog', title: 'Blog Index',
-      chapterTitle: { a: 'Notes &', b: 'briefings.' },
-      tagline: 'Editorial',
-      lede: 'Clinical notes, patient briefings, and considered reading on the work we do.',
+      // Source: packages/web/src/routes/blog/BlogIndex.tsx hardcoded copy.
+      // Phase C5 wires BlogIndex to read these from the CMS — values match
+      // EXACT existing render for Rule R5 byte-identical.
+      chapterTitle: { a: 'Notes from', b: 'the practice.' },
+      tagline: 'Chapter X — Journal',
+      lede: "Quarterly dispatches from our surgeons, aestheticians, and concierge — on technique, recovery, restraint, and the small decisions that add up to a good result.",
       publishStatus: 'published',
     },
   },
