@@ -63,7 +63,17 @@ export const Gallery: React.FC = () => {
                 </figcaption>
                 {c.surgeonName && (
                   <Mono style={{ marginTop: 8, display: 'block', color: 'var(--ink-60)' }}>
-                    Surgeon · {c.surgeonName}
+                    Surgeon ·{' '}
+                    {c.surgeonSlug ? (
+                      <a
+                        href={`/surgeon-${c.surgeonSlug}`}
+                        style={{ color: 'var(--accent-deep)', textDecoration: 'underline' }}
+                      >
+                        {c.surgeonName}
+                      </a>
+                    ) : (
+                      c.surgeonName
+                    )}
                   </Mono>
                 )}
                 {c.description && (

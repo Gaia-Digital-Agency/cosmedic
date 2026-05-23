@@ -419,7 +419,7 @@ export const ClinicCatalogueTable: React.FC = () => {
                 <TableRow
                   key={p.id}
                   name={p.name}
-                  notes={[p.unit, p.pricing?.priceNotes].filter(Boolean).join(' · ')}
+                  notes={[p.unit, p.productLine, p.pricing?.priceNotes].filter(Boolean).join(' · ')}
                   priceIdr={p.pricing?.priceIdr2026 ?? p.pricing?.priceIdr2025}
                   badge={p.brand}
                   manufacturer={p.manufacturer}
