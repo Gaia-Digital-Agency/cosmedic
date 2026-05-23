@@ -14,7 +14,7 @@
 
 import { lazyArray, lazyRecord } from '@/lib/cms-proxy'
 import { adaptDisciplines, adaptSubCategoriesByDiscipline, adaptSurgeons } from '@/lib/cms-adapters'
-import { mediaUrl } from '@/lib/cms'
+import { mediaUrl, lexicalToText } from '@/lib/cms'
 
 /* ─── Types — unchanged for backwards-compat with existing imports ────── */
 
@@ -63,6 +63,14 @@ export type BaPair = {
   time: string
   cat: string
   image: string
+  // Phase C8 — full editorial fields. Empty/undefined when CMS row hasn't set them.
+  year?: number
+  beforeAlt?: string
+  afterAlt?: string
+  description?: string
+  surgeonName?: string
+  surgeonSlug?: string
+  isFeatured?: boolean
 }
 
 /* ─── Live, CMS-backed exports ────────────────────────────────────────── */
@@ -90,12 +98,30 @@ export const BA_PAIRS = lazyArray<BaPair>((cms) =>
         : ba.slug.includes('lip-lift-male') ? '/assets/results/lip-lift-male.webp'
         : ba.slug.includes('lip-lift') ? '/assets/results/lip-lift-female.webp'
         : '/assets/results/necklift-female.webp'
+
+      // Resolve surgeon relation: relationship value may be an id or a populated object.
+      const sg = ba.surgeon
+      const surgeonId = typeof sg === 'number' ? sg : sg?.id
+      const surgeonDoc = surgeonId
+        ? cms.surgeons.find((s) => s.id === surgeonId)
+        : undefined
+      const surgeonName = surgeonDoc
+        ? `${surgeonDoc.title || 'dr.'} ${surgeonDoc.commonName || surgeonDoc.name}`
+        : undefined
+
       return {
         num,
         label,
-        time: ba.description ? '' : '',
+        time: ba.year ? String(ba.year) : '',
         cat: tagValue,
         image: mediaUrl(ba.composite, assetFallback) || assetFallback,
+        year: ba.year,
+        beforeAlt: ba.beforeAlt || undefined,
+        afterAlt: ba.afterAlt || undefined,
+        description: ba.description ? lexicalToText(ba.description) : undefined,
+        surgeonName,
+        surgeonSlug: surgeonDoc?.slug,
+        isFeatured: Boolean(ba.isFeatured),
       }
     }),
 )

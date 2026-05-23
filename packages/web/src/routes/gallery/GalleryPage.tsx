@@ -31,33 +31,57 @@ export const GalleryPage: React.FC = () => {
         </div>
 
         <div className="gallery-grid-4">
-          {visible.map((c, i) => (
-            <Reveal key={c.num} delay={i * 40} y={20}>
-              <figure className="ba-card">
-                <div className="ba-single">
-                  <Img
-                    src={c.image}
-                    fallbackLabel={`${c.label.toUpperCase()} · ${c.num}`}
-                    fallbackHue={i % 6}
-                    alt={`${c.label} — before and after`}
-                  />
-                  <span className="ba-tag">
-                    <Mono>Before</Mono>
-                  </span>
-                  <span className="ba-tag accent" style={{ left: 'auto', right: 14 }}>
-                    <Mono>After</Mono>
-                  </span>
-                </div>
-                <figcaption>
-                  <div>
-                    <Mono>{c.num}</Mono>
-                    <h4>{c.label}</h4>
+          {visible.map((c, i) => {
+            const alt = c.beforeAlt && c.afterAlt
+              ? `${c.beforeAlt} / ${c.afterAlt}`
+              : c.beforeAlt || c.afterAlt || `${c.label} — before and after`
+            return (
+              <Reveal key={c.num} delay={i * 40} y={20}>
+                <figure className="ba-card">
+                  <div className="ba-single">
+                    <Img
+                      src={c.image}
+                      fallbackLabel={`${c.label.toUpperCase()} · ${c.num}`}
+                      fallbackHue={i % 6}
+                      alt={alt}
+                    />
+                    <span className="ba-tag">
+                      <Mono>Before</Mono>
+                    </span>
+                    <span className="ba-tag accent" style={{ left: 'auto', right: 14 }}>
+                      <Mono>After</Mono>
+                    </span>
                   </div>
-                  <span className="ba-time">{c.time}</span>
-                </figcaption>
-              </figure>
-            </Reveal>
-          ))}
+                  <figcaption>
+                    <div>
+                      <Mono>{c.num}</Mono>
+                      <h4>{c.label}</h4>
+                    </div>
+                    <span className="ba-time">{c.time}</span>
+                  </figcaption>
+                  {c.surgeonName && (
+                    <Mono style={{ marginTop: 8, display: 'block', color: 'var(--ink-60)' }}>
+                      Surgeon · {c.surgeonName}
+                    </Mono>
+                  )}
+                  {c.description && (
+                    <p
+                      style={{
+                        fontFamily: 'var(--font-serif)',
+                        fontStyle: 'italic',
+                        fontSize: 14,
+                        color: 'var(--ink-60)',
+                        margin: '8px 0 0',
+                        lineHeight: 1.55,
+                      }}
+                    >
+                      {c.description}
+                    </p>
+                  )}
+                </figure>
+              </Reveal>
+            )
+          })}
         </div>
 
         <Reveal>
