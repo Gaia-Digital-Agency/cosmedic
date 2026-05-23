@@ -170,7 +170,12 @@ export const PricingPage: React.FC = () => {
                               href={`/treatment-${subSlug}`}
                               style={{
                                 display: 'grid',
-                                gridTemplateColumns: '1.1fr 1.6fr 220px 36px',
+                                // Phase N3: column widths harmonised with the
+                                // lower ClinicCatalogueTable so every /pricing
+                                // table reads consistently. Name col is the
+                                // anchor (widest); notes secondary; price
+                                // fixed at 220px right-aligned; arrow 36px.
+                                gridTemplateColumns: '1.6fr 1.2fr 220px 36px',
                                 gap: 28,
                                 padding: '20px 0',
                                 borderBottom: '1px solid var(--ink-20)',
