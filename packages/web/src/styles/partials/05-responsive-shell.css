@@ -1,0 +1,47 @@
+  /* ============================================
+     RESPONSIVE — light coverage; designed for desktop
+     ============================================ */
+  @media (max-width: 1100px) {
+    /* Two-cell header: logo | right-cluster (lang + CTA + burger).
+     * Per user requirement: logo + CTA + lang switcher remain visible at all
+     * widths above the narrow-viewport breakpoint below. Only the primary
+     * nav links collapse into the burger drawer. */
+    .header-inner { grid-template-columns: auto 1fr; }
+    .primary-nav { display: none; }
+    .burger-btn { display: flex !important; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-image { min-height: 60vh; }
+    .intro-grid, .treatments-head, .surgeons-feature, .place-grid, .cta-grid { grid-template-columns: 1fr; gap: 40px; }
+    .treatments-grid, .gallery-grid, .stories-grid { grid-template-columns: 1fr 1fr; }
+    .surgeons-grid { grid-template-columns: repeat(3, 1fr); }
+    .journey-steps { grid-template-columns: 1fr 1fr; row-gap: 56px; }
+    .journey-arrow { display: none; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+
+    /* Surgeon feature — tighten typography & give stats more breathing room */
+    .surgeon-name { font-size: clamp(36px, 6vw, 56px) !important; }
+    .surgeon-stats { grid-template-columns: repeat(3, 1fr); max-width: none; gap: 20px; }
+
+    /* Lead magnet — center the cover instead of stretching it full-bleed */
+    .lead-magnet-cover { max-width: 380px; width: 100%; }
+    .lead-magnet-body { max-width: none; }
+  }
+  @media (max-width: 700px) {
+    .hero-headline { left: 32px; bottom: 60px; }
+    .hero-aside { padding: 40px 28px; }
+    .treatments-grid, .gallery-grid, .stories-grid, .surgeons-grid, .journey-steps, .footer-top { grid-template-columns: 1fr; }
+    .header-inner { padding: 16px 20px; gap: 12px; }
+    .lang-switcher { display: none; }
+    /* Shrink CTA to icon + short label so it stays in the bar without
+     * blowing out the width. Logo + CTA + burger remain visible. */
+    .header-cta { padding: 10px 14px; font-size: 11px; letter-spacing: 0.14em; }
+    .intro-cols { grid-template-columns: 1fr; gap: 24px; }
+    .surgeon-stats { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 420px) {
+    /* Very narrow viewports — hide the CTA text label and keep only the
+     * arrow so logo + burger + CTA-icon all fit at 320px. */
+    .header-cta span:not(.btn-arrow) { display: none; }
+    .header-cta { padding: 10px; }
+  }
+

@@ -79,13 +79,8 @@ const TableRow: React.FC<{
   fdaApproved?: boolean
 }> = ({ name, notes, priceIdr, priceAud, priceRange, badge, featured, manufacturer, fdaApproved }) => (
   <div
+    className="pricing-row"
     style={{
-      display: 'grid',
-      gridTemplateColumns: '1.6fr 1.2fr 220px',
-      gap: 24,
-      padding: '16px 0',
-      borderBottom: '1px solid var(--ink-20)',
-      alignItems: 'baseline',
       background: featured ? 'var(--accent-tint)' : undefined,
       paddingLeft: featured ? 12 : undefined,
       paddingRight: featured ? 12 : undefined,

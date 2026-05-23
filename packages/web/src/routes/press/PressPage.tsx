@@ -173,16 +173,7 @@ export const PressPage: React.FC = () => (
       <div style={{ borderTop: '1px solid var(--ink-20)' }}>
         {PRESS.map((p, i) => (
           <Reveal key={i} delay={i * 50}>
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '240px 1fr 200px 60px',
-                gap: 32,
-                padding: '32px 0',
-                borderBottom: '1px solid var(--ink-20)',
-                alignItems: 'baseline',
-              }}
-            >
+            <div className="press-row">
               <Mono>{p.pub}</Mono>
               <h4
                 style={{

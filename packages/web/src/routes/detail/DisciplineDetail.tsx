@@ -103,16 +103,7 @@ export const DisciplineDetail: React.FC<Props> = ({ slug }) => {
               <div style={{ marginTop: 40, borderTop: '1px solid var(--ink-20)' }}>
                 {c.subcategories.map((sc, i) => {
                   const inner = (
-                    <div
-                      style={{
-                        display: 'grid',
-                        gridTemplateColumns: '180px 1fr 36px',
-                        gap: 32,
-                        padding: '28px 0',
-                        borderBottom: '1px solid var(--ink-20)',
-                        alignItems: 'center',
-                      }}
-                    >
+                    <div className="subcategory-row">
                       <div
                         style={{
                           aspectRatio: '4/3',
@@ -211,16 +202,7 @@ export const DisciplineDetail: React.FC<Props> = ({ slug }) => {
               <div style={{ marginTop: 32, borderTop: '1px solid var(--ink-20)' }}>
                 {c.procedures.map((p, i) => (
                   <Reveal key={i} delay={i * 30}>
-                    <div
-                      style={{
-                        display: 'grid',
-                        gridTemplateColumns: '1fr 2fr 180px 36px',
-                        gap: 24,
-                        padding: '24px 0',
-                        borderBottom: '1px solid var(--ink-20)',
-                        alignItems: 'center',
-                      }}
-                    >
+                    <div className="procedure-row">
                       <h4
                         style={{
                           fontFamily: 'var(--font-serif)',

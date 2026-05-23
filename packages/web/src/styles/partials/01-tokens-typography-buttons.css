@@ -1,0 +1,165 @@
+:root {
+    --font-serif: "Cormorant Garamond", "Times New Roman", Georgia, serif;
+    --font-sans: "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+    /* v1.4 — Editorial palette · 5 surfaces + 1 accent */
+    --paper: #F4EFE6;          /* light-beige */
+    --paper-warm: #F4EFE6;     /* collapsed → light-beige */
+    --cream: #E6DCC8;          /* dark-beige */
+    --bone: #E6DCC8;           /* collapsed → dark-beige */
+    --sand: #E6DCC8;           /* collapsed → dark-beige */
+
+    /* Section horizontal padding — single source of truth */
+    --page-x: 80px;
+
+    --ink-100: #1F1B16;        /* black */
+    --ink-90: #1F1B16;         /* collapsed → black */
+    --ink-80: #1F1B16;         /* collapsed → black */
+    --ink-60: #6B6354;         /* muted (derived) */
+    --ink-40: #A8A192;         /* muted (derived) */
+    --ink-20: #D4CDBE;         /* rule (derived) */
+    --ink-10: #E8E2D5;         /* rule subtle (derived) */
+
+    /* Bronze accent */
+    --accent: #A67C52;
+    --accent-warm: #A67C52;    /* collapsed → accent */
+    --accent-deep: #6B4A2B;    /* dark-brown */
+    --accent-tint: rgba(166, 124, 82, 0.10);
+  }
+
+  @media (max-width: 1100px) { :root { --page-x: 48px; } }
+  @media (max-width: 700px)  { :root { --page-x: 24px; } }
+
+
+  * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--paper);
+    color: var(--ink-100);
+    font-family: var(--font-serif);
+    font-size: 17px;
+    line-height: 1.6;
+  }
+
+  html, body { overflow-x: hidden; }
+  html { overflow-x: clip; }
+
+  img { display: block; max-width: 100%; }
+
+  a { color: inherit; text-decoration: none; }
+
+  ::selection { background: var(--accent); color: var(--paper); }
+
+  /* ============================================
+     TYPOGRAPHY ATOMS
+     ============================================ */
+  .mono {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-60);
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--accent-deep);
+  }
+  .eyebrow-rule {
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .italic { font-style: italic; }
+  .accent { color: var(--accent-deep); }
+
+  .display {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(56px, 8vw, 124px);
+    line-height: 0.95;
+    letter-spacing: -0.015em;
+    margin: 0;
+    color: var(--ink-100);
+  }
+  .display .line { display: block; }
+
+  .section-title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(40px, 5.4vw, 72px);
+    line-height: 1.0;
+    letter-spacing: -0.012em;
+    margin: 0;
+    color: var(--ink-100);
+  }
+  .section-title-center { text-align: center; }
+
+  .pull-quote {
+    font-family: var(--font-serif);
+    font-size: clamp(28px, 3.4vw, 48px);
+    line-height: 1.18;
+    margin: 0;
+    color: var(--ink-100);
+    letter-spacing: -0.01em;
+  }
+
+  .section-lede {
+    font-family: var(--font-serif);
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--ink-60);
+    max-width: 620px;
+    margin: 0;
+  }
+
+  /* ============================================
+     BUTTONS
+     ============================================ */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 18px 28px;
+    border: 1px solid var(--ink-100);
+    background: transparent;
+    color: var(--ink-100);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 400;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background .35s ease, color .35s ease, border-color .35s ease, transform .35s ease;
+    text-align: center;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-full { width: 100%; }
+  .btn-arrow { transition: transform .35s ease; display: inline-block; }
+  .btn:hover .btn-arrow { transform: translateX(4px); }
+
+  .btn-primary { background: var(--accent-deep); color: var(--paper); border-color: var(--accent-deep); }
+  .btn-primary:hover { background: var(--ink-100); border-color: var(--ink-100); }
+
+  .btn-accent { background: var(--accent); color: white; border-color: var(--accent); }
+  .btn-accent:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
+
+  .btn-ghost { background: transparent; color: var(--ink-100); border-color: var(--ink-100); }
+  .btn-ghost:hover { background: var(--ink-100); color: var(--paper); }
+
+  .btn-ghost-light { background: transparent; color: white; border-color: rgba(255,255,255,0.5); }
+  .btn-ghost-light:hover { background: white; color: var(--ink-100); border-color: white; }
+

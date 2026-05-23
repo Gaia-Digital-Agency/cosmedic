@@ -378,14 +378,7 @@ export const ContactPage: React.FC = () => {
               >
                 <Img src={IMG.bali} fallbackLabel="NUSA DUA · BALI" fallbackHue={4} alt="" />
               </div>
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(2, 1fr)',
-                  gap: 24,
-                  marginTop: 24,
-                }}
-              >
+              <div className="contact-hours-grid">
                 <div>
                   <Mono>Hours · Clinic</Mono>
                   <p

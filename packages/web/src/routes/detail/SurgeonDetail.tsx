@@ -51,7 +51,7 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
             <p className="surgeon-cred">{s.cred}</p>
           </Reveal>
           <Reveal delay={120}>
-            <div style={{ display: 'flex', gap: 16, marginTop: 24 }}>
+            <div className="surgeon-hero-ctas">
               <Btn kind="primary" as="a" href="/contact">
                 Request a consultation
               </Btn>
@@ -177,30 +177,12 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
             What {s.title} {s.common} <span className="italic">does best.</span>
           </h2>
         </Reveal>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24 }}>
+        <div className="surgeon-specialty-grid">
           {s.spec_areas.map((area, i) => (
             <Reveal key={i} delay={i * 80}>
-              <div
-                style={{
-                  padding: '32px 28px',
-                  border: '1px solid var(--ink-20)',
-                  background: 'var(--paper)',
-                  minHeight: 180,
-                }}
-              >
+              <div className="surgeon-specialty-card">
                 <Mono>0{i + 1}</Mono>
-                <h4
-                  style={{
-                    fontFamily: 'var(--font-serif)',
-                    fontStyle: 'italic',
-                    fontSize: 28,
-                    fontWeight: 400,
-                    margin: '12px 0 0',
-                    letterSpacing: '-0.01em',
-                  }}
-                >
-                  {area}
-                </h4>
+                <h4>{area}</h4>
               </div>
             </Reveal>
           ))}
@@ -228,16 +210,7 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
             ] as [string, string, string][]
           ).map(([h, mid, right], i) => (
             <Reveal key={i} delay={i * 50}>
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: '240px 1fr 280px',
-                  gap: 32,
-                  padding: '26px 0',
-                  borderBottom: '1px solid var(--ink-20)',
-                  alignItems: 'baseline',
-                }}
-              >
+              <div className="surgeon-credentials-row">
                 <span className="mono" style={{ color: 'var(--accent-deep)' }}>
                   {h}
                 </span>
@@ -279,7 +252,7 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
             </div>
           </div>
         </Reveal>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24 }}>
+        <div className="surgeon-faculty-grid">
           {SURGEON_LIST.filter((x) => x.slug !== slug)
             .slice(0, 4)
             .map((other, i) => (

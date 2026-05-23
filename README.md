@@ -12,29 +12,30 @@ Marketing site for **BIMC CosMedic** — Bali International Medical Centre's pla
 | Doc | What |
 |---|---|
 | [CLAUDE.md](./CLAUDE.md) | Guide for Claude Code sessions in this folder |
-| [docs/architecture_info.md](./docs/architecture_info.md) | Runtime topology, stack, deployment |
-| [docs/file_structure.md](./docs/file_structure.md) | End-state directory tree + renames |
-| [docs/db_schema.md](./docs/db_schema.md) | Full Payload CMS collection + global schema (WHAT) |
-| [docs/db_ops.md](./docs/db_ops.md) | Postgres provisioning, migrations, backup, restore, perf (HOW) |
-| [docs/sitemap.md](./docs/sitemap.md) | Every page · subpage · CTA · button · mega-menu |
-| [docs/cms_info.md](./docs/cms_info.md) | Cosmedic CMS white-label spec (LOOK) |
-| [docs/cms_ops.md](./docs/cms_ops.md) | Payload init, hooks, access, drafts, media, seed, email (HOW) |
-| [docs/cms_schema.md](./docs/cms_schema.md) | UI ↔ CMS coverage matrix — every page surface mapped to its CMS entity |
-| [docs/site_features.md](./docs/site_features.md) | Visitor walkthrough + every site feature, primitive, and interaction |
-| [docs/plan.md](./docs/plan.md) | Full 14-phase execution plan + locked architecture decisions + Appendix A |
-| [docs/CMS_structure.md](./docs/CMS_structure.md) | **Source of truth** — locked CMS sidebar structure (buckets · entities · fields) the code aligns to |
-| [docs/cms_custom_change.md](./docs/cms_custom_change.md) | Reusable playbook — how to mirror a CMS admin to the site IA |
-| [docs/all_todo.md](./docs/all_todo.md) | **Single TODO file** — DO FIRST/SECOND/THIRD shipped, Phases C/M/N/P/Q queued. Absorbs former `cms_todo.md` + `todo.md`. |
-| [docs/commit_list.md](./docs/commit_list.md) | 27-commit tracker for the Phases D/C/P/N/Q/M work plan |
-| [docs/brand-guidelines.pdf](./docs/brand-guidelines.pdf) | BIMC CosMedic Brand Guidelines v1.0 (canonical brand source) |
-| [docs/pricelist.xlsx](./docs/pricelist.xlsx) | Clinic's price + procedure catalogue (CMS seed source) |
+| [docs/architecture/architecture_info.md](./docs/architecture/architecture_info.md) | Runtime topology, stack, deployment |
+| [docs/architecture/file_structure.md](./docs/architecture/file_structure.md) | End-state directory tree + renames |
+| [docs/architecture/sitemap.md](./docs/architecture/sitemap.md) | Every page · subpage · CTA · button · mega-menu |
+| [docs/architecture/site_features.md](./docs/architecture/site_features.md) | Visitor walkthrough + every site feature, primitive, and interaction |
+| [docs/db/db_schema.md](./docs/db/db_schema.md) | Full Payload CMS collection + global schema (WHAT) |
+| [docs/db/db_ops.md](./docs/db/db_ops.md) | Postgres provisioning, migrations, backup, restore, perf (HOW) |
+| [docs/cms/cms_info.md](./docs/cms/cms_info.md) | Cosmedic CMS white-label spec (LOOK) |
+| [docs/cms/cms_ops.md](./docs/cms/cms_ops.md) | Payload init, hooks, access, drafts, media, seed, email (HOW) |
+| [docs/cms/cms_schema.md](./docs/cms/cms_schema.md) | UI ↔ CMS coverage matrix — every page surface mapped to its CMS entity |
+| [docs/cms/CMS_structure.md](./docs/cms/CMS_structure.md) | **Source of truth** — locked CMS sidebar structure (buckets · entities · fields) the code aligns to |
+| [docs/cms/editor_cheatsheet.md](./docs/cms/editor_cheatsheet.md) | Clinic-editor quick reference for the CMS |
+| [docs/planning/plan.md](./docs/planning/plan.md) | Full 14-phase execution plan + locked architecture decisions + Appendix A |
+| [docs/planning/all_todo.md](./docs/planning/all_todo.md) | **Single TODO file** — DO FIRST/SECOND/THIRD shipped, Phases C/M(✅)/N/P/Q tracked here |
+| [docs/planning/phase-m-signoff.md](./docs/planning/phase-m-signoff.md) | Phase M mobile-responsive audit · sign-off (2026-05-23) |
+| [docs/planning/commit_list.md](./docs/planning/commit_list.md) | Commit-level tracker for the Phases D/C/P/N/Q/M work plan |
+| [docs/assets/brand-guidelines.pdf](./docs/assets/brand-guidelines.pdf) | BIMC CosMedic Brand Guidelines v1.0 (canonical brand source) |
+| [docs/assets/pricelist.xlsx](./docs/assets/pricelist.xlsx) | Clinic's price + procedure catalogue (CMS seed source) |
 | [design/](./design/) | Original Claude Design source (READ-ONLY) |
 
 ## Stack at a glance
 
 | Layer | Choice |
 |---|---|
-| Web framework | Vite SSR + React 18 |
+| Web framework | Vite 6 SSR + React 19 |
 | Styling | Tailwind 3 + brand-driven theme |
 | CMS | Payload 3 (Next.js host) |
 | Database | PostgreSQL 15+ (local on `gda-s01`) |
@@ -47,30 +48,6 @@ Marketing site for **BIMC CosMedic** — Bali International Medical Centre's pla
 | Testing | Vitest + Playwright + visual regression |
 
 Internal abbreviation for this stack across Gaia infra: **VRTPN**.
-
-## Project status
-
-This is the initial documentation + design-handoff import. Phases 1–14 are documented in the planning file; execution proceeds phase-by-phase with user approval at each gate.
-
-- **Phase 0** ✅ Documentation capture + git checkpoint of the starting state.
-- **Phase 1** ✅ Monorepo scaffold — packages/cms (Payload 3 on Next.js, port 4007) + packages/web (Vite SSR, port 3007), Postgres provisioned, Cosmedic CMS branding, super-admin seeded.
-- **Phase 2** ✅ Theme + PageShell ported from `design/`: full `global.css`, primitives (Btn / Mono / Eyebrow / Img / Reveal / PriceTag / ChapterOpener / TrustBar / CTABandSlim), shell (Header + Footer + FloatingChrome + PageShell).
-- **Phase 3** ✅ Homepage: 11 sections matching `design/index.html` — Hero · TrustStrip · Intro · Treatments · PricingTeaser · Surgeons · Gallery · LeadMagnet · Journey · Stories · Place. All read from `seed.ts`; Phase 6 swaps to Payload (mapping captured in `docs/cms_schema.md`).
-- **Phase 4** ✅ Detail templates: SSR router + 3 page templates covering **37 live routes** — DisciplineDetail (×6), SubCategoryDetail (×22, accordion treatment rows with IDR + AUD prices), SurgeonDetail (×8 with hero + bio + specialty areas + training). 404 fallback page. Editorial data ported to `src/content/treatment-content.ts` + `src/content/subcategory-data.ts`.
-- **Phase 5** ✅ Index pages: 14 more routes — treatments + surgeons + results indices, gallery, stories, journey (7 steps), pricing (full table), recovery-stays (6 villas), press (8 accreditations + 6 mentions), contact (form + visit map), video-consult (14-day picker), blog index + post, privacy. **Total 51 live routes.**
-- **Phase 6a** ✅ Payload schema + xlsx pricing pipeline. 23 collections + 10 globals defined; full `docs/pricelist.xlsx` parsed (7 sheets) and seeded → **149 PriceListItems, 93 Procedures, 8 Surgeons, 6 Disciplines, 17 SubCategories, 24 MachineTreatments, 43 HairRemovalAreas (BTL), 34 InjectableProducts, 6 JourneySteps, 5 Inclusions, 7 Exclusions, 5 Awards, 3 PressMentions, 6 RecoveryStays, 3 PricingTiers, 7 BlogPosts, 8 Pages**. Web SSR cache (`packages/web/src/lib/cms.ts`) fetches all of it from Payload REST + hydrates the client. `/pricing` renders the full CMS-driven clinic catalogue via `ClinicCatalogueTable` — every line item editable in Cosmedic CMS by the clinic team.
-- **Phase 6b + 6c** ✅ Every page reads from the CMS cache via lazy Proxy-backed shims at `src/content/*.ts` (no component rewrites needed). Shell wires globals: Header reads `header.localeSwitcher` + `floating-chrome.ctaPill` + `settings.siteName`; Footer reads `footer.linkColumns` + `settings.address` + `copyrightTemplate`; FloatingChrome reads `floating-chrome.ctaPill` + `settings.whatsappNumber`. TrustStrip reads `brand-stats.stats`. Hero reads `pages[home]` for tagline/title/lede/heroImage. `<CmsExtraBlocks slug="..."/>` injects any clinic-edited `Pages.sections` blocks (15 block types: richText / imageGrid / ctaBand / stats / faqAccordion / procedureList / surgeonList / baGrid / testimonialList / recoveryStayList / pressMentionList / contactForm / journeyStepList / externalEmbed / notes) into Home / Journey / Contact / Privacy / Press / Gallery / Stories / VideoConsult / RecoveryStays. Payload `afterChange` hooks on every collection + global POST to `web /api/revalidate` so edits show up within seconds. All 51 routes still 200.
-- **Phase 7** ✅ Enquiry form backend. `POST /api/enquiry` (Zod-validated, honeypot, 2-per-IP-per-60s rate-limit) creates an Enquiries record via Payload REST; honeypot submissions are silently marked `status: 'spam'`. `Enquiries.afterChange` (on create) sends two emails via the nodemailer adapter using copy from the `email-templates` global: a clinic-notify to `MAIL_CLINIC_TO`, and an autoresponder to the submitter. SMTP is env-driven (`SMTP_HOST/PORT/USER/PASS/SECURE`); JSON transport (stdout) is the fallback so dev + pre-launch is safe. Hero quick-form on `/` and full form on `/contact` both POST to `/api/enquiry` with inline success/error/rate-limit states. Smoke-tested: 2 records created (1 new, 1 spam); clinic-notify + autoresponder logged for the new record; honeypot record skipped.
-- **Phase 8** ✅ Live at <https://cosmedic.gaiada.online> with green padlock. DNS → `34.124.244.233`, Let's Encrypt cert (issued 2026-05-20, expires 2026-08-18), nginx block mirrors the christos VRTPN pattern, sibling sites unchanged. **Pending pre-launch:** SMTP provider (currently JSON-transport — no delivery).
-- **DO FIRST (2026-05-22)** ✅ CMS image upload nginx redirect-loop fix.
-- **DO SECOND (2026-05-22)** ✅ Pages → 14 Page Globals refactor + 9-bucket admin taxonomy. Step 10 (orphan Pages collection removal) pending under Phase C3.
-- **DO THIRD — Phase C (planned 2026-05-23)** ⏳ CMS structural alignment to [docs/CMS_structure.md](./docs/CMS_structure.md). 10 sub-phases C1–C10. Biggest piece: C9 unifies pricing onto Procedures (Surgical + Machine + Injection + BTL → one collection, single source of truth).
-- **Phase P** ⏳ Favicon icon-set from `changes/cosmedic-favico.zip` (1 commit).
-- **Phase N** 🟡 Header + chrome + pricing polish — queued. Endorsement vertical-centre, Back-to-Top size parity with WA FAB, `/pricing` table column consistency (N3 depends on C9).
-- **Phase Q** ⏳ `changes01.docx` 27-item batch — clustered into 6 commits, 3 open clarifications.
-- **Phase M** 🟡 Mobile-responsive sweep — paused mid-audit. Acceptance: no horizontal scroll at any width on any route. Logo white-smudge fix + scroll-state logo swap removal shipped; burger-threshold tuned at 1100/700px; full-route audit at 45/51, three confirmed overflows (`/video-consult` +97 @ 768, `/surgeon-risma` +30 @ 768, `/surgeon-wara` +21 @ 768).
-
-See [docs/all_todo.md](./docs/all_todo.md) for the 27-commit plan and [docs/commit_list.md](./docs/commit_list.md) for live tracking. [CLAUDE.md](./CLAUDE.md) and `docs/` for the full picture.
 
 ## Dev (server-first on `gda-s01`)
 

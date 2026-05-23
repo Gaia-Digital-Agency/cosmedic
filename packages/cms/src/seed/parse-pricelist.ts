@@ -21,7 +21,7 @@ import slugifyLib from 'slugify'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-export const PRICELIST_PATH = path.resolve(__dirname, '../../../../docs/pricelist.xlsx')
+export const PRICELIST_PATH = path.resolve(__dirname, '../../../../docs/assets/pricelist.xlsx')
 
 // Promote string keys to predictable slugs.
 export function slugify(s: string): string {

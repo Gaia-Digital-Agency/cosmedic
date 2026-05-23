@@ -1,0 +1,120 @@
+/* =====================================================
+   RESULTS & STORIES — combined page
+   ===================================================== */
+.section-anchor-head {
+  max-width: 1280px;
+  margin: 0 auto 56px;
+  padding: 0 40px;
+}
+.section-anchor-head .section-title {
+  font-family: var(--font-serif);
+  font-size: clamp(44px, 6vw, 78px);
+  line-height: 1.02;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  margin: 0 0 22px;
+}
+.section-anchor-head .section-lede {
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ink-80);
+  margin: 0;
+}
+
+.results-stories-divider {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  max-width: 1280px;
+  margin: 100px auto;
+  padding: 0 40px;
+}
+.results-stories-divider .rule {
+  flex: 1;
+  height: 1px;
+  background: var(--ink-20);
+}
+.results-stories-divider .mark {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 32px;
+  color: var(--ink-60);
+  line-height: 1;
+}
+@media (max-width: 700px) {
+  .section-anchor-head { padding: 0 24px; }
+  .results-stories-divider { margin: 64px auto; padding: 0 24px; }
+}
+
+
+/* WhatsApp FAB — replaces the old chat-fab */
+.chat-fab.whatsapp-fab {
+  background: #25D366;
+  color: white;
+  border-color: #25D366;
+  box-shadow: 0 8px 28px rgba(37, 211, 102, 0.35);
+}
+.chat-fab.whatsapp-fab:hover {
+  background: #1da851;
+  border-color: #1da851;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 36px rgba(37, 211, 102, 0.45);
+}
+
+
+/* =====================================================
+   SURGEON DETAIL — biography layout
+   ===================================================== */
+.surgeon-bio-layout {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 80px;
+  align-items: start;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.surgeon-bio-aside { position: sticky; top: 120px; }
+.surgeon-bio-facts {
+  margin: 28px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 22px;
+}
+.surgeon-bio-facts > div {
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--ink-20);
+}
+.surgeon-bio-facts > div:last-child { border-bottom: none; }
+.surgeon-bio-facts dt { margin: 0 0 6px; }
+.surgeon-bio-facts dd {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 17px;
+  line-height: 1.45;
+  color: var(--ink-100);
+}
+
+.surgeon-bio-body { max-width: 640px; }
+.surgeon-bio-lede {
+  font-family: var(--font-serif);
+  font-size: clamp(22px, 2vw, 28px);
+  line-height: 1.4;
+  font-style: italic;
+  color: var(--ink-100);
+  margin: 0 0 32px;
+  letter-spacing: -0.005em;
+}
+.surgeon-bio-text {
+  font-size: 16.5px;
+  line-height: 1.75;
+  color: var(--ink-80);
+  margin: 0 0 22px;
+}
+.surgeon-bio-text:last-child { margin-bottom: 0; }
+
+@media (max-width: 1000px) {
+  .surgeon-bio-layout { grid-template-columns: 1fr; gap: 48px; }
+  .surgeon-bio-aside { position: static; }
+}
+
+

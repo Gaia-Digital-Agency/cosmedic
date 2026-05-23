@@ -143,7 +143,7 @@ export const SurgeonsIndex: React.FC = () => {
           </div>
         </div>
       </Reveal>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32 }}>
+      <div className="surgeons-section-grid">
         {PLASTIC.slice(1).map((s, i) => (
           <SurgeonCard key={s.slug} s={s} idx={i + 1} />
         ))}
@@ -165,7 +165,7 @@ export const SurgeonsIndex: React.FC = () => {
           </div>
         </div>
       </Reveal>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24 }}>
+      <div className="surgeons-section-grid-4">
         {AESTHETIC.map((s, i) => (
           <SurgeonCard key={s.slug} s={s} idx={PLASTIC.length + i} />
         ))}

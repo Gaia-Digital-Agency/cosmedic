@@ -39,18 +39,7 @@ export const TreatmentRow: React.FC<Props> = ({ t, subTitle }) => {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        style={{
-          width: '100%',
-          background: 'transparent',
-          border: 'none',
-          padding: '26px 28px',
-          cursor: 'pointer',
-          textAlign: 'left',
-          display: 'grid',
-          gridTemplateColumns: '1.1fr 1.6fr 180px 28px',
-          gap: 28,
-          alignItems: 'center',
-        }}
+        className="treatment-row-button"
       >
         <h4
           style={{
@@ -229,20 +218,10 @@ export const TreatmentRow: React.FC<Props> = ({ t, subTitle }) => {
             </ul>
           </div>
 
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 12,
-              paddingTop: 18,
-              borderTop: '1px solid var(--ink-20)',
-              alignItems: 'flex-end',
-            }}
-          >
+          <div className="treatment-row-ctas">
             <a
               href={`/contact?intent=estimate&procedure=${procParam}`}
               className="btn btn-accent"
-              style={{ width: 280 }}
             >
               <span>Plan your journey</span>
               <span className="btn-arrow">→</span>
@@ -250,7 +229,6 @@ export const TreatmentRow: React.FC<Props> = ({ t, subTitle }) => {
             <a
               href={`/video-consult?procedure=${procParam}`}
               className="btn btn-ghost"
-              style={{ width: 280 }}
             >
               <span>Book a video consult</span>
               <span className="btn-arrow">→</span>
@@ -262,7 +240,6 @@ export const TreatmentRow: React.FC<Props> = ({ t, subTitle }) => {
               target="_blank"
               rel="noopener"
               className="btn btn-ghost"
-              style={{ width: 280 }}
             >
               <span>WhatsApp concierge</span>
               <span className="btn-arrow">→</span>

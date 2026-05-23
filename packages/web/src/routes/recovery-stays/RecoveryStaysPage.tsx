@@ -194,14 +194,7 @@ export const RecoveryStaysPage: React.FC = () => (
           </div>
         </div>
       </Reveal>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: 0,
-          borderTop: '1px solid var(--ink-20)',
-        }}
-      >
+      <div className="recovery-inclusions-grid">
         {INCLUSIONS.map(([k, t, body], i) => (
           <Reveal key={i} delay={i * 40}>
             <div

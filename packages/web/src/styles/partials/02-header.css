@@ -1,0 +1,140 @@
+  /* ============================================
+     HEADER
+     ============================================ */
+  .site-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 60;
+    transition: padding .4s ease, box-shadow .4s ease;
+    background: var(--paper);
+    border-bottom: 1px solid var(--ink-20);
+  }
+  .site-header.has-mega-open { z-index: 65; }
+  .primary-nav .has-dropdown { position: relative; align-self: stretch; display: flex; align-items: center; }
+  .primary-nav .has-dropdown:has(.dropdown-panel-wide) { position: static; }
+  .site-header.scrolled {
+    box-shadow: 0 8px 30px rgba(31, 27, 22, 0.06);
+  }
+  .header-inner {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    align-items: center;
+    padding: 22px 40px;
+    gap: 32px;
+  }
+  .site-header.scrolled .header-inner { padding: 16px 40px; }
+
+  .logo { display: flex; align-items: center; line-height: 1; cursor: pointer; transition: opacity .25s ease; opacity: 0.7; }
+  .logo:hover { opacity: 1; }
+  .logo img { height: 56px; width: auto; display: block; }
+  .site-header.scrolled .logo img { height: 48px; transition: height .3s ease; }
+
+  /* Logo: the header background stays cream (`var(--paper)`) at all scroll
+   * positions, so the primary logo (logoLight = dark mark on cream) is the
+   * only correct rendering. The second <img> (logoDark = white-on-dark
+   * variant) is kept in the DOM for a future dark-header state but is
+   * permanently hidden today — swapping to it on scroll would render an
+   * invisible white logo on a still-cream header. CMS field is preserved. */
+  .logo .logo-img-dark { display: none; }
+
+  /* EndorsementMark CSS removed in Phase N1 (2026-05-23): the production
+   * logo PNG already includes "Managed by BIMC Hospital" baked under the
+   * wordmark, so the duplicated sibling element + its styling was removed.
+   * CMS global stays editable for future placement. */
+
+  .logo-mark {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--ink-100);
+  }
+  .logo-sub {
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: var(--ink-60);
+    margin-top: 5px;
+  }
+
+  .primary-nav {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 36px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.20em;
+    text-transform: uppercase;
+  }
+  .primary-nav > a {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+  }
+  .primary-nav .has-dropdown {
+    display: flex;
+    align-items: stretch;
+  }
+  .primary-nav .has-dropdown > a {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+  }
+  .primary-nav a {
+    color: var(--ink-80);
+    position: relative;
+    padding: 4px 0;
+    transition: color .3s ease;
+  }
+  .primary-nav a::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 1px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .35s ease;
+  }
+  .primary-nav a:hover { color: var(--ink-100); }
+  .primary-nav a:hover::after { transform: scaleX(1); }
+  .primary-nav a.active { color: var(--accent-deep); }
+  .primary-nav a.active::after { transform: scaleX(1); background: var(--accent); }
+
+  .header-right { display: flex; align-items: center; gap: 20px; justify-content: flex-end; }
+
+  .lang-switcher { display: flex; gap: 4px; }
+  .lang-pill {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--ink-60);
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.18em;
+    padding: 6px 9px;
+    cursor: pointer;
+    transition: color .3s, border-color .3s;
+  }
+  .lang-pill.active { color: var(--ink-100); border-color: var(--ink-40); }
+  .lang-pill:hover { color: var(--ink-100); }
+
+  .header-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 18px;
+    border: 1px solid var(--ink-100);
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-100);
+    transition: background .3s, color .3s;
+  }
+  .header-cta:hover { background: var(--ink-100); color: var(--paper); }
+  .header-cta .btn-arrow { transition: transform .3s ease; }
+  .header-cta:hover .btn-arrow { transform: translateX(3px); }
+

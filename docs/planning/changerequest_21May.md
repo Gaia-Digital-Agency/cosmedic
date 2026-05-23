@@ -1,0 +1,61 @@
+# Phase Q — change request list (2026-05-23)
+
+## Per-q workflow (applies to every item below)
+
+For each q-item, execute these 7 steps in order:
+
+1. Audit situation: site, relating to the item
+2. Audit situation: CMS, relating to the item
+3. Decide change to CMS required, relating to the item
+4. Decide change to DB required, relating to the item
+5. Decide if overall item change is required or makes situation worse
+6. Propose action OR alternative for approval (MUST — do not act before approval)
+7. If executed, commit
+
+## Decision log
+
+- **q1** — User: "decide best for desktop and mobile" → use `clamp(640px, 70vw, 920px)` (raise cap, no full removal).
+- **q4** — User: "placeholder image, later swap via CMS, you decide" → add `groupPhoto` field on Home global; ship a brand-neutral cream-coloured placeholder block with "TEAM PHOTO — PLACEHOLDER" label so editors see the intent. Swappable via CMS.
+- **q5 (dropped)** — User: "check `/docs/cosmedic-favico` folder; if no brown logo there, drop". Folder has favicons only → **dropped**.
+- **q6 (dropped)** — User: "if Payload-usable, keep; else drop". Broken-links audit is not a Payload feature → **dropped**.
+- **q11** — User: "if can't reproduce, drop; but check all buttons/links/sublinks work". CTA bug not reproducible from code → bug dropped, replaced with a sitewide buttons+links sweep.
+- **q13 (dropped)** — User: "what we did in M was okay" → keep 1100px burger threshold, **dropped**.
+- **q14** — User: "no duplicate, best UX, CMS unchanged. Decide." → extract a shared `<StatsRow>` primitive; reuse `BrandStats` global; one component, two consumers.
+- **q15** — Moved earlier in order (prerequisite-first), grouped near breadcrumb work.
+- **q17** — User: "decide based on best UX" → keep `sortOrder` numeric, but scope it per `parentSubCategory` (with admin-list filter); rename label to "Sort within Sub-Category" for clarity. Native Payload drag-reorder not available without custom UI; this is the simplest "best UX".
+- **q18** — User: "do last, maybe another time" → kept but moved to last position.
+- **q20** — User: "404 (no redirects) so we can pick up errors later". → no redirect layer; just rewrite router, update CMS/DB references; broken old URLs surface as 404 for follow-up.
+- **q16 (IDR primary)** — User: "Flip based on ratio, where in CMS to change this one value" → convert existing AUD values × `Settings.audToIdrRate` once during migration; AUD becomes derived from the same `audToIdrRate` global at render time. The clinic edits ONE value in CMS (Settings → audToIdrRate) to re-peg all displayed AUD.
+
+## Renumbering (prerequisite-first, then easiness)
+
+Prerequisite chains:
+- q20 (slug rewrite) → blocks q15 (breadcrumbs must match new URLs)
+- q12 (align breadcrumb container) → independent fix, but does part of q15's visual job
+- q10 (footer redesign) → blocks q9 (footer CMS-driven wiring needs final markup)
+
+After applying: q20 must come before q15; q10 must come before q9; q12 can come before q15.
+
+---
+
+## Items (ordered: prerequisite-first, then easiest → hardest)
+
+| #   | Done | Page | Item | Finding | Pre-audit notes |
+|-----|:---:|------|------|---------|-----------------|
+| q1  | [ ] | Detail pages (treatment-*) | Set `.detail-body` max-width to `clamp(640px, 70vw, 920px)` | On treatment detail pages, current `.detail-body { max-width: 760px }` is too narrow on desktop. Decision: don't remove fully (line-length would blow out on wide screens) — use a clamp that scales with viewport: min 640, ideal 70vw, max 920. | **Site:** rule at [globals.css:1949](packages/web/src/styles/globals.css#L1949). Used by [DisciplineDetail.tsx:65](packages/web/src/routes/detail/DisciplineDetail.tsx#L65) + [SubCategoryDetail.tsx:141](packages/web/src/routes/detail/SubCategoryDetail.tsx#L141). **Change:** 1-line CSS edit. |
+| q2  | [ ] | `/` (mobile) | Homepage mobile top margin | The mobile homepage hero ("Considered work / in considered hands") sits too close to the nav bar. Add top padding to the hero section on mobile. | **Site:** Hero is `.hero-headline { left: 32px; bottom: 60px }` at <700px ([globals.css:1367](packages/web/src/styles/globals.css#L1367)). **Change:** add `padding-top` to `.hero` or `.hero-image` at <700px (site-header is ~72px tall). |
+| q3  | [ ] | Global (hero sections) | Top margin sufficient | Headlines on routes like `/journey` butt up against the nav bar. Add consistent top padding to page hero sections across all routes. | **Site:** 4 hero patterns — `.hero` (home), `.chapter-content`, `.surgeon-hero`, `.page-section` heroes. Different padding values + breakpoints across each. **Change:** define a `--hero-top-pad` var and apply uniformly. Touches every page hero — audit needed. |
+| q4  | [ ] | `/` | Home section → full team picture (placeholder) | Replace the existing 6-doctor portrait row on the homepage with a single group photo. Use a placeholder image initially; CMS-swappable later via new `groupPhoto` field. | **Site:** [Surgeons.tsx](packages/web/src/routes/home/Surgeons.tsx) — currently renders SURGEON_LIST individually. **CMS:** `HomePage` global has `surgeonsBlock` — add `groupPhoto: upload` field. **DB:** add 1 column. **Asset:** ship a stock-style placeholder for now. **Change:** add field, ship placeholder, swap JSX to render single `<Img>`. |
+| q5  | [ ] | CMS / `/pricing` | Remove Pricing Tiers collection | The `PricingTiers` collection (3 rows) is no longer used. Delete the collection, admin nav entry, and pricing-page references. | **CMS:** [PricingTiers.ts](packages/cms/src/collections/PricingTiers.ts) + 3 DB rows. **Site:** referenced in [cms.ts:571,602,686](packages/web/src/lib/cms.ts) + [cms-adapters.ts:284,287,358](packages/web/src/lib/cms-adapters.ts). **DB:** drop `pricing_tiers` + relation tables. **Change:** remove from config; drop adapters; drop DB table. |
+| q6  | [ ] | CMS | CMS admin: light theme default + Inclusion/Exclusion audit | (a) Set Payload admin's light menu theme as the default; (b) audit Inclusion/Exclusion item usage. | **CMS:** I/E items referenced as relations on Procedures — **NOT DEAD** (233 procedures use them). Admin theme = `payload.config.ts` `admin.theme` config. **Change:** (a) 1-line theme flip; (b) no-op for I/E (request condition fails — they're rendered). |
+| q7  | [ ] | Global (footer) | Update footer to match target | Target: dark-brown 3-column footer (Treatments / About / Connect). Re-skin the existing component. | **Site:** [Footer.tsx](packages/web/src/components/shell/Footer.tsx) — currently logo + linkColumns + newsletter; target = only 3 link columns. **CMS:** `Footer` global already supports `linkColumns` — no schema change. **Change:** restructure JSX, drop newsletter, keep CMS bind. |
+| q8  | [ ] | Global (footer) | Footer Treatments list CMS-driven | The Treatments column must be auto-generated from the Disciplines collection (6 entries). | **Site:** [Footer.tsx:111-126](packages/web/src/components/shell/Footer.tsx#L111). Treatments column already pulls from `cms.disciplines` per earlier work. **Change:** verify; ensure binding survives the q7 redesign. |
+| q9  | [ ] | Global | Align content to container | Body content vs breadcrumb sit at different x-offsets. | **Site:** `.page-breadcrumb { padding: 20px 24px 0 }` at narrow widths ([globals.css:1809](packages/web/src/styles/globals.css#L1809)) — fixed 24px, doesn't track `--page-x` var. **Change:** swap to `padding-left: var(--page-x)`. 1-line fix. |
+| q10 | [ ] | `/treatments` | Treatment page: shared `<StatsRow>` primitive | Extract a shared `<StatsRow>` from the homepage TrustStrip and reuse on `/treatments`. No duplicate code. CMS structure unchanged. | **Site:** [TrustStrip.tsx](packages/web/src/routes/home/TrustStrip.tsx) → factor out a `<StatsRow>` primitive in `components/primitives/`; both `/` and `/treatments` consume it. **CMS:** `BrandStats` global unchanged. **Change:** extract primitive, update TreatmentsIndex.tsx to render it. |
+| q11 | [ ] | Global | Slug structure rewrite (404 old URLs) | Move from `/treatment-surgical` → `/treatments/surgical`, etc. Old URLs hard-404 (no redirects) so any stale references surface for later fix. | **Site:** [router.ts:63-78](packages/web/src/router.ts#L63) — 3 regex patterns. 29 internal hrefs use legacy patterns. Affected: PageBlocks.tsx, SurgeonMini.tsx, PricingTeaser.tsx, TreatmentsIndex.tsx, DisciplineDetail.tsx, SubCategoryDetail.tsx, SurgeonDetail.tsx, breadcrumbs. **CMS:** update preview URLs in Settings. **DB:** any stored URLs (e.g. seo group, links in rich text) — sweep and update. **No nginx redirect layer.** |
+| q12 | [ ] | Global | Breadcrumbs: match labels + visual align across all pages | Breadcrumb labels must match new URL structure (q11). Visual alignment unified across routes (uses q9 fix as foundation). | **Blocked by q11.** Two breadcrumb classes — `.chapter-breadcrumb` (inside hero, white) + `.page-breadcrumb` (after hero, dark). Routes mix both. Data is hardcoded per route. **Change:** after q11, sweep breadcrumb data + standardise placement. |
+| q13 | [ ] | Site | Buttons + links sweep | Verify every CTA / button / nav link / breadcrumb / footer link / sub-page link actually targets a working route and fires its intended action. Covers what the dropped CTA-bug item (q11 in older ordering) was trying to surface. | **Approach:** sweep `<a href>` and `<button onClick>` across all 51 routes; cross-check against router.ts; spot-check interactive UI on each route (accordions, modals, forms). Tool: extend the M-audit script or grep + manual. |
+| q14 | [ ] | `/results`, `/gallery` | Before/After extras (patient age + recovery duration) | Add 2 new fields to `BeforeAfterCases`. ("performing doctor" already exists as the `surgeon` relation.) | **CMS:** [BeforeAfterCases.ts](packages/cms/src/collections/BeforeAfterCases.ts) — add `patientAge: number` + `recoveryDuration: text` (e.g. "4 months"). **DB:** add 2 columns. **Site:** render in B&A cards on `/results` + `/gallery`. **Change:** small CMS + 2 column DB migration + render update. |
+| q15 | [ ] | CMS | Procedure sorting: numeric, scoped per parent | Replace global `sortOrder` semantics with per-parent (SubCategory) numeric ordering. Rename label to "Sort within Sub-Category"; default to (max+1) within parent on create; admin list view filters by parent by default. | **CMS:** [Procedures.ts:159](packages/cms/src/collections/Procedures.ts#L159) — `sortOrderField` import. Keep numeric type; add per-parent context. 233 rows. **Decision:** native Payload drag-reorder not available without heavy custom UI; numeric+scoped is the simplest "best UX". **DB:** no column change; semantic change only. |
+| q16 | [ ] | Global (pricing) | Pricing: IDR primary, AUD auto-calculated | Flip pricing source-of-truth from AUD to IDR. AUD becomes a derived display computed from the single `Settings.audToIdrRate` global (edit one value, all AUD displays re-peg). | **CMS:** [Settings.audToIdrRate](packages/cms/src/globals/Settings.ts#L24) (default 10500) + [Settings.currencyDisplayMode](packages/cms/src/globals/Settings.ts#L70). [Procedures.ts](packages/cms/src/collections/Procedures.ts) has `pricing.priceFromAud` as source. [PriceTag.tsx](packages/web/src/components/primitives/PriceTag.tsx) derives IDR from AUD. **DB:** rename column `priceFromAud` → `priceFromIdr`; one-time data migration: new IDR = old AUD × audToIdrRate. **PriceTag:** flip — derive AUD = IDR ÷ audToIdrRate. **Change:** multi-commit migration. The clinic edits ONE value (audToIdrRate) to re-peg all displayed AUD across the site. |
+| q17 | [ ] | Global | Image set refresh per Figma (deferred) | Replace placeholder / current site imagery with the canonical Figma image set. **Do last / future phase per user.** | **Site:** 44 files total (31 PNG + 13 WEBP) in [public/assets/](packages/web/public/assets/). Subfolders: lifestyle, results, surgeons, treatments. **Blocked on:** Figma asset delivery + inventory. **Change:** scope unbounded until inventory delivered. |

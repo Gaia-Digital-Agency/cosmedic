@@ -11,34 +11,34 @@ Goal: ship a multi-page editorial-luxury site (~88 routes — homepage, 6 discip
 - **Production domain**: `https://cosmedic.gaiada.online`
 - **Repo**: `git@github.com:Gaia-Digital-Agency/cosmedic.git`
 - **Stack**: Vite SSR · React · Tailwind · Payload CMS · Node · Postgres (VRTPN)
-- **CMS branding**: White-labelled as **"Cosmedic CMS"** using `docs/brand-guidelines.pdf`
+- **CMS branding**: White-labelled as **"Cosmedic CMS"** using `docs/assets/brand-guidelines.pdf`
 
 ## Non-negotiables
 
 Every change must respect:
 
-1. **Frontend pixel-fidelity to Claude Design** — production matches design 100%. See [docs/sitemap.md](docs/sitemap.md) for the route matrix; see [design/](design/) for source.
+1. **Frontend pixel-fidelity to Claude Design** — production matches design 100%. See [docs/architecture/sitemap.md](docs/architecture/sitemap.md) for the route matrix; see [design/](design/) for source.
 2. **Lighthouse Green on every page** — Accessibility / Best Practices / SEO ≥ 90 on every route × every breakpoint.
-3. **Editor-friendly CMS** — every editorial string + every image lives in a Payload collection. See [docs/db_schema.md](docs/db_schema.md).
-4. **Cosmedic CMS branding** — Payload admin uses the BIMC brand identity. See [docs/cms_info.md](docs/cms_info.md).
+3. **Editor-friendly CMS** — every editorial string + every image lives in a Payload collection. See [docs/db/db_schema.md](docs/db/db_schema.md).
+4. **Cosmedic CMS branding** — Payload admin uses the BIMC brand identity. See [docs/cms/cms_info.md](docs/cms/cms_info.md).
 5. **Multisite-safe** — `/var/www/cosmedic/` is one of ~10 sites on this server. **Never `pm2 restart all`. Always `nginx -t` before reload. Never touch sibling certs/databases.**
 
 ## Docs to read first
 
 | File | When |
 |---|---|
-| [docs/architecture_info.md](docs/architecture_info.md) | Before any architectural decision — runtime topology, stack, deploy |
-| [docs/file_structure.md](docs/file_structure.md) | Before moving/creating folders or files |
-| [docs/db_schema.md](docs/db_schema.md) | Before designing or seeding any Payload collection (the WHAT) |
-| [docs/db_ops.md](docs/db_ops.md) | Before Postgres provisioning, migrations, backups, or perf debugging (the HOW) |
-| [docs/sitemap.md](docs/sitemap.md) | Before adding/removing routes or nav items |
-| [docs/cms_info.md](docs/cms_info.md) | Before changing anything in `packages/cms/src/components/` or `payload.config.ts` admin block (the LOOK) |
-| [docs/cms_ops.md](docs/cms_ops.md) | Before writing Payload hooks, access control, seed scripts, drafts/preview, or email pipeline (the HOW) |
-| [docs/cms_schema.md](docs/cms_schema.md) | Before adding a UI surface — verify it traces to a CMS entity (Non-negotiable #3 audit) |
-| [docs/plan.md](docs/plan.md) | Before starting any phase — the 14-phase execution plan + locked decisions |
-| [docs/all_todo.md](docs/all_todo.md) | **Single TODO file** — covers DO FIRST/SECOND/THIRD plus Phases C (CMS → CMS_structure.md alignment), M (Mobile), N (Header/Chrome/Pricing polish), P (favicon), Q (changes01.docx batch). Replaces former `cms_todo.md` and absorbs `todo.md` (since 2026-05-23). |
-| [docs/brand-guidelines.pdf](docs/brand-guidelines.pdf) | Canonical brand source — palette, typography, mark, usage rules |
-| [docs/pricelist.xlsx](docs/pricelist.xlsx) | Canonical clinic price + procedure catalogue — seed source for Phase 6 |
+| [docs/architecture/architecture_info.md](docs/architecture/architecture_info.md) | Before any architectural decision — runtime topology, stack, deploy |
+| [docs/architecture/file_structure.md](docs/architecture/file_structure.md) | Before moving/creating folders or files |
+| [docs/db/db_schema.md](docs/db/db_schema.md) | Before designing or seeding any Payload collection (the WHAT) |
+| [docs/db/db_ops.md](docs/db/db_ops.md) | Before Postgres provisioning, migrations, backups, or perf debugging (the HOW) |
+| [docs/architecture/sitemap.md](docs/architecture/sitemap.md) | Before adding/removing routes or nav items |
+| [docs/cms/cms_info.md](docs/cms/cms_info.md) | Before changing anything in `packages/cms/src/components/` or `payload.config.ts` admin block (the LOOK) |
+| [docs/cms/cms_ops.md](docs/cms/cms_ops.md) | Before writing Payload hooks, access control, seed scripts, drafts/preview, or email pipeline (the HOW) |
+| [docs/cms/cms_schema.md](docs/cms/cms_schema.md) | Before adding a UI surface — verify it traces to a CMS entity (Non-negotiable #3 audit) |
+| [docs/planning/plan.md](docs/planning/plan.md) | Before starting any phase — the 14-phase execution plan + locked decisions |
+| [docs/planning/all_todo.md](docs/planning/all_todo.md) | **Single TODO file** — covers DO FIRST/SECOND/THIRD plus Phases C (CMS → CMS_structure.md alignment), M (Mobile), N (Header/Chrome/Pricing polish), P (favicon), Q (changes01.docx batch). Replaces former `cms_todo.md` and absorbs `todo.md` (since 2026-05-23). |
+| [docs/assets/brand-guidelines.pdf](docs/assets/brand-guidelines.pdf) | Canonical brand source — palette, typography, mark, usage rules |
+| [docs/assets/pricelist.xlsx](docs/assets/pricelist.xlsx) | Canonical clinic price + procedure catalogue — seed source for Phase 6 |
 | [design/](design/) | Original Claude Design source — never modified, only mirrored |
 
 ## Sibling sites on this server (gda-s01)
@@ -61,20 +61,20 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
 - Scope every action to `/var/www/cosmedic/`. Touch siblings only when explicitly asked.
 - Read the relevant `docs/*.md` before making decisions that affect that area.
 - Treat `design/` as **read-only**.
-- Treat `docs/brand-guidelines.pdf` and `docs/pricelist.xlsx` as **source-of-truth inputs** — quote from them when justifying decisions.
+- Treat `docs/assets/brand-guidelines.pdf` and `docs/assets/pricelist.xlsx` as **source-of-truth inputs** — quote from them when justifying decisions.
 - Pixel-Fidelity Gate + Lighthouse Green Gate are launch-blocking. Don't bypass them.
 - This server is the dev environment (user chose server-first). Edits happen here; commits + pushes happen here.
 
 ## Current state (Phase 8 complete + 2026-05-22 CMS UI restructure)
 
-- `packages/cms` — Payload 3.84.1 on Next.js 15.4.11 + Postgres adapter, port **4007**. Admin white-labelled as **Cosmedic CMS** (Cormorant Garamond + JetBrains Mono, brand-beige palette from `docs/brand-guidelines.pdf`). Light/dark toggle.
+- `packages/cms` — Payload 3.84.1 on Next.js 15.4.11 + Postgres adapter, port **4007**. Admin white-labelled as **Cosmedic CMS** (Cormorant Garamond + JetBrains Mono, brand-beige palette from `docs/assets/brand-guidelines.pdf`). Light/dark toggle.
   - **23 collections** in `src/collections/` (Pages collection now orphaned — pending Rule 4 removal in Step 10): Users · Media · Surgeons · Disciplines · SubCategories · Procedures · PriceListItems · InjectableProducts · MachineTreatments · HairRemovalAreas · BeforeAfterCases · Stories · PressMentions · Awards · RecoveryStays · PricingTiers · BlogPosts · BlogTags · Authors · JourneySteps · InclusionItems · ExclusionItems · Pages · Enquiries.
   - **24 globals**: 10 in `src/globals/` (Settings · Header · Footer · FloatingChrome · BrandStats · EndorsementMark · ConsultationPolicy · FormDefaults · EmailTemplates · SeoDefaults) + **14 Page Globals** in `src/globals/pages/` (HomePage · PressPage · PrivacyPage · TreatmentsPage · SurgeonsPage · ResultsPage · GalleryPage · PricingPage · JourneyPage · StoriesPage · RecoveryStaysPage · ContactPage · VideoConsultPage · BlogPage). Each Page Global is a singleton holding one route's editorial hero + sections.
   - **Admin taxonomy (9 buckets, mirrors site IA)**: Homepage · Treatments · Doctors · Results · Pricing · Journey · Contact · Blog · Media Library. Every collection + global has `admin.group` set to its bucket — open Pricing, see everything to manage `/pricing` (line items, tiers, consultation policy, the page global itself).
-  - Phase-6 seed (`src/seed/runtime.ts` + `src/seed/parse-pricelist.ts`) parses all 7 sheets of `docs/pricelist.xlsx` and idempotently upserts into Payload via Local API. Run with `pnpm --filter @cosmedic/cms seed`. Seed source files are imported from `packages/web/src/content/*` via relative path (will be deleted after Phase 6c rewires every web page).
+  - Phase-6 seed (`src/seed/runtime.ts` + `src/seed/parse-pricelist.ts`) parses all 7 sheets of `docs/assets/pricelist.xlsx` and idempotently upserts into Payload via Local API. Run with `pnpm --filter @cosmedic/cms seed`. Seed source files are imported from `packages/web/src/content/*` via relative path (will be deleted after Phase 6c rewires every web page).
   - Counts seeded: **149 PriceListItems**, 93 Procedures, 8 Surgeons, 6 Disciplines, 17 SubCategories, 24 MachineTreatments, 43 HairRemovalAreas, 34 InjectableProducts, 6 JourneySteps, 5 Inclusions, 7 Exclusions, 5 Awards, 3 PressMentions, 6 RecoveryStays, 3 PricingTiers, 7 BlogPosts, 8 Pages, 10 globals.
 - `packages/web` — Vite 6 SSR + React 19 + Express, port **3007**. Renders the full homepage matching the Claude Design source.
-  - `design/global.css` (3,687 lines) ported **verbatim** to `packages/web/src/styles/globals.css`.
+  - `design/global.css` (3,687 lines) ported **verbatim** then evolved to 3,927 lines through Phases 6–N + Phase M. **2026-05-23: split into 13 partials under `packages/web/src/styles/partials/`** (cascade order preserved line-for-line, MD5 of concat == pre-split file). `globals.css` is now a 13-line `@import` index. Edit the partial that owns the rule, not the index.
   - Google Fonts (Cormorant Garamond + Inter + JetBrains Mono) preconnected + loaded in `index.html`.
   - Primitives: `Btn`, `Mono`/`Eyebrow`, `Img` (painted-SVG fallback), `Reveal` (IntersectionObserver), `PriceTag` (IDR + AUD), `ChapterOpener`, `TrustBar`, `CTABandSlim`.
   - Shell: `Header` (mega-menu hover bridge, EN|ID, scroll-state, mobile drawer) + `Footer` (3 columns + newsletter) + `FloatingChrome` (CTA pill + WhatsApp fab) + `PageShell`.
@@ -87,7 +87,7 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
   - Editorial content for detail pages: `src/content/treatment-content.ts` (per-discipline) + `src/content/subcategory-data.ts` (per-sub-category, 22 entries, with `treatments[]` accordion data). Phase 6 replaces all four `src/content/*` files with Payload-backed fetch.
   - Brand + treatment + surgeon + B&A imagery at `packages/web/public/assets/{logo*.png,treatments/,surgeons/,results/}`.
   - **Phase 6a**: `src/lib/cms.ts` is the typed SSR-side data loader — fetches all CMS collections + globals from `http://127.0.0.1:4007/api/...` on first request, caches in-memory with 60s TTL, hydrates the client via `<script>window.__COSMEDIC_CMS__=...</script>` so SSR + hydration match. `server.ts` awaits `loadCmsCache()` before each render and threads the cache to `render(url, cms)`. Cache is bust-able via `POST /api/revalidate` — Payload `afterChange` hooks call this on every collection + global save.
-  - `/pricing` route renders a `ClinicCatalogueTable` block under the editorial pricing — full CMS-driven view of every line item from `docs/pricelist.xlsx` (surgical, machine, injection, BTL), grouped by sheet → category, with consultation-policy callout from `consultation-policy` global.
+  - `/pricing` route renders a `ClinicCatalogueTable` block under the editorial pricing — full CMS-driven view of every line item from `docs/assets/pricelist.xlsx` (surgical, machine, injection, BTL), grouped by sheet → category, with consultation-policy callout from `consultation-policy` global.
   - **Phase 6b + 6c**: Every page reads CMS data through lazy Proxy-backed shims at `src/content/*.ts` (see `src/lib/cms-proxy.ts` + `src/lib/cms-adapters.ts`) — no component rewrites needed. `lazyArray` / `lazyRecord` from `cms-proxy.ts` wrap exports so each access reifies from the current `getCmsCacheSync()` snapshot, memoized by `cmsCache.loadedAt`. Shell components (Header / Footer / FloatingChrome) wire to the corresponding globals. `<TrustStrip>` reads `brand-stats.stats`. `<Hero>` reads `pages[home]` for tagline/title/lede/heroImage. `<CmsExtraBlocks slug="..."/>` injects any clinic-edited `Pages.sections` blocks (15 block types) on Home / Journey / Contact / Privacy / Press / Gallery / Stories / VideoConsult / RecoveryStays. Payload `revalidationHooks()` (in `packages/cms/src/lib/revalidate.ts`) is spread into every collection + global so saves POST to `web /api/revalidate` and bust the cache within seconds. All 51 routes still 200 after the rewrite.
 - Postgres `cosmedic` role + db provisioned on `127.0.0.1:5432`. Phase 6 catalogue migration applied. Super-admin seeded. Content seed run.
 - pm2 manages both processes (`cosmedic-cms`, `cosmedic-web`); `pm2 save` persisted.
@@ -127,46 +127,21 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
 
 Old `Pages` collection still registered in `payload.config.ts` and still has its 8 rows in DB. Removing it from the config needs explicit user yes. DB table `pages` stays as data backup. One-line removal when approved.
 
-## Phase M (Mobile-Responsive Sweep) — IN PROGRESS, paused 2026-05-21
+## Phase M (Mobile-Responsive Sweep) — ✅ COMPLETE 2026-05-23
 
-User-set acceptance criterion: **no horizontal scroll at any width on any route. Only vertical scroll.** User confirmed scope: header + all 51 routes. Burger contents: nav links only (logo + lang switcher + CTA stay visible in header bar at widths where they fit).
+User criterion **met**: zero horizontal scroll on all 46 live routes × 5 widths (320 / 375 / 414 / 640 / 768). Sign-off doc at [docs/planning/phase-m-signoff.md](docs/planning/phase-m-signoff.md).
 
-### Already shipped (live)
-- **Logo white-smudge fix** — `.logo .logo-img-dark { display: none }` was being overridden by `.logo img { display: block }` (higher specificity). Both logo `<img>` elements were rendering side-by-side; the all-white variant created a faint smudge next to the dark logo. Scoped the swap selectors under `.logo`. (`packages/web/src/styles/globals.css:196-201`)
-- **Logo-swap-on-scroll removed** — Header background stays cream at all scroll positions, but the CSS was swapping to the white logo when `.site-header.scrolled` — making the logo invisible. Removed the scrolled-state swap entirely. CMS `Header.logoDark` field is preserved (Rule 4) but no longer rendered until a real dark-header state is introduced. (`packages/web/src/styles/globals.css:196-204`)
-- **M2 partial — burger threshold + header collapse rules** — at `max-width: 1100px`, primary nav now collapses to burger BUT lang switcher + CTA remain visible (previously they were hidden). At `max-width: 700px`, the inline `logo-endorsement-line` / `logo-endorsement-mark` are hidden (the logo PNG already includes "Managed by BIMC Hospital"), `lang-switcher` hides, header padding tightens, CTA shrinks. (`packages/web/src/styles/globals.css:1349-1380`)
+Final audit (`run15`): 260 scans, 0 layout overflows. Only remaining issues are 6 blog routes returning HTTP 404 — those are missing `BLOG_POST_BODIES` entries in `packages/web/src/content/blog-data.ts` (content gap, not a layout defect; tracked separately).
 
-### Known broken at pause point (must fix next session)
-- **320–375px header overflow** — the CTA "Plan Your Treatment" still pushes the burger button off-screen. The `@media (max-width: 420px) { .header-cta span:not(.btn-arrow) { display: none } }` rule I added to collapse the CTA to icon-only was NOT applied at runtime (verified via screenshot: CTA text still rendering full at 320). Needs investigation — possibly specificity, possibly the inner `<span>` selector mismatching the rendered DOM. (`packages/web/src/styles/globals.css:1383-1388`)
-
-### Audit-in-flight results (incomplete — 45 of 51 routes scanned)
-Audit script: `/tmp/cosmedic-audit/audit.mjs` (uses chromium + CDP, measures `documentElement.scrollWidth > innerWidth` and lists offending elements). Run log: `/tmp/cosmedic-audit/run.log`. Re-run with `cd /tmp/cosmedic-audit && stdbuf -oL node audit.mjs > run.log 2>&1 &`.
-
-Routes with confirmed horizontal overflow (so far):
-- `/video-consult` — overflows by 97px at 768px viewport
-- `/surgeon-risma` — overflows by 30px at 768px viewport
-- `/surgeon-wara` — overflows by 21px at 768px viewport
-
-Routes NOT yet audited at pause point: the remaining `/treatment-reconstructive-trauma`, `/treatment-recovery`, `/treatment-surgical`, `/treatment-surgical-body`, `/treatment-surgical-breast`, `/treatment-surgical-face`, `/treatment-weight-loss-*`. Resume by re-running the audit script — should take ~5 minutes wall-clock.
-
-Note: most routes report OK on the document-level overflow check, but visual inspection of the homepage at 375px showed text that *appeared* clipped (e.g. hero headline "Considered work…in considered hands" cut mid-word). That clipping is caused by `overflow: hidden` on a parent, not by horizontal scroll. User criterion is no horizontal scroll, but clipped content is still a UX defect to address in M3.
-
-### Task list snapshot
-- #1 M1 (in_progress) — Multi-breakpoint audit of all 51 routes
-- #2 M2 (pending) — Tighten nav→burger threshold (mostly done; 320–375 burger-missing bug remains)
-- #3 M3 (pending, blocked by #1) — Per-route responsive fixes
-- #4 M4 (pending, blocked by #2 + #3) — Re-screenshot + sign-off
-
-### Resume protocol
-1. Re-run audit, capture complete `OVERFLOW` list across all 51 routes.
-2. Fix the 320–375 burger-missing bug first (smallest, most visible).
-3. Tackle `/video-consult` (97px overflow — largest signal of structural issue).
-4. Spot-check surgeon detail pages at 768 (`/surgeon-risma`, `/surgeon-wara`).
-5. Run audit again; require zero overflows before declaring M4 done.
+Highlights of what shipped:
+- Header / burger: stays-in-bar at ≤1100px; endorsement line + lang switcher hidden ≤700px; CTA label collapses to arrow-only ≤420px.
+- Global safety net: `html, body { overflow-x: hidden }` + `html { overflow-x: clip }` (clip preserves position:sticky); `img { max-width: 100% }`.
+- Route-specific: `/video-consult` was +97px @768 → 0; `/recovery-stays` +47px @320 → 0 (villa-grid → 1fr ≤700px); `/contact` +13px → 0 (form grid → 1fr ≤700px); surgeon details cleared via `min-width: 0` on bio-layout columns.
+- Audit harness lives in `/tmp/cosmedic-audit/` — re-run with `cd /tmp/cosmedic-audit && stdbuf -oL node audit.mjs > runXX.log 2>&1`.
 
 ## Phase N (Header + Chrome + Pricing polish) — queued 2026-05-21
 
-User added these alongside the Phase M resume work. Detail in [docs/all_todo.md](docs/all_todo.md).
+User added these alongside the Phase M resume work. Detail in [docs/planning/all_todo.md](docs/planning/all_todo.md).
 
 - **N0 — Mobile-view spot check** across 320 / 375 / 414 / 640 / 768. Overlaps with M1 + M4 but specifically includes golden-path UX (clipped headlines, broken stacking, touch targets < 44px), not just document-level horizontal overflow.
 - **N1 — "MANAGED BY BIMC HOSPITAL" endorsement alignment.** Vertically centre `logo-endorsement-line` / `logo-endorsement-mark` to the COSMEDIC brand logo glyph in the nav bar; resize for visual balance. Affected: `packages/web/src/components/shell/Header.tsx` + `globals.css` (`.logo`, `.logo-endorsement-line`, `.logo-endorsement-mark`).

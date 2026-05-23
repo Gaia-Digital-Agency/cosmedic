@@ -1,0 +1,330 @@
+/* ============================================
+   ADDITIONS FOR MULTIPAGE SITE
+   ============================================ */
+
+/* Per-surgeon portrait positioning. The default `--portrait-pos: 50% 25%`
+   places faces in the upper third of the frame (classic editorial headshot
+   framing). Override per surgeon by adjusting these values. */
+[data-surgeon="suka"]     { --portrait-pos: 50% 22%; }
+[data-surgeon="astri"]    { --portrait-pos: 50% 25%; }
+[data-surgeon="indra"]    { --portrait-pos: 50% 25%; }
+[data-surgeon="wara"]     { --portrait-pos: 50% 22%; }
+[data-surgeon="sissy"]    { --portrait-pos: 50% 25%; }
+[data-surgeon="rosa"]     { --portrait-pos: 50% 25%; }
+[data-surgeon="risma"]    { --portrait-pos: 50% 28%; }
+[data-surgeon="theresia"] { --portrait-pos: 50% 25%; }
+
+/* --- Mega-menu dropdown --- */
+.has-dropdown { position: relative; display: inline-flex; align-items: center; }
+
+/* Burger button — hidden on desktop, shown ≤1100px */
+.burger-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 44px; height: 44px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity .25s ease;
+  z-index: 110;
+  position: relative;
+}
+.burger-btn:hover { opacity: 0.7; }
+.burger-btn span {
+  display: block;
+  width: 20px; height: 1.5px;
+  background: var(--ink-100);
+  transition: transform .3s ease, opacity .3s ease;
+}
+.burger-btn.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.burger-btn.open span:nth-child(2) { opacity: 0; }
+.burger-btn.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* Mobile menu drawer */
+.mobile-menu {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--paper);
+  z-index: 100;
+  overflow-y: auto;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-12px);
+  transition: opacity .3s ease, transform .3s ease;
+}
+.mobile-menu.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.mobile-menu-inner {
+  padding: 100px 32px 60px;
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.mobile-menu-section { border-bottom: none; }
+.mobile-menu-head {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 18px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-100);
+  cursor: pointer;
+  transition: opacity .25s ease;
+}
+.mobile-menu-head:hover { opacity: 0.7; }
+.mobile-menu-head .mobile-chev {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--accent-deep);
+}
+.mobile-submenu {
+  padding: 4px 0 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.mobile-submenu-all {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent-deep);
+  padding: 4px 0 12px;
+}
+.mobile-discipline {
+  border-top: none;
+  padding-top: 4px;
+}
+.mobile-discipline-head {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-100);
+  padding: 6px 0;
+}
+.mobile-discipline-head.active { color: var(--accent-deep); }
+.mobile-sublist {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.mobile-sublist a {
+  display: block;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--ink-80);
+  padding: 6px 0 6px 12px;
+  border-left: 1px solid var(--ink-20);
+}
+.mobile-sublist a.active { color: var(--accent-deep); border-left-color: var(--accent); }
+.mobile-menu-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 8px 0 16px;
+  border-bottom: none;
+}
+.mobile-menu-links a {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-100);
+  padding: 18px 0;
+  border-top: none;
+  transition: opacity .25s ease;
+}
+.mobile-menu-links a:hover { opacity: 0.7; }
+.mobile-menu-links a:first-child { border-top: none; }
+.mobile-menu-links a.active { color: var(--accent-deep); }
+
+.mobile-menu-lang {
+  display: flex;
+  gap: 4px;
+  margin-top: 24px;
+  justify-content: flex-start;
+}
+.mobile-lang-pill {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--ink-60);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: color .3s, border-color .3s;
+}
+.mobile-lang-pill.active { color: var(--ink-100); border-color: var(--ink-40); }
+.mobile-lang-pill:hover { color: var(--ink-100); }
+.dropdown-panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  padding-top: 14px;
+  margin-top: -14px;
+  transform: translateY(-4px);
+  min-width: 280px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease, transform .25s ease;
+  z-index: 70;
+}
+.dropdown-panel.dropdown-panel-wide { left: 0; right: 0; min-width: 0; }
+.has-dropdown:hover .dropdown-panel,
+.has-dropdown:focus-within .dropdown-panel,
+.has-dropdown.open .dropdown-panel {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.dropdown-panel-inner {
+  background: var(--paper-warm);
+  border: 1px solid var(--ink-20);
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 24px 60px rgba(31,27,22,0.12);
+}
+.has-dropdown:hover .dropdown-panel,
+.has-dropdown:focus-within .dropdown-panel,
+.has-dropdown.open .dropdown-panel {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.dropdown-panel a {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 24px;
+  padding: 8px 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--ink-80);
+  border-bottom: 1px solid transparent;
+  transition: color .25s ease, border-color .25s ease, padding-left .25s ease;
+}
+.dropdown-panel a:hover { color: var(--ink-100); border-bottom-color: var(--accent); padding-left: 4px; }
+.dropdown-panel a.active { color: var(--accent-deep); border-bottom-color: var(--accent); }
+.dropdown-panel a::after { display: none; }
+
+/* Wide multi-column treatments dropdown */
+.dropdown-panel.dropdown-panel-wide { width: auto; left: 0; right: 0; transform: none; }
+.dropdown-panel-grid {
+  background: var(--paper-warm);
+  border-top: 1px solid var(--ink-20);
+  border-bottom: 1px solid var(--ink-20);
+  padding: 36px var(--page-x);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px 36px;
+  box-shadow: 0 24px 60px rgba(31,27,22,0.12);
+}
+.dropdown-discipline {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.dropdown-panel-grid .dropdown-discipline-head {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-100) !important;
+  border-bottom: 1px solid var(--ink-20);
+  padding: 6px 0 10px !important;
+  margin-bottom: 4px;
+}
+.dropdown-panel-grid .dropdown-discipline-head:hover {
+  border-bottom-color: var(--accent) !important;
+  color: var(--accent-deep) !important;
+  padding-left: 0 !important;
+}
+.dropdown-panel-grid .dropdown-discipline-head.active {
+  color: var(--accent-deep) !important;
+  border-bottom-color: var(--accent) !important;
+}
+.dropdown-sublist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.dropdown-panel-grid .dropdown-sublist a {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 16px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink-80) !important;
+  padding: 6px 0 !important;
+  border-bottom: none !important;
+}
+.dropdown-panel-grid .dropdown-sublist a:hover {
+  color: var(--accent-deep) !important;
+  padding-left: 4px !important;
+}
+.dropdown-panel-grid .dropdown-sublist a.active {
+  color: var(--accent-deep) !important;
+}
+
+@media (max-width: 900px) {
+  .dropdown-panel-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Two-column surgeons mega-menu */
+.dropdown-panel-grid.dropdown-panel-grid-2col {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.dropdown-discipline-head-static {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-100);
+  border-bottom: 1px solid var(--ink-20);
+  padding: 6px 0 10px;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.mobile-discipline-head-static {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-100);
+  padding: 14px 0 8px;
+  border-bottom: 1px solid var(--ink-20);
+  margin-bottom: 6px;
+}
+
