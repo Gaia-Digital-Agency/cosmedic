@@ -23,7 +23,7 @@
 
 | # | Phase | Commit summary | SHA | Status | Verify |
 |---|---|---|---|---|---|
-| 1 | **D** | Update 11 docs to reflect CMS_structure.md as source of truth | — | pending | docs read; refs consistent |
+| 1 | **D** | Update 11 docs to reflect CMS_structure.md as source of truth | `5e5ece1` | ✅ shipped 2026-05-23 05:25 UTC | site 200 (/, /admin, /pricing); docs-only — no UI change possible |
 | 2 | **C2** | Move BlogPosts/BlogTags/Authors/BlogPage from `Blog` → `Journey` admin.group | — | pending | sidebar shows 4 items under Journey |
 | 3 | **C3** | Remove orphan `Pages` collection (Step 10 Rule 4 gate) | — | pending | `/admin/collections/pages` 404; rest of admin OK |
 | 4 | **C4** | Add CmsSidebarExplainer (Collections vs Globals banner above admin nav) | — | pending | banner renders light + dark |
@@ -63,10 +63,23 @@
 
 ---
 
+## STANDING RULE — site UI frontend design must not change from CURRENT state
+
+**Visual baseline = the production site at start of Phase D (commit `cfa64e8` → `5e5ece1`, 2026-05-23).** Every subsequent commit must leave `/`, `/admin`, `/pricing`, `/gallery`, `/results`, `/blog`, and every other route rendering byte-identically to that baseline. This is **Rule R5** (visual invariance) reinforced — the reference is CURRENT live, not any pre-refactor state.
+
+Pre-flight before every C/P/N/Q/M commit:
+1. `curl -sI https://cosmedic.gaiada.online/<route>` — expect 200
+2. Visual diff vs baseline screenshot (manual or playwright)
+3. CMS save → revalidate → re-render still byte-identical
+
+Site-break = commit reverted immediately. No exceptions.
+
+---
+
 ## Append-as-you-go log
 
 (Each commit lands here in chronological order. Format: `[YYYY-MM-DD HH:MM]  <SHA>  <Phase>  <one-line summary>  <verify result>`)
 
 ```
-(none yet)
+[2026-05-23 05:25 UTC]  5e5ece1  D  Refresh 11 docs to reflect CMS_structure.md + consolidate to one TODO file  /, /admin, /pricing all 200 — docs-only, no UI change possible
 ```

@@ -6,7 +6,7 @@ import { pageFields } from './_pageFields'
 export const BlogPage: GlobalConfig = {
   slug: 'blog-page',
   admin: {
-    group: 'Blog',
+    group: 'Journey',
     description: 'Editorial content for /blog (post index): hero + body. Posts and tags are managed via the BlogPosts / BlogTags collections.',
   },
   access: { read: publishedOrAuthed, update: isAuthenticated },
