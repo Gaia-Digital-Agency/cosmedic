@@ -201,19 +201,11 @@
    * invisible white logo on a still-cream header. CMS field is preserved. */
   .logo .logo-img-dark { display: none; }
 
-  /* EndorsementMark — small "Managed by BIMC Hospital" tag rendered under
-   * primary logo. Either inline lockup image (preferred when uploaded) or
-   * fallback text line. Brand guidelines §I. */
-  .logo-endorsement-mark { height: 14px !important; margin-left: 10px; opacity: 0.65; align-self: center; }
-  .logo-endorsement-line {
-    font-family: var(--font-mono);
-    font-size: 8.5px;
-    letter-spacing: 0.32em;
-    text-transform: uppercase;
-    color: var(--ink-60);
-    margin-left: 10px;
-    align-self: center;
-  }
+  /* EndorsementMark CSS removed in Phase N1 (2026-05-23): the production
+   * logo PNG already includes "Managed by BIMC Hospital" baked under the
+   * wordmark, so the duplicated sibling element + its styling was removed.
+   * CMS global stays editable for future placement. */
+
   .logo-mark {
     font-family: var(--font-serif);
     font-size: 22px;
@@ -1377,12 +1369,6 @@
     .treatments-grid, .gallery-grid, .stories-grid, .surgeons-grid, .journey-steps, .footer-top { grid-template-columns: 1fr; }
     .header-inner { padding: 16px 20px; gap: 12px; }
     .lang-switcher { display: none; }
-    /* Endorsement line is redundant on narrow viewports — the primary logo
-     * image already includes "Managed by BIMC Hospital" beneath the wordmark,
-     * and the inline mono line wraps to 3 lines at this width which inflates
-     * header height + pushes the burger off-screen. */
-    .logo-endorsement-line,
-    .logo-endorsement-mark { display: none; }
     /* Shrink CTA to icon + short label so it stays in the bar without
      * blowing out the width. Logo + CTA + burger remain visible. */
     .header-cta { padding: 10px 14px; font-size: 11px; letter-spacing: 0.14em; }

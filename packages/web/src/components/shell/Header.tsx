@@ -22,11 +22,12 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
   const logoLightSrc = mediaUrl(cms?.header?.logoLight, '/assets/logo.png') || '/assets/logo.png'
   const logoDarkSrc = mediaUrl(cms?.header?.logoDark, '/assets/logo-light.png') || '/assets/logo-light.png'
   const logoAlt = mediaAlt(cms?.header?.logoLight, `${siteName} — Managed by BIMC Hospital`)
-  // EndorsementMark: small "Managed by BIMC Hospital" line + optional lockup
-  // image rendered immediately under the primary logo. Brand-guideline §I.
-  const endorsementLine = cms?.endorsementMark?.endorsementLine
-  const endorsementLockup = mediaUrl(cms?.endorsementMark?.primaryLockup, '') || ''
-  const endorsementLockupAlt = mediaAlt(cms?.endorsementMark?.primaryLockup, endorsementLine || '')
+  // EndorsementMark: the global is preserved in CMS (admin-editable) but is no
+  // longer rendered alongside the logo. Phase N1 (2026-05-23): the production
+  // logo PNG already contains "Managed by BIMC Hospital" baked in below the
+  // wordmark, so a sibling endorsement element duplicated the same line. The
+  // CMS field stays available for a future placement (e.g. footer) without
+  // touching the data.
 
   const [scrolled, setScrolled] = useState(false)
   const [lang, setLang] = useState<'EN' | 'ID'>('EN')
@@ -91,11 +92,6 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
         <a href="/" className="logo">
           <img src={logoLightSrc} alt={logoAlt} className="logo-img logo-img-light" />
           <img src={logoDarkSrc} alt={logoAlt} className="logo-img logo-img-dark" />
-          {endorsementLockup ? (
-            <img src={endorsementLockup} alt={endorsementLockupAlt} className="logo-endorsement-mark" />
-          ) : endorsementLine ? (
-            <span className="logo-endorsement-line">{endorsementLine}</span>
-          ) : null}
         </a>
         <nav className="primary-nav">
           <div
