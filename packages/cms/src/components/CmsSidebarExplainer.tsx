@@ -46,6 +46,31 @@ const CmsSidebarExplainer: React.FC = () => (
       <span style={{ color: 'var(--theme-elevation-500)' }}></span>
       <span style={{ color: 'var(--theme-elevation-450)' }}>(e.g. the Header · the Home page hero)</span>
     </div>
+    <div
+      style={{
+        marginTop: '0.75rem',
+        paddingTop: '0.6rem',
+        borderTop: '1px solid var(--theme-elevation-100)',
+      }}
+    >
+      <div
+        style={{
+          fontSize: '0.58rem',
+          letterSpacing: '0.18em',
+          textTransform: 'uppercase',
+          color: 'var(--theme-elevation-500)',
+          marginBottom: '0.4rem',
+        }}
+      >
+        Browse by Folder
+      </div>
+      <div style={{ color: 'var(--theme-text)' }}>
+        Inside Media Library, you can group uploads into folders (like a
+        desktop file system) using drag-and-drop. Folders are independent of
+        the Category tag — an asset can sit in any folder AND still be tagged
+        to any bucket (Homepage, Treatments, etc.).
+      </div>
+    </div>
   </div>
 )
 
