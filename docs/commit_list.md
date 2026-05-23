@@ -25,7 +25,7 @@
 |---|---|---|---|---|---|
 | 1 | **D** | Update 11 docs to reflect CMS_structure.md as source of truth | `5e5ece1` | ✅ shipped 2026-05-23 05:25 UTC | site 200 (/, /admin, /pricing); docs-only — no UI change possible |
 | 2 | **C2** | Move BlogPosts/BlogTags/Authors/BlogPage from `Blog` → `Journey` admin.group | `bbc068e` | ✅ shipped 2026-05-23 05:29 UTC | site 200 (/, /admin, /pricing, /blog); cms-only — no UI change |
-| 3 | **C3** | Remove orphan `Pages` collection (Step 10 Rule 4 gate) | — | pending | `/admin/collections/pages` 404; rest of admin OK |
+| 3 | **C3** | Remove orphan `Pages` collection (Step 10 Rule 4 gate) | `bdcac0c` | ✅ shipped 2026-05-23 05:32 UTC | /api/pages 404 (unregistered); /, /admin, /blog, /pricing 200; DB table preserved as backup |
 | 4 | **C4** | Add CmsSidebarExplainer (Collections vs Globals banner above admin nav) | — | pending | banner renders light + dark |
 | 5 | **C5** | Wire `Blog Page` global to `/blog` index hero + CmsExtraBlocks slot | — | pending | `/blog` byte-identical |
 | 6 | **C6a** | Home Page schema: add 9 A2 block fields + migration + seed exact existing copy | — | pending | seed verified, migration clean |
@@ -83,4 +83,5 @@ Site-break = commit reverted immediately. No exceptions.
 ```
 [2026-05-23 05:25 UTC]  5e5ece1  D   Refresh 11 docs to reflect CMS_structure.md + consolidate to one TODO file  /, /admin, /pricing all 200 — docs-only, no UI change possible
 [2026-05-23 05:29 UTC]  bbc068e  C2  Move BlogPosts/BlogTags/Authors/BlogPage to JOURNEY admin.group bucket  /, /admin, /pricing, /blog all 200; cms-only — no UI change possible
+[2026-05-23 05:32 UTC]  bdcac0c  C3  Remove orphan Pages collection (Step 10 — DB table preserved)  /api/pages 404; /, /admin, /blog, /pricing 200; cms-only
 ```

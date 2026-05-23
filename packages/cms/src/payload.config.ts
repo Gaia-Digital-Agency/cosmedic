@@ -94,6 +94,7 @@ export default buildConfig({
         Logo: '@/components/CosmedicLogo',
       },
       beforeLogin: ['@/components/CosmedicBeforeLogin'],
+      beforeNavLinks: ['@/components/CmsSidebarExplainer'],
     },
     importMap: {
       baseDir: path.resolve(dirname),
