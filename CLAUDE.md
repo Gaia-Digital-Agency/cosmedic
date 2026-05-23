@@ -36,8 +36,7 @@ Every change must respect:
 | [docs/cms_ops.md](docs/cms_ops.md) | Before writing Payload hooks, access control, seed scripts, drafts/preview, or email pipeline (the HOW) |
 | [docs/cms_schema.md](docs/cms_schema.md) | Before adding a UI surface — verify it traces to a CMS entity (Non-negotiable #3 audit) |
 | [docs/plan.md](docs/plan.md) | Before starting any phase — the 14-phase execution plan + locked decisions |
-| [docs/todo.md](docs/todo.md) | Master TODO — phase checklist + 47-page CMS record tracker |
-| [docs/cms_todo.md](docs/cms_todo.md) | Working TODO — Items 1-9 worklist. Item 1 (nginx upload fix) + Item 2 (Pages → 14 Globals refactor, Steps 1-9) shipped 2026-05-22. Items 3-9 (Phase N + Phase M) still queued. Updated 2026-05-22. |
+| [docs/all_todo.md](docs/all_todo.md) | **Single TODO file** — covers DO FIRST/SECOND/THIRD plus Phases C (CMS → CMS_structure.md alignment), M (Mobile), N (Header/Chrome/Pricing polish), P (favicon), Q (changes01.docx batch). Replaces former `cms_todo.md` and absorbs `todo.md` (since 2026-05-23). |
 | [docs/brand-guidelines.pdf](docs/brand-guidelines.pdf) | Canonical brand source — palette, typography, mark, usage rules |
 | [docs/pricelist.xlsx](docs/pricelist.xlsx) | Canonical clinic price + procedure catalogue — seed source for Phase 6 |
 | [design/](design/) | Original Claude Design source — never modified, only mirrored |
@@ -167,7 +166,7 @@ Note: most routes report OK on the document-level overflow check, but visual ins
 
 ## Phase N (Header + Chrome + Pricing polish) — queued 2026-05-21
 
-User added these alongside the Phase M resume work. Detail in [docs/cms_todo.md](docs/cms_todo.md).
+User added these alongside the Phase M resume work. Detail in [docs/all_todo.md](docs/all_todo.md).
 
 - **N0 — Mobile-view spot check** across 320 / 375 / 414 / 640 / 768. Overlaps with M1 + M4 but specifically includes golden-path UX (clipped headlines, broken stacking, touch targets < 44px), not just document-level horizontal overflow.
 - **N1 — "MANAGED BY BIMC HOSPITAL" endorsement alignment.** Vertically centre `logo-endorsement-line` / `logo-endorsement-mark` to the COSMEDIC brand logo glyph in the nav bar; resize for visual balance. Affected: `packages/web/src/components/shell/Header.tsx` + `globals.css` (`.logo`, `.logo-endorsement-line`, `.logo-endorsement-mark`).

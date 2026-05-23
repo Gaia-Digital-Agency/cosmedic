@@ -1,6 +1,8 @@
 # BIMC CosMedic — Site Map
 
 > Every page · subpage · link · sublink · button. Source of truth for navigation IA, routing, and Pixel-Fidelity Gate sign-off (Phase 11). Keep in sync with `Header` + `Footer` Payload globals.
+>
+> **Updated 2026-05-23:** the live router uses **flat slugs** — `/treatment-surgical-breast-breast-augmentation`, not the nested `/treatments/surgical/breast/breast-augmentation` shown in the route tables below. Examples below were authored against the originally-planned nested structure; nested-vs-flat slug restructure is captured as **Phase Q decision #1** in [all_todo.md](all_todo.md) and pending. Until that decision, treat the flat slugs in `packages/web/src/router.ts` as authoritative. CMS bucket source of truth: [CMS_structure.md](CMS_structure.md).
 
 ---
 

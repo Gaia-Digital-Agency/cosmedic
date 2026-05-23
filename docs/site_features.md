@@ -1,8 +1,10 @@
 # BIMC CosMedic — Site Walkthrough & Features
 
-> Visitor's-eye narrative of every screen and every feature the public site delivers. Companion to [sitemap.md](sitemap.md) (route matrix), [cms_schema.md](cms_schema.md) (UI ↔ CMS coverage), and `design/` (the Claude Design source-of-truth).
+> Visitor's-eye narrative of every screen and every feature the public site delivers. Companion to [sitemap.md](sitemap.md) (route matrix), [cms_schema.md](cms_schema.md) (legacy UI ↔ CMS matrix), [CMS_structure.md](CMS_structure.md) (locked CMS bucket source of truth, 2026-05-23+), and `design/` (the Claude Design source-of-truth).
 >
 > **Non-negotiable #1**: the lived experience described here must match the Claude Design pixel-for-pixel at every breakpoint. Any divergence is a bug.
+>
+> **Updated 2026-05-23:** all editorial copy on `/` (Intro, Treatments preview, PricingTeaser, Surgeons strip, Gallery teaser, LeadMagnet, Journey teaser, Stories teaser, Place section) becomes editor-editable in **Phase C6** by adding dedicated A2 block fields to the Home Page global. Same pattern on `/pricing` (Overview, Footnote, Insurance + Payment) in **Phase C7**. Before/After per-case fields (description, year, surgeon byline, alt text) become rendered in **Phase C8**. All pricing collapses onto Procedures in **Phase C9** — `/pricing` keeps rendering 4 tables but reads them from Procedures grouped by `catalogueGroup`. Visual fidelity preserved throughout (Rule R5 / Non-negotiable #3).
 
 ## 1. Global chrome (present on every route)
 

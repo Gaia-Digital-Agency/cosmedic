@@ -1,4 +1,4 @@
-# CosMedic CMS Map — UI ↔ CMS coverage matrix
+# CosMedic CMS Map — UI ↔ CMS coverage matrix (legacy — see CMS_structure.md for current source of truth)
 
 > Verifies **Non-negotiable #3**: every editorial surface on the front-end is editable in Cosmedic CMS. This is the round-trip check that complements `db_schema.md` (the WHAT) and `cms_info.md` (the LOOK).
 >
@@ -6,6 +6,13 @@
 > - "Can an editor change THIS thing on the homepage?" → see §3, find the page, find the surface, read the CMS column.
 > - "Where does THIS collection appear?" → see §4 reverse map.
 > - "Does anything fall through the cracks?" → §5 coverage audit.
+
+> **⚠️ SUPERSEDED BY [CMS_structure.md](CMS_structure.md) (2026-05-23)** — that doc holds the locked sidebar bucket / entity / field structure. Use it for current CMS layout decisions. This file remains useful for:
+> - **§3** Per-page mapping matrix (UI surface → CMS field) — still accurate for current rendering, EXCEPT the `Pages` collection rows now route through 14 Page Globals (`pages(slug=home)` → `home-page` global, etc.) and the 4 pricing collections (`PriceListItems`, `MachineTreatments`, `InjectableProducts`, `HairRemovalAreas`) collapse onto `Procedures` in **Phase C9**.
+> - **§4** Reverse map (collection → routes it surfaces on) — broadly accurate; revisit when C2/C3/C9 land.
+> - **§5** Coverage audit checklist — still the launch-gate.
+>
+> Do not amend §1 (CMS inventory recap) — counts drifted (e.g. 17 collections → 22 → planned 19; 10 globals → 24 with Page Globals). [CMS_structure.md §2 Buckets overview](CMS_structure.md) has the current numbers.
 
 ---
 

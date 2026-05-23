@@ -1,6 +1,8 @@
 # BIMC CosMedic — File Structure
 
 > The target end-state layout of `/var/www/cosmedic/`. This describes where everything **should** live; the current state may be partially migrated. Tracked in this document so any contributor can read the intent without inferring it from the tree.
+>
+> **Updated 2026-05-23:** post-Phase-8 the project shipped a Pages → 14 Page Globals refactor + 9-bucket admin taxonomy (`DO SECOND` in [all_todo.md](all_todo.md)). The CMS sidebar source of truth is now [CMS_structure.md](CMS_structure.md). Phase C (Q3 2026) will further fold the 4 pricing collections into Procedures (single-source pricing) — at that point `PriceListItems.ts`, `MachineTreatments.ts`, `InjectableProducts.ts`, `HairRemovalAreas.ts` files in `packages/cms/src/collections/` are deleted. Tree below kept as-is for historical reference; check the live tree for what exists today.
 
 ---
 
@@ -26,10 +28,20 @@
 │   ├── architecture_info.md         ← runtime topology, stack, deploy
 │   ├── file_structure.md            ← this file
 │   ├── db_schema.md                 ← full Payload collection + global schema
+│   ├── db_ops.md                    ← Postgres provisioning, migrations, backup, perf
 │   ├── sitemap.md                   ← every route, mega-menu, CTA inventory
 │   ├── cms_info.md                  ← Cosmedic CMS white-label spec
-│   ├── editor_cheatsheet.md         ← how clinic staff use Cosmedic CMS (Phase 14)
-│   ├── runbook.md                   ← ops playbook (Phase 14)
+│   ├── cms_ops.md                   ← Payload hooks, access, seed, email, drafts
+│   ├── cms_schema.md                ← UI ↔ CMS coverage matrix (legacy view; superseded by CMS_structure.md for buckets)
+│   ├── CMS_structure.md             ← (2026-05-23) SOURCE OF TRUTH — locked sidebar buckets + entities + fields
+│   ├── cms_custom_change.md         ← (2026-05-23) Reusable playbook — mirror CMS admin to site IA
+│   ├── editor_cheatsheet.md         ← how clinic staff use Cosmedic CMS
+│   ├── runbook.md                   ← ops playbook
+│   ├── site_features.md             ← visitor-eye narrative of every screen and feature
+│   ├── plan.md                      ← 14-phase execution plan
+│   ├── all_todo.md                  ← (2026-05-23) Single TODO file — replaces former cms_todo.md + todo.md
+│   ├── commit_list.md               ← (2026-05-23) 27-commit tracker for Phases D/C/P/N/Q/M
+│   ├── phase-10-imagery-gaps.md     ← Phase 10 imagery brief
 │   ├── brand-guidelines.pdf         ← BIMC CosMedic Brand Guidelines v1.0 (canonical brand source)
 │   └── pricelist.xlsx               ← clinic's canonical price + procedure catalogue (CMS seed source)
 │
@@ -128,7 +140,23 @@
 │   │   │   │   ├── ConsultationPolicy.ts ← fee + waiver
 │   │   │   │   ├── FormDefaults.ts  ← labels + placeholders + messages
 │   │   │   │   ├── EmailTemplates.ts
-│   │   │   │   └── SeoDefaults.ts
+│   │   │   │   ├── SeoDefaults.ts
+│   │   │   │   └── pages/            ← (added DO SECOND 2026-05-22) 14 Page Globals
+│   │   │   │       ├── _pageFields.ts    ← shared field factory used by all 14
+│   │   │   │       ├── HomePage.ts
+│   │   │   │       ├── PressPage.ts
+│   │   │   │       ├── PrivacyPage.ts
+│   │   │   │       ├── TreatmentsPage.ts
+│   │   │   │       ├── SurgeonsPage.ts
+│   │   │   │       ├── ResultsPage.ts
+│   │   │   │       ├── GalleryPage.ts
+│   │   │   │       ├── PricingPage.ts
+│   │   │   │       ├── JourneyPage.ts
+│   │   │   │       ├── StoriesPage.ts
+│   │   │   │       ├── RecoveryStaysPage.ts
+│   │   │   │       ├── ContactPage.ts
+│   │   │   │       ├── VideoConsultPage.ts
+│   │   │   │       └── BlogPage.ts
 │   │   │   ├── blocks/              ← reusable content blocks for Pages
 │   │   │   │   ├── ChapterOpener.ts
 │   │   │   │   ├── RichText.ts

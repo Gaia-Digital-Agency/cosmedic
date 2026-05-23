@@ -1,6 +1,16 @@
 # BIMC CosMedic — Payload CMS Operations
 
-> Operational reference for **Cosmedic CMS** (Payload v3 white-labelled). Companion to `docs/cms_info.md` (branding/customization — the LOOK) and `docs/db_schema.md` (collections + fields — the WHAT). This doc is the HOW — how the CMS initialises, persists, exposes data, hooks into the web, and gets seeded.
+> Operational reference for **Cosmedic CMS** (Payload v3 white-labelled). Companion to `docs/cms_info.md` (branding/customization — the LOOK), `docs/db_schema.md` (collections + fields — the WHAT), and `docs/CMS_structure.md` (locked sidebar bucket source of truth, 2026-05-23+). This doc is the HOW — how the CMS initialises, persists, exposes data, hooks into the web, and gets seeded.
+
+> **Updated 2026-05-23 — gotchas captured during DO SECOND + planned for Phase C:**
+>
+> | Gotcha | Workaround |
+> |---|---|
+> | `payload migrate` hangs silently on large migrations (~4000+ LOC even with `--force-accept-warning`) | Extract `await db.execute(sql\`...\`)` body via `awk 'NR>=5 && NR<=N'` to a `.sql` file → `psql --single-transaction -v ON_ERROR_STOP=1 -f file.sql`. Then `INSERT INTO payload_migrations (name, batch, created_at, updated_at) VALUES ('<name>', <next-batch>, NOW(), NOW())` to register. |
+> | Direct psql DDL leaves objects owned by `postgres`; Payload runtime as `cosmedic` gets `permission denied` on ALTER | One-shot: `psql -tAc "SELECT 'ALTER TABLE \"' \|\| tablename \|\| '\" OWNER TO cosmedic;' FROM pg_tables WHERE schemaname='public'" \| psql`. Same for sequences + types. Set default privileges: `ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO cosmedic`. |
+> | `tsx` scripts that call `getPayload()` trigger `pushDevSchema` unless `NODE_ENV=production`. Drizzle push tries `ALTER TABLE ... DROP CONSTRAINT` and fails on non-owner. | Always invoke one-off migration scripts as `NODE_ENV=production pnpm --filter @cosmedic/cms exec tsx <script>`. |
+> | Postgres 63-char identifier limit — block field enums named `enum_<global>_blocks_<block>_<field>` can exceed when slug is long | Add `dbName: 'short_name'` override on the GlobalConfig (e.g. `rec_stays_pg` for `recovery-stays-page`). |
+> | `git stash -u` sweeps untracked top-level directories (e.g. `changes/`) into the stash | Recover via `git checkout stash@{0}^3 -- <path>`. `/changes/` now in `.gitignore` for safety. |
 
 ---
 

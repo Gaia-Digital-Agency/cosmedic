@@ -1,6 +1,8 @@
 # Cosmedic CMS — Editor Cheatsheet
 
 > Quick reference for clinic editorial team. For deeper ops, see [runbook.md](./runbook.md).
+>
+> **Bucket structure source of truth:** [CMS_structure.md](./CMS_structure.md) — full table of every bucket / entity / field. This cheatsheet is the friendly version.
 
 ## Sign in
 
@@ -10,28 +12,32 @@
 
 ## The dashboard
 
-Collections are grouped:
+The sidebar is grouped into **8 buckets** that mirror the live site. A short banner at the top of the sidebar explains the difference between **Collections** (many records of the same shape) and **Globals** (one-of-a-kind editorial records).
 
-| Group | What lives here |
+| Bucket | What lives here |
 |---|---|
-| (top) | **Users** (admin accounts), **Media** (image library) |
-| **Catalogue** | Surgeons · Disciplines · Sub Categories · Procedures |
-| **Pricing Catalogue** | Price List Items · Injectable Products · Machine Treatments · Hair Removal Areas |
-| **Editorial** | Pages · Before/After Cases · Stories · Press Mentions · Awards · Recovery Stays · Pricing Tiers · Blog Posts · Blog Tags · Authors · Journey Steps · Inclusion Items · Exclusion Items |
-| **Enquiries** | Form submissions (read-only flow) |
+| *(ungrouped)* | **Users** (admin accounts) |
+| **HOMEPAGE** | Press Mentions · Awards · Home Page · Press Page · Privacy Page · Brand Stats · Header · Footer · Floating Chrome · Endorsement Mark · Settings · Seo Defaults |
+| **TREATMENTS** | Disciplines · Sub Categories · Procedures · Inclusion Items · Exclusion Items · Treatments Page |
+| **DOCTORS** | Surgeons · Surgeons Page |
+| **RESULTS** | Before/After Cases · Results Page · Gallery Page |
+| **PRICING** | Pricing Tiers · Pricing Page · Consultation Policy. *(Catalogue rows — Surgical · Machine · Injection · BTL — live on **Procedures** in TREATMENTS as single source of truth. The PRICING bucket points to it.)* |
+| **JOURNEY** | Journey Steps · Stories · Recovery Stays · Blog Posts · Blog Tags · Authors · Journey Page · Stories Page · Recovery Stays Page · Blog Page |
+| **CONTACT** | Enquiries · Contact Page · Form Defaults · Email Templates · Video Consult Page |
+| **MEDIA** | Media (the image library, browsable by folder + category) |
 
 Scroll the dashboard to see all groups; long page.
 
 ## Updating a surgeon
 
-1. Catalogue → **Surgeons** → click a name
+1. **DOCTORS → Surgeons** → click a name
 2. Edit any field on the form
 3. **Save** (top-right). Changes go live in ~1 second.
 4. To change the portrait, click the **Image Upload** field (bordered, bronze-dashed). Drag-drop a new file or pick from existing Media.
 
 ## Updating a treatment / discipline
 
-1. Catalogue → **Disciplines** (the 6 chapters) or **Sub Categories** (the 17 leaves) or **Procedures**
+1. **TREATMENTS → Disciplines** (the 6 chapters) or **Sub Categories** (the 17 leaves) or **Procedures**
 2. Edit `title`, `tagline`, `lede`, `body`, `chapterTitle`, `faqs` etc.
 3. **Save**
 
@@ -64,7 +70,9 @@ Common booleans (every checkbox = click to flip, then Save):
 
 ## Bulk pricing updates
 
-Annual price refresh: open the relevant **Price List Item** record → change the IDR/AUD numbers → Save. The `/pricing` page re-renders within a second. Bulk reprice is done by re-running the seed script via the developer (re-imports `docs/pricelist.xlsx`).
+All pricing (Surgical + Machine + Injection + BTL line items) is managed in **one place: TREATMENTS → Procedures**. Each Procedures record holds the price (IDR + AUD), the catalogue group (surgical / machine / injection / btl), the main category and sub category, and the editorial fields (description, sections, FAQs). Change the IDR/AUD numbers → Save; `/pricing` re-renders within a second.
+
+Bulk re-price across many procedures: re-run the seed script via the developer (re-imports `docs/pricelist.xlsx`).
 
 ## When something looks wrong
 

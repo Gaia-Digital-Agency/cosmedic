@@ -1,6 +1,16 @@
 # BIMC CosMedic — Database Operations
 
-> Postgres operational reference: provisioning, migrations, backup, restore, performance, monitoring. Companion to `docs/db_schema.md` (the WHAT — fields per collection). This doc is the HOW — how the DB is provisioned, evolved, and operated.
+> Postgres operational reference: provisioning, migrations, backup, restore, performance, monitoring. Companion to `docs/db_schema.md` (the WHAT — fields per collection) and [CMS_structure.md](CMS_structure.md) (the locked CMS bucket source of truth). This doc is the HOW — how the DB is provisioned, evolved, and operated.
+
+> **Updated 2026-05-23 — operational gotchas surfaced during DO SECOND + relevant to Phase C9 migrations:**
+>
+> | Gotcha | Workaround |
+> |---|---|
+> | `payload migrate` hangs silently on large migrations (~4000+ LOC) — JS runtime burns CPU but never submits DDL to Postgres | Extract the migration's UP SQL via `awk 'NR>=5 && NR<=N { … }' migration.ts > /tmp/up.sql`, then `sudo -u postgres psql -d cosmedic --single-transaction -v ON_ERROR_STOP=1 -f /tmp/up.sql`. Mark applied: `INSERT INTO payload_migrations (name, batch, created_at, updated_at) VALUES ('<name>', <next>, NOW(), NOW())`. Used for `20260522_072509_pages_to_globals` (4832 LOC, 266 objects). |
+> | Direct psql DDL leaves new objects owned by `postgres`; Payload connects as `cosmedic` and gets `permission denied for table X` | After applying schema directly, run ownership fix: `psql -tAc "SELECT 'ALTER TABLE \"' \|\| tablename \|\| '\" OWNER TO cosmedic;' FROM pg_tables WHERE schemaname='public'" \| psql -d cosmedic`. Repeat for sequences (`pg_sequences`) + types (`pg_type WHERE typtype='e' AND typnamespace='public'`). Set default privileges: `ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO cosmedic`. |
+> | `tsx` migration scripts that call `getPayload()` trigger `pushDevSchema` unless `NODE_ENV=production` — Drizzle push then attempts `ALTER TABLE ... DROP CONSTRAINT` and fails on the non-`postgres` connection | Always: `NODE_ENV=production pnpm --filter @cosmedic/cms exec tsx <script>`. Forgetting this is the #1 cause of "migration looked OK but admin is broken". |
+> | Postgres 63-char identifier limit truncates `enum_<global>_blocks_<block>_<field>` names mid-string and fails CREATE TYPE | Add `dbName: 'short_name'` override on the GlobalConfig. Live examples: `recovery-stays-page` → `rec_stays_pg`; `video-consult-page` → `vid_consult_pg`. Plan ahead for Phase C9 schema additions on Procedures. |
+> | `git stash -u` will sweep untracked top-level directories (e.g. `changes/`, `database_backup/`) into the stash | Recover via `git checkout stash@{0}^3 -- <path>`. `/changes/`, `/database_backup/`, `/.claude/worktrees/` already in `.gitignore`. |
 
 ---
 

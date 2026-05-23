@@ -1,6 +1,8 @@
 # BIMC CosMedic — Operations Runbook
 
-> Day-2 ops for the cosmedic.gaiada.online stack. Pair with [architecture_info.md](./architecture_info.md) (topology) and [db_ops.md](./db_ops.md) (Postgres). When in doubt, defer to the multisite-safety rules at the top of [CLAUDE.md](../CLAUDE.md).
+> Day-2 ops for the cosmedic.gaiada.online stack. Pair with [architecture_info.md](./architecture_info.md) (topology), [db_ops.md](./db_ops.md) (Postgres), and [CMS_structure.md](./CMS_structure.md) (locked CMS sidebar source of truth). When in doubt, defer to the multisite-safety rules at the top of [CLAUDE.md](../CLAUDE.md).
+
+> **Updated 2026-05-23:** Phase C work in progress — see [all_todo.md](./all_todo.md) Phases C1–C10 + [commit_list.md](./commit_list.md) for the 27-commit plan. Each Phase C commit follows: read locked structure → make change → pm2 restart cosmedic-* (NEVER all) → verify via curl + visual diff → commit → push → tick commit_list.md.
 
 ## Topology recap
 
@@ -242,16 +244,20 @@ For a Payload schema change that broke prod, restore from the most recent Postgr
 |---|---|
 | Public site code | `packages/web/src/` |
 | CMS code | `packages/cms/src/` |
-| Collections | `packages/cms/src/collections/` (23 files) |
-| Globals | `packages/cms/src/globals/` (10 files) |
+| Collections | `packages/cms/src/collections/` (22 today after Phase C9: 19) |
+| Site-wide Globals | `packages/cms/src/globals/` (10 files) |
+| Page Globals (one per route) | `packages/cms/src/globals/pages/` (14 files + `_pageFields.ts` shared factory) |
 | Payload migrations | `packages/cms/src/migrations/` |
-| Seed scripts | `packages/cms/src/seed/` (`run.ts` = content, `run-media.ts` = images) |
+| Seed scripts | `packages/cms/src/seed/` (`runtime.ts` orchestrator + `parse-pricelist.ts` xlsx parser) |
 | Brand assets | `packages/cms/public/` + `packages/web/public/` |
 | Treatment / surgeon / B&A imagery | `packages/web/public/assets/{surgeons,results,treatments,lifestyle}/` |
 | Uploaded media files | `packages/cms/media/` (auto-managed, not in git) |
 | nginx snapshot | `ops/nginx/cosmedic.gaiada.online.conf` |
 | Live nginx | `/etc/nginx/sites-enabled/subdomains.gaiada.online` |
 | Phase plan | `docs/plan.md` |
-| Phase tracker | `docs/todo.md` |
+| Phase tracker | `docs/all_todo.md` |
+| Commit tracker (Phases D/C/P/N/Q/M) | `docs/commit_list.md` |
+| CMS sidebar source of truth | `docs/CMS_structure.md` |
+| Reusable CMS-mirrors-site playbook | `docs/cms_custom_change.md` |
 | Imagery brief (Phase 10) | `docs/phase-10-imagery-gaps.md` |
 | Brand spec | `docs/brand-guidelines.pdf` |

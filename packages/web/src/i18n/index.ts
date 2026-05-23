@@ -5,7 +5,7 @@
  * Phase 9 quick-win scaffold. The full Phase 9 work (Payload localization
  * config, localized:true field flags on every editorial field, /id/* SSR
  * routing, ML-drafted Indonesian editorial copy) is deferred — see
- * docs/todo.md.
+ * docs/all_todo.md.
  *
  * Usage:
  *   import { t, useLocale } from '@/i18n'
