@@ -39,7 +39,7 @@
 | 13 | **C10** | Full R1–R7 audit + sign-off (+ R1 cleanup: productLine + surgeonSlug wired) | `abded5e` | ✅ shipped 2026-05-23 07:30 UTC | R1, R6, R7 🟢 green; R2, R3, R4, R5 🟡 green with documented exceptions (DB-table backup; C9c surgical 46→93 user-approved; hardcoded fallbacks pending Phase Q). Full breakdown in docs/c10_audit.md |
 | 14 | **P** | Favicon icon-set + index.html `<link>` tags (7 assets from cosmedic-favico.zip) | `1ab4d64` | ✅ shipped 2026-05-23 07:40 UTC | 7 assets in packages/web/public/ + 7 link tags in built HTML; all assets 200 via prod URL; CMS admin's cosmedic-mark-*.png left intact |
 | 15 | **N1** | Endorsement to logo — discovered duplicate (logo PNG already includes "Managed by BIMC Hospital" baked in); removed sibling .logo-endorsement-line/.logo-endorsement-mark render (CMS field kept) | `f053733` | ✅ shipped 2026-05-23 07:50 UTC | rendered .logo block now has exactly 2 imgs; zero logo-endorsement hits in HTML; routes 200 |
-| 16 | **N2** | Back-to-Top FAB matches WhatsApp FAB size/shadow exactly | — | pending | visual paired-chrome cluster |
+| 16 | **N2** | Back-to-Top FAB matches WhatsApp FAB size/shadow | `e6f8c8b` | ✅ shipped 2026-05-23 08:00 UTC | 44→54 width/height, shadow shape matches WA (`0 8px 28px`) with neutral ink tint, SVG 16→20 + stroke 1.8→2. User chose "match shape, keep neutral tint" |
 | 17 | **N3** | `/pricing` table column consistency (after C9c renderer rewrite) | — | pending | every table has identical column widths + alignment |
 | 18 | **Q-1** | Logo cluster — brown logo asset swap + alignment fixes (#1, #3, #4) | — | pending | logo matches new asset; not stretched on mobile |
 | 19 | **Q-2** | Layout / responsive cluster — burger 1480px, footer match, margins (#2, #5, #9, #20, #22, #23, #24) | — | pending | mobile golden path clean |
@@ -107,4 +107,5 @@ Site-break (route returns 500 / blank / wrong content) OR admin-break (form won'
 [2026-05-23 07:30 UTC]  abded5e  C10           R1-R7 audit + R1 cleanup (productLine + surgeonSlug wired)  R1/R6/R7 🟢 green; R2/R3/R4/R5 🟡 green w/ documented exceptions. Full breakdown in docs/c10_audit.md.
 [2026-05-23 07:40 UTC]  1ab4d64  P             Install new favicon icon-set from cosmedic-favico.zip  7 assets in public/; 7 link tags in <head>; site.webmanifest customised w/ BIMC CosMedic name; CMS admin favicons left intact.
 [2026-05-23 07:50 UTC]  f053733  N1            Remove duplicate "Managed by BIMC Hospital" sibling element from Header  Logo PNG already contained the tagline baked in. Sibling render + CSS removed (CMS field kept).
+[2026-05-23 08:00 UTC]  e6f8c8b  N2            Back-to-Top FAB now 54x54 with WA shadow shape  Matches WhatsApp FAB size; shadow shape matches; neutral ink tint preserves editorial identity.
 ```
