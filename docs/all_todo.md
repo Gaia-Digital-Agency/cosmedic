@@ -612,7 +612,7 @@ This section is the verbatim contents of the now-deleted `docs/todo.md`. Preserv
   - [x] HomeApp wired in `App.tsx` — `<PageShell>` wraps all 11 sections
   - [x] Build verified: 51 modules, 72 kB CSS bundle, 238 kB JS bundle (gzip 12 kB + 74 kB)
   - [x] All home section classNames present in SSR markup (`hero-v2`, `trust-strip`, `intro`, `treatments`, `price-teaser`, `surgeons`, `gallery`, `lead-magnet`, `journey`, `stories`, `place`)
-  - [ ] Side-by-side visual comparison vs `design/index.html` — pixel-fidelity gate (full Playwright suite in Phase 11)
+  - [ ] Side-by-side visual comparison vs `design/_html-archive/index.html` — pixel-fidelity gate (full Playwright suite in Phase 11)
 
 - [x] **PHASE 4 — Detail templates (36 detail routes from 3 templates + router)**
   - [x] SSR router (`src/router.ts`) — pathname → `{ kind, slug }` discriminator, status 404 on unknown slugs

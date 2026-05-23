@@ -67,7 +67,9 @@
 │       └── lifestyle/               ← hero / recovery villa / place imagery (Phase 10)
 │
 ├── design/                ← original Claude Design source (READ-ONLY reference)
-│   ├── index.html                   ← homepage + the other root .html page shells (Babel-in-browser)
+│   ├── _html-archive/               ← 2026-05-23 cleanup: the 51 newer-model .html page shells
+│   │                                  (index.html, treatment-*.html, surgeon-*.html, blog.html,
+│   │                                  pricing.html, etc.). Babel-in-browser; never imported.
 │   ├── global.css                   ← canonical design tokens
 │   ├── shared.jsx                   ← React primitives + data exports
 │   ├── pages/                       ← per-route .jsx component specs (47 files)
@@ -79,9 +81,9 @@
 │       └── design/                  ← older handoff iteration: 41 procedure-*.html flat pages, etc.
 │
 │   Two iterations are preserved because they describe different routing models:
-│   - Root files (`design/*.html`): newer nested model — `treatment-{discipline}-{sub}.html`
+│   - `_html-archive/*.html`: newer nested model — `treatment-{discipline}-{sub}.html`
 │   - `_original-handoff/design/*.html`: older flat model — `procedure-{slug}.html` (41 files)
-│   Both inform Phase 4 (detail templates).
+│   Both inform Phase 4 (detail templates) and the Phase 11 pixel-fidelity diff.
 │
 ├── discovery/                       ← discovery artifacts (was uploads/)
 │   ├── feedback/                    ← claude-feedback.pdf, gemini-feedback.pdf
