@@ -29,7 +29,7 @@
 | 4 | **C4** | Add CmsSidebarExplainer (Collections vs Globals banner above admin nav) | `d7e2ee2` | ✅ shipped 2026-05-23 05:38 UTC | /admin, /, /pricing 200; admin-only |
 | 5 | **C5** | Wire `Blog Page` global to `/blog` index hero + CmsExtraBlocks slot | `34ef42f` | ✅ shipped 2026-05-23 05:53 UTC | /blog 200; copy byte-identical (CMS seeded with EXACT hardcoded values, fallback retained) |
 | 6 | **C6a** | Home Page schema: add 9 A2 block fields (67 columns added via psql; renderer unchanged so site is byte-identical) | `pending` | in_progress | schema present, no seed/render change yet |
-| 7 | **C6b** | Home Page renderer: rewrite 9 section components to read from CMS | — | pending | `/` byte-identical pre vs post |
+| 7 | **C6b** | Home Page renderer: 9 section components read from CMS with hardcoded fallbacks | `pending` | in_progress | `/` byte-identical (CMS fields empty → fallback) |
 | 8 | **C7** | Pricing Page schema + renderer: 3 A2 blocks (overview/footnote/insurance) | — | pending | `/pricing` byte-identical |
 | 9 | **C8** | Before/After full editorial wiring (description, alt, year, featured filter, surgeon byline) | — | pending | every B&A field rendered |
 | 10 | **C9a** | Procedures schema: add catalogue fields (catalogueGroup/mainCategory/subCategory + group-specific) + Postgres migration | — | pending | schema applied, owners corrected |
@@ -79,8 +79,9 @@ Pre-flight before every CMS-refactor commit (D + C-series):
 1. `curl -sI https://cosmedic.gaiada.online/<route>` — expect 200
 2. Visual diff vs baseline screenshot (manual or playwright)
 3. CMS save → revalidate → re-render still byte-identical
+4. **Payload-as-good-CMS gate (added 2026-05-23):** `/admin` still loads · every bucket in the sidebar lists its entities · `home-page` (and any other edited Global / Collection) opens its form without error · "Save" works · image upload still functional (`/api/media` POST 403 or 201 — anything other than 502/500/timeout) · no hooks broken (revalidate POST returns `{"ok":true}`). Quick check: `curl -sI /admin && curl -s /api/users/me | head -c 200 && curl -X POST /api/revalidate -d '{}'`.
 
-Site-break (route returns 500 / blank / wrong content) = commit reverted immediately. UI changes within scope of P/N/Q/M are expected and reviewed against their own intent, not R5.
+Site-break (route returns 500 / blank / wrong content) OR admin-break (form won't open, save fails, hook crashes) = commit reverted immediately. UI changes within scope of P/N/Q/M are expected and reviewed against their own intent, not R5.
 
 ---
 

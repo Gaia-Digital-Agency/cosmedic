@@ -2,6 +2,8 @@ import React from 'react'
 import { Reveal } from '@/components/primitives/Reveal'
 import { Eyebrow } from '@/components/primitives/Mono'
 import { Btn } from '@/components/primitives/Btn'
+import { useCms } from '@/lib/cms-context'
+import { findPageBySlug } from '@/lib/cms-adapters'
 
 const STEPS: [string, string, string][] = [
   ['01', 'Consult', 'A private video call with a surgeon, anywhere in the world.'],
@@ -11,38 +13,48 @@ const STEPS: [string, string, string][] = [
   ['05', 'Recover', 'Daily nursing visits in a private villa, then twelve months of follow-up.'],
 ]
 
-export const Journey: React.FC = () => (
-  <section className="journey" id="journey">
-    <div className="journey-head">
-      <Reveal>
-        <Eyebrow>Your Journey</Eyebrow>
-      </Reveal>
-      <Reveal delay={120}>
-        <h2 className="section-title">
-          <span>From enquiry to</span> <span className="italic">homecoming.</span>
-        </h2>
-      </Reveal>
-    </div>
-    <div className="journey-steps">
-      {STEPS.map(([n, t, d], i) => (
-        <Reveal key={i} delay={i * 90}>
-          <div className="journey-step">
-            <div className="journey-num">
-              <span>{n}</span>
-              {i < STEPS.length - 1 && <span className="journey-arrow">→</span>}
-            </div>
-            <h4>{t}</h4>
-            <p>{d}</p>
-          </div>
+export const Journey: React.FC = () => {
+  const cms = useCms()
+  const block = (cms ? findPageBySlug(cms, 'home') : undefined)?.journeyBlock
+  const eyebrow = block?.eyebrow || 'Your Journey'
+  const headingPart1 = block?.headingPart1 || 'From enquiry to'
+  const headingAccent = block?.headingAccent || 'homecoming.'
+  const ctaLabel = block?.ctaLabel || 'Read the full journey'
+  const ctaHref = block?.ctaHref || '/journey'
+
+  return (
+    <section className="journey" id="journey">
+      <div className="journey-head">
+        <Reveal>
+          <Eyebrow>{eyebrow}</Eyebrow>
         </Reveal>
-      ))}
-    </div>
-    <Reveal>
-      <div style={{ textAlign: 'center', marginTop: 60 }}>
-        <Btn kind="ghost" as="a" href="/journey">
-          Read the full journey
-        </Btn>
+        <Reveal delay={120}>
+          <h2 className="section-title">
+            <span>{headingPart1}</span> <span className="italic">{headingAccent}</span>
+          </h2>
+        </Reveal>
       </div>
-    </Reveal>
-  </section>
-)
+      <div className="journey-steps">
+        {STEPS.map(([n, t, d], i) => (
+          <Reveal key={i} delay={i * 90}>
+            <div className="journey-step">
+              <div className="journey-num">
+                <span>{n}</span>
+                {i < STEPS.length - 1 && <span className="journey-arrow">→</span>}
+              </div>
+              <h4>{t}</h4>
+              <p>{d}</p>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+      <Reveal>
+        <div style={{ textAlign: 'center', marginTop: 60 }}>
+          <Btn kind="ghost" as="a" href={ctaHref}>
+            {ctaLabel}
+          </Btn>
+        </div>
+      </Reveal>
+    </section>
+  )
+}

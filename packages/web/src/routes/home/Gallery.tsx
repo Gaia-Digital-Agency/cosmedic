@@ -4,57 +4,70 @@ import { Img } from '@/components/primitives/Img'
 import { Mono, Eyebrow } from '@/components/primitives/Mono'
 import { Btn } from '@/components/primitives/Btn'
 import { BA_PAIRS } from '@/content/seed'
+import { useCms } from '@/lib/cms-context'
+import { findPageBySlug } from '@/lib/cms-adapters'
 
-export const Gallery: React.FC = () => (
-  <section className="gallery" id="gallery">
-    <div className="gallery-head">
-      <Reveal>
-        <Eyebrow>Before & After Results</Eyebrow>
-      </Reveal>
-      <Reveal delay={120}>
-        <h2 className="section-title">
-          <span className="italic">Quietly</span> transformative.
-        </h2>
-      </Reveal>
-      <Reveal delay={220}>
-        <p className="section-lede">Three signature results from our facial repertoire.</p>
-      </Reveal>
-    </div>
-    <div className="gallery-grid">
-      {BA_PAIRS.map((c, i) => (
-        <Reveal key={i} delay={i * 100} y={28}>
-          <figure className="ba-card">
-            <div className="ba-single">
-              <Img
-                src={c.image}
-                fallbackLabel={`${c.label.toUpperCase()} · ${c.num}`}
-                fallbackHue={i * 2}
-                alt={`${c.label} — before and after`}
-              />
-              <span className="ba-tag">
-                <Mono>Before</Mono>
-              </span>
-              <span className="ba-tag accent" style={{ left: 'auto', right: 14 }}>
-                <Mono>After</Mono>
-              </span>
-            </div>
-            <figcaption>
-              <div>
-                <Mono>{c.num}</Mono>
-                <h4>{c.label}</h4>
-              </div>
-              <span className="ba-time">{c.time}</span>
-            </figcaption>
-          </figure>
+export const Gallery: React.FC = () => {
+  const cms = useCms()
+  const block = (cms ? findPageBySlug(cms, 'home') : undefined)?.galleryBlock
+  const eyebrow = block?.eyebrow || 'Before & After Results'
+  const headingPart1 = block?.headingPart1 || 'Quietly'
+  const headingPart2 = block?.headingPart2 || 'transformative.'
+  const lede = block?.lede || 'Three signature results from our facial repertoire.'
+  const ctaLabel = block?.ctaLabel || 'View the full gallery'
+  const ctaHref = block?.ctaHref || '/results#results'
+
+  return (
+    <section className="gallery" id="gallery">
+      <div className="gallery-head">
+        <Reveal>
+          <Eyebrow>{eyebrow}</Eyebrow>
         </Reveal>
-      ))}
-    </div>
-    <Reveal>
-      <div className="gallery-foot">
-        <Btn kind="ghost" as="a" href="/results#results">
-          View the full gallery
-        </Btn>
+        <Reveal delay={120}>
+          <h2 className="section-title">
+            <span className="italic">{headingPart1}</span> {headingPart2}
+          </h2>
+        </Reveal>
+        <Reveal delay={220}>
+          <p className="section-lede">{lede}</p>
+        </Reveal>
       </div>
-    </Reveal>
-  </section>
-)
+      <div className="gallery-grid">
+        {BA_PAIRS.map((c, i) => (
+          <Reveal key={i} delay={i * 100} y={28}>
+            <figure className="ba-card">
+              <div className="ba-single">
+                <Img
+                  src={c.image}
+                  fallbackLabel={`${c.label.toUpperCase()} · ${c.num}`}
+                  fallbackHue={i * 2}
+                  alt={`${c.label} — before and after`}
+                />
+                <span className="ba-tag">
+                  <Mono>Before</Mono>
+                </span>
+                <span className="ba-tag accent" style={{ left: 'auto', right: 14 }}>
+                  <Mono>After</Mono>
+                </span>
+              </div>
+              <figcaption>
+                <div>
+                  <Mono>{c.num}</Mono>
+                  <h4>{c.label}</h4>
+                </div>
+                <span className="ba-time">{c.time}</span>
+              </figcaption>
+            </figure>
+          </Reveal>
+        ))}
+      </div>
+      <Reveal>
+        <div className="gallery-foot">
+          <Btn kind="ghost" as="a" href={ctaHref}>
+            {ctaLabel}
+          </Btn>
+        </div>
+      </Reveal>
+    </section>
+  )
+}

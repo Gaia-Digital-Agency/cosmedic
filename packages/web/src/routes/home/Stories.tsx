@@ -4,6 +4,8 @@ import { Img } from '@/components/primitives/Img'
 import { Mono, Eyebrow } from '@/components/primitives/Mono'
 import { Btn } from '@/components/primitives/Btn'
 import { STORY_PORTRAITS } from '@/content/seed'
+import { useCms } from '@/lib/cms-context'
+import { findPageBySlug } from '@/lib/cms-adapters'
 
 const STORIES = [
   {
@@ -35,26 +37,40 @@ const STORIES = [
   },
 ]
 
-export const Stories: React.FC = () => (
+export const Stories: React.FC = () => {
+  const cms = useCms()
+  const block = (cms ? findPageBySlug(cms, 'home') : undefined)?.storiesBlock
+  const eyebrow = block?.eyebrow || 'Verified Patient Stories'
+  const headingAccent = block?.headingAccent || 'Stories,'
+  const headingPart2 = block?.headingPart2 || 'not slogans.'
+  const ledeDefault = (
+    <>
+      Verified reviews from international patients. Video testimonials and Google reviews on our{' '}
+      <a
+        href="/results#stories"
+        style={{ color: 'var(--accent-deep)', textDecoration: 'underline' }}
+      >
+        full stories page
+      </a>
+      .
+    </>
+  )
+  const ctaLabel = block?.ctaLabel || 'Read more stories'
+  const ctaHref = block?.ctaHref || '/results#stories'
+
+  return (
   <section className="stories" id="stories">
     <Reveal>
-      <Eyebrow>Verified Patient Stories</Eyebrow>
+      <Eyebrow>{eyebrow}</Eyebrow>
     </Reveal>
     <Reveal delay={120}>
       <h2 className="section-title section-title-center">
-        <span className="italic">Stories,</span> not slogans.
+        <span className="italic">{headingAccent}</span> {headingPart2}
       </h2>
     </Reveal>
     <Reveal delay={200}>
       <p className="section-lede" style={{ margin: '22px auto 0', textAlign: 'center' }}>
-        Verified reviews from international patients. Video testimonials and Google reviews on our{' '}
-        <a
-          href="/results#stories"
-          style={{ color: 'var(--accent-deep)', textDecoration: 'underline' }}
-        >
-          full stories page
-        </a>
-        .
+        {block?.lede ?? ledeDefault}
       </p>
     </Reveal>
     <div className="stories-grid">
@@ -85,10 +101,11 @@ export const Stories: React.FC = () => (
     </div>
     <Reveal>
       <div style={{ textAlign: 'center', marginTop: 60 }}>
-        <Btn kind="ghost" as="a" href="/results#stories">
-          Read more stories
+        <Btn kind="ghost" as="a" href={ctaHref}>
+          {ctaLabel}
         </Btn>
       </div>
     </Reveal>
   </section>
-)
+  )
+}

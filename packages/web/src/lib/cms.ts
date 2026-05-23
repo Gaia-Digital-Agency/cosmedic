@@ -386,6 +386,94 @@ export type CmsPage = {
   heroImage?: number | CmsMedia
   sections?: PageBlock[]
   publishStatus?: 'draft' | 'published'
+  // Phase C6 A2 blocks (home-page only — every field optional; renderers must
+  // fall back to hardcoded copy when blank so the site is byte-identical until
+  // the editor populates these in /admin/globals/home-page).
+  introBlock?: {
+    eyebrow?: string
+    pullQuoteBefore?: string
+    pullQuoteAccent?: string
+    pullQuoteAfter?: string
+    col1?: string
+    col2?: string
+  }
+  treatmentsBlock?: {
+    eyebrow?: string
+    headingPart1?: string
+    headingPart2?: string
+    lede?: string
+  }
+  pricingTeaserBlock?: {
+    eyebrow?: string
+    headingPart1?: string
+    headingPart2?: string
+    lede?: string
+    footnote?: string
+    viewAllLabel?: string
+    viewAllHref?: string
+  }
+  surgeonsBlock?: {
+    eyebrow?: string
+    leadSurgeonEyebrow?: string
+    leadBody?: string
+    leadStat1Label?: string
+    leadStat1Value?: string
+    leadStat2Label?: string
+    leadStat2Value?: string
+    leadStat3Label?: string
+    leadStat3Value?: string
+    leadCtaLabel?: string
+    associatesEyebrow?: string
+  }
+  galleryBlock?: {
+    eyebrow?: string
+    headingPart1?: string
+    headingPart2?: string
+    lede?: string
+    ctaLabel?: string
+    ctaHref?: string
+  }
+  leadMagnetBlock?: {
+    coverEyebrow?: string
+    coverLine1?: string
+    coverLine2?: string
+    coverLine3?: string
+    coverFoot1?: string
+    coverFoot2?: string
+    bodyEyebrow?: string
+    headingPart1?: string
+    headingAccent?: string
+    lede?: string
+    formPlaceholder?: string
+    submitLabel?: string
+    successHeading?: string
+    successBody?: string
+    fineprint?: string
+  }
+  journeyBlock?: {
+    eyebrow?: string
+    headingPart1?: string
+    headingAccent?: string
+    ctaLabel?: string
+    ctaHref?: string
+  }
+  storiesBlock?: {
+    eyebrow?: string
+    headingAccent?: string
+    headingPart2?: string
+    lede?: string
+    ctaLabel?: string
+    ctaHref?: string
+  }
+  placeBlock?: {
+    eyebrow?: string
+    headingPart1?: string
+    headingAccent?: string
+    body?: string
+    rowsText?: string
+    ctaLabel?: string
+    ctaHref?: string
+  }
 }
 
 /* ─── Global types ─────────────────────────────────────────────────────── */

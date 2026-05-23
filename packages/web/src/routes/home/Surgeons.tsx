@@ -4,8 +4,31 @@ import { Img } from '@/components/primitives/Img'
 import { Mono, Eyebrow } from '@/components/primitives/Mono'
 import { Btn } from '@/components/primitives/Btn'
 import { SURGEON_LIST, SURGEON_IMG } from '@/content/seed'
+import { useCms } from '@/lib/cms-context'
+import { findPageBySlug } from '@/lib/cms-adapters'
 
 export const Surgeons: React.FC = () => {
+  const cms = useCms()
+  const block = (cms ? findPageBySlug(cms, 'home') : undefined)?.surgeonsBlock
+  const eyebrow = block?.eyebrow || 'Meet the Surgeons'
+  const leadSurgeonEyebrow = block?.leadSurgeonEyebrow || 'Lead Surgeon'
+  const leadBodyDefault = (
+    <>
+      ISAPS-member plastic surgeon with seven years of practice in Bali, fellowship-trained in
+      maxillofacial surgery in Japan, specializing in{' '}
+      <em>facial aesthetics, body contouring and breast surgery</em>. Cited by patients for a
+      conservative, natural-result approach.
+    </>
+  )
+  const leadStat1Label = block?.leadStat1Label || 'Trained'
+  const leadStat1Value = block?.leadStat1Value || 'Indonesia · Japan'
+  const leadStat2Label = block?.leadStat2Label || 'Specialty'
+  const leadStat2Value = block?.leadStat2Value || 'Facial Aesthetics'
+  const leadStat3Label = block?.leadStat3Label || 'Society'
+  const leadStat3Value = block?.leadStat3Value || 'ISAPS Member'
+  const leadCtaLabel = block?.leadCtaLabel || 'Read the full profile'
+  const associatesEyebrow = block?.associatesEyebrow || 'Associate Surgeons & Aestheticians'
+
   const lead = SURGEON_LIST[0]
   const associates = SURGEON_LIST.slice(1, 7)
   const leadFirstNames = lead.name.split(' ').slice(0, -1).join(' ')
@@ -14,7 +37,7 @@ export const Surgeons: React.FC = () => {
   return (
     <section className="surgeons" id="surgeons">
       <Reveal>
-        <Eyebrow>Meet the Surgeons</Eyebrow>
+        <Eyebrow>{eyebrow}</Eyebrow>
       </Reveal>
       <div className="surgeons-feature">
         <Reveal delay={120}>
@@ -30,7 +53,7 @@ export const Surgeons: React.FC = () => {
           </div>
         </Reveal>
         <Reveal delay={240} style={{ paddingTop: 32 }}>
-          <Mono>Lead Surgeon</Mono>
+          <Mono>{leadSurgeonEyebrow}</Mono>
           <h2 className="surgeon-name">
             <span>
               {lead.title} {leadFirstNames}
@@ -40,27 +63,24 @@ export const Surgeons: React.FC = () => {
           </h2>
           <p className="surgeon-credentials">{lead.cred}</p>
           <p className="surgeon-body">
-            ISAPS-member plastic surgeon with seven years of practice in Bali, fellowship-trained in
-            maxillofacial surgery in Japan, specializing in{' '}
-            <em>facial aesthetics, body contouring and breast surgery</em>. Cited by patients for a
-            conservative, natural-result approach.
+            {block?.leadBody ?? leadBodyDefault}
           </p>
           <div className="surgeon-stats">
             <div>
-              <Mono>Trained</Mono>
-              <span>Indonesia · Japan</span>
+              <Mono>{leadStat1Label}</Mono>
+              <span>{leadStat1Value}</span>
             </div>
             <div>
-              <Mono>Specialty</Mono>
-              <span>Facial Aesthetics</span>
+              <Mono>{leadStat2Label}</Mono>
+              <span>{leadStat2Value}</span>
             </div>
             <div>
-              <Mono>Society</Mono>
-              <span>ISAPS Member</span>
+              <Mono>{leadStat3Label}</Mono>
+              <span>{leadStat3Value}</span>
             </div>
           </div>
           <Btn kind="ghost" as="a" href={`/surgeon-${lead.slug}`}>
-            Read the full profile
+            {leadCtaLabel}
           </Btn>
         </Reveal>
       </div>
@@ -75,7 +95,7 @@ export const Surgeons: React.FC = () => {
           paddingBottom: 18,
         }}
       >
-        <Mono>Associate Surgeons & Aestheticians</Mono>
+        <Mono>{associatesEyebrow}</Mono>
         <Mono>{associates.length} practitioners</Mono>
       </div>
       <div className="surgeons-grid" style={{ marginTop: 32 }}>
