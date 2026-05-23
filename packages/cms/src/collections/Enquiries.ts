@@ -9,7 +9,7 @@ export const Enquiries: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'email', 'treatmentInterest', 'status', 'submittedAt'],
-    group: 'Contact',
+    group: '7 Contact',
     description: 'Incoming leads. Each row is a submission from the /contact form or the homepage hero quick-form. ADMIN-ONLY — never rendered on the public site. Public visitors can CREATE only; only logged-in staff can read/update. Never deleted (audit trail).',
   },
   access: {

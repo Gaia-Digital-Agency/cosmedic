@@ -6,7 +6,7 @@ import { pageFields } from './_pageFields'
 export const StoriesPage: GlobalConfig = {
   slug: 'stories-page',
   admin: {
-    group: 'Journey',
+    group: '6 Journey',
     description: 'Editorial content for /stories: hero + body. Patient narratives are rendered from the Stories collection.',
   },
   access: { read: publishedOrAuthed, update: isAuthenticated },

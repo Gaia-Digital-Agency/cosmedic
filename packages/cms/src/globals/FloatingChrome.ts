@@ -6,7 +6,7 @@ import { apiWarningField } from '../lib/api-warning'
 export const FloatingChrome: GlobalConfig = {
   slug: 'floating-chrome',
   admin: {
-    group: 'Homepage',
+    group: '1 Homepage',
     description: 'Floating UI shown bottom-right on every page: the brown "Plan Your Treatment" CTA pill and the green WhatsApp/chat bubble next to it.',
   },
   access: { read: readPublic, update: isAuthenticated },

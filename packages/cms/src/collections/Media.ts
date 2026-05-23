@@ -11,7 +11,7 @@ export const Media: CollectionConfig = {
     useAsTitle: 'filename',
     defaultColumns: ['filename', 'category', 'alt', 'isPlaceholder', 'updatedAt'],
     listSearchableFields: ['filename', 'alt'],
-    group: 'Media Library',
+    group: '8 Media Library',
     description: 'Every image used anywhere on the site — hero images, doctor portraits, before/after composites, logos, OG/share previews, lifestyle imagery. Filter by "Placeholder" to see the seed-shipped images still awaiting real photos from the clinic. Use the Category field to group assets by the bucket they belong to (Homepage, Treatments, Doctors, etc.). Upload here once → reference everywhere via Upload fields on other collections.',
   },
   fields: [

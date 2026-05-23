@@ -9,7 +9,7 @@ export const BlogPosts: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'author', 'publishedAt', 'publishStatus'],
-    group: 'Journey',
+    group: '6 Journey',
     description: 'Journal articles. Each post renders at /blog-{slug} and appears as a card on /blog. Has title, lede, rich-text body, hero image, author, tags, publish status, per-post SEO.',
   },
   access: {

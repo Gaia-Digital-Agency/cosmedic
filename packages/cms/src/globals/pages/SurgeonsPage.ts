@@ -6,7 +6,7 @@ import { pageFields } from './_pageFields'
 export const SurgeonsPage: GlobalConfig = {
   slug: 'surgeons-page',
   admin: {
-    group: 'Doctors',
+    group: '3 Doctors',
     description: 'Editorial content for /surgeons (index of doctors). Doctor cards are rendered from the Surgeons collection.',
   },
   access: { read: publishedOrAuthed, update: isAuthenticated },

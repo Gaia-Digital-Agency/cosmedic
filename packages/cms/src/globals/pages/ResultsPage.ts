@@ -6,7 +6,7 @@ import { pageFields } from './_pageFields'
 export const ResultsPage: GlobalConfig = {
   slug: 'results-page',
   admin: {
-    group: 'Results',
+    group: '4 Results',
     description: 'Editorial content for /results: hero + body. The case grid is rendered from BeforeAfterCases collection.',
   },
   access: { read: publishedOrAuthed, update: isAuthenticated },

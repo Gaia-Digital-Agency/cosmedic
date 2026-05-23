@@ -9,7 +9,7 @@ export const PricingTiers: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'priceFromAud', 'isFeatured', 'sortOrder'],
-    group: 'Pricing',
+    group: '5 Pricing',
     description: 'Concierge package tiers (Sanctuary, Restorative, …) shown as the tier-cards section near the top of /pricing.',
   },
   access: {

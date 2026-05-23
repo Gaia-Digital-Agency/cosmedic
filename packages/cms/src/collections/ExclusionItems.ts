@@ -9,7 +9,7 @@ export const ExclusionItems: CollectionConfig = {
   admin: {
     useAsTitle: 'text',
     defaultColumns: ['text', 'scope', 'sortOrder'],
-    group: 'Treatments',
+    group: '2 Treatments',
     description: 'Curated "what is NOT included" line items shared across procedures. Procedures pick relevant ones via the Excluded relation. Editing a line here updates every procedure card that references it.',
   },
   access: {
