@@ -30,7 +30,7 @@
 | 5 | **C5** | Wire `Blog Page` global to `/blog` index hero + CmsExtraBlocks slot | `34ef42f` | ✅ shipped 2026-05-23 05:53 UTC | /blog 200; copy byte-identical (CMS seeded with EXACT hardcoded values, fallback retained) |
 | 6 | **C6a** | Home Page schema: add 9 A2 block fields (67 columns added via psql; renderer unchanged so site is byte-identical) | `pending` | in_progress | schema present, no seed/render change yet |
 | 7 | **C6b** | Home Page renderer: 9 section components read from CMS with hardcoded fallbacks | `4cb1bbc` | ✅ shipped 2026-05-23 06:18 UTC | /, /admin, /pricing, /blog all 200; CMS save/revalidate ok; /api/globals/home-page returns 9 block keys; rendered fallbacks byte-identical |
-| 8 | **C7** | Pricing Page schema + renderer: 3 A2 blocks (overview/footnote/insurance) | `pending` | in_progress | `/pricing` byte-identical (CMS fields empty → fallback to literal copy) |
+| 8 | **C7** | Pricing Page schema + renderer: 3 A2 blocks (overview/footnote/insurance) | `8be5b79` | ✅ shipped 2026-05-23 06:32 UTC | `/pricing` byte-identical (CMS empty → fallback); admin shows 3 new blocks; chapter opener kept hardcoded to avoid R5 drift with diverging CMS seed |
 | 9 | **C8** | Before/After full editorial wiring (description, alt, year, featured filter, surgeon byline) | — | pending | every B&A field rendered |
 | 10 | **C9a** | Procedures schema: add catalogue fields (catalogueGroup/mainCategory/subCategory + group-specific) + Postgres migration | — | pending | schema applied, owners corrected |
 | 11 | **C9b** | Data migration: 24 Machine + 34 Injectable + 43 BTL = 101 rows → new Procedures records; verify counts | — | pending | Procedures count = 142; data preserved |
@@ -97,4 +97,5 @@ Site-break (route returns 500 / blank / wrong content) OR admin-break (form won'
 [2026-05-23 05:53 UTC]  34ef42f  C5  Wire Blog Page global to /blog index hero + CmsExtraBlocks slot  /blog 200; copy byte-identical via CMS-seeded values + hardcoded fallback
 [2026-05-23 06:00 UTC]  693a6bb  C6a Home Page schema — 9 A2 block group fields (67 cols added via psql)  /admin home-page form shows 9 blocks; /api/globals/home-page returns block keys; renderer unchanged so / still byte-identical
 [2026-05-23 06:18 UTC]  4cb1bbc  C6b Home Page renderer — 9 section components read CMS with hardcoded fallbacks  /, /admin, /pricing, /blog 200; CMS save → revalidate {"ok":true}; rendered home byte-identical (CMS fields empty → fallback to literal copy)
+[2026-05-23 06:32 UTC]  8be5b79  C7  Pricing Page schema + renderer — 3 A2 blocks (overview/footnote/insurancePayment)  /, /admin, /pricing, /blog 200; revalidate ok; /api/globals/pricing-page returns 3 block keys; chapter opener kept hardcoded (CMS divergence — wired in later sync); footnote + insurance/payment fallback byte-identical
 ```
