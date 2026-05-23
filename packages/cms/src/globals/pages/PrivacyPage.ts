@@ -6,7 +6,7 @@ import { pageFields } from './_pageFields'
 export const PrivacyPage: GlobalConfig = {
   slug: 'privacy-page',
   admin: {
-    group: '1 Homepage',
+    group: 'Homepage',
     description: 'Editorial content for /privacy: hero + privacy policy body sections (Indonesian PDP Law + GDPR alignment).',
   },
   access: { read: publishedOrAuthed, update: isAuthenticated },

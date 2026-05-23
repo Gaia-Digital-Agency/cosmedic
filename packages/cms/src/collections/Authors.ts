@@ -7,7 +7,7 @@ export const Authors: CollectionConfig = {
   slug: 'authors',
   admin: {
     useAsTitle: 'name',
-    group: '6 Journey',
+    group: 'Journey',
     description: 'Blog post authors. Each author has a name, role, portrait, bio, and an optional link to a Surgeon record (when the author is one of the clinic\'s clinicians). Powers the byline + "About the author" callout on each /blog-{slug} page.',
   },
   access: {

@@ -6,7 +6,7 @@ import { apiWarningField } from '../lib/api-warning'
 export const SeoDefaults: GlobalConfig = {
   slug: 'seo-defaults',
   admin: {
-    group: '1 Homepage',
+    group: 'Homepage',
     description: 'Search-engine + crawler defaults: the title pattern used on every <title> tag, the /robots.txt content, the sitemap.xml base URL, and the homepage JSON-LD organization schema.',
   },
   access: { read: readPublic, update: isAuthenticated },

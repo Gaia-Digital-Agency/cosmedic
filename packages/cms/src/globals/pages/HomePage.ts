@@ -154,7 +154,7 @@ const placeBlock: Field = {
 export const HomePage: GlobalConfig = {
   slug: 'home-page',
   admin: {
-    group: '1 Homepage',
+    group: 'Homepage',
     description: 'Editorial content for / (home): hero chapter title, tagline, lede, hero image, composable body sections, plus 9 dedicated A2 section blocks (intro, treatments, pricingTeaser, surgeons, gallery, leadMagnet, journey, stories, place).',
   },
   access: { read: publishedOrAuthed, update: isAuthenticated },

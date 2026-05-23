@@ -6,7 +6,7 @@ import { apiWarningField } from '../lib/api-warning'
 export const Header: GlobalConfig = {
   slug: 'header',
   admin: {
-    group: '1 Homepage',
+    group: 'Homepage',
     description: 'Top navigation bar on every page: logo, primary nav items (Treatments, Doctors, Results, Pricing, Your Journey, Contact), mega-menu columns, EN|ID switcher.',
   },
   access: { read: readPublic, update: isAuthenticated },

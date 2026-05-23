@@ -6,7 +6,7 @@ import { apiWarningField } from '../lib/api-warning'
 export const FormDefaults: GlobalConfig = {
   slug: 'form-defaults',
   admin: {
-    group: '7 Contact',
+    group: 'Contact',
     description: 'Copy strings used by every enquiry form: field labels, placeholder hints, submit button text, success/error/rate-limit messages. Applies to the homepage hero quick-form AND the full /contact form.',
   },
   access: { read: readPublic, update: isAuthenticated },

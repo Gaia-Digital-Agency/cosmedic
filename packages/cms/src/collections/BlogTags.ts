@@ -8,7 +8,7 @@ export const BlogTags: CollectionConfig = {
   slug: 'blog-tags',
   admin: {
     useAsTitle: 'name',
-    group: '6 Journey',
+    group: 'Journey',
     description: 'Topic tags applied to blog posts. Rendered as filter chips on /blog and as the "Filed under" label on each post page.',
   },
   access: {

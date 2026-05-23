@@ -6,7 +6,7 @@ import { apiWarningField } from '../lib/api-warning'
 export const EndorsementMark: GlobalConfig = {
   slug: 'endorsement-mark',
   admin: {
-    group: '1 Homepage',
+    group: 'Homepage',
     description: '"Managed by BIMC Hospital" co-brand mark rendered next to the logo in BOTH the header and the footer on every page. Sourced from brand.pdf §I.',
   },
   access: { read: readPublic, update: isAuthenticated },
