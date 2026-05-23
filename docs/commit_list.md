@@ -29,7 +29,7 @@
 | 4 | **C4** | Add CmsSidebarExplainer (Collections vs Globals banner above admin nav) | `d7e2ee2` | ✅ shipped 2026-05-23 05:38 UTC | /admin, /, /pricing 200; admin-only |
 | 5 | **C5** | Wire `Blog Page` global to `/blog` index hero + CmsExtraBlocks slot | `34ef42f` | ✅ shipped 2026-05-23 05:53 UTC | /blog 200; copy byte-identical (CMS seeded with EXACT hardcoded values, fallback retained) |
 | 6 | **C6a** | Home Page schema: add 9 A2 block fields (67 columns added via psql; renderer unchanged so site is byte-identical) | `pending` | in_progress | schema present, no seed/render change yet |
-| 7 | **C6b** | Home Page renderer: 9 section components read from CMS with hardcoded fallbacks | `pending` | in_progress | `/` byte-identical (CMS fields empty → fallback) |
+| 7 | **C6b** | Home Page renderer: 9 section components read from CMS with hardcoded fallbacks | `4cb1bbc` | ✅ shipped 2026-05-23 06:18 UTC | /, /admin, /pricing, /blog all 200; CMS save/revalidate ok; /api/globals/home-page returns 9 block keys; rendered fallbacks byte-identical |
 | 8 | **C7** | Pricing Page schema + renderer: 3 A2 blocks (overview/footnote/insurance) | — | pending | `/pricing` byte-identical |
 | 9 | **C8** | Before/After full editorial wiring (description, alt, year, featured filter, surgeon byline) | — | pending | every B&A field rendered |
 | 10 | **C9a** | Procedures schema: add catalogue fields (catalogueGroup/mainCategory/subCategory + group-specific) + Postgres migration | — | pending | schema applied, owners corrected |
@@ -95,4 +95,6 @@ Site-break (route returns 500 / blank / wrong content) OR admin-break (form won'
 [2026-05-23 05:32 UTC]  bdcac0c  C3  Remove orphan Pages collection (Step 10 — DB table preserved)  /api/pages 404; /, /admin, /blog, /pricing 200; cms-only
 [2026-05-23 05:38 UTC]  d7e2ee2  C4  Add CmsSidebarExplainer banner above admin nav  /admin 200, /, /pricing 200; admin-only
 [2026-05-23 05:53 UTC]  34ef42f  C5  Wire Blog Page global to /blog index hero + CmsExtraBlocks slot  /blog 200; copy byte-identical via CMS-seeded values + hardcoded fallback
+[2026-05-23 06:00 UTC]  693a6bb  C6a Home Page schema — 9 A2 block group fields (67 cols added via psql)  /admin home-page form shows 9 blocks; /api/globals/home-page returns block keys; renderer unchanged so / still byte-identical
+[2026-05-23 06:18 UTC]  4cb1bbc  C6b Home Page renderer — 9 section components read CMS with hardcoded fallbacks  /, /admin, /pricing, /blog 200; CMS save → revalidate {"ok":true}; rendered home byte-identical (CMS fields empty → fallback to literal copy)
 ```
