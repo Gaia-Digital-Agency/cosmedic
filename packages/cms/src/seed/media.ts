@@ -120,7 +120,7 @@ async function walk(dir: string): Promise<string[]> {
 
 async function applyToCollection<T extends Record<string, MediaId>>(
   payload: Payload,
-  collection: 'surgeons' | 'before-after-cases' | 'disciplines' | 'recovery-stays' | 'pages',
+  collection: 'surgeons' | 'before-after-cases' | 'disciplines' | 'recovery-stays',
   whereSlug: string,
   patch: T,
 ): Promise<boolean> {
@@ -181,7 +181,11 @@ export async function runMediaSeed(payload: Payload): Promise<{
     } else if (cat === 'lifestyle') {
       const pageSlug = LIFESTYLE_TO_PAGE[slug]
       if (pageSlug) {
-        if (await applyToCollection(payload, 'pages', pageSlug, { heroImage: mediaId })) results.linked += 1
+        // After Phase C3, page hero images live on per-route Page Globals
+        // (e.g. home-page, journey-page, contact-page). The lifestyle linker
+        // is stubbed pending a Globals-aware rewrite — see Phase 10 imagery
+        // brief. For now, log and skip rather than throw.
+        payload.logger.info(`[seed-media] lifestyle slug=${slug} → ${pageSlug} Global heroImage (skipped — needs Globals-aware updater)`)
       } else if (/^villa\d+$/.test(slug)) {
         const idx = Number(slug.replace('villa', '')) - 1
         const stays = await payload.find({ collection: 'recovery-stays', limit: 50, depth: 0 })

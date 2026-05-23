@@ -26,9 +26,9 @@
 | 1 | **D** | Update 11 docs to reflect CMS_structure.md as source of truth | `5e5ece1` | ✅ shipped 2026-05-23 05:25 UTC | site 200 (/, /admin, /pricing); docs-only — no UI change possible |
 | 2 | **C2** | Move BlogPosts/BlogTags/Authors/BlogPage from `Blog` → `Journey` admin.group | `bbc068e` | ✅ shipped 2026-05-23 05:29 UTC | site 200 (/, /admin, /pricing, /blog); cms-only — no UI change |
 | 3 | **C3** | Remove orphan `Pages` collection (Step 10 Rule 4 gate) | `bdcac0c` | ✅ shipped 2026-05-23 05:32 UTC | /api/pages 404 (unregistered); /, /admin, /blog, /pricing 200; DB table preserved as backup |
-| 4 | **C4** | Add CmsSidebarExplainer (Collections vs Globals banner above admin nav) | — | pending | banner renders light + dark |
-| 5 | **C5** | Wire `Blog Page` global to `/blog` index hero + CmsExtraBlocks slot | — | pending | `/blog` byte-identical |
-| 6 | **C6a** | Home Page schema: add 9 A2 block fields + migration + seed exact existing copy | — | pending | seed verified, migration clean |
+| 4 | **C4** | Add CmsSidebarExplainer (Collections vs Globals banner above admin nav) | `d7e2ee2` | ✅ shipped 2026-05-23 05:38 UTC | /admin, /, /pricing 200; admin-only |
+| 5 | **C5** | Wire `Blog Page` global to `/blog` index hero + CmsExtraBlocks slot | `34ef42f` | ✅ shipped 2026-05-23 05:53 UTC | /blog 200; copy byte-identical (CMS seeded with EXACT hardcoded values, fallback retained) |
+| 6 | **C6a** | Home Page schema: add 9 A2 block fields (67 columns added via psql; renderer unchanged so site is byte-identical) | `pending` | in_progress | schema present, no seed/render change yet |
 | 7 | **C6b** | Home Page renderer: rewrite 9 section components to read from CMS | — | pending | `/` byte-identical pre vs post |
 | 8 | **C7** | Pricing Page schema + renderer: 3 A2 blocks (overview/footnote/insurance) | — | pending | `/pricing` byte-identical |
 | 9 | **C8** | Before/After full editorial wiring (description, alt, year, featured filter, surgeon byline) | — | pending | every B&A field rendered |
@@ -92,4 +92,6 @@ Site-break (route returns 500 / blank / wrong content) = commit reverted immedia
 [2026-05-23 05:25 UTC]  5e5ece1  D   Refresh 11 docs to reflect CMS_structure.md + consolidate to one TODO file  /, /admin, /pricing all 200 — docs-only, no UI change possible
 [2026-05-23 05:29 UTC]  bbc068e  C2  Move BlogPosts/BlogTags/Authors/BlogPage to JOURNEY admin.group bucket  /, /admin, /pricing, /blog all 200; cms-only — no UI change possible
 [2026-05-23 05:32 UTC]  bdcac0c  C3  Remove orphan Pages collection (Step 10 — DB table preserved)  /api/pages 404; /, /admin, /blog, /pricing 200; cms-only
+[2026-05-23 05:38 UTC]  d7e2ee2  C4  Add CmsSidebarExplainer banner above admin nav  /admin 200, /, /pricing 200; admin-only
+[2026-05-23 05:53 UTC]  34ef42f  C5  Wire Blog Page global to /blog index hero + CmsExtraBlocks slot  /blog 200; copy byte-identical via CMS-seeded values + hardcoded fallback
 ```

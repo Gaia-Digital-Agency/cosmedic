@@ -28,6 +28,10 @@ export const migrations = [
   {
     up: migration_20260522_072509_pages_to_globals.up,
     down: migration_20260522_072509_pages_to_globals.down,
-    name: '20260522_072509_pages_to_globals'
+    name: '20260522_072509_pages_to_globals',
   },
+  // 20260523_055554_phase_c6_homepage_a2: schema additions applied directly
+  // via psql (per docs/db_ops.md gotcha — payload migrate can't run because
+  // Drizzle wants to DROP orphan pages_blocks_* tables which C3 preserved
+  // as data backup). Migration registered in payload_migrations table.
 ];

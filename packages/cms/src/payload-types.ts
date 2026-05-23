@@ -89,7 +89,6 @@ export interface Config {
     'journey-steps': JourneyStep;
     'inclusion-items': InclusionItem;
     'exclusion-items': ExclusionItem;
-    pages: Page;
     enquiries: Enquiry;
     'payload-kv': PayloadKv;
     'payload-folders': FolderInterface;
@@ -125,7 +124,6 @@ export interface Config {
     'journey-steps': JourneyStepsSelect<false> | JourneyStepsSelect<true>;
     'inclusion-items': InclusionItemsSelect<false> | InclusionItemsSelect<true>;
     'exclusion-items': ExclusionItemsSelect<false> | ExclusionItemsSelect<true>;
-    pages: PagesSelect<false> | PagesSelect<true>;
     enquiries: EnquiriesSelect<false> | EnquiriesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
@@ -1707,244 +1705,6 @@ export interface BlogTag {
   createdAt: string;
 }
 /**
- * One record per URL that needs hand-crafted hero + body and isn't driven by a catalogue collection. Covers: / (home), /journey, /gallery, /stories, /press, /privacy, /contact, /video-consult, /pricing (hero text only — the table reads from PriceListItems). Each record controls: chapter title, tagline, lede, hero image, composable body sections, per-page SEO.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages".
- */
-export interface Page {
-  id: number;
-  /**
-   * Admin label only
-   */
-  title: string;
-  /**
-   * e.g. "home", "journey", "contact"
-   */
-  slug: string;
-  /**
-   * URL route, e.g. "/", "/journey", "/contact"
-   */
-  route: string;
-  chapterTitle?: {
-    a?: string | null;
-    b?: string | null;
-  };
-  tagline?: string | null;
-  lede?: string | null;
-  heroImage?: (number | null) | Media;
-  /**
-   * Composable body sections — pick from the block library.
-   */
-  sections?:
-    | (
-        | {
-            eyebrow?: string | null;
-            heading?: string | null;
-            body: {
-              root: {
-                type: string;
-                children: {
-                  type: any;
-                  version: number;
-                  [k: string]: unknown;
-                }[];
-                direction: ('ltr' | 'rtl') | null;
-                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-                indent: number;
-                version: number;
-              };
-              [k: string]: unknown;
-            };
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'richText';
-          }
-        | {
-            heading?: string | null;
-            columns?: ('2' | '3' | '4') | null;
-            images: {
-              image: number | Media;
-              caption?: string | null;
-              id?: string | null;
-            }[];
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'imageGrid';
-          }
-        | {
-            heading: string;
-            lede?: string | null;
-            primaryLabel?: string | null;
-            primaryHref?: string | null;
-            secondaryLabel?: string | null;
-            secondaryHref?: string | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'ctaBand';
-          }
-        | {
-            heading?: string | null;
-            items?:
-              | {
-                  /**
-                   * e.g. "28", "#1"
-                   */
-                  number: string;
-                  label: string;
-                  sourceNote?: string | null;
-                  id?: string | null;
-                }[]
-              | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'stats';
-          }
-        | {
-            heading?: string | null;
-            items?:
-              | {
-                  q: string;
-                  a: string;
-                  id?: string | null;
-                }[]
-              | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'faqAccordion';
-          }
-        | {
-            heading?: string | null;
-            filterDiscipline?: (number | null) | Discipline;
-            filterSubCategory?: (number | null) | SubCategory;
-            layout?: ('grid' | 'list' | 'featured') | null;
-            limit?: number | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'procedureList';
-          }
-        | {
-            heading?: string | null;
-            filterGroup?: ('all' | 'plastic-surgery' | 'aesthetic-medicine') | null;
-            layout?: ('strip' | 'grid') | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'surgeonList';
-          }
-        | {
-            heading?: string | null;
-            filterProcedure?: (number | null) | Procedure;
-            limit?: number | null;
-            featuredOnly?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'baGrid';
-          }
-        | {
-            heading?: string | null;
-            count?: number | null;
-            featuredOnly?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'testimonialList';
-          }
-        | {
-            heading?: string | null;
-            limit?: number | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'recoveryStayList';
-          }
-        | {
-            heading?: string | null;
-            limit?: number | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'pressMentionList';
-          }
-        | {
-            heading?: string | null;
-            lede?: string | null;
-            /**
-             * Recorded against any submission
-             */
-            sourceCta?: string | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'contactForm';
-          }
-        | {
-            heading?: string | null;
-            filterCategory?: ('all' | 'consult' | 'medical' | 'surgical' | 'recovery' | 'follow-up') | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'journeyStepList';
-          }
-        | {
-            heading?: string | null;
-            iframeUrl?: string | null;
-            html?: string | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'externalEmbed';
-          }
-        | {
-            kind?: ('info' | 'warning' | 'tip' | 'disclaimer') | null;
-            heading?: string | null;
-            body: {
-              root: {
-                type: string;
-                children: {
-                  type: any;
-                  version: number;
-                  [k: string]: unknown;
-                }[];
-                direction: ('ltr' | 'rtl') | null;
-                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-                indent: number;
-                version: number;
-              };
-              [k: string]: unknown;
-            };
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'notes';
-          }
-      )[]
-    | null;
-  /**
-   * Draft = saved but not visible on the live site. Published = visible. Scheduled = will go live at a future date.
-   */
-  publishStatus: 'draft' | 'published' | 'scheduled';
-  /**
-   * Per-record SEO overrides for THIS page. Anything left blank inherits from the Globals → SEO & Meta → SEO Defaults record.
-   */
-  seo?: {
-    /**
-     * <title> tag for this page only. Overrides the global title pattern when set.
-     */
-    title?: string | null;
-    /**
-     * <meta name="description"> for this page only. Used in search-engine snippets and OG/Twitter share previews when set.
-     */
-    description?: string | null;
-    /**
-     * Image used in social-share previews (Facebook, Twitter, LinkedIn, WhatsApp link preview) for this page only.
-     */
-    ogImage?: (number | null) | Media;
-    /**
-     * <link rel="canonical"> URL for this page. Leave blank to use the current URL.
-     */
-    canonical?: string | null;
-    /**
-     * Tick to add <meta name="robots" content="noindex,nofollow"> and tell search engines NOT to index this page.
-     */
-    noindex?: boolean | null;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
  * Incoming leads. Each row is a submission from the /contact form or the homepage hero quick-form. ADMIN-ONLY — never rendered on the public site. Public visitors can CREATE only; only logged-in staff can read/update. Never deleted (audit trail).
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2096,10 +1856,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'exclusion-items';
         value: number | ExclusionItem;
-      } | null)
-    | ({
-        relationTo: 'pages';
-        value: number | Page;
       } | null)
     | ({
         relationTo: 'enquiries';
@@ -2806,195 +2562,6 @@ export interface ExclusionItemsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages_select".
- */
-export interface PagesSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
-  route?: T;
-  chapterTitle?:
-    | T
-    | {
-        a?: T;
-        b?: T;
-      };
-  tagline?: T;
-  lede?: T;
-  heroImage?: T;
-  sections?:
-    | T
-    | {
-        richText?:
-          | T
-          | {
-              eyebrow?: T;
-              heading?: T;
-              body?: T;
-              id?: T;
-              blockName?: T;
-            };
-        imageGrid?:
-          | T
-          | {
-              heading?: T;
-              columns?: T;
-              images?:
-                | T
-                | {
-                    image?: T;
-                    caption?: T;
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        ctaBand?:
-          | T
-          | {
-              heading?: T;
-              lede?: T;
-              primaryLabel?: T;
-              primaryHref?: T;
-              secondaryLabel?: T;
-              secondaryHref?: T;
-              id?: T;
-              blockName?: T;
-            };
-        stats?:
-          | T
-          | {
-              heading?: T;
-              items?:
-                | T
-                | {
-                    number?: T;
-                    label?: T;
-                    sourceNote?: T;
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        faqAccordion?:
-          | T
-          | {
-              heading?: T;
-              items?:
-                | T
-                | {
-                    q?: T;
-                    a?: T;
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        procedureList?:
-          | T
-          | {
-              heading?: T;
-              filterDiscipline?: T;
-              filterSubCategory?: T;
-              layout?: T;
-              limit?: T;
-              id?: T;
-              blockName?: T;
-            };
-        surgeonList?:
-          | T
-          | {
-              heading?: T;
-              filterGroup?: T;
-              layout?: T;
-              id?: T;
-              blockName?: T;
-            };
-        baGrid?:
-          | T
-          | {
-              heading?: T;
-              filterProcedure?: T;
-              limit?: T;
-              featuredOnly?: T;
-              id?: T;
-              blockName?: T;
-            };
-        testimonialList?:
-          | T
-          | {
-              heading?: T;
-              count?: T;
-              featuredOnly?: T;
-              id?: T;
-              blockName?: T;
-            };
-        recoveryStayList?:
-          | T
-          | {
-              heading?: T;
-              limit?: T;
-              id?: T;
-              blockName?: T;
-            };
-        pressMentionList?:
-          | T
-          | {
-              heading?: T;
-              limit?: T;
-              id?: T;
-              blockName?: T;
-            };
-        contactForm?:
-          | T
-          | {
-              heading?: T;
-              lede?: T;
-              sourceCta?: T;
-              id?: T;
-              blockName?: T;
-            };
-        journeyStepList?:
-          | T
-          | {
-              heading?: T;
-              filterCategory?: T;
-              id?: T;
-              blockName?: T;
-            };
-        externalEmbed?:
-          | T
-          | {
-              heading?: T;
-              iframeUrl?: T;
-              html?: T;
-              id?: T;
-              blockName?: T;
-            };
-        notes?:
-          | T
-          | {
-              kind?: T;
-              heading?: T;
-              body?: T;
-              id?: T;
-              blockName?: T;
-            };
-      };
-  publishStatus?: T;
-  seo?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        ogImage?: T;
-        canonical?: T;
-        noindex?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "enquiries_select".
  */
 export interface EnquiriesSelect<T extends boolean = true> {
@@ -3586,7 +3153,7 @@ export interface SeoDefault {
   createdAt?: string | null;
 }
 /**
- * Editorial content for / (home): hero chapter title, tagline, lede, hero image, and composable body sections.
+ * Editorial content for / (home): hero chapter title, tagline, lede, hero image, composable body sections, plus 9 dedicated A2 section blocks (intro, treatments, pricingTeaser, surgeons, gallery, leadMagnet, journey, stories, place).
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "home-page".
@@ -3819,6 +3386,139 @@ export interface HomePage {
      * Tick to add <meta name="robots" content="noindex,nofollow"> and tell search engines NOT to index this page.
      */
     noindex?: boolean | null;
+  };
+  /**
+   * Intro section on /. "Our Approach" eyebrow + italic pull quote + 2-column body.
+   */
+  introBlock?: {
+    eyebrow?: string | null;
+    /**
+     * Plain text before the italic accent word
+     */
+    pullQuoteBefore?: string | null;
+    /**
+     * The italic accent word (e.g. "care")
+     */
+    pullQuoteAccent?: string | null;
+    /**
+     * Plain text after the italic accent word
+     */
+    pullQuoteAfter?: string | null;
+    col1?: string | null;
+    col2?: string | null;
+  };
+  /**
+   * Treatments preview section frame on / (above the 6 discipline cards).
+   */
+  treatmentsBlock?: {
+    eyebrow?: string | null;
+    /**
+     * Roman text part of H2
+     */
+    headingPart1?: string | null;
+    /**
+     * Italic accent part of H2
+     */
+    headingPart2?: string | null;
+    lede?: string | null;
+  };
+  /**
+   * Pricing teaser section frame on / (8 price rows + footnote).
+   */
+  pricingTeaserBlock?: {
+    eyebrow?: string | null;
+    headingPart1?: string | null;
+    headingPart2?: string | null;
+    lede?: string | null;
+    footnote?: string | null;
+    viewAllLabel?: string | null;
+    viewAllHref?: string | null;
+  };
+  /**
+   * Surgeons strip section frame on / (lead surgeon + associates).
+   */
+  surgeonsBlock?: {
+    eyebrow?: string | null;
+    leadSurgeonEyebrow?: string | null;
+    leadBody?: string | null;
+    leadStat1Label?: string | null;
+    leadStat1Value?: string | null;
+    leadStat2Label?: string | null;
+    leadStat2Value?: string | null;
+    leadStat3Label?: string | null;
+    leadStat3Value?: string | null;
+    leadCtaLabel?: string | null;
+    associatesEyebrow?: string | null;
+  };
+  /**
+   * Gallery (Before & After) teaser section frame on /.
+   */
+  galleryBlock?: {
+    eyebrow?: string | null;
+    headingPart1?: string | null;
+    headingPart2?: string | null;
+    lede?: string | null;
+    ctaLabel?: string | null;
+    ctaHref?: string | null;
+  };
+  /**
+   * Lead-magnet section on / (recovery guide cover + email-capture form).
+   */
+  leadMagnetBlock?: {
+    coverEyebrow?: string | null;
+    coverLine1?: string | null;
+    coverLine2?: string | null;
+    coverLine3?: string | null;
+    coverFoot1?: string | null;
+    coverFoot2?: string | null;
+    bodyEyebrow?: string | null;
+    headingPart1?: string | null;
+    headingAccent?: string | null;
+    lede?: string | null;
+    formPlaceholder?: string | null;
+    submitLabel?: string | null;
+    successHeading?: string | null;
+    successBody?: string | null;
+    fineprint?: string | null;
+  };
+  /**
+   * Journey teaser section on / (5-step preview).
+   */
+  journeyBlock?: {
+    eyebrow?: string | null;
+    headingPart1?: string | null;
+    headingAccent?: string | null;
+    ctaLabel?: string | null;
+    ctaHref?: string | null;
+  };
+  /**
+   * Stories teaser section on / (3 testimonial cards).
+   */
+  storiesBlock?: {
+    eyebrow?: string | null;
+    headingAccent?: string | null;
+    headingPart2?: string | null;
+    /**
+     * May contain inline link via Markdown
+     */
+    lede?: string | null;
+    ctaLabel?: string | null;
+    ctaHref?: string | null;
+  };
+  /**
+   * Place / "Recover in paradise" section on /. Lettered rows (A./B./C./D.) stay in code for now — editable list rolls in via Phase Q.
+   */
+  placeBlock?: {
+    eyebrow?: string | null;
+    headingPart1?: string | null;
+    headingAccent?: string | null;
+    body?: string | null;
+    /**
+     * One row per line. Format: "A. text body". Leave blank to use hardcoded fallback.
+     */
+    rowsText?: string | null;
+    ctaLabel?: string | null;
+    ctaHref?: string | null;
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -7334,6 +7034,109 @@ export interface HomePageSelect<T extends boolean = true> {
         ogImage?: T;
         canonical?: T;
         noindex?: T;
+      };
+  introBlock?:
+    | T
+    | {
+        eyebrow?: T;
+        pullQuoteBefore?: T;
+        pullQuoteAccent?: T;
+        pullQuoteAfter?: T;
+        col1?: T;
+        col2?: T;
+      };
+  treatmentsBlock?:
+    | T
+    | {
+        eyebrow?: T;
+        headingPart1?: T;
+        headingPart2?: T;
+        lede?: T;
+      };
+  pricingTeaserBlock?:
+    | T
+    | {
+        eyebrow?: T;
+        headingPart1?: T;
+        headingPart2?: T;
+        lede?: T;
+        footnote?: T;
+        viewAllLabel?: T;
+        viewAllHref?: T;
+      };
+  surgeonsBlock?:
+    | T
+    | {
+        eyebrow?: T;
+        leadSurgeonEyebrow?: T;
+        leadBody?: T;
+        leadStat1Label?: T;
+        leadStat1Value?: T;
+        leadStat2Label?: T;
+        leadStat2Value?: T;
+        leadStat3Label?: T;
+        leadStat3Value?: T;
+        leadCtaLabel?: T;
+        associatesEyebrow?: T;
+      };
+  galleryBlock?:
+    | T
+    | {
+        eyebrow?: T;
+        headingPart1?: T;
+        headingPart2?: T;
+        lede?: T;
+        ctaLabel?: T;
+        ctaHref?: T;
+      };
+  leadMagnetBlock?:
+    | T
+    | {
+        coverEyebrow?: T;
+        coverLine1?: T;
+        coverLine2?: T;
+        coverLine3?: T;
+        coverFoot1?: T;
+        coverFoot2?: T;
+        bodyEyebrow?: T;
+        headingPart1?: T;
+        headingAccent?: T;
+        lede?: T;
+        formPlaceholder?: T;
+        submitLabel?: T;
+        successHeading?: T;
+        successBody?: T;
+        fineprint?: T;
+      };
+  journeyBlock?:
+    | T
+    | {
+        eyebrow?: T;
+        headingPart1?: T;
+        headingAccent?: T;
+        ctaLabel?: T;
+        ctaHref?: T;
+      };
+  storiesBlock?:
+    | T
+    | {
+        eyebrow?: T;
+        headingAccent?: T;
+        headingPart2?: T;
+        lede?: T;
+        ctaLabel?: T;
+        ctaHref?: T;
+      };
+  placeBlock?:
+    | T
+    | {
+        eyebrow?: T;
+        headingPart1?: T;
+        headingAccent?: T;
+        body?: T;
+        rowsText?: T;
+        ctaLabel?: T;
+        ctaHref?: T;
       };
   updatedAt?: T;
   createdAt?: T;
