@@ -8,9 +8,10 @@ export const Procedures: CollectionConfig = {
   slug: 'procedures',
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'parentSubCategory', 'featuredRank', 'sortOrder'],
+    defaultColumns: ['name', 'catalogueGroup', 'mainCategory', 'parentSubCategory', 'featuredRank', 'sortOrder'],
     group: 'Treatments',
-    description: 'Editorial detail for each individual procedure (Rhinoplasty, Breast Augmentation, …). Renders as the accordion items on the relevant sub-category page (/treatment-{sub-slug}) and supplies pricing/cross-link data shown on /pricing rows.',
+    description:
+      'Single source of truth for ALL pricing (Phase C9). Holds the 41 editorial surgical procedures AND the 101 catalogue line items absorbed from MachineTreatments / InjectableProducts / HairRemovalAreas. Catalogue fields (catalogueGroup, mainCategory, subCategory, brand, productLine, manufacturer, fdaApproved, bodyZone, audienceTier, unit) drive grouping in the /pricing tables; editorial fields (description, sections, faqs, surgeonsCredentialed, etc.) only need to be populated on the editorial procedures. PRICING bucket points back to this collection — pricing edits land here.',
   },
   access: {
     read: readPublic,
@@ -27,8 +28,59 @@ export const Procedures: CollectionConfig = {
       admin: { description: 'Display name shown in the procedure accordion on /treatment-{sub-slug} AND on /pricing rows.' } },
     { name: 'shortName', type: 'text',
       admin: { description: 'Optional shorter label used on cards and nav where space is tight.' } },
-    { name: 'parentDiscipline', type: 'relationship', relationTo: 'disciplines', required: true,
-      admin: { description: 'Which top-level discipline this procedure belongs to. Required so the procedure can be located in the catalogue.' } },
+    // ── Catalogue hierarchy (Phase C9) ──────────────────────────────────
+    {
+      name: 'catalogueGroup',
+      type: 'select',
+      options: [
+        { label: 'Surgical', value: 'surgical' },
+        { label: 'Machine', value: 'machine' },
+        { label: 'Injection', value: 'injection' },
+        { label: 'BTL (Hair Removal)', value: 'btl' },
+      ],
+      admin: {
+        description:
+          'Drives which /pricing table this row appears in. surgical = full editorial; machine / injection / btl = catalogue-only line items.',
+      },
+    },
+    { name: 'mainCategory', type: 'text',
+      admin: { description: 'Main Category — e.g. "Face & Neck" (surgical), "Laser AFT Rejuvenation" (machine), "DERMAL FILLER" (injection), "Upper Body" (btl)' } },
+    { name: 'subCategory', type: 'text',
+      admin: { description: 'Optional 3rd-level grouping label inside Main Category. Distinct from the parentSubCategory relationship below — this is a free-text bucket for catalogue items without an editorial Sub Category entry.' } },
+    { name: 'unit', type: 'text',
+      admin: { description: 'e.g. "1 ml", "per unit", "per thread", "Face", "Half Arm"' } },
+    {
+      name: 'audienceTier',
+      type: 'select',
+      defaultValue: 'standard',
+      options: [
+        { label: 'Standard', value: 'standard' },
+        { label: 'BIMC Tourist', value: 'tourist' },
+        { label: 'BIMC Kitas + KTP', value: 'kitas_ktp' },
+        { label: 'Package', value: 'package' },
+      ],
+      admin: { description: 'Pricing tier for multi-tier rows (machine 3-tier).' },
+    },
+    { name: 'brand', type: 'text', admin: { description: 'Injection only — e.g. "Juvederm"' } },
+    { name: 'productLine', type: 'text', admin: { description: 'Injection only — e.g. "Volux"' } },
+    { name: 'manufacturer', type: 'text', admin: { description: 'Injection only — e.g. "Allergan"' } },
+    { name: 'fdaApproved', type: 'checkbox', defaultValue: false,
+      admin: { description: 'Injection only — FDA-approved badge.' } },
+    {
+      name: 'bodyZone',
+      type: 'select',
+      options: [
+        { label: 'Face', value: 'face' },
+        { label: 'Upper Body', value: 'upper-body' },
+        { label: 'Lower Body', value: 'lower-body' },
+        { label: 'Package', value: 'package' },
+        { label: 'Other BTL', value: 'other' },
+      ],
+      admin: { description: 'BTL only — body zone for hair removal grouping.' },
+    },
+    // ── Editorial relations (only populated on the 41 editorial procedures) ─
+    { name: 'parentDiscipline', type: 'relationship', relationTo: 'disciplines',
+      admin: { description: 'Which top-level discipline this procedure belongs to. Required for editorial procedures; optional for catalogue line items.' } },
     { name: 'parentSubCategory', type: 'relationship', relationTo: 'sub-categories',
       admin: { description: 'Which sub-category this procedure renders under. Drives which /treatment-{sub-slug} page lists this procedure in its accordion.' } },
     { name: 'description', type: 'richText',

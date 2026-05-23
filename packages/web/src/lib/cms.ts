@@ -145,6 +145,20 @@ export type Procedure = {
   slug: string
   name: string
   shortName?: string
+  // Catalogue hierarchy (Phase C9) — Procedures is now the single source of
+  // truth for ALL pricing rows on /pricing. Editorial procedures use the
+  // relations below; catalogue line items absorbed from MachineTreatments /
+  // InjectableProducts / HairRemovalAreas use the text fields here.
+  catalogueGroup?: 'surgical' | 'machine' | 'injection' | 'btl'
+  mainCategory?: string
+  subCategory?: string
+  unit?: string
+  audienceTier?: 'standard' | 'tourist' | 'kitas_ktp' | 'package'
+  brand?: string
+  productLine?: string
+  manufacturer?: string
+  fdaApproved?: boolean
+  bodyZone?: 'face' | 'upper-body' | 'lower-body' | 'package' | 'other'
   parentDiscipline?: number | Discipline
   parentSubCategory?: number | SubCategory
   description?: Lexical
