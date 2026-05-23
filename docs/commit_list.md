@@ -30,7 +30,7 @@
 | 5 | **C5** | Wire `Blog Page` global to `/blog` index hero + CmsExtraBlocks slot | `34ef42f` | ✅ shipped 2026-05-23 05:53 UTC | /blog 200; copy byte-identical (CMS seeded with EXACT hardcoded values, fallback retained) |
 | 6 | **C6a** | Home Page schema: add 9 A2 block fields (67 columns added via psql; renderer unchanged so site is byte-identical) | `pending` | in_progress | schema present, no seed/render change yet |
 | 7 | **C6b** | Home Page renderer: 9 section components read from CMS with hardcoded fallbacks | `4cb1bbc` | ✅ shipped 2026-05-23 06:18 UTC | /, /admin, /pricing, /blog all 200; CMS save/revalidate ok; /api/globals/home-page returns 9 block keys; rendered fallbacks byte-identical |
-| 8 | **C7** | Pricing Page schema + renderer: 3 A2 blocks (overview/footnote/insurance) | — | pending | `/pricing` byte-identical |
+| 8 | **C7** | Pricing Page schema + renderer: 3 A2 blocks (overview/footnote/insurance) | `pending` | in_progress | `/pricing` byte-identical (CMS fields empty → fallback to literal copy) |
 | 9 | **C8** | Before/After full editorial wiring (description, alt, year, featured filter, surgeon byline) | — | pending | every B&A field rendered |
 | 10 | **C9a** | Procedures schema: add catalogue fields (catalogueGroup/mainCategory/subCategory + group-specific) + Postgres migration | — | pending | schema applied, owners corrected |
 | 11 | **C9b** | Data migration: 24 Machine + 34 Injectable + 43 BTL = 101 rows → new Procedures records; verify counts | — | pending | Procedures count = 142; data preserved |

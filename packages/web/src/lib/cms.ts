@@ -474,6 +474,26 @@ export type CmsPage = {
     ctaLabel?: string
     ctaHref?: string
   }
+  // Phase C7 — pricing-page only.
+  overviewBlock?: {
+    eyebrow?: string
+    headingPart1?: string
+    headingPart2?: string
+    body?: string
+  }
+  footnoteBlock?: {
+    text?: string
+  }
+  insurancePaymentBlock?: {
+    insuranceEyebrow?: string
+    insuranceHeadingRoman?: string
+    insuranceHeadingItalic?: string
+    insuranceBody?: string
+    paymentEyebrow?: string
+    paymentHeadingRoman?: string
+    paymentHeadingItalic?: string
+    paymentTermsText?: string
+  }
 }
 
 /* ─── Global types ─────────────────────────────────────────────────────── */

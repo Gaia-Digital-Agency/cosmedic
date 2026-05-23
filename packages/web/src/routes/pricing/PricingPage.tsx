@@ -6,11 +6,13 @@ import { Mono, Eyebrow } from '@/components/primitives/Mono'
 import { TREATMENT_LIST, SUBCATEGORIES_BY_DISCIPLINE, IMG } from '@/content/seed'
 import { SUBCATEGORY_DATA } from '@/content/subcategory-data'
 import { ClinicCatalogueTable } from './ClinicCatalogueTable'
+import { useCms } from '@/lib/cms-context'
+import { findPageBySlug } from '@/lib/cms-adapters'
 
 const fmtIDR = (aud: number) =>
   'Rp ' + (Math.round((aud * 10500) / 50000) * 50000).toLocaleString('de-DE')
 
-const PAYMENT_TERMS: [string, string][] = [
+const DEFAULT_PAYMENT_TERMS: [string, string][] = [
   ['Deposit', '20% on confirmation'],
   ['Balance', 'On admission, by transfer'],
   ['Currencies', 'IDR, AUD, USD, EUR'],
@@ -19,7 +21,48 @@ const PAYMENT_TERMS: [string, string][] = [
   ['Finance', 'Available via partner lender'],
 ]
 
-export const PricingPage: React.FC = () => (
+function parsePaymentTerms(input?: string): [string, string][] {
+  if (!input) return DEFAULT_PAYMENT_TERMS
+  const lines = input
+    .split('\n')
+    .map((l) => l.trim())
+    .filter(Boolean)
+  if (lines.length === 0) return DEFAULT_PAYMENT_TERMS
+  return lines.map<[string, string]>((line) => {
+    const [k, ...rest] = line.split('|').map((s) => s.trim())
+    return [k || '•', rest.join(' | ') || '']
+  })
+}
+
+export const PricingPage: React.FC = () => {
+  const cms = useCms()
+  const page = cms ? findPageBySlug(cms, 'pricing') : undefined
+
+  const overview = page?.overviewBlock
+  const overviewHasContent = Boolean(
+    overview?.headingPart1 || overview?.headingPart2 || overview?.body,
+  )
+
+  const footnote =
+    page?.footnoteBlock?.text ||
+    'Prices indicative for international patients. AUD shown at 1 AUD ≈ Rp 10,500 (May 2026). Final quotes are tailored after consultation. Recovery stays, transfers, and twelve months of telehealth follow-up included on most surgical packages.'
+
+  const ip = page?.insurancePaymentBlock
+  const insuranceEyebrow = ip?.insuranceEyebrow || 'Insurance'
+  const insuranceHeadingRoman = ip?.insuranceHeadingRoman || 'Working'
+  const insuranceHeadingItalic = ip?.insuranceHeadingItalic || 'with insurers.'
+  const insuranceBodyParas = ip?.insuranceBody
+    ? ip.insuranceBody.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean)
+    : [
+        'Cosmetic surgery is rarely covered by health insurance. Reconstructive procedures may be — and where they are, we are happy to support your claim with full documentation, surgeon\'s reports, and itemised invoicing.',
+        'Travel insurance is recommended for every patient, and we work with two specialist medical-travel insurers — details supplied during consultation.',
+      ]
+  const paymentEyebrow = ip?.paymentEyebrow || 'Payment'
+  const paymentHeadingRoman = ip?.paymentHeadingRoman || 'Quiet,'
+  const paymentHeadingItalic = ip?.paymentHeadingItalic || 'considered terms.'
+  const paymentTerms = parsePaymentTerms(ip?.paymentTermsText)
+
+  return (
   <PageShell activePage="pricing">
     <ChapterOpener
       chapter="Chapter X — Pricing"
@@ -30,6 +73,30 @@ export const PricingPage: React.FC = () => (
       imageLabel="PRICING"
       breadcrumbs={[{ label: 'BIMC CosMedic', href: '/' }, { label: 'Pricing' }]}
     />
+
+    {overviewHasContent && (
+      <section className="page-section">
+        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+          <Reveal>
+            {overview?.eyebrow && <Eyebrow>{overview.eyebrow}</Eyebrow>}
+            {(overview?.headingPart1 || overview?.headingPart2) && (
+              <h2 className="section-title" style={{ marginTop: 16, marginBottom: 24 }}>
+                {overview?.headingPart1 && <span>{overview.headingPart1}</span>}
+                {overview?.headingPart1 && overview?.headingPart2 && ' '}
+                {overview?.headingPart2 && (
+                  <span className="italic">{overview.headingPart2}</span>
+                )}
+              </h2>
+            )}
+            {overview?.body && (
+              <p style={{ fontSize: 17, lineHeight: 1.65, color: 'var(--ink-80)', margin: 0 }}>
+                {overview.body}
+              </p>
+            )}
+          </Reveal>
+        </div>
+      </section>
+    )}
 
     <section className="page-section">
       <div style={{ maxWidth: 1280, margin: '0 auto' }}>
@@ -237,9 +304,7 @@ export const PricingPage: React.FC = () => (
             lineHeight: 1.55,
           }}
         >
-          Prices indicative for international patients. AUD shown at 1 AUD ≈ Rp 10,500 (May 2026).
-          Final quotes are tailored after consultation. Recovery stays, transfers, and twelve
-          months of telehealth follow-up included on most surgical packages.
+          {footnote}
         </p>
       </div>
     </section>
@@ -250,26 +315,30 @@ export const PricingPage: React.FC = () => (
       <div className="two-col">
         <Reveal>
           <div>
-            <Eyebrow>Insurance</Eyebrow>
+            <Eyebrow>{insuranceEyebrow}</Eyebrow>
             <h2 className="section-title" style={{ marginTop: 16, marginBottom: 24 }}>
-              Working <span className="italic">with insurers.</span>
+              {insuranceHeadingRoman} <span className="italic">{insuranceHeadingItalic}</span>
             </h2>
-            <p style={{ fontSize: 17, lineHeight: 1.65, color: 'var(--ink-80)', margin: '0 0 16px' }}>
-              Cosmetic surgery is rarely covered by health insurance. Reconstructive procedures
-              may be — and where they are, we are happy to support your claim with full
-              documentation, surgeon's reports, and itemised invoicing.
-            </p>
-            <p style={{ fontSize: 17, lineHeight: 1.65, color: 'var(--ink-80)', margin: '0 0 16px' }}>
-              Travel insurance is recommended for every patient, and we work with two specialist
-              medical-travel insurers — details supplied during consultation.
-            </p>
+            {insuranceBodyParas.map((para, i) => (
+              <p
+                key={i}
+                style={{
+                  fontSize: 17,
+                  lineHeight: 1.65,
+                  color: 'var(--ink-80)',
+                  margin: '0 0 16px',
+                }}
+              >
+                {para}
+              </p>
+            ))}
           </div>
         </Reveal>
         <Reveal delay={120}>
           <div>
-            <Eyebrow>Payment</Eyebrow>
+            <Eyebrow>{paymentEyebrow}</Eyebrow>
             <h2 className="section-title" style={{ marginTop: 16, marginBottom: 24 }}>
-              Quiet, <span className="italic">considered terms.</span>
+              {paymentHeadingRoman} <span className="italic">{paymentHeadingItalic}</span>
             </h2>
             <ul
               style={{
@@ -279,7 +348,7 @@ export const PricingPage: React.FC = () => (
                 borderTop: '1px solid var(--ink-20)',
               }}
             >
-              {PAYMENT_TERMS.map(([k, v], i) => (
+              {paymentTerms.map(([k, v], i) => (
                 <li
                   key={i}
                   style={{
@@ -307,4 +376,5 @@ export const PricingPage: React.FC = () => (
       </div>
     </section>
   </PageShell>
-)
+  )
+}
