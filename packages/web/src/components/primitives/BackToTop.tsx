@@ -21,6 +21,9 @@ export const BackToTop: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  // Phase N2: size + shadow shape match the WhatsApp FAB (.chat-fab) so
+  // the two buttons read as a paired chrome cluster. Colour identity stays
+  // brown/cream (matches the editorial theme); the WA FAB stays green.
   return (
     <button
       type="button"
@@ -30,8 +33,8 @@ export const BackToTop: React.FC = () => {
         position: 'fixed',
         right: 'clamp(16px, 3vw, 32px)',
         bottom: 'clamp(96px, 12vh, 140px)',
-        width: 44,
-        height: 44,
+        width: 54,
+        height: 54,
         borderRadius: '50%',
         border: '1px solid var(--accent)',
         background: 'var(--paper)',
@@ -40,7 +43,7 @@ export const BackToTop: React.FC = () => {
         alignItems: 'center',
         justifyContent: 'center',
         cursor: 'pointer',
-        boxShadow: visible ? '0 6px 18px rgba(31,27,22,0.18)' : 'none',
+        boxShadow: visible ? '0 8px 28px rgba(31,27,22,0.22)' : 'none',
         opacity: visible ? 1 : 0,
         transform: visible ? 'translateY(0)' : 'translateY(8px)',
         pointerEvents: visible ? 'auto' : 'none',
@@ -50,12 +53,12 @@ export const BackToTop: React.FC = () => {
       }}
     >
       <svg
-        width="16"
-        height="16"
+        width="20"
+        height="20"
         viewBox="0 0 16 16"
         fill="none"
         stroke="currentColor"
-        strokeWidth="1.8"
+        strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
         aria-hidden="true"
