@@ -37,10 +37,6 @@ import { BLOG_POSTS } from '../../../web/src/content/blog-data'
 
 import { plainTextToLexical, paragraphsToLexical } from './lexical'
 import {
-  parseSurgicalSheet,
-  parseInjectionSheet,
-  parseMachineSheet,
-  parseBtlSheet,
   parseFurtherInformation,
   slugify,
 } from './parse-pricelist'
@@ -399,160 +395,18 @@ export async function runContentSeed(payload: Payload): Promise<void> {
   }
   payload.logger.info(`[seed] procedures (editorial)=${Object.keys(procedureIdBySlug).length}`)
 
-  // ─── 7. PriceListItems — Surgical sheet + Surgical (2) sheet ─────────────
-  const surgical = [
-    ...parseSurgicalSheet('Surgical Procedures'),
-    ...parseSurgicalSheet('Surgical Procedures (2)'),
-  ]
-  // Dedupe by slug (the two surgical sheets are duplicates apart from a few faculty differences).
-  const seenSurgicalSlugs = new Set<string>()
-  const uniqueSurgical = surgical.filter((row: { slug: string }) => {
-    if (seenSurgicalSlugs.has(row.slug)) return false
-    seenSurgicalSlugs.add(row.slug)
-    return true
-  })
-
-  let plOrder = 0
-  for (const row of uniqueSurgical) {
-    // Try to match an editorial Procedure by slug ending
-    const matchedProcSlug = Object.keys(procedureIdBySlug).find((ps: string) => ps === slugify(row.name))
-    await upsert(payload, 'price-list-items', 'slug', row.slug, {
-      slug: row.slug,
-      sheet: 'surgical',
-      category: row.category,
-      name: row.name,
-      notes: row.notes ?? undefined,
-      audienceTier: 'standard',
-      priceIdr2025: row.priceIdr2025 ?? undefined,
-      priceAud2025: row.priceAud2025 ?? undefined,
-      priceIdr2026: row.priceIdr2026 ?? undefined,
-      priceAud2026: row.priceAud2026 ?? undefined,
-      featuredRank: row.featuredRank ?? undefined,
-      includesImplant: row.includesImplant,
-      linkedProcedure: matchedProcSlug ? procedureIdBySlug[matchedProcSlug] : undefined,
-      sortOrder: plOrder++,
-    })
-
-    // Backfill pricing onto matched editorial Procedure (xlsx is authoritative).
-    if (matchedProcSlug) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await (payload as any).update({
-        collection: 'procedures',
-        id: procedureIdBySlug[matchedProcSlug] as string,
-        data: {
-          pricing: {
-            priceIdr2025: row.priceIdr2025 ?? undefined,
-            priceAud2025: row.priceAud2025 ?? undefined,
-            priceIdr2026: row.priceIdr2026 ?? undefined,
-            priceAud2026: row.priceAud2026 ?? undefined,
-            priceNotes: row.notes ?? undefined,
-            displayYear: '2026',
-          },
-          featuredRank: row.featuredRank ?? undefined,
-          includesImplant: row.includesImplant,
-        },
-        depth: 0,
-      })
-    }
-  }
-  payload.logger.info(`[seed] price-list-items (surgical)=${uniqueSurgical.length}`)
-
-  // ─── 8. InjectableProducts + InjectionSheet PriceListItems ──────────────
-  const injection = parseInjectionSheet('Injection')
-  let injOrder = 0
-  const productCategoryMap: Record<string, string> = {
-    'BOTOX': 'botulinum-toxin',
-    'DERMAL FILLER': 'filler',
-    'SKIN BOOSTER': 'skin-booster',
-    'COLLAGEN STIMULATOR': 'collagen-stimulator',
-    'BIO REMODELING': 'bio-remodeling',
-    'HGH ANTI AGING': 'hgh',
-    'ANTI AGING THREAD LIFT': 'thread-lift',
-    'MESOTHERAPHY': 'mesotherapy',
-  }
-  for (const row of injection) {
-    const sectionUpper = (row.section || '').toUpperCase()
-    const category = productCategoryMap[sectionUpper] || 'filler'
-    const productSlug = slugify(row.name)
-    if (row.priceIdr != null || row.priceIdrRangeLow != null) {
-      await upsert(payload, 'injectable-products', 'slug', productSlug, {
-        slug: productSlug,
-        name: row.name,
-        category,
-        unit: row.unit || '1 ml',
-        priceIdr: row.priceIdr ?? row.priceIdrRangeLow ?? undefined,
-        notes: row.priceIdrRangeHigh ? 'Range up to IDR ' + row.priceIdrRangeHigh.toLocaleString('de-DE') : undefined,
-        sortOrder: injOrder++,
-      })
-    }
-    await upsert(payload, 'price-list-items', 'slug', 'injection-' + row.slug, {
-      slug: 'injection-' + row.slug,
-      sheet: 'injection',
-      category: row.section,
-      name: row.name,
-      unit: row.unit,
-      audienceTier: 'standard',
-      priceIdr2025: row.priceIdr ?? row.priceIdrRangeLow ?? undefined,
-      priceIdr2026: row.priceIdr ?? row.priceIdrRangeLow ?? undefined,
-      priceIdrRangeLow: row.priceIdrRangeLow ?? undefined,
-      priceIdrRangeHigh: row.priceIdrRangeHigh ?? undefined,
-      sortOrder: injOrder,
-    })
-  }
-  payload.logger.info(`[seed] injectable-products + injection price-list-items=${injection.length}`)
-
-  // ─── 9. MachineTreatments + Machine sheet PriceListItems ────────────────
-  const machine = parseMachineSheet()
-  let machOrder = 0
-  for (const row of machine) {
-    await upsert(payload, 'machine-treatments', 'slug', row.slug, {
-      slug: row.slug,
-      machineName: row.machineName,
-      area: row.area,
-      pricing: {
-        standardIdr: row.standardIdr ?? undefined,
-        kitasKtpIdr: row.kitasKtpIdr ?? undefined,
-        packageIdr: row.packageIdr ?? undefined,
-      },
-      sortOrder: machOrder++,
-    })
-    await upsert(payload, 'price-list-items', 'slug', 'machine-' + row.slug, {
-      slug: 'machine-' + row.slug,
-      sheet: 'machine',
-      category: row.machineName,
-      name: row.area,
-      unit: row.area,
-      audienceTier: 'standard',
-      priceIdr2025: row.standardIdr ?? undefined,
-      priceIdr2026: row.standardIdr ?? undefined,
-      sortOrder: machOrder,
-    })
-  }
-  payload.logger.info(`[seed] machine-treatments=${machine.length}`)
-
-  // ─── 10. HairRemovalAreas + BTL sheet PriceListItems ────────────────────
-  const btl = parseBtlSheet()
-  let btlOrder = 0
-  for (const row of btl) {
-    await upsert(payload, 'hair-removal-areas', 'slug', row.slug, {
-      slug: row.slug,
-      area: row.area,
-      bodyZone: row.bodyZone,
-      priceIdr: row.priceIdr ?? undefined,
-      sortOrder: btlOrder++,
-    })
-    await upsert(payload, 'price-list-items', 'slug', 'btl-' + row.slug, {
-      slug: 'btl-' + row.slug,
-      sheet: 'btl',
-      category: row.bodyZone,
-      name: row.area,
-      audienceTier: 'standard',
-      priceIdr2025: row.priceIdr ?? undefined,
-      priceIdr2026: row.priceIdr ?? undefined,
-      sortOrder: btlOrder,
-    })
-  }
-  payload.logger.info(`[seed] hair-removal-areas=${btl.length}`)
+  // ─── 7-10. PriceListItems / InjectableProducts / MachineTreatments /
+  //          HairRemovalAreas seed steps retired in Phase C9c.
+  // Catalogue rows now live on Procedures (catalogueGroup: surgical |
+  // machine | injection | btl). The historical seed code was kept in git
+  // history; for fresh installs the existing xlsx-import seed creates only
+  // the surgical Procedures. The 24 + 34 + 43 = 101 catalogue rows are
+  // migrated separately via:
+  //   NODE_ENV=production pnpm --filter @cosmedic/cms exec \
+  //     tsx src/seed/migrate-pricing-to-procedures.ts
+  // which reads the xlsx via parse-pricelist.ts and upserts directly into
+  // Procedures using deterministic slugs (machine-… / injection-… / btl-…).
+  payload.logger.info(`[seed] catalogue (machine/injection/btl) — see migrate-pricing-to-procedures.ts`)
 
   // ─── 11. BeforeAfterCases ───────────────────────────────────────────────
   let baOrder = 0

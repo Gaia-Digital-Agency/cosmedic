@@ -196,67 +196,10 @@ export type Procedure = {
   relatedProcedures?: Array<number | { id: number; slug?: string; name?: string }>
 }
 
-export type PriceListItem = {
-  id: number
-  slug: string
-  sheet: 'surgical' | 'non-surgical' | 'machine' | 'injection' | 'btl'
-  category?: string
-  subCategory?: string
-  name: string
-  unit?: string
-  audienceTier?: string
-  notes?: string
-  priceIdr2025?: number
-  priceAud2025?: number
-  priceIdr2026?: number
-  priceAud2026?: number
-  priceIdrRangeLow?: number
-  priceIdrRangeHigh?: number
-  featuredRank?: number
-  includesImplant?: boolean
-  sortOrder?: number
-  /** Optional relation to the matching Procedure record (for "Learn more"). */
-  linkedProcedure?: { id: number; slug?: string; name?: string } | number | null
-  linkedInjectableProduct?: { id: number; slug?: string; name?: string } | number | null
-  linkedMachineTreatment?: { id: number; slug?: string; machineName?: string; area?: string } | number | null
-}
-
-export type InjectableProduct = {
-  id: number
-  slug: string
-  name: string
-  brand?: string
-  productLine?: string
-  category: string
-  unit?: string
-  priceIdr?: number
-  priceAud?: number
-  notes?: string
-  /** Free-text manufacturer name (rendered as small caption on pricing rows). */
-  manufacturer?: string
-  /** True when the product carries FDA clearance — surfaced as a small badge. */
-  fdaApproved?: boolean
-}
-
-export type MachineTreatment = {
-  id: number
-  slug: string
-  machineName: string
-  area: string
-  pricing?: { standardIdr?: number; kitasKtpIdr?: number; packageIdr?: number }
-  notes?: string
-  /** Optional relation to the matching Procedure record. */
-  linkedProcedure?: { id: number; slug?: string; name?: string } | number | null
-}
-
-export type HairRemovalArea = {
-  id: number
-  slug: string
-  area: string
-  bodyZone: 'face' | 'upper-body' | 'lower-body' | 'package' | 'other'
-  priceIdr?: number
-  notes?: string
-}
+// Phase C9c — PriceListItem / InjectableProduct / MachineTreatment /
+// HairRemovalArea types removed. All catalogue rows now live on Procedures
+// (catalogueGroup: surgical | machine | injection | btl) and the renderer
+// in /pricing reads from cms.procedures only.
 
 export type BeforeAfterCase = {
   id: number
@@ -620,10 +563,6 @@ export type CmsCache = {
   disciplines: Discipline[]
   subCategories: SubCategory[]
   procedures: Procedure[]
-  priceListItems: PriceListItem[]
-  injectableProducts: InjectableProduct[]
-  machineTreatments: MachineTreatment[]
-  hairRemovalAreas: HairRemovalArea[]
   beforeAfterCases: BeforeAfterCase[]
   stories: Story[]
   pressMentions: PressMention[]
@@ -655,10 +594,6 @@ const EMPTY_CACHE: CmsCache = {
   disciplines: [],
   subCategories: [],
   procedures: [],
-  priceListItems: [],
-  injectableProducts: [],
-  machineTreatments: [],
-  hairRemovalAreas: [],
   beforeAfterCases: [],
   stories: [],
   pressMentions: [],
@@ -747,7 +682,6 @@ async function doLoad(): Promise<CmsCache> {
   try {
     const [
       surgeons, disciplines, subCategories, procedures,
-      priceListItems, injectableProducts, machineTreatments, hairRemovalAreas,
       beforeAfterCases, stories, pressMentions, awards, recoveryStays,
       pricingTiers, blogPosts, authors, journeySteps, inclusions, exclusions, pages,
       settings, header, footer, floatingChrome, brandStats, endorsementMark,
@@ -756,11 +690,7 @@ async function doLoad(): Promise<CmsCache> {
       fetchAll<Surgeon>('surgeons', 100, 1),
       fetchAll<Discipline>('disciplines'),
       fetchAll<SubCategory>('sub-categories'),
-      fetchAll<Procedure>('procedures', 200, 2),
-      fetchAll<PriceListItem>('price-list-items', 500, 1),
-      fetchAll<InjectableProduct>('injectable-products'),
-      fetchAll<MachineTreatment>('machine-treatments'),
-      fetchAll<HairRemovalArea>('hair-removal-areas'),
+      fetchAll<Procedure>('procedures', 500, 2),
       fetchAll<BeforeAfterCase>('before-after-cases'),
       fetchAll<Story>('stories'),
       fetchAll<PressMention>('press-mentions'),
@@ -787,7 +717,6 @@ async function doLoad(): Promise<CmsCache> {
       loaded: true,
       loadedAt: Date.now(),
       surgeons, disciplines, subCategories, procedures,
-      priceListItems, injectableProducts, machineTreatments, hairRemovalAreas,
       beforeAfterCases, stories, pressMentions, awards, recoveryStays,
       pricingTiers, blogPosts, authors, journeySteps, inclusions, exclusions, pages,
       settings, header, footer, floatingChrome, brandStats, endorsementMark,

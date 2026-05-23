@@ -11,10 +11,11 @@ import { Surgeons } from './collections/Surgeons'
 import { Disciplines } from './collections/Disciplines'
 import { SubCategories } from './collections/SubCategories'
 import { Procedures } from './collections/Procedures'
-import { PriceListItems } from './collections/PriceListItems'
-import { InjectableProducts } from './collections/InjectableProducts'
-import { MachineTreatments } from './collections/MachineTreatments'
-import { HairRemovalAreas } from './collections/HairRemovalAreas'
+// Phase C9c — PriceListItems / InjectableProducts / MachineTreatments /
+// HairRemovalAreas collections retired. All catalogue rows now live on
+// Procedures (catalogueGroup: surgical | machine | injection | btl). The
+// underlying DB tables are intentionally preserved as a one-commit-rollback
+// data backup; remove them only after sign-off on the unified /pricing.
 import { BeforeAfterCases } from './collections/BeforeAfterCases'
 import { Stories } from './collections/Stories'
 import { PressMentions } from './collections/PressMentions'
@@ -107,10 +108,6 @@ export default buildConfig({
     Disciplines,
     SubCategories,
     Procedures,
-    PriceListItems,
-    InjectableProducts,
-    MachineTreatments,
-    HairRemovalAreas,
     BeforeAfterCases,
     Stories,
     PressMentions,

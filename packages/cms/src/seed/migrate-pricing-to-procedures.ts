@@ -44,7 +44,8 @@ async function upsertProcedure(payload: Payload, slug: string, data: Record<stri
   }
   const created = await payload.create({
     collection: 'procedures',
-    data: { slug, ...data },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data: { slug, ...data } as any,
   })
   return { id: created.id, action: 'created' as const }
 }

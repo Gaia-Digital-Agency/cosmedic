@@ -13,7 +13,6 @@ import type {
   Story,
   SubCategory,
   Surgeon,
-  HairRemovalArea,
   RecoveryStay,
   PressMention,
   PricingTier,
@@ -364,9 +363,6 @@ export const blogPostsSorted = (cms: CmsCache): BlogPost[] =>
     (a, b) =>
       new Date(b.publishedAt || 0).getTime() - new Date(a.publishedAt || 0).getTime(),
   )
-
-export const hairRemovalAreasSorted = (cms: CmsCache): HairRemovalArea[] =>
-  [...cms.hairRemovalAreas].sort((a, b) => 0)
 
 export const proceduresForSubCategory = (cms: CmsCache, subId: number): Procedure[] =>
   cms.procedures
