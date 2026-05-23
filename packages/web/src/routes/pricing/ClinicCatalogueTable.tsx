@@ -2,44 +2,59 @@ import React from 'react'
 import { Reveal } from '@/components/primitives/Reveal'
 import { Mono, Eyebrow } from '@/components/primitives/Mono'
 import { useCms } from '@/lib/cms-context'
-import type { PriceListItem, MachineTreatment, InjectableProduct, HairRemovalArea } from '@/lib/cms'
+import type { Procedure } from '@/lib/cms'
 
 /**
- * Renders the full clinic price catalogue from CMS — all 149 PriceListItems +
- * 24 MachineTreatments + 34 InjectableProducts + 43 HairRemovalAreas — sourced
- * from docs/pricelist.xlsx during Phase 6 seed. Every cell is editable in
- * Cosmedic CMS by the clinic team; this component re-fetches via /api/revalidate
- * on save.
+ * Phase C9c — the clinic catalogue table now reads from a single source:
+ * the Procedures collection, filtered by `catalogueGroup`. The renderer
+ * preserves the previous 4-section layout (Surgical / Machine / Injection /
+ * BTL) but every row is now a Procedure, so editors edit pricing in ONE
+ * place.
  *
- * Visual approach matches the editorial pricing block above: hairline-divided
- * rows, serif headings, mono price labels. Subtle visual cue (eyebrow label)
- * differentiates this from the editorial procedures section.
+ * Machine rows are emitted from C9b as one Procedure per audience tier
+ * (standard / kitas_ktp / package). This renderer collapses them back to
+ * one row per machine + area, showing the standard IDR price and listing
+ * the other tiers in notes / badge — matching the prior visual shape.
  */
+type CatalogueGroup = NonNullable<Procedure['catalogueGroup']>
 
-const fmtIdr = (n: number | undefined): string => {
+const fmtIdr = (n: number | undefined | null): string => {
   if (n == null) return '—'
   return 'Rp ' + n.toLocaleString('de-DE')
 }
 
-const fmtAud = (n: number | undefined): string => {
+const fmtAud = (n: number | undefined | null): string => {
   if (n == null) return ''
   return 'AUD ' + n.toLocaleString('en-AU')
 }
 
-const SHEET_LABEL: Record<PriceListItem['sheet'], { title: string; subtitle: string }> = {
-  'surgical': { title: 'Surgical Procedures', subtitle: '2025 & 2026 pricing · IDR + AUD' },
-  'non-surgical': { title: 'Non-Surgical Treatments', subtitle: 'Injectables, lasers, skin' },
-  'machine': { title: 'Machine Treatments', subtitle: 'Erbium · AFT · Q-switched · Pixel' },
-  'injection': { title: 'Injectable Catalogue', subtitle: 'Named brand pricing per ml / unit' },
-  'btl': { title: 'BTL Hair Removal', subtitle: 'Per area · per session' },
+const SHEET_LABEL: Record<CatalogueGroup, { title: string; subtitle: string }> = {
+  surgical: { title: 'Surgical Procedures', subtitle: '2025 & 2026 pricing · IDR + AUD' },
+  machine: { title: 'Machine Treatments', subtitle: 'Erbium · AFT · Q-switched · Pixel' },
+  injection: { title: 'Injectable Catalogue', subtitle: 'Named brand pricing per ml / unit' },
+  btl: { title: 'BTL Hair Removal', subtitle: 'Per area · per session' },
 }
 
-const HAIR_ZONE_LABEL: Record<HairRemovalArea['bodyZone'], string> = {
-  'face': 'Face',
+const HAIR_ZONE_LABEL: Record<NonNullable<Procedure['bodyZone']>, string> = {
+  face: 'Face',
   'upper-body': 'Upper Body',
   'lower-body': 'Lower Body',
-  'package': 'Packages',
-  'other': 'Other BTL',
+  package: 'Packages',
+  other: 'Other BTL',
+}
+
+function labelInjectableCategory(c: string | undefined): string {
+  switch (c) {
+    case 'botulinum-toxin': return 'Botulinum Toxin'
+    case 'filler': return 'Dermal Fillers'
+    case 'skin-booster': return 'Skin Boosters'
+    case 'collagen-stimulator': return 'Collagen Stimulators'
+    case 'bio-remodeling': return 'Bio-Remodeling'
+    case 'thread-lift': return 'Thread Lift'
+    case 'mesotherapy': return 'Mesotherapy'
+    case 'hgh': return 'HGH'
+    default: return c || 'Other'
+  }
 }
 
 function groupBy<T, K extends string>(items: T[], key: (t: T) => K): Record<K, T[]> {
@@ -52,29 +67,6 @@ function groupBy<T, K extends string>(items: T[], key: (t: T) => K): Record<K, T
   return out as Record<K, T[]>
 }
 
-// Helper — formats a relation field (number-id or hydrated object) into a
-// caption string and optional href. Used for linkedProcedure / linkedInjectable
-// / linkedMachineTreatment cross-references on pricing rows.
-type LinkedRef =
-  | { id: number; slug?: string; name?: string; machineName?: string; area?: string }
-  | number
-  | null
-  | undefined
-
-function describeLink(ref: LinkedRef, kind: 'procedure' | 'injectable' | 'machine'): { label: string; href?: string } | null {
-  if (!ref || typeof ref === 'number') return null
-  const name =
-    ref.name ||
-    (ref.machineName && ref.area ? `${ref.machineName} — ${ref.area}` : ref.machineName) ||
-    null
-  if (!name) return null
-  const prefix = kind === 'procedure' ? 'procedure' : kind === 'injectable' ? 'injectable' : 'machine'
-  // No /procedure-X /injectable-X /machine-X routes yet — surface as a label
-  // without href so the data is visible and editors can confirm relations.
-  // Future: wire href to a real detail route when those pages ship.
-  return { label: name, href: undefined, _kind: prefix } as { label: string; href?: string }
-}
-
 const TableRow: React.FC<{
   name: string
   notes?: string
@@ -83,12 +75,9 @@ const TableRow: React.FC<{
   priceRange?: { low: number; high: number }
   badge?: string
   featured?: boolean
-  linkedProcedure?: LinkedRef
-  linkedInjectable?: LinkedRef
-  linkedMachine?: LinkedRef
   manufacturer?: string
   fdaApproved?: boolean
-}> = ({ name, notes, priceIdr, priceAud, priceRange, badge, featured, linkedProcedure, linkedInjectable, linkedMachine, manufacturer, fdaApproved }) => (
+}> = ({ name, notes, priceIdr, priceAud, priceRange, badge, featured, manufacturer, fdaApproved }) => (
   <div
     style={{
       display: 'grid',
@@ -118,25 +107,30 @@ const TableRow: React.FC<{
         <Mono style={{ fontSize: 10, color: 'var(--accent-deep)' }}>{badge}</Mono>
       ) : null}
       {fdaApproved ? (
-        <Mono style={{ fontSize: 9, color: 'var(--accent-deep)', border: '1px solid var(--accent)', padding: '1px 6px', borderRadius: 2 }}>FDA</Mono>
+        <Mono
+          style={{
+            fontSize: 9,
+            color: 'var(--accent-deep)',
+            border: '1px solid var(--accent)',
+            padding: '1px 6px',
+            borderRadius: 2,
+          }}
+        >
+          FDA
+        </Mono>
       ) : null}
       {manufacturer ? (
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--ink-60)', letterSpacing: '0.08em' }}>{manufacturer}</span>
+        <span
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 10,
+            color: 'var(--ink-60)',
+            letterSpacing: '0.08em',
+          }}
+        >
+          {manufacturer}
+        </span>
       ) : null}
-      {(() => {
-        const proc = describeLink(linkedProcedure, 'procedure')
-        const inj = describeLink(linkedInjectable, 'injectable')
-        const mach = describeLink(linkedMachine, 'machine')
-        const parts = [proc, inj, mach].filter(Boolean) as { label: string; href?: string }[]
-        if (parts.length === 0) return null
-        return (
-          <span style={{ display: 'inline-flex', gap: 8, fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--ink-40)', letterSpacing: '0.14em', textTransform: 'uppercase', flexBasis: '100%', marginTop: 2 }}>
-            {parts.map((p, i) => (
-              <span key={i}>→ {p.label}</span>
-            ))}
-          </span>
-        )
-      })()}
     </div>
     <p
       style={{
@@ -152,34 +146,76 @@ const TableRow: React.FC<{
     </p>
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 3 }}>
       {priceRange ? (
-        <>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '0.18em', color: 'var(--accent-deep)', whiteSpace: 'nowrap' }}>
-            {fmtIdr(priceRange.low)} – {fmtIdr(priceRange.high)}
-          </span>
-        </>
+        <span
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 11,
+            letterSpacing: '0.18em',
+            color: 'var(--accent-deep)',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {fmtIdr(priceRange.low)} – {fmtIdr(priceRange.high)}
+        </span>
       ) : priceIdr != null ? (
         <>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '0.18em', color: 'var(--accent-deep)', whiteSpace: 'nowrap' }}>
+          <span
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 11,
+              letterSpacing: '0.18em',
+              color: 'var(--accent-deep)',
+              whiteSpace: 'nowrap',
+            }}
+          >
             {fmtIdr(priceIdr)}
           </span>
           {priceAud != null ? (
-            <span style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: 13, color: 'var(--ink-60)' }}>
+            <span
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontStyle: 'italic',
+                fontSize: 13,
+                color: 'var(--ink-60)',
+              }}
+            >
               ≈ {fmtAud(priceAud)}
             </span>
           ) : null}
         </>
       ) : (
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '0.18em', color: 'var(--ink-60)' }}>On request</span>
+        <span
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 11,
+            letterSpacing: '0.18em',
+            color: 'var(--ink-60)',
+          }}
+        >
+          On request
+        </span>
       )}
     </div>
   </div>
 )
 
-const CategoryGroup: React.FC<{ heading: string; children: React.ReactNode }> = ({ heading, children }) => (
+const CategoryGroup: React.FC<{ heading: string; children: React.ReactNode }> = ({
+  heading,
+  children,
+}) => (
   <div style={{ marginBottom: 32 }}>
     <Reveal delay={40}>
       <div style={{ padding: '20px 0 10px', borderBottom: '1px solid var(--ink-20)' }}>
-        <h3 style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 400, fontSize: 26, margin: 0, letterSpacing: '-0.01em' }}>
+        <h3
+          style={{
+            fontFamily: 'var(--font-serif)',
+            fontStyle: 'italic',
+            fontWeight: 400,
+            fontSize: 26,
+            margin: 0,
+            letterSpacing: '-0.01em',
+          }}
+        >
           {heading}
         </h3>
       </div>
@@ -188,13 +224,31 @@ const CategoryGroup: React.FC<{ heading: string; children: React.ReactNode }> = 
   </div>
 )
 
-const SheetSection: React.FC<{ sheet: PriceListItem['sheet']; children: React.ReactNode }> = ({ sheet, children }) => (
+const SheetSection: React.FC<{ group: CatalogueGroup; children: React.ReactNode }> = ({
+  group,
+  children,
+}) => (
   <div style={{ marginBottom: 96 }}>
     <Reveal>
-      <div style={{ paddingBottom: 24, borderBottom: '1px solid var(--ink-20)', marginBottom: 28 }}>
-        <Eyebrow>{SHEET_LABEL[sheet].subtitle}</Eyebrow>
-        <h2 style={{ fontFamily: 'var(--font-serif)', fontWeight: 300, fontSize: 48, margin: '12px 0 0', letterSpacing: '-0.02em', lineHeight: 1 }}>
-          {SHEET_LABEL[sheet].title}
+      <div
+        style={{
+          paddingBottom: 24,
+          borderBottom: '1px solid var(--ink-20)',
+          marginBottom: 28,
+        }}
+      >
+        <Eyebrow>{SHEET_LABEL[group].subtitle}</Eyebrow>
+        <h2
+          style={{
+            fontFamily: 'var(--font-serif)',
+            fontWeight: 300,
+            fontSize: 48,
+            margin: '12px 0 0',
+            letterSpacing: '-0.02em',
+            lineHeight: 1,
+          }}
+        >
+          {SHEET_LABEL[group].title}
         </h2>
       </div>
     </Reveal>
@@ -204,18 +258,70 @@ const SheetSection: React.FC<{ sheet: PriceListItem['sheet']; children: React.Re
 
 export const ClinicCatalogueTable: React.FC = () => {
   const cms = useCms()
-  if (!cms || !cms.loaded) {
-    return null
+  if (!cms || !cms.loaded) return null
+
+  const procs = [...cms.procedures].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
+
+  // ── Surgical: group by mainCategory (xlsx legacy) or parentSubCategory name
+  const surgical = procs.filter((p) => p.catalogueGroup === 'surgical')
+  const surgicalByCategory = groupBy(surgical, (p) => {
+    if (p.mainCategory) return p.mainCategory
+    const ps = p.parentSubCategory
+    if (ps && typeof ps !== 'number' && ps.title) return ps.title
+    return 'Other'
+  })
+
+  // ── Machine: collapse audience-tier rows back to one row per machine+area.
+  // Key by mainCategory + subCategory + name. Each group picks the standard
+  // tier as the displayed row; non-standard tiers populate notes / badge.
+  const machineRows = procs.filter((p) => p.catalogueGroup === 'machine')
+  const machineByKey = new Map<string, Procedure[]>()
+  for (const m of machineRows) {
+    const k = `${m.mainCategory || ''}::${m.subCategory || ''}::${m.name}`
+    const arr = machineByKey.get(k) || []
+    arr.push(m)
+    machineByKey.set(k, arr)
   }
+  type CollapsedMachine = {
+    mainCategory: string
+    subCategory: string
+    name: string
+    standardIdr?: number
+    kitasKtpIdr?: number
+    packageIdr?: number
+    sortOrder?: number
+  }
+  const collapsedMachine: CollapsedMachine[] = []
+  for (const arr of machineByKey.values()) {
+    const first = arr[0]
+    const out: CollapsedMachine = {
+      mainCategory: first.mainCategory || '',
+      subCategory: first.subCategory || '',
+      name: first.name,
+      sortOrder: first.sortOrder,
+    }
+    for (const r of arr) {
+      const price = r.pricing?.priceIdr2026 ?? r.pricing?.priceIdr2025
+      if (r.audienceTier === 'standard') out.standardIdr = price ?? out.standardIdr
+      else if (r.audienceTier === 'kitas_ktp') out.kitasKtpIdr = price ?? out.kitasKtpIdr
+      else if (r.audienceTier === 'package') out.packageIdr = price ?? out.packageIdr
+      else if (out.standardIdr == null) out.standardIdr = price ?? undefined
+    }
+    collapsedMachine.push(out)
+  }
+  const machineByMachine = groupBy(collapsedMachine, (m) => m.mainCategory || 'Other')
 
-  const surgical = cms.priceListItems
-    .filter((p) => p.sheet === 'surgical')
-    .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
-  const surgicalByCategory = groupBy(surgical, (p) => (p.category || 'Other') as string)
+  // ── Injection
+  const injection = procs.filter((p) => p.catalogueGroup === 'injection')
+  const injectionByCategory = groupBy(injection, (p) => labelInjectableCategory(p.mainCategory))
 
-  const machineByMachine = groupBy(cms.machineTreatments, (m) => m.machineName)
-  const injectionByCategory = groupBy(cms.injectableProducts, (i) => labelInjectableCategory(i.category))
-  const btlByZone = groupBy(cms.hairRemovalAreas, (h) => HAIR_ZONE_LABEL[h.bodyZone])
+  // ── BTL
+  const btl = procs.filter((p) => p.catalogueGroup === 'btl')
+  const btlByZone = groupBy(btl, (p) =>
+    p.bodyZone ? HAIR_ZONE_LABEL[p.bodyZone] : 'Other BTL',
+  )
+
+  const totalCatalogueRows = surgical.length + collapsedMachine.length + injection.length + btl.length
 
   return (
     <section className="page-section" style={{ paddingTop: 0, paddingBottom: 80 }}>
@@ -234,64 +340,87 @@ export const ClinicCatalogueTable: React.FC = () => {
             <h2 className="section-title" style={{ marginTop: 16, marginBottom: 12 }}>
               The full <span className="italic">clinic catalogue.</span>
             </h2>
-            <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: 16, color: 'var(--ink-60)', margin: 0, maxWidth: 720, marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.55 }}>
+            <p
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontStyle: 'italic',
+                fontSize: 16,
+                color: 'var(--ink-60)',
+                margin: 0,
+                maxWidth: 720,
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                lineHeight: 1.55,
+              }}
+            >
               Every line item below is edited in Cosmedic CMS by the clinic team and sourced from
-              our 2025/2026 price list. Surgical, non-surgical, machine, injection, and BTL hair-removal
-              services — {cms.priceListItems.length}+ items in total.
+              our 2025/2026 price list. Surgical, machine, injection, and BTL hair-removal services
+              — {totalCatalogueRows}+ items in total.
             </p>
           </div>
         </Reveal>
 
-        {/* Surgical (already shown above editorially; included for parity + clinic-truth) */}
-        <SheetSection sheet="surgical">
+        {/* Surgical */}
+        <SheetSection group="surgical">
           {Object.entries(surgicalByCategory).map(([cat, rows]) => (
             <CategoryGroup key={cat} heading={cat}>
-              {rows.map((p) => (
-                <TableRow
-                  key={p.id}
-                  name={p.name}
-                  notes={p.notes}
-                  priceIdr={p.priceIdr2026 ?? p.priceIdr2025}
-                  priceAud={p.priceAud2026 ?? p.priceAud2025}
-                  badge={p.featuredRank ? `Top ${p.featuredRank}` : p.includesImplant ? 'Includes implant' : undefined}
-                  featured={Boolean(p.featuredRank)}
-                  linkedProcedure={p.linkedProcedure}
-                  linkedInjectable={p.linkedInjectableProduct}
-                  linkedMachine={p.linkedMachineTreatment}
-                />
-              ))}
+              {rows.map((p) => {
+                const priceIdr = p.pricing?.priceIdr2026 ?? p.pricing?.priceIdr2025
+                const priceAud = p.pricing?.priceAud2026 ?? p.pricing?.priceAud2025
+                const range =
+                  p.pricing?.priceIdrRangeLow && p.pricing?.priceIdrRangeHigh
+                    ? { low: p.pricing.priceIdrRangeLow, high: p.pricing.priceIdrRangeHigh }
+                    : undefined
+                return (
+                  <TableRow
+                    key={p.id}
+                    name={p.name}
+                    notes={p.pricing?.priceNotes || p.unit}
+                    priceIdr={priceIdr}
+                    priceAud={priceAud}
+                    priceRange={range}
+                    badge={
+                      p.featuredRank
+                        ? `Top ${p.featuredRank}`
+                        : p.includesImplant
+                        ? 'Includes implant'
+                        : undefined
+                    }
+                    featured={Boolean(p.featuredRank)}
+                  />
+                )
+              })}
             </CategoryGroup>
           ))}
         </SheetSection>
 
-        {/* Machine Treatments — three-tier pricing flattened here to standard tier */}
-        <SheetSection sheet="machine">
-          {Object.entries(machineByMachine).map(([machine, areas]) => (
+        {/* Machine */}
+        <SheetSection group="machine">
+          {Object.entries(machineByMachine).map(([machine, rows]) => (
             <CategoryGroup key={machine} heading={machine}>
-              {(areas as MachineTreatment[]).map((m) => (
+              {(rows as CollapsedMachine[]).map((m, i) => (
                 <TableRow
-                  key={m.id}
-                  name={m.area}
-                  notes={m.pricing?.kitasKtpIdr ? `Kitas + KTP: ${fmtIdr(m.pricing.kitasKtpIdr)}` : undefined}
-                  priceIdr={m.pricing?.standardIdr}
-                  badge={m.pricing?.packageIdr ? `Package: ${fmtIdr(m.pricing.packageIdr)}` : undefined}
-                  linkedProcedure={m.linkedProcedure}
+                  key={`${m.mainCategory}-${m.subCategory}-${i}`}
+                  name={m.subCategory || m.name}
+                  notes={m.kitasKtpIdr ? `Kitas + KTP: ${fmtIdr(m.kitasKtpIdr)}` : undefined}
+                  priceIdr={m.standardIdr}
+                  badge={m.packageIdr ? `Package: ${fmtIdr(m.packageIdr)}` : undefined}
                 />
               ))}
             </CategoryGroup>
           ))}
         </SheetSection>
 
-        {/* Injectables — products grouped by category */}
-        <SheetSection sheet="injection">
+        {/* Injectables */}
+        <SheetSection group="injection">
           {Object.entries(injectionByCategory).map(([cat, prods]) => (
             <CategoryGroup key={cat} heading={cat}>
-              {(prods as InjectableProduct[]).map((p) => (
+              {(prods as Procedure[]).map((p) => (
                 <TableRow
                   key={p.id}
                   name={p.name}
-                  notes={[p.unit, p.notes].filter(Boolean).join(' · ')}
-                  priceIdr={p.priceIdr}
+                  notes={[p.unit, p.pricing?.priceNotes].filter(Boolean).join(' · ')}
+                  priceIdr={p.pricing?.priceIdr2026 ?? p.pricing?.priceIdr2025}
                   badge={p.brand}
                   manufacturer={p.manufacturer}
                   fdaApproved={p.fdaApproved}
@@ -301,12 +430,17 @@ export const ClinicCatalogueTable: React.FC = () => {
           ))}
         </SheetSection>
 
-        {/* BTL Hair Removal */}
-        <SheetSection sheet="btl">
-          {Object.entries(btlByZone).map(([zone, areas]) => (
+        {/* BTL */}
+        <SheetSection group="btl">
+          {Object.entries(btlByZone).map(([zone, rows]) => (
             <CategoryGroup key={zone} heading={zone}>
-              {(areas as HairRemovalArea[]).map((h) => (
-                <TableRow key={h.id} name={h.area} notes={h.notes} priceIdr={h.priceIdr} />
+              {(rows as Procedure[]).map((p) => (
+                <TableRow
+                  key={p.id}
+                  name={p.name}
+                  notes={p.pricing?.priceNotes}
+                  priceIdr={p.pricing?.priceIdr2026 ?? p.pricing?.priceIdr2025}
+                />
               ))}
             </CategoryGroup>
           ))}
@@ -334,8 +468,10 @@ export const ClinicCatalogueTable: React.FC = () => {
                 }}
               >
                 Consultation fee: <strong>{fmtIdr(cms.consultationPolicy.feeIdr)}</strong>
-                {cms.consultationPolicy.feeAud ? ` (≈ ${fmtAud(cms.consultationPolicy.feeAud)})` : ''}.{' '}
-                {cms.consultationPolicy.waiverConditionText}
+                {cms.consultationPolicy.feeAud
+                  ? ` (≈ ${fmtAud(cms.consultationPolicy.feeAud)})`
+                  : ''}
+                . {cms.consultationPolicy.waiverConditionText}
               </p>
             </div>
           </Reveal>
@@ -343,18 +479,4 @@ export const ClinicCatalogueTable: React.FC = () => {
       </div>
     </section>
   )
-}
-
-function labelInjectableCategory(c: string): string {
-  switch (c) {
-    case 'botulinum-toxin': return 'Botulinum Toxin'
-    case 'filler': return 'Dermal Fillers'
-    case 'skin-booster': return 'Skin Boosters'
-    case 'collagen-stimulator': return 'Collagen Stimulators'
-    case 'bio-remodeling': return 'Bio-Remodeling'
-    case 'thread-lift': return 'Thread Lift'
-    case 'mesotherapy': return 'Mesotherapy'
-    case 'hgh': return 'HGH'
-    default: return c
-  }
 }
