@@ -4,7 +4,15 @@ import { ChapterOpener } from '@/components/primitives/ChapterOpener'
 import { Reveal } from '@/components/primitives/Reveal'
 import { Img } from '@/components/primitives/Img'
 import { Eyebrow } from '@/components/primitives/Mono'
+import { StatsRow } from '@/components/primitives/StatsRow'
 import { TREATMENT_LIST, TREATMENT_IMG, IMG } from '@/content/seed'
+
+const TREATMENTS_STATS = [
+  { number: '28', label: 'Years in Bali' },
+  { number: '2,400+', label: 'Procedures yearly' },
+  { number: '8', label: 'Specialists on faculty' },
+  { number: '96%', label: 'Patient satisfaction' },
+]
 
 export const TreatmentsIndex: React.FC = () => (
   <PageShell activePage="treatments">
@@ -36,7 +44,7 @@ export const TreatmentsIndex: React.FC = () => (
       <div className="treatment-index">
         {TREATMENT_LIST.map((t, i) => (
           <Reveal key={t.slug} delay={i * 60} y={20}>
-            <a href={`/treatment-${t.slug}`} className="treatment-row" style={{ color: 'inherit' }}>
+            <a href={`/treatments/${t.slug}`} className="treatment-row" style={{ color: 'inherit' }}>
               <div className="ti-image">
                 <Img src={TREATMENT_IMG(t.slug)} fallbackLabel={t.t.toUpperCase()} fallbackHue={t.hue} alt="" />
               </div>
@@ -58,22 +66,6 @@ export const TreatmentsIndex: React.FC = () => (
       </div>
     </section>
 
-    <div className="stats-row">
-      {(
-        [
-          ['28', 'Years in Bali'],
-          ['2,400+', 'Procedures yearly'],
-          ['8', 'Specialists on faculty'],
-          ['96%', 'Patient satisfaction'],
-        ] as [string, string][]
-      ).map(([n, l], i) => (
-        <Reveal key={i} delay={i * 80}>
-          <div className="stat-block">
-            <span className="stat-num">{n}</span>
-            <span className="stat-label">{l}</span>
-          </div>
-        </Reveal>
-      ))}
-    </div>
+    <StatsRow stats={TREATMENTS_STATS} variant="page-row" />
   </PageShell>
 )

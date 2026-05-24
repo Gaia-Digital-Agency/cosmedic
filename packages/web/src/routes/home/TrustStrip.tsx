@@ -1,5 +1,6 @@
 import React from 'react'
 import { useCms } from '@/lib/cms-context'
+import { StatsRow } from '@/components/primitives/StatsRow'
 
 const FALLBACK_STATS = [
   { number: '28', label: 'Years in practice' },
@@ -11,14 +12,5 @@ const FALLBACK_STATS = [
 export const TrustStrip: React.FC = () => {
   const cms = useCms()
   const stats = cms?.brandStats?.stats?.length ? cms.brandStats.stats : FALLBACK_STATS
-  return (
-    <section className="trust-strip trust-strip-stats">
-      {stats.map((s, i) => (
-        <div key={i} className="ts-stat">
-          <span className="ts-num">{s.number}</span>
-          <span className="mono">{s.label}</span>
-        </div>
-      ))}
-    </section>
-  )
+  return <StatsRow stats={stats} variant="trust-strip" />
 }
