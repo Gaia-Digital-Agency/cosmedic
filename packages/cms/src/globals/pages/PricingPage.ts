@@ -66,7 +66,7 @@ const insurancePaymentBlock: Field = {
 export const PricingPage: GlobalConfig = {
   slug: 'pricing-page',
   admin: {
-    group: 'Pricing',
+    group: 'e. Pricing',
     description:
       'Editorial content for /pricing: hero (chapter / title / lede / heroImage) plus 3 A2 section blocks (overview, footnote, insurancePayment). The discipline price list and the full clinic catalogue table are data-driven from Procedures + PriceListItems.',
   },

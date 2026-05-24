@@ -9,7 +9,7 @@ export const JourneySteps: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'dayLabel', 'category', 'sortOrder'],
-    group: 'Journey',
+    group: 'f. Journey',
     description: 'Patient-journey steps shown as the timeline on /journey AND reused as the "Recovery timeline" block on procedure detail. Each step has a day label, title, body, and category.',
   },
   access: {

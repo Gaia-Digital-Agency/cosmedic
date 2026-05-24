@@ -6,7 +6,7 @@ import { pageFields } from './_pageFields'
 export const TreatmentsPage: GlobalConfig = {
   slug: 'treatments-page',
   admin: {
-    group: 'Treatments',
+    group: 'b. Treatments',
     description: 'Editorial content for /treatments (index of disciplines). Discipline cards are rendered from the Disciplines collection.',
   },
   access: { read: publishedOrAuthed, update: isAuthenticated },

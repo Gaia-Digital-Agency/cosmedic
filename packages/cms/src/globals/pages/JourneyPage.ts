@@ -6,7 +6,7 @@ import { pageFields } from './_pageFields'
 export const JourneyPage: GlobalConfig = {
   slug: 'journey-page',
   admin: {
-    group: 'Journey',
+    group: 'f. Journey',
     description: 'Editorial content for /journey: hero + body. The 6-step process is rendered from JourneySteps.',
   },
   access: { read: publishedOrAuthed, update: isAuthenticated },

@@ -7,7 +7,7 @@ export const VideoConsultPage: GlobalConfig = {
   slug: 'video-consult-page',
   dbName: 'vid_consult_pg',
   admin: {
-    group: 'Contact',
+    group: 'g. Contact',
     description: 'Editorial content for /video-consult: hero + body. Pre-travel encrypted video consultation landing page.',
   },
   access: { read: publishedOrAuthed, update: isAuthenticated },

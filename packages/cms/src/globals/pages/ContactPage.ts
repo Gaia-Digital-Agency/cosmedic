@@ -6,7 +6,7 @@ import { pageFields } from './_pageFields'
 export const ContactPage: GlobalConfig = {
   slug: 'contact-page',
   admin: {
-    group: 'Contact',
+    group: 'g. Contact',
     description: 'Editorial content for /contact: hero + body. Clinic info (address/hours/phone) lives on the Settings global; enquiry form behaviour on FormDefaults.',
   },
   access: { read: publishedOrAuthed, update: isAuthenticated },

@@ -9,7 +9,7 @@ export const SubCategories: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'parent', 'slug', 'sortOrder'],
-    group: 'Treatments',
+    group: 'b. Treatments',
     description: 'The 22 sub-categories nested under disciplines (e.g. Face / Body / Breast under Surgical). Each renders at /treatments/{slug} AND fills the second level of the Treatments mega-menu under its parent discipline.',
   },
   access: {
