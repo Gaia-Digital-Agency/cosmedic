@@ -6,6 +6,9 @@ import { findPageBySlug } from '@/lib/cms-adapters'
 
 export const LeadMagnet: React.FC = () => {
   const [submitted, setSubmitted] = useState(false)
+  const [email, setEmail] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const [errorMsg, setErrorMsg] = useState('')
   const cms = useCms()
   const block = (cms ? findPageBySlug(cms, 'home') : undefined)?.leadMagnetBlock
 
@@ -69,13 +72,48 @@ export const LeadMagnet: React.FC = () => {
           ) : (
             <form
               className="lead-magnet-form"
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault()
-                setSubmitted(true)
+                if (submitting) return
+                setSubmitting(true)
+                setErrorMsg('')
+                try {
+                  const res = await fetch('/api/enquiry', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      name: 'Newsletter Signup',
+                      email,
+                      message: 'Lead-magnet form: requested The Bali Recovery Guide PDF.',
+                      sourcePage: '/',
+                      sourceCta: 'lead-magnet-newsletter',
+                    }),
+                  })
+                  const body = await res.json()
+                  if (res.ok && body.ok) {
+                    setSubmitted(true)
+                    setEmail('')
+                  } else {
+                    setErrorMsg('Sorry — something went wrong. Please try again or email us directly.')
+                  }
+                } catch {
+                  setErrorMsg('Sorry — could not reach the server. Please try again.')
+                } finally {
+                  setSubmitting(false)
+                }
               }}
             >
-              <input type="email" placeholder={formPlaceholder} required />
-              <button type="submit">{submitLabel}</button>
+              <input
+                type="email"
+                placeholder={formPlaceholder}
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <button type="submit" disabled={submitting}>
+                {submitting ? 'Sending…' : submitLabel}
+              </button>
+              {errorMsg && <p style={{ marginTop: 8, color: '#a04040', fontSize: 13 }}>{errorMsg}</p>}
             </form>
           )}
           <p className="lead-magnet-fine">{fineprint}</p>

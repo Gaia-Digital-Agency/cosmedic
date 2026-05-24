@@ -19,6 +19,8 @@ export const VideoConsultPage: React.FC = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [errorMsg, setErrorMsg] = useState('')
 
   useEffect(() => {
     setDays(buildDays())
@@ -28,7 +30,44 @@ export const VideoConsultPage: React.FC = () => {
     if (proc) setTopic('Not sure yet')
   }, [])
 
-  const canSubmit = Boolean(selectedDay && selectedTime && name && email)
+  const canSubmit = Boolean(selectedDay && selectedTime && name && email) && !submitting
+
+  const handleBookingSubmit = async (): Promise<void> => {
+    if (submitting) return
+    setSubmitting(true)
+    setErrorMsg('')
+    const dayStr = selectedDay ? `${selectedDay.dow} ${selectedDay.day} ${selectedDay.mon}` : '(no date)'
+    const timeStr = selectedTime || '(no time)'
+    const lines = [
+      `Video consult booking — ${dayStr} at ${timeStr} (${tz})`,
+      topic ? `Topic: ${topic}` : '',
+      prefillProc ? `Pre-filled procedure: ${prefillProc}` : '',
+    ].filter(Boolean)
+    try {
+      const res = await fetch('/api/enquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+          treatmentInterestText: prefillProc || topic || '',
+          message: lines.join('\n'),
+          sourcePage: '/video-consult',
+          sourceCta: 'video-consult-booking',
+        }),
+      })
+      const body = await res.json()
+      if (res.ok && body.ok) {
+        setSubmitted(true)
+      } else {
+        setErrorMsg('Sorry — could not submit your booking. Please try again or email us directly.')
+      }
+    } catch {
+      setErrorMsg('Sorry — could not reach the server. Please try again.')
+    } finally {
+      setSubmitting(false)
+    }
+  }
 
   return (
     <PageShell activePage="contact" hideCTA>
@@ -79,8 +118,13 @@ export const VideoConsultPage: React.FC = () => {
                 setEmail={setEmail}
                 prefillProc={prefillProc}
                 canSubmit={canSubmit}
-                onSubmit={() => setSubmitted(true)}
+                onSubmit={handleBookingSubmit}
               />
+              {errorMsg && (
+                <p style={{ marginTop: 16, color: '#a04040', fontSize: 14, textAlign: 'center' }}>
+                  {errorMsg}
+                </p>
+              )}
             </div>
           )}
         </div>
