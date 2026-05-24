@@ -212,26 +212,28 @@ diff /tmp/contact-before.html /tmp/contact-after.html  # must be empty
 
 ### R2.1 — CMS schema: 10 new Globals, 8 label renames, 3 new fields on Footer
 
+Items a–l are directly editable. Items m–r are view-only mirrors (suffix `-View`) — each owns only the section eyebrow / heading / lede / CTA label; the cards/data are pulled from the source Bucket.
+
 | Item | Action | Slug (Payload) | Fields |
 |---|---|---|---|
-| **a. Main** | Rename existing `home-page` Global label. Strip section editorial fields (move to b, k, m, n). | `home-page` (unchanged) | title, slug, route, publishStatus, sections, seo group |
+| **a. Main** | Rename existing `home-page` Global label. Strip section editorial fields (move to b, e, g, h). | `home-page` (unchanged) | title, slug, route, publishStatus, sections, seo group |
 | **b. Hero** | **New** Global | `home-hero` | chapter, title, lede, heroImage, breadcrumbLabel, quickFormLabelsOverride |
 | **c. Header** | Rename `header` Global label only | `header` (unchanged) | (no field changes) |
 | **d. Footer** | Rename `footer` Global label + **add 3 new fields** | `footer` (unchanged) | existing + `managementLine` text, `legalEntityLine` text, `designerLine` text |
-| **e. Treatments-Teaser** | **New** Global | `home-treatments-teaser` | eyebrow, heading, lede, ctaLabel, ctaHref |
-| **f. Pricing-Teaser** | **New** Global | `home-pricing-teaser` | eyebrow, heading, lede, footnote, ctaLabel, ctaHref |
-| **g. Surgeons-Teaser** | **New** Global | `home-surgeons-teaser` | eyebrow, heading, lede, leadSurgeonLabel, leadSurgeonRef (relationship → Surgeons), ctaLabel, ctaHref |
-| **h. Gallery-Teaser** | **New** Global | `home-gallery-teaser` | eyebrow, heading, lede, ctaLabel, ctaHref |
-| **i. Journey-Teaser** | **New** Global | `home-journey-teaser` | eyebrow, heading, lede, ctaLabel, ctaHref |
-| **j. Stories-Teaser** | **New** Global | `home-stories-teaser` | eyebrow, heading, lede, ctaLabel, ctaHref |
-| **k. Intro** | **New** Global | `home-intro` | pullQuotePre, pullQuoteAccent, pullQuotePost, col1Body (richText), col2Body (richText) |
-| **l. Trust-Strip** | Rename `brand-stats` Global label only | `brand-stats` (unchanged) | (no field changes — already holds stat tiles) |
-| **m. Lead-Magnet** | **New** Global | `home-lead-magnet` | coverTitle, coverFooter, bodyEyebrow, bodyHeading, bodyLede, formLabels group, successMessage |
-| **n. Place** | **New** Global | `home-place` | eyebrow, heading, body, rows array (4 rows: A/B/C/D + text) |
-| **o. Floating-CTA** | Rename `floating-chrome` Global label only | `floating-chrome` (unchanged) | (no field changes) |
-| **p. Endorsement** | Rename `endorsement-mark` Global label only | `endorsement-mark` (unchanged) | (no field changes) |
-| **q. SEO-Defaults** | Rename `seo-defaults` Global label only | `seo-defaults` (unchanged) | (no field changes) |
-| **r. Settings** | Rename `settings` Global label only | `settings` (unchanged) | (no field changes — note: this is the source for clinic identity used by g. Contact + d. Footer + o. Floating-CTA) |
+| **e. Intro** | **New** Global | `home-intro` | pullQuotePre, pullQuoteAccent, pullQuotePost, col1Body (richText), col2Body (richText) |
+| **f. Trust-Strip** | Rename `brand-stats` Global label only | `brand-stats` (unchanged) | (no field changes — already holds stat tiles) |
+| **g. Lead-Magnet** | **New** Global | `home-lead-magnet` | coverTitle, coverFooter, bodyEyebrow, bodyHeading, bodyLede, formLabels group, successMessage |
+| **h. Place** | **New** Global | `home-place` | eyebrow, heading, body, rows array (4 rows: A/B/C/D + text) |
+| **i. Floating-CTA** | Rename `floating-chrome` Global label only | `floating-chrome` (unchanged) | (no field changes) |
+| **j. Endorsement** | Rename `endorsement-mark` Global label only | `endorsement-mark` (unchanged) | (no field changes) |
+| **k. SEO-Defaults** | Rename `seo-defaults` Global label only | `seo-defaults` (unchanged) | (no field changes) |
+| **l. Settings** | Rename `settings` Global label only | `settings` (unchanged) | (no field changes — note: this is the source for clinic identity used by g. Contact + d. Footer + i. Floating-CTA) |
+| **m. Treatments-View** | **New** Global | `home-treatments-view` | eyebrow, heading, lede, ctaLabel, ctaHref |
+| **n. Pricing-View** | **New** Global | `home-pricing-view` | eyebrow, heading, lede, footnote, ctaLabel, ctaHref |
+| **o. Surgeons-View** | **New** Global | `home-surgeons-view` | eyebrow, heading, lede, leadSurgeonLabel, leadSurgeonRef (relationship → Surgeons), ctaLabel, ctaHref |
+| **p. Gallery-View** | **New** Global | `home-gallery-view` | eyebrow, heading, lede, ctaLabel, ctaHref |
+| **q. Journey-View** | **New** Global | `home-journey-view` | eyebrow, heading, lede, ctaLabel, ctaHref |
+| **r. Stories-View** | **New** Global | `home-stories-view` | eyebrow, heading, lede, ctaLabel, ctaHref |
 
 **Important:** slugs do **not** change for renamed items — only the admin sidebar label changes. All existing data + API URLs + route reads intact.
 
@@ -239,15 +241,15 @@ diff /tmp/contact-before.html /tmp/contact-after.html  # must be empty
 
 **On Bucket `a. Homepage`:**
 
-> Governs the homepage editorial (items a, b, e–n) and every sitewide chrome surface that appears on every page (items c, d, o, p, q, r). Settings (r.) is the single source of truth for clinic identity used by /contact, the footer, and the floating WhatsApp button.
+> Governs the homepage editorial (items a, b, e, g, h plus the 6 view sections m–r) and every sitewide chrome surface that appears on every page (items c, d, i, j, k, l). Settings (l.) is the single source of truth for clinic identity used by /contact, the footer, and the floating WhatsApp button.
 
-**On items e–j (the 6 teasers):**
+**On items m–r (the 6 view sections):**
 
-> The cards / data shown in this section's grid are **not edited here**. Edit the source in [bucket → collection] (e. → b. Treatments → Disciplines; f. → e. Pricing → PriceListItems; g. → c. Doctors → Surgeons; h. → d. Results → BeforeAfterCases; i. → f. Journey → Steps; j. → d. Results → Stories). This item controls only the section eyebrow, heading, lede, and "view all" CTA label.
+> The cards / data shown in this section's grid are **not edited here**. Edit the source in [bucket → collection] (m. → b. Treatments → Disciplines; n. → e. Pricing → PriceListItems; o. → c. Doctors → Surgeons; p. → d. Results → BeforeAfterCases; q. → f. Journey → Steps; r. → d. Results → Stories). This item controls only the section eyebrow, heading, lede, and "view all" CTA label.
 
 **On `d. Footer`:**
 
-> The Treatments link column is auto-built from b. Treatments → Disciplines (sortOrder + title). The Connect column's WhatsApp link uses r. Settings → whatsappNumber. The address block uses r. Settings → addressLine1/2 + city + postalCode + country. Edit those in their source; this item controls only the About column items + copyright template + management / legal-entity / designer lines.
+> The Treatments link column is auto-built from b. Treatments → Disciplines (sortOrder + title). The Connect column's WhatsApp link uses l. Settings → whatsappNumber. The address block uses l. Settings → addressLine1/2 + city + postalCode + country. Edit those in their source; this item controls only the About column items + copyright template + management / legal-entity / designer lines.
 
 ### R2.3 — Settings field additions
 
@@ -258,15 +260,15 @@ None needed. The 3 footer-bottom strings ("Managed by BIMC Hospital, Nusa Dua" �
 Extend [`packages/web/src/lib/cms.ts`](../packages/web/src/lib/cms.ts) parallel cache load with the 10 new globals:
 
 - `fetchGlobal('home-hero')`
-- `fetchGlobal('home-treatments-teaser')`
-- `fetchGlobal('home-pricing-teaser')`
-- `fetchGlobal('home-surgeons-teaser')`
-- `fetchGlobal('home-gallery-teaser')`
-- `fetchGlobal('home-journey-teaser')`
-- `fetchGlobal('home-stories-teaser')`
 - `fetchGlobal('home-intro')`
 - `fetchGlobal('home-lead-magnet')`
 - `fetchGlobal('home-place')`
+- `fetchGlobal('home-treatments-view')`
+- `fetchGlobal('home-pricing-view')`
+- `fetchGlobal('home-surgeons-view')`
+- `fetchGlobal('home-gallery-view')`
+- `fetchGlobal('home-journey-view')`
+- `fetchGlobal('home-stories-view')`
 
 Extend `CmsCache` TypeScript interface accordingly. Footer interface gains 3 new optional string fields.
 
@@ -278,12 +280,12 @@ Replace fallback / hardcoded strings in each homepage section component:
 |---|---|---|
 | [home/Hero.tsx](../packages/web/src/routes/home/Hero.tsx) | Fallback eyebrow / title / lede (L13-15, L81-86, L92-111); fallback form labels (L135-209) | reads from `cms.homeHero.*` |
 | [home/Intro.tsx](../packages/web/src/routes/home/Intro.tsx) | Pull-quote pre/accent/post + 2 column body (L11-19) | reads from `cms.homeIntro.*` |
-| [home/Treatments.tsx](../packages/web/src/routes/home/Treatments.tsx) | Eyebrow / heading / lede (L12-17) | reads from `cms.homeTreatmentsTeaser.*` |
-| [home/PricingTeaser.tsx](../packages/web/src/routes/home/PricingTeaser.tsx) | Eyebrow / heading / lede / footnote (L25-33); PRICE_TEASER array (L8-17) | reads from `cms.homePricingTeaser.*`; PRICE_TEASER drops, prices pulled from PriceListItems |
-| [home/Surgeons.tsx](../packages/web/src/routes/home/Surgeons.tsx) | Fallback labels + lead body (L17-32) | reads from `cms.homeSurgeonsTeaser.*` |
-| [home/Gallery.tsx](../packages/web/src/routes/home/Gallery.tsx) | Eyebrow / heading / lede / CTA (L13-18) | reads from `cms.homeGalleryTeaser.*` |
-| [home/Journey.tsx](../packages/web/src/routes/home/Journey.tsx) | STEPS array (L8-14); heading / CTA (L19-23) | reads from `cms.homeJourneyTeaser.*`; step previews pulled from JourneySteps collection |
-| [home/Stories.tsx](../packages/web/src/routes/home/Stories.tsx) | STORIES array (L10-38); eyebrow / heading / lede (L43-59) | reads from `cms.homeStoriesTeaser.*`; quotes pulled from Stories collection |
+| [home/Treatments.tsx](../packages/web/src/routes/home/Treatments.tsx) | Eyebrow / heading / lede (L12-17) | reads from `cms.homeTreatmentsView.*` |
+| [home/PricingTeaser.tsx](../packages/web/src/routes/home/PricingTeaser.tsx) | Eyebrow / heading / lede / footnote (L25-33); PRICE_TEASER array (L8-17) | reads from `cms.homePricingView.*`; PRICE_TEASER drops, prices pulled from PriceListItems |
+| [home/Surgeons.tsx](../packages/web/src/routes/home/Surgeons.tsx) | Fallback labels + lead body (L17-32) | reads from `cms.homeSurgeonsView.*` |
+| [home/Gallery.tsx](../packages/web/src/routes/home/Gallery.tsx) | Eyebrow / heading / lede / CTA (L13-18) | reads from `cms.homeGalleryView.*` |
+| [home/Journey.tsx](../packages/web/src/routes/home/Journey.tsx) | STEPS array (L8-14); heading / CTA (L19-23) | reads from `cms.homeJourneyView.*`; step previews pulled from JourneySteps collection |
+| [home/Stories.tsx](../packages/web/src/routes/home/Stories.tsx) | STORIES array (L10-38); eyebrow / heading / lede (L43-59) | reads from `cms.homeStoriesView.*`; quotes pulled from Stories collection |
 | [home/LeadMagnet.tsx](../packages/web/src/routes/home/LeadMagnet.tsx) | Cover title / footer (L15-20); body eyebrow / heading / lede / form labels / success (L21-31) | reads from `cms.homeLeadMagnet.*` |
 | [home/Place.tsx](../packages/web/src/routes/home/Place.tsx) | Eyebrow / heading / body (L34-39); DEFAULT_ROWS (L10-15) | reads from `cms.homePlace.*` |
 | [shell/Footer.tsx](../packages/web/src/components/shell/Footer.tsx) | "PT Trisaka Reksa Waluya" (L97), "Designed in Bali" (L98), copyright "Managed by BIMC Hospital, Nusa Dua" suffix | reads from `cms.footer.managementLine` (composed into copyright), `cms.footer.legalEntityLine`, `cms.footer.designerLine` |
@@ -292,7 +294,7 @@ Replace fallback / hardcoded strings in each homepage section component:
 
 Write `packages/cms/src/seed/seed-home-section-globals.ts` (run once, idempotent):
 
-1. Upsert each new global (`home-hero`, `home-treatments-teaser`, …, `home-place`) with strings copied verbatim from the current `home/*.tsx` fallback / hardcoded source.
+1. Upsert each new global (`home-hero`, `home-intro`, `home-lead-magnet`, `home-place`, `home-treatments-view`, `home-pricing-view`, `home-surgeons-view`, `home-gallery-view`, `home-journey-view`, `home-stories-view`) with strings copied verbatim from the current `home/*.tsx` fallback / hardcoded source.
 2. Patch Footer: set `managementLine`, `legalEntityLine`, `designerLine` to current hardcoded values.
 3. After verifying everything reads correctly, **propose** (under rule 4 — no unilateral deletes) removing the now-unused section fields from `home-page` for user approval.
 
@@ -308,7 +310,7 @@ pnpm --filter @cosmedic/web build
 pm2 restart cosmedic-cms cosmedic-web
 
 # Admin sanity — 18 items in a. Homepage Bucket, alphabetical order
-curl -s http://127.0.0.1:4007/admin | grep -E "a\. Main|b\. Hero|c\. Header|d\. Footer|e\. Treatments-Teaser|f\. Pricing-Teaser|g\. Surgeons-Teaser|h\. Gallery-Teaser|i\. Journey-Teaser|j\. Stories-Teaser|k\. Intro|l\. Trust-Strip|m\. Lead-Magnet|n\. Place|o\. Floating-CTA|p\. Endorsement|q\. SEO-Defaults|r\. Settings"
+curl -s http://127.0.0.1:4007/admin | grep -E "a\. Main|b\. Hero|c\. Header|d\. Footer|e\. Intro|f\. Trust-Strip|g\. Lead-Magnet|h\. Place|i\. Floating-CTA|j\. Endorsement|k\. SEO-Defaults|l\. Settings|m\. Treatments-View|n\. Pricing-View|o\. Surgeons-View|p\. Gallery-View|q\. Journey-View|r\. Stories-View"
 
 # Visual invariance — / + footer on every page must be byte-identical
 curl -s https://cosmedic.gaiada.online/ > /tmp/home-before.html
@@ -318,10 +320,10 @@ diff /tmp/home-before.html <(curl -s https://cosmedic.gaiada.online/)
 
 # Editability proof — edit each new global, wait 60s, confirm change appears
 # 1. b. Hero → change lede → revisit / → see → revert
-# 2. e–j. each teaser → change heading → revisit / → see → revert
-# 3. k. Intro → change col1 body → revisit / → see → revert
-# 4. m. Lead-Magnet → change cover title → revisit / → see → revert
-# 5. n. Place → change body → revisit / → see → revert
+# 2. e. Intro → change col1 body → revisit / → see → revert
+# 3. g. Lead-Magnet → change cover title → revisit / → see → revert
+# 4. h. Place → change body → revisit / → see → revert
+# 5. m–r. each view section → change heading → revisit / → see → revert
 # 6. d. Footer → change managementLine → revisit ANY page → see in footer → revert
 ```
 

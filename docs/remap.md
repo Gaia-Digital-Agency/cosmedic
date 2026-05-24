@@ -125,7 +125,7 @@ Each Bucket's Admin Items vs Site Section detail follows in its own sub-section.
 
 ### 2.a — Bucket "a. Homepage" detail
 
-Covers `/` (the homepage) + every sitewide chrome surface (header / footer / floating overlay / endorsement / SEO defaults / clinic identity). Largest Bucket by item count. Two logical sub-clusters within: items a–n cover `/` page sections (with teasers grouped contiguously); items o–r are sitewide utility.
+Covers `/` (the homepage) + every sitewide chrome surface (header / footer / floating overlay / endorsement / SEO defaults / clinic identity). Largest Bucket by item count. Two logical sub-clusters within: items **a–l** are directly editable in this Bucket (page foundation → chrome → `/` editorial sections → sitewide utility); items **m–r** are view-only mirrors whose card data is sourced from other Buckets — grouped contiguously at the bottom (Rule 6 — editor recognises them as one editorial unit).
 
 | Admin Item (a. Homepage) | Site surface it governs |
 |---|---|
@@ -133,28 +133,28 @@ Covers `/` (the homepage) + every sitewide chrome surface (header / footer / flo
 | **b. Hero** | `/` Hero section — chapter eyebrow, title, lede, hero image, quick-form labels |
 | **c. Header** | **Sitewide** header (every page) — logo, nav labels, mega-menu config, CTA label, language switcher copy |
 | **d. Footer** | **Sitewide** footer (every page) — logoLight, 3 link columns (Treatments / About / Connect), copyright template, **+ 3 new fields**: managementLine, legalEntityLine, designerLine |
-| **e. Treatments-Teaser** | `/` Treatments preview — eyebrow, heading, lede, "view all" CTA *(cards from b. Treatments → Disciplines)* |
-| **f. Pricing-Teaser** | `/` Pricing preview — eyebrow, heading, lede, footnote, CTA *(prices from e. Pricing → PriceListItems)* |
-| **g. Surgeons-Teaser** | `/` Surgeons preview — eyebrow, heading, lede, lead-surgeon block, CTA *(surgeon data from c. Doctors → Surgeons)* |
-| **h. Gallery-Teaser** | `/` Gallery preview — eyebrow, heading, lede, CTA *(B&A pairs from d. Results → BeforeAfterCases)* |
-| **i. Journey-Teaser** | `/` Journey preview — eyebrow, heading, lede, "view all" CTA *(step previews from f. Journey → Steps)* |
-| **j. Stories-Teaser** | `/` Stories preview — eyebrow, heading, lede, CTA *(story snippets from d. Results → Stories)* |
-| **k. Intro** | `/` Intro section — pull-quote (pre / accent / post), 2-column body |
-| **l. Trust-Strip** | `/` TrustStrip — stat tiles below the Hero (BrandStats global, renamed) |
-| **m. Lead-Magnet** | `/` Lead Magnet section — cover title, body eyebrow / heading / lede, form labels, success message |
-| **n. Place** | `/` Place section — eyebrow, heading, body, 4-row content |
-| **o. Floating-CTA** | **Sitewide** floating overlay — CTA pill label + href, WhatsApp button visibility, helper copy |
-| **p. Endorsement** | **Sitewide** accreditation lockup — JCI / ACHSI / etc. labels shown in shell |
-| **q. SEO-Defaults** | **Sitewide** SEO fallbacks — title template, description, OG image fallback (used when a page has no own SEO) |
-| **r. Settings** | **Sitewide** clinic identity — phone, email, WhatsApp, address, hours, social links, currency rules. **Single source of truth** read by Footer, Floating-CTA, `/contact`, every page footer. |
+| **e. Intro** | `/` Intro section — pull-quote (pre / accent / post), 2-column body |
+| **f. Trust-Strip** | `/` TrustStrip — stat tiles below the Hero (BrandStats global, renamed) |
+| **g. Lead-Magnet** | `/` Lead Magnet section — cover title, body eyebrow / heading / lede, form labels, success message |
+| **h. Place** | `/` Place section — eyebrow, heading, body, 4-row content |
+| **i. Floating-CTA** | **Sitewide** floating overlay — CTA pill label + href, WhatsApp button visibility, helper copy |
+| **j. Endorsement** | **Sitewide** accreditation lockup — JCI / ACHSI / etc. labels shown in shell |
+| **k. SEO-Defaults** | **Sitewide** SEO fallbacks — title template, description, OG image fallback (used when a page has no own SEO) |
+| **l. Settings** | **Sitewide** clinic identity — phone, email, WhatsApp, address, hours, social links, currency rules. **Single source of truth** read by Footer, Floating-CTA, `/contact`, every page footer. |
+| **m. Treatments-View** | `/` Treatments preview — eyebrow, heading, lede, "view all" CTA *(cards from b. Treatments → Disciplines)* |
+| **n. Pricing-View** | `/` Pricing preview — eyebrow, heading, lede, footnote, CTA *(prices from e. Pricing → PriceListItems)* |
+| **o. Surgeons-View** | `/` Surgeons preview — eyebrow, heading, lede, lead-surgeon block, CTA *(surgeon data from c. Doctors → Surgeons)* |
+| **p. Gallery-View** | `/` Gallery preview — eyebrow, heading, lede, CTA *(B&A pairs from d. Results → BeforeAfterCases)* |
+| **q. Journey-View** | `/` Journey preview — eyebrow, heading, lede, "view all" CTA *(step previews from f. Journey → Steps)* |
+| **r. Stories-View** | `/` Stories preview — eyebrow, heading, lede, CTA *(story snippets from d. Results → Stories)* |
 
 #### Item-order rationale (Homepage)
 
 - a, b — page foundation (Main + Hero)
 - c, d — sitewide visible chrome (Header at top, Footer at bottom, found together)
-- e–j — the 6 teaser sections grouped contiguously (Rule 6 — editor recognises them as one editorial unit)
-- k, l, m, n — remaining `/` editorial sections (Intro, Trust-Strip, Lead-Magnet, Place)
-- o, p, q, r — sitewide utility (overlay, endorsement, SEO defaults, identity)
+- e, f, g, h — remaining `/` editorial sections (Intro, Trust-Strip, Lead-Magnet, Place)
+- i, j, k, l — sitewide utility (overlay, endorsement, SEO defaults, identity / Settings)
+- m–r — the 6 view-only mirrors grouped contiguously at the bottom. Suffix `-View` signals the cards are display-only — edit the source data in the named Bucket. The Item itself owns only the section eyebrow / heading / lede / CTA label.
 
 #### Coverage
 
@@ -163,44 +163,44 @@ Every visible atom on `/` plus every sitewide chrome surface accounted for, incl
 | Atom group | Item that owns it |
 |---|---|
 | `/` Hero (chapter / title / lede / image + Hero quick-form labels) | b. Hero |
-| `/` 6 teaser sections (eyebrow + heading + lede + CTA on each) | e–j (one item per teaser) |
-| `/` Intro (pull-quote + 2-column body) | k. Intro |
-| `/` TrustStrip (stat tiles) | l. Trust-Strip |
-| `/` Lead Magnet | m. Lead-Magnet |
-| `/` Place (eyebrow + heading + body + 4-row content) | n. Place |
+| `/` 6 view sections (eyebrow + heading + lede + CTA on each) | m–r (one item per view) |
+| `/` Intro (pull-quote + 2-column body) | e. Intro |
+| `/` TrustStrip (stat tiles) | f. Trust-Strip |
+| `/` Lead Magnet | g. Lead-Magnet |
+| `/` Place (eyebrow + heading + body + 4-row content) | h. Place |
 | Sitewide header (logo / nav / mega-menu / CTA / lang switcher) | c. Header |
 | Sitewide footer (logoLight / 3 columns / copyright / mgmt / legal / designer) | d. Footer |
-| Sitewide floating overlay | o. Floating-CTA |
-| Sitewide accreditation lockup | p. Endorsement |
-| Sitewide SEO fallbacks (meta only) | q. SEO-Defaults |
-| Sitewide clinic identity (phone / email / address / hours / WhatsApp / socials / currency) | r. Settings |
+| Sitewide floating overlay | i. Floating-CTA |
+| Sitewide accreditation lockup | j. Endorsement |
+| Sitewide SEO fallbacks (meta only) | k. SEO-Defaults |
+| Sitewide clinic identity (phone / email / address / hours / WhatsApp / socials / currency) | l. Settings |
 | `/` page meta + SEO + CmsExtraBlocks slot | a. Main |
 
 #### Cross-bucket reads — display-only in a. Homepage
 
-The 6 teaser sections + Footer Treatments column display data sourced from **other** Buckets. Editor edits the source; the homepage display updates. Each consumer item carries an `admin.description` noting *"Edit the source data in [bucket → item]. This item controls only the section's eyebrow / heading / lede / CTA label."*
+The 6 view sections (`m–r`, suffix `-View`) + Footer Treatments column display data sourced from **other** Buckets. Editor edits the source; the homepage display updates. Each `-View` item carries an `admin.description` noting *"Edit the source data in [bucket → item]. This item controls only the section's eyebrow / heading / lede / CTA label."*
 
 | Display location (a. Homepage) | Editable source |
 |---|---|
-| e. Treatments-Teaser → cards | b. Treatments → Disciplines (collection) |
-| f. Pricing-Teaser → price snippets | e. Pricing → PriceListItems (collection) |
-| g. Surgeons-Teaser → cards + lead-surgeon | c. Doctors → Surgeons (collection) |
-| h. Gallery-Teaser → B&A pairs | d. Results → BeforeAfterCases (collection) |
-| i. Journey-Teaser → step previews | f. Journey → Steps (collection) |
-| j. Stories-Teaser → story snippets | d. Results → Stories (collection) |
+| m. Treatments-View → cards | b. Treatments → Disciplines (collection) |
+| n. Pricing-View → price snippets | e. Pricing → PriceListItems (collection) |
+| o. Surgeons-View → cards + lead-surgeon | c. Doctors → Surgeons (collection) |
+| p. Gallery-View → B&A pairs | d. Results → BeforeAfterCases (collection) |
+| q. Journey-View → step previews | f. Journey → Steps (collection) |
+| r. Stories-View → story snippets | d. Results → Stories (collection) |
 | d. Footer → Treatments column items | b. Treatments → Disciplines (auto-built from sortOrder + title) |
 
 #### Cross-bucket reads — a. Homepage as source for other Buckets
 
-`r. Settings` is the single source of truth for clinic identity site-wide. Other Buckets display these values read-only:
+`l. Settings` is the single source of truth for clinic identity site-wide. Other Buckets display these values read-only:
 
-| Source field on r. Settings | Read-only display location |
+| Source field on l. Settings | Read-only display location |
 |---|---|
 | `contactPhone`, `whatsappNumber`, `contactEmail`, `pressEmail` | g. Contact → c. Enquiry-Section (Direct lines block) |
 | `addressLine1` / `addressLine2` / `city` / `postalCode` / `country` | g. Contact → d. Visit-Section (Address block) + d. Footer (address block) |
 | `hoursMonFri` / `hoursSatSun` | g. Contact → d. Visit-Section (Clinic hours) |
 | `googleMapsUrl` | g. Contact → d. Visit-Section (Open in Maps / Get directions) |
-| `whatsappNumber` | o. Floating-CTA (WhatsApp button) + d. Footer (WhatsApp link in Connect column) |
+| `whatsappNumber` | i. Floating-CTA (WhatsApp button) + d. Footer (WhatsApp link in Connect column) |
 | `socialLinks[]` | d. Footer (Connect column) |
 | `audToIdrRate`, `roundIdrTo`, `currencyDisplayMode` | b. Treatments + e. Pricing (all price rendering) |
 
@@ -323,7 +323,7 @@ Covers `/blog`, `/blog/<slug>`, `/press`, `/privacy` — the 4 routes the footer
 
 #### Item-order rationale (About)
 
-Three route-family clusters, contiguous (mirror of Homepage's teaser-cluster pattern):
+Three route-family clusters, contiguous (mirror of Homepage's view-cluster pattern):
 
 - **a–e** Blog (page + template + 3 backing collections)
 - **f–h** Press (page + 2 backing collections)
@@ -387,5 +387,5 @@ None. About Bucket is fully self-contained — every editorial atom is sourced i
 - **Cosmedic rule 5 — Plan first.** This doc + [remap_plan.md](./remap_plan.md) gate execution. Each Bucket phase ships only after this doc lists its detail.
 - **Cosmedic rule 6 — Intuitive site ↔ CMS mapping.** Bucket labels mirror site nav surfaces: top-nav labels for a/b/c/d/e/f/g, footer "About" column label for h.
 - **Cosmedic rule 7 — Verify before user-tests.** Each phase ends with a curl-based smoke check + visual diff before the editor is told "go look."
-- **Cosmedic rule 8 — Universal coverage, no duplication.** Every visible atom on the live site must be manageable from the CMS. No atom is duplicated across multiple editable CMS fields — each atom has exactly one source-of-truth field; other surfaces that need the same value use a read-only mirror that points back to the source (signposted in `admin.description`). Example: clinic phone lives only on `r. Settings → contactPhone`; `/contact`'s Enquiry-Section displays it read-only.
+- **Cosmedic rule 8 — Universal coverage, no duplication.** Every visible atom on the live site must be manageable from the CMS. No atom is duplicated across multiple editable CMS fields — each atom has exactly one source-of-truth field; other surfaces that need the same value use a read-only mirror that points back to the source (signposted in `admin.description`). Example: clinic phone lives only on `l. Settings → contactPhone`; `/contact`'s Enquiry-Section displays it read-only.
 - **Cosmedic rule 9 — Full Payload capability preserved.** Every Payload feature (REST + GraphQL APIs, drafts / preview / publish workflow, access control, role permissions, revalidate hooks, media uploads + variants + focal point, rich-text editor, admin search / filter / sort / column config, localization scaffolding, Postgres adapter + migrations) must continue to function identically before/after the remap. The remap is a sidebar reorganisation; not a Payload patching exercise. If any phase would require disabling, monkey-patching, or replacing native Payload behaviour, that phase stops and is redesigned.
