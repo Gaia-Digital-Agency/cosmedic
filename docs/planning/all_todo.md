@@ -3,6 +3,12 @@
 > Active worklist captured 2026-05-21. Lives alongside the master phase-tracker in [docs/todo.md](todo.md) but focuses on the in-flight Mobile-Responsive Sweep (Phase M) + the new N-series items the user added after Phase 8 went live.
 >
 > **Hard sign-off rule (set by user):** _No horizontal scroll at any width on any route. Only vertical scroll._
+>
+> **2026-05-24 status banner:** Phase Q is **18/19 shipped** (q17 deferred — Figma asset delivery). Phases M, N, P also complete. Per-q tracker (with Notes + Commit columns and the Step-6 propose-for-approval workflow) is at [changerequest_21May.md](./changerequest_21May.md). Cluster summary at [change01.md](./change01.md). Visual addendum at [change2a.pdf](./change2a.pdf).
+>
+> **2026-05-24 URL-shape note:** All `/treatment-<slug>`, `/surgeon-<slug>`, `/blog-<slug>` references in the historical narrative below refer to the **pre-q11 routing shape**. Production now serves `/treatments/<slug>`, `/surgeons/<slug>`, `/blog/<slug>` (q11 — `8de7eb5`). Legacy URLs hard-404 on purpose. Historical text preserved as-written — do not retroactively rewrite slug strings; the router.ts diff in `8de7eb5` is the source of truth.
+>
+> **2026-05-24 CMS-collection note:** `PricingTiers` (q5 — `a1601e5`) and `InclusionItems` + `ExclusionItems` (q19 — `1b35bfb`) have been removed end-to-end (collections + DB + adapters). Historical references to these below reflect pre-removal state.
 
 ---
 
@@ -513,11 +519,37 @@ Source: [changes/cosmedic-favico.zip](../changes/cosmedic-favico.zip) — 7 asse
 
 ---
 
-## Phase Q — changes01.docx batch (clarification pending — see below)
+## Phase Q — changes01.docx + change2a.pdf addendum batch ✅ 18/19 SHIPPED 2026-05-24
 
-Source: [changes/changes01.docx](../changes/changes01.docx). 27 items extracted. **Not yet added as ordered phase work — needs clustering / de-conflicting against existing C/M/N/P phases first.** Open clarification questions captured in the response that introduced this section. See *Phase Q clarification draft* near the top of `all_todo.md` once approved.
+Source files: [/changes/changes01.docx](../changes/changes01.docx) (27 items) + [change2a.pdf](./change2a.pdf) (28 items, addendum). Reconciled into **19 ordered q-items (q1–q19)** in [changerequest_21May.md](./changerequest_21May.md) — the active per-q tracker with Notes + Commit columns and the 7-step propose-for-approval workflow.
 
-(placeholder — Phase Q content lands here after user's clarification on the 27 items.)
+**Tally:**
+
+| q | Item | Commit |
+|---|---|---|
+| q1 | `.detail-body` clamp(640px, 70vw, 920px) | `dc9278d` |
+| q2 | Homepage mobile hero top-padding 140px | `bb69bdb` |
+| q3 | `--hero-top-pad` token (mobile) | `85e1412` |
+| q4 | Home team-photo replaces 6-card grid | `19c5600` |
+| q5 | Drop PricingTiers collection | `a1601e5` |
+| q6 | CMS light theme + I/E audit (→ q19) | audit only |
+| q7 | Dark-brown 3-column footer | `d2a1ce4` |
+| q8 | Footer Treatments auto-driven (verify) | N/A |
+| q9 | `.page-breadcrumb` → `--page-x` | `9afd1f4` |
+| q10 | Shared `<StatsRow>` primitive | `2c6414e` |
+| q11 | Flat slug rewrite | `8de7eb5` |
+| q12 | Breadcrumb match new URLs + align | `39d21e6` |
+| q13 | Buttons + links sweep | `507622e` |
+| q14 | B&A patient age + recovery duration | `9b99753` |
+| q15 | Procedure sortOrder per parentSubCategory | `8cc80ae` |
+| q16 | Pricing IDR-primary, AUD derived | `f114156` |
+| q17 | Image set refresh (Figma) | ⏸ deferred |
+| q18 | Dark-brown token `#6B4A2B` → `#533E27` | `a5e5e9e` |
+| q19 | Drop InclusionItems + ExclusionItems pipeline | `1b35bfb` |
+
+**Infrastructure unblock during Phase Q:** CMS `next build` was failing on `@/lib/cms-proxy` resolution from cross-package web seed imports. Fixed in `a18c700` by excluding 3 seed scripts (`seed-globals.ts`, `seed-taxonomy.ts`, `seed-content.ts`) from CMS tsconfig. They only run via `tsx` CLI; Next.js doesn't need to bundle them.
+
+**q17 stays deferred** until Figma image set is delivered + inventoried (see q17 row in [changerequest_21May.md](./changerequest_21May.md)).
 
 ---
 

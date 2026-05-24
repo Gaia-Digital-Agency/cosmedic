@@ -65,14 +65,14 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
 - Pixel-Fidelity Gate + Lighthouse Green Gate are launch-blocking. Don't bypass them.
 - This server is the dev environment (user chose server-first). Edits happen here; commits + pushes happen here.
 
-## Current state (Phase 8 complete + 2026-05-22 CMS UI restructure)
+## Current state (Phase Q 18/19 shipped 2026-05-24 · Phase 8 live · q17 deferred)
 
-- `packages/cms` — Payload 3.84.1 on Next.js 15.4.11 + Postgres adapter, port **4007**. Admin white-labelled as **Cosmedic CMS** (Cormorant Garamond + JetBrains Mono, brand-beige palette from `docs/assets/brand-guidelines.pdf`). Light/dark toggle.
-  - **23 collections** in `src/collections/` (Pages collection now orphaned — pending Rule 4 removal in Step 10): Users · Media · Surgeons · Disciplines · SubCategories · Procedures · PriceListItems · InjectableProducts · MachineTreatments · HairRemovalAreas · BeforeAfterCases · Stories · PressMentions · Awards · RecoveryStays · PricingTiers · BlogPosts · BlogTags · Authors · JourneySteps · InclusionItems · ExclusionItems · Pages · Enquiries.
+- `packages/cms` — Payload 3.84.1 on Next.js 15.4.11 + Postgres adapter, port **4007**. Admin white-labelled as **Cosmedic CMS** (Cormorant Garamond + JetBrains Mono, brand-beige palette from `docs/assets/brand-guidelines.pdf`). Light theme default (q19, 2026-05-24).
+  - **18 collections** in `src/collections/` (as of Phase Q close 2026-05-24 — `PricingTiers` removed in q5 `a1601e5`; `InclusionItems` + `ExclusionItems` removed in q19 `1b35bfb`; `Pages` orphan still pending Rule 4 removal): Users · Media · Surgeons · Disciplines · SubCategories · Procedures · PriceListItems · InjectableProducts · MachineTreatments · HairRemovalAreas · BeforeAfterCases · Stories · PressMentions · Awards · RecoveryStays · BlogPosts · BlogTags · Authors · JourneySteps · Pages · Enquiries.
   - **24 globals**: 10 in `src/globals/` (Settings · Header · Footer · FloatingChrome · BrandStats · EndorsementMark · ConsultationPolicy · FormDefaults · EmailTemplates · SeoDefaults) + **14 Page Globals** in `src/globals/pages/` (HomePage · PressPage · PrivacyPage · TreatmentsPage · SurgeonsPage · ResultsPage · GalleryPage · PricingPage · JourneyPage · StoriesPage · RecoveryStaysPage · ContactPage · VideoConsultPage · BlogPage). Each Page Global is a singleton holding one route's editorial hero + sections.
   - **Admin taxonomy (9 buckets, mirrors site IA)**: Homepage · Treatments · Doctors · Results · Pricing · Journey · Contact · Blog · Media Library. Every collection + global has `admin.group` set to its bucket — open Pricing, see everything to manage `/pricing` (line items, tiers, consultation policy, the page global itself).
   - Phase-6 seed (`src/seed/runtime.ts` + `src/seed/parse-pricelist.ts`) parses all 7 sheets of `docs/assets/pricelist.xlsx` and idempotently upserts into Payload via Local API. Run with `pnpm --filter @cosmedic/cms seed`. Seed source files are imported from `packages/web/src/content/*` via relative path (will be deleted after Phase 6c rewires every web page).
-  - Counts seeded: **149 PriceListItems**, 93 Procedures, 8 Surgeons, 6 Disciplines, 17 SubCategories, 24 MachineTreatments, 43 HairRemovalAreas, 34 InjectableProducts, 6 JourneySteps, 5 Inclusions, 7 Exclusions, 5 Awards, 3 PressMentions, 6 RecoveryStays, 3 PricingTiers, 7 BlogPosts, 8 Pages, 10 globals.
+  - Counts seeded: **149 PriceListItems**, 233 Procedures, 8 Surgeons, 6 Disciplines, 17 SubCategories, 24 MachineTreatments, 43 HairRemovalAreas, 34 InjectableProducts, 6 JourneySteps, 5 Awards, 3 PressMentions, 6 RecoveryStays, 7 BlogPosts, 8 Pages, 10 globals. (PricingTiers / InclusionItems / ExclusionItems no longer seeded — q5 + q19.)
 - `packages/web` — Vite 6 SSR + React 19 + Express, port **3007**. Renders the full homepage matching the Claude Design source.
   - `design/global.css` (3,687 lines) ported **verbatim** then evolved to 3,927 lines through Phases 6–N + Phase M. **2026-05-23: split into 13 partials under `packages/web/src/styles/partials/`** (cascade order preserved line-for-line, MD5 of concat == pre-split file). `globals.css` is now a 13-line `@import` index. Edit the partial that owns the rule, not the index.
   - Google Fonts (Cormorant Garamond + Inter + JetBrains Mono) preconnected + loaded in `index.html`.
@@ -96,7 +96,7 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
 
 - **Phase 8**: Live at **https://cosmedic.gaiada.online** with green padlock. DNS A record points to `34.124.244.233`; Let's Encrypt cert at `/etc/letsencrypt/live/cosmedic.gaiada.online/` (issued 2026-05-20, expires 2026-08-18). nginx block in `/etc/nginx/sites-enabled/subdomains.gaiada.online` mirrors the christos VRTPN pattern — HTTP→HTTPS 301, web-owned `/api/{page-data,preview,exit-preview,revalidate,enquiry}` → `:3007`, Payload `/admin` + `/_next` + `/api` → `:4007` (25M client_max_body_size for media uploads), `/` → `:3007` (Vite SSR). Backup of pre-Phase-8 nginx config stashed at `/etc/nginx/backups/subdomains.gaiada.online.bak-phase8-*`. Smoke-tested: homepage 200, `/admin` 200, `/api/revalidate` `{ok:true}`, `/api/enquiry` returns Zod validation errors, all sibling sites unchanged. **Pending pre-launch**: SMTP provider for enquiry emails (currently JSON transport — no delivery).
 
-**Known issue surfaced during Phase 8 smoke**: SSR router uses `/surgeon-<slug>` but sitemap + header links use `/surgeons/<slug>` — surgeon detail pages 404. Fix during Phase 11.
+~~**Known issue surfaced during Phase 8 smoke**: SSR router uses `/surgeon-<slug>` but sitemap + header links use `/surgeons/<slug>` — surgeon detail pages 404. Fix during Phase 11.~~ **Resolved** (verified 2026-05-24 via `/tmp/cosmedic-smoke/smoke.sh`): SSR router matches `/surgeons/<slug>` at `packages/web/src/router.ts:71`; all 8 surgeon routes return 200.
 
 ## 2026-05-22 — Item 1 + Item 2 shipped
 
@@ -139,16 +139,43 @@ Highlights of what shipped:
 - Route-specific: `/video-consult` was +97px @768 → 0; `/recovery-stays` +47px @320 → 0 (villa-grid → 1fr ≤700px); `/contact` +13px → 0 (form grid → 1fr ≤700px); surgeon details cleared via `min-width: 0` on bio-layout columns.
 - Audit harness lives in `/tmp/cosmedic-audit/` — re-run with `cd /tmp/cosmedic-audit && stdbuf -oL node audit.mjs > runXX.log 2>&1`.
 
-## Phase N (Header + Chrome + Pricing polish) — queued 2026-05-21
+## Phase N (Header + Chrome + Pricing polish) — ✅ COMPLETE 2026-05-23
 
-User added these alongside the Phase M resume work. Detail in [docs/planning/all_todo.md](docs/planning/all_todo.md).
+N1 (`f053733`), N2 (`e6f8c8b`), N3 (`e90302f`) all shipped. Detail in [docs/planning/all_todo.md](docs/planning/all_todo.md).
 
-- **N0 — Mobile-view spot check** across 320 / 375 / 414 / 640 / 768. Overlaps with M1 + M4 but specifically includes golden-path UX (clipped headlines, broken stacking, touch targets < 44px), not just document-level horizontal overflow.
-- **N1 — "MANAGED BY BIMC HOSPITAL" endorsement alignment.** Vertically centre `logo-endorsement-line` / `logo-endorsement-mark` to the COSMEDIC brand logo glyph in the nav bar; resize for visual balance. Affected: `packages/web/src/components/shell/Header.tsx` + `globals.css` (`.logo`, `.logo-endorsement-line`, `.logo-endorsement-mark`).
-- **N2 — Back-to-Top = WhatsApp FAB size.** In `FloatingChrome`, make the Back-to-Top button match the WA FAB's width / height / border-radius / shadow exactly so they read as a paired chrome cluster. Affected: `packages/web/src/components/shell/FloatingChrome.tsx` + floating-chrome rules in `globals.css`.
-- **N3 — `/pricing` table consistency.** Inside the `ClinicCatalogueTable` block at `https://cosmedic.gaiada.online/pricing`: enforce consistent column widths across every category table, left-align all text columns (procedure name, notes, anaesthesia type). Numeric columns (IDR / AUD) stay right-aligned per currency convention. Affected: the `ClinicCatalogueTable` block component + its styles. Trace from `packages/web/src/routes/pricing/`.
+## Phase Q (changes01.docx + change2a.pdf addendum batch) — ✅ 18/19 SHIPPED, q17 deferred
 
-**Order of work next session:** N1 → N2 → N3 (small, isolated, high-visibility wins) → resume M1 → M2 → M3 → M4.
+Final tally as of 2026-05-24:
+
+| q | Item | Status | Commit |
+|---|---|---|---|
+| q1 | `.detail-body` max-width → `clamp(640px, 70vw, 920px)` | ✅ | `dc9278d` |
+| q2 | Homepage mobile hero top padding 140px (≤700px) | ✅ | `bb69bdb` |
+| q3 | Unified `--hero-top-pad` token across 3 hero patterns | ✅ | `85e1412` |
+| q4 | Home: single team photo replaces 6-card associates | ✅ | `19c5600` |
+| q5 | Remove `PricingTiers` collection (CMS + adapters + DB) | ✅ | `a1601e5` |
+| q6 | CMS light theme default + Inclusion/Exclusion audit | ✅ | (audit-only → q19) |
+| q7 | Dark-brown 3-column footer reskin | ✅ | `d2a1ce4` |
+| q8 | Footer Treatments list CMS-driven (verification) | ✅ | N/A — verify only |
+| q9 | `.page-breadcrumb` tracks `--page-x` at ≤700px | ✅ | `9afd1f4` |
+| q10 | Shared `<StatsRow>` primitive (home + /treatments) | ✅ | `2c6414e` |
+| q11 | Flat slug rewrite `/treatment-*` → `/treatments/*` | ✅ | `8de7eb5` |
+| q12 | Breadcrumbs match new URLs + visual align | ✅ | `39d21e6` |
+| q13 | Sitewide buttons + links sweep | ✅ | `507622e` |
+| q14 | Before/After: patient age + recovery duration | ✅ | `9b99753` |
+| q15 | Procedure sortOrder scoped per parentSubCategory | ✅ | `8cc80ae` |
+| q16 | Pricing: IDR primary, AUD auto-calculated | ✅ | `f114156` |
+| q17 | Image set refresh per Figma | ⏸ deferred | — |
+| q18 | Dark-brown brand token `#6B4A2B` → `#533E27` | ✅ | `a5e5e9e` |
+| q19 | Drop unused InclusionItems + ExclusionItems pipeline | ✅ | `1b35bfb` |
+
+**Tracker:** [docs/planning/changerequest_21May.md](docs/planning/changerequest_21May.md) holds the per-q Notes + Commit columns (changes made, issues found, fixes applied, verify steps). The pre-q workflow (7 steps; Step 6 = "propose for approval — MUST not act before approval") is locked at the top of that file.
+
+**Companion docs:** [docs/planning/change01.md](docs/planning/change01.md) (cluster tracker), [docs/planning/change2a.pdf](docs/planning/change2a.pdf) (visual reference).
+
+**Infrastructure unblock during Phase Q:** CMS `next build` was failing on `@/lib/cms-proxy` resolution from cross-package web seed imports. Fixed in `a18c700` by adding 3 seed scripts (`seed-globals.ts`, `seed-taxonomy.ts`, `seed-content.ts`) to `packages/cms/tsconfig.json` `exclude`. These scripts only run via `tsx` CLI; Next.js doesn't need to bundle them. Removing from type-check pass unblocked the build.
+
+**q17 stays deferred** until the Figma image set is delivered + inventoried (see [changerequest_21May.md](docs/planning/changerequest_21May.md) q17 row).
 
 ## Common ops
 

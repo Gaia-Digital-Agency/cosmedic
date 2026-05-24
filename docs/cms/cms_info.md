@@ -4,11 +4,13 @@
 
 This document captures the full spec for the admin-UI customization. Implementation lands in Phase 1.
 
-> **Updated 2026-05-23:**
+> **Updated 2026-05-24 (Phase Q complete):**
 > - Sidebar bucket structure is now locked in [CMS_structure.md](CMS_structure.md) — **8 buckets** (HOMEPAGE / TREATMENTS / DOCTORS / RESULTS / PRICING / JOURNEY / CONTACT / MEDIA + ungrouped Users).
 > - **Phase C4** adds an admin sidebar explainer banner above nav: "Collections → many of the same thing · Globals → one-of-a-kind".
-> - **Phase Q-6 #26**: light theme will become the default menu colour (currently theme: 'all' with auto pickup).
-> - Branding tokens, typography, mark, palette below all unchanged.
+> - **Phase Q-6 / q19**: Inclusion/Exclusion pipeline dropped end-to-end (collections + DB + relations) — clinic editors no longer manage shared inclusion/exclusion lists; per-procedure inclusions live in the procedure's own `detail.included` array. Light theme default is the runtime norm (admin theme = `'light'`).
+> - **Phase Q / q5**: PricingTiers collection removed end-to-end (dead data).
+> - **Phase Q / q18**: dark-brown brand token swapped `#6B4A2B` → `#533E27` (admin CSS via `--cs-brown`).
+> - Branding tokens, typography, mark, palette below all unchanged (palette only — `--cs-brown` value updated to `#533E27`).
 
 ---
 
