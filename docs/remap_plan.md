@@ -6,8 +6,8 @@
 > Scope: Two-stage rollout. **Phase R0** realigns the top-level Buckets to match site IA (sidebar move). **Phase R1, R7** ship per-Bucket detail for Contact + Journey (planning complete). Other per-Bucket phases follow as the user signs off their map.
 >
 > **Planning state mirrors [remap.md](./remap.md):**
-> - ✅ COMPLETE — User · Media · Journey · Contact · Homepage · About
-> - ⏳ PENDING — Treatments · Doctors · Results · Pricing
+> - ✅ COMPLETE — User · Media · Journey · Contact · Homepage · About · Doctors
+> - ⏳ PENDING — Treatments · Results · Pricing
 
 ## Direct answer to the editability question
 
@@ -335,6 +335,142 @@ diff /tmp/home-before.html <(curl -s https://cosmedic.gaiada.online/)
 
 ---
 
+## Phase R4 — Bucket "c. Doctors" Detail
+
+> Goal: split `/surgeons` editorial out of the generic-pageFields-only `SurgeonsPage` global into 4 new section globals + 1 new detail-template global, then rewire [SurgeonsIndex.tsx](../packages/web/src/routes/surgeons/SurgeonsIndex.tsx) and [SurgeonDetail.tsx](../packages/web/src/routes/detail/SurgeonDetail.tsx) to read from them so every visible atom on `/surgeons` + the 8 `/surgeons/<slug>` pages becomes editable. Surgeons Collection (existing) stays as-is — already provides per-doctor data, just gets a label rename. Closes ~40 orphan atoms across the 9 routes.
+
+### R4.1 — CMS schema: 5 new Globals, 2 label renames
+
+| Item | Action | Slug (Payload) | Fields |
+|---|---|---|---|
+| **a. Main** | Rename existing `surgeons-page` Global label. Keep generic `pageFields()`. | `surgeons-page` (unchanged) | title, slug, route, publishStatus, sections, seo group |
+| **b. Hero** | **New** Global | `surgeons-hero` | chapter, titleA, titleB, lede, heroImage, imageLabel, breadcrumbLabel |
+| **c. Lead-View** | **New** Global | `surgeons-lead-view` | sectionEyebrow, blockEyebrow, statLabelTrained, statLabelSpecialty, statLabelDistinction, ctaLabel |
+| **d. Plastic-Surgery-View** | **New** Global | `surgeons-plastic-view` | eyebrow, headingA, headingItalic, headingB, lede |
+| **e. Aesthetic-Medicine-View** | **New** Global | `surgeons-aesthetic-view` | eyebrow, headingA, headingItalic, headingB, lede |
+| **f. Detail-Template** | **New** Global | `surgeon-detail-template` | heroLeadLabel, heroSpecialistLabel, heroCtaConsultLabel, heroCtaTreatmentsLabelTemplate *(view-only mirror ← b. Treatments → Disciplines)*, breadcrumbHomeLabel, breadcrumbSurgeonsLabel, statLabelYears, statLabelDistinction, statLabelSpecialty, biographyEyebrow, sidebarLabelSpecialism, sidebarLabelCredentials, sidebarLabelLanguages, sidebarLabelAvailability, languagesFallback, availabilityFallback, secondaryBioParagraph, specialtyEyebrow, specialtyHeadingTemplate, trainingEyebrow, trainingRowLabels (array of 5), trainingRowRights (array of 4 — rows 1-3+5), trainingRowPracticeMid *(view-only mirror ← a. Homepage → r. Settings)*, facultyEyebrow, facultyHeading |
+| **g. Surgeons** | Rename `surgeons` Collection label only | `surgeons` (unchanged) | (no field changes) |
+
+**Important:** slugs do **not** change for renamed items. All existing surgeon data + API URLs + route reads intact.
+
+**View-only mirror fields on `f. Detail-Template`** use Payload's native `admin.readOnly: true` + `hooks.afterRead` pattern — the field declares itself, but its value is computed from the source Global / Collection at read time. No monkey-patching; full Payload capability preserved (Rule 9).
+
+### R4.2 — `admin.description` notes
+
+**On Bucket `c. Doctors`:**
+
+> Governs /surgeons + the 8 /surgeons/<slug> detail pages. The Surgeons Collection (g.) is the canonical source for every doctor surface on the site — homepage Surgeons-View, Doctors mega-menu, discipline & sub-category Lead Surgeon panels, and blog bylines all read from here.
+
+**On items c / d / e (the 3 view sections):**
+
+> The cards / data shown in this section are **not edited here**. Edit the source in **g. Surgeons** (same Bucket). This item controls only the section's eyebrow / heading / lede / CTA labels.
+
+**On `f. Detail-Template`:**
+
+> Template-level strings that apply to every /surgeons/<slug> detail page. Per-doctor data (name, portrait, bio, credentials, schedule, languages, specialty areas) lives on **g. Surgeons** (the row). This global controls only the labels, eyebrows, fallbacks, and section headings that are identical across all 8 detail pages. Two fields are **view-only** mirrors of cross-bucket sources — Treatments back-link label (← b. Treatments → Disciplines) and "BIMC CosMedic Centre, Bali" Training row (← a. Homepage → r. Settings).
+
+### R4.3 — Settings field additions
+
+None. Clinic name + city are already on Settings — the Training table row will mirror them.
+
+### R4.4 — Web data layer
+
+Extend [`packages/web/src/lib/cms.ts`](../packages/web/src/lib/cms.ts) parallel cache load:
+
+- `fetchGlobal('surgeons-hero')`
+- `fetchGlobal('surgeons-lead-view')`
+- `fetchGlobal('surgeons-plastic-view')`
+- `fetchGlobal('surgeons-aesthetic-view')`
+- `fetchGlobal('surgeon-detail-template')`
+
+Extend `CmsCache` TypeScript interface with the 5 new globals. Surgeons Collection already fetched.
+
+### R4.5 — Route rewire
+
+Replace hardcoded strings in [SurgeonsIndex.tsx](../packages/web/src/routes/surgeons/SurgeonsIndex.tsx):
+
+| Hardcoded today | Becomes |
+|---|---|
+| ChapterOpener literals (L62-66, L71-78) | reads from `cms.surgeonsHero.*` |
+| "Lead Plastic Surgeon" eyebrow (L83) | reads from `cms.surgeonsLeadView.sectionEyebrow` |
+| "Lead Surgeon" block eyebrow (L100) | reads from `cms.surgeonsLeadView.blockEyebrow` |
+| Stat labels Trained / Specialty / Distinction (L112, L116, L120) | reads from `cms.surgeonsLeadView.statLabel*` |
+| "Read the full profile" CTA (L125) | reads from `cms.surgeonsLeadView.ctaLabel` |
+| Plastic section eyebrow / heading / lede (L134, L136-138, L139-142) | reads from `cms.surgeonsPlasticView.*` |
+| Aesthetic section eyebrow / heading / lede (L156, L158-159, L161-164) | reads from `cms.surgeonsAestheticView.*` |
+| Loading fallback "Loading surgeon roster…" (L65) | stays hardcoded (defensive cold-start state) |
+
+Replace hardcoded strings in [SurgeonDetail.tsx](../packages/web/src/routes/detail/SurgeonDetail.tsx):
+
+| Hardcoded today | Becomes |
+|---|---|
+| Hero eyebrow toggle "Lead Surgeon" / "Specialist" (L43) | reads from `cms.surgeonDetailTemplate.heroLeadLabel / heroSpecialistLabel` |
+| "Request a consultation" CTA (L56) | reads from `cms.surgeonDetailTemplate.heroCtaConsultLabel` |
+| Treatments back-link label (L59) | reads from `cms.surgeonDetailTemplate.heroCtaTreatmentsLabelTemplate` (mirror of Discipline title) |
+| Breadcrumb static labels (L67, L69) | reads from `cms.surgeonDetailTemplate.breadcrumb*` |
+| Stats row labels (L78, L84, L90) | reads from `cms.surgeonDetailTemplate.statLabel*` |
+| Biography eyebrow (L100) | reads from `cms.surgeonDetailTemplate.biographyEyebrow` |
+| 4 sidebar dt labels (L105, L111, L117, L127) | reads from `cms.surgeonDetailTemplate.sidebarLabel*` |
+| Languages fallback (L122) | reads from `cms.surgeonDetailTemplate.languagesFallback` |
+| Availability fallback (L141) | reads from `cms.surgeonDetailTemplate.availabilityFallback` |
+| Hardcoded "Patients often describe…" paragraph (L157-161) | reads from `cms.surgeonDetailTemplate.secondaryBioParagraph` |
+| Specialty Areas eyebrow + heading template (L169, L173) | reads from `cms.surgeonDetailTemplate.specialtyEyebrow / specialtyHeadingTemplate` |
+| Training & credentials eyebrow (L190) | reads from `cms.surgeonDetailTemplate.trainingEyebrow` |
+| Training 5 row labels (L195-198, L200) | reads from `cms.surgeonDetailTemplate.trainingRowLabels[]` |
+| Training row right phrases — MBBS / MD, Board credential, Active, Active member (L195, L197-198, L205) | reads from `cms.surgeonDetailTemplate.trainingRowRights[]` |
+| Training "BIMC CosMedic Centre, Bali" mid (L198) | reads from `cms.surgeonDetailTemplate.trainingRowPracticeMid` (mirror of Settings clinic name + city) |
+| Faculty eyebrow + heading (L243, L245-247) | reads from `cms.surgeonDetailTemplate.facultyEyebrow / facultyHeading` |
+
+### R4.6 — Seed migration (visual invariance gate)
+
+Write `packages/cms/src/seed/seed-doctors-section-globals.ts` (run once, idempotent):
+
+1. Upsert `surgeons-hero` with strings copied verbatim from current `SurgeonsIndex.tsx` ChapterOpener (L62-78).
+2. Upsert `surgeons-lead-view` with the 6 hardcoded chrome strings from L83, L100, L112, L116, L120, L125.
+3. Upsert `surgeons-plastic-view` with strings from L134-142 (split heading into headingA / headingItalic / headingB tokens).
+4. Upsert `surgeons-aesthetic-view` with strings from L156-164 (same split).
+5. Upsert `surgeon-detail-template` with all ~24 chrome strings from SurgeonDetail.tsx verbatim. For the two mirror fields:
+    - `heroCtaTreatmentsLabelTemplate` → leave blank; afterRead hook resolves the parent discipline title at read time.
+    - `trainingRowPracticeMid` → leave blank; afterRead hook composes `${settings.clinicName}, ${settings.city}` at read time.
+
+### R4.7 — Revalidate hooks
+
+Spread `revalidateGlobalAfterChange()` from [`packages/cms/src/lib/revalidate.ts`](../packages/cms/src/lib/revalidate.ts) onto all 5 new globals. Standard project pattern — every edit POSTs to web `/api/revalidate` to bust the 60s cache.
+
+### R4.8 — Verification
+
+```bash
+pnpm --filter @cosmedic/cms build
+pnpm --filter @cosmedic/web build
+pm2 restart cosmedic-cms cosmedic-web
+
+# Admin sanity — 7 items in c. Doctors Bucket, alphabetical order
+curl -s http://127.0.0.1:4007/admin | grep -E "a\. Main|b\. Hero|c\. Lead-View|d\. Plastic-Surgery-View|e\. Aesthetic-Medicine-View|f\. Detail-Template|g\. Surgeons"
+
+# Visual invariance — /surgeons + a sample of /surgeons/<slug>
+curl -s https://cosmedic.gaiada.online/surgeons > /tmp/surgeons-before.html
+curl -s https://cosmedic.gaiada.online/surgeons/suka > /tmp/surgeon-detail-before.html
+# ... apply changes ...
+diff /tmp/surgeons-before.html <(curl -s https://cosmedic.gaiada.online/surgeons)
+diff /tmp/surgeon-detail-before.html <(curl -s https://cosmedic.gaiada.online/surgeons/suka)
+# Spot-check the other 7 detail routes
+
+# Editability proof — edit each new global, wait 60s, confirm change appears
+# 1. b. Hero → change lede → revisit /surgeons → see → revert
+# 2. c. Lead-View → change CTA label → revisit /surgeons → see → revert
+# 3. d. Plastic-Surgery-View → change heading → revisit /surgeons → see → revert
+# 4. e. Aesthetic-Medicine-View → change lede → revisit /surgeons → see → revert
+# 5. f. Detail-Template → change "Patients often describe…" → revisit any /surgeons/<slug> → see → revert
+```
+
+### R4.9 Estimate
+
+- **Commits:** ~10–12
+- **Time:** ~3–4 hours including verification
+- **Downtime:** none (warm builds, sub-second `pm2 restart`)
+
+---
+
 ## Phase R7 — Bucket "f. Journey" Detail
 
 > Goal: replace hardcoded STEPS array + ChapterOpener literals in [JourneyPage.tsx](../packages/web/src/routes/journey/JourneyPage.tsx) with reads from JourneyPage Global + JourneySteps Collection; collapse /recovery-stays editorial into a sibling global + wire RecoveryStays Collection to back the villa grid.
@@ -533,9 +669,9 @@ done
 
 ---
 
-## Phases R3–R6 — Other Bucket Details (pending)
+## Phases R3, R5, R6 — Other Bucket Details (pending)
 
-Each remaining Bucket gets its own phase, following the same R1/R7 shape:
+Each remaining Bucket gets its own phase, following the same R1/R4/R7/R8 shape:
 
 1. Add detail to [remap.md](./remap.md) §2 (the per-Bucket item map).
 2. Get user sign-off on the map.
@@ -549,7 +685,6 @@ Each remaining Bucket gets its own phase, following the same R1/R7 shape:
 | Phase | Bucket | Notes / known scope |
 |---|---|---|
 | **R3** | b. Treatments | Treatment index + discipline + sub-category pages. Largest by route count (28 routes). Lots of editorial chrome on detail templates currently hardcoded. |
-| **R4** | c. Doctors | `/surgeons` index + 8 surgeon detail templates. Surgeon bio chrome currently hardcoded. |
 | **R5** | d. Results | `/results`, `/gallery`, `/stories`. Includes the Stories move-in from Journey (already covered by R0). Stories patient-quote data is in collection; chrome is hardcoded. |
 | **R6** | e. Pricing | `/pricing`. Already partially CMS-driven via PriceListItems. Hero + insurance section chrome hardcoded. |
 

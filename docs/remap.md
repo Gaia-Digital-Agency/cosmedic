@@ -5,8 +5,8 @@
 > Scope: Whole admin sidebar (top-level Buckets + per-Bucket items). Bucket realignment is the first slice; per-Bucket item detail follows Bucket by Bucket.
 >
 > **Planning state:**
-> - ✅ COMPLETE — User · Media · Journey · Contact · Homepage · About
-> - ⏳ PENDING — Treatments · Doctors · Results · Pricing
+> - ✅ COMPLETE — User · Media · Journey · Contact · Homepage · About · Doctors
+> - ⏳ PENDING — Treatments · Results · Pricing
 
 ## Goal
 
@@ -121,7 +121,7 @@ Implementation lives in [remap_plan.md](./remap_plan.md) Phase R0.
 
 ## 2. Per-Bucket Detail
 
-Each Bucket's Admin Items vs Site Section detail follows in its own sub-section. **Completed:** f. Journey + g. Contact. **Pending:** a. Homepage · b. Treatments · c. Doctors · d. Results · e. Pricing · h. About. (i. Media Library + Users have no editorial detail — asset store + auth plumbing respectively.)
+Each Bucket's Admin Items vs Site Section detail follows in its own sub-section. **Completed:** a. Homepage · c. Doctors · f. Journey · g. Contact · h. About. **Pending:** b. Treatments · d. Results · e. Pricing. (i. Media Library + Users have no editorial detail — asset store + auth plumbing respectively.)
 
 ### 2.a — Bucket "a. Homepage" detail
 
@@ -203,6 +203,69 @@ The 6 view sections (`m–r`, suffix `-View`) + Footer Treatments column display
 | `whatsappNumber` | i. Floating-CTA (WhatsApp button) + d. Footer (WhatsApp link in Connect column) |
 | `socialLinks[]` | d. Footer (Connect column) |
 | `audToIdrRate`, `roundIdrTo`, `currencyDisplayMode` | b. Treatments + e. Pricing (all price rendering) |
+
+### 2.c — Bucket "c. Doctors" detail
+
+Covers `/surgeons` (index) + `/surgeons/<slug>` × 8 (detail). 7 admin items in reading order — page sections of `/surgeons` top→bottom (a–e), shared detail-template chrome for the 8 detail pages (f), then the backing Collection (g).
+
+| Admin Item (c. Doctors) | Site page / section |
+|---|---|
+| **a. Main** | `/surgeons` page meta + SEO + bottom `<CmsExtraBlocks slug="surgeons"/>` slot |
+| **b. Hero** | `/surgeons` Hero (chapter eyebrow, 2-line title, lede, hero image, image label, breadcrumbs) |
+| **c. Lead-View** | `/surgeons` Lead Surgeon panel — chrome (section eyebrow "Lead Plastic Surgeon", block eyebrow "Lead Surgeon", 3 stat labels Trained / Specialty / Distinction, "Read the full profile" CTA); displays lead row from g. Surgeons |
+| **d. Plastic-Surgery-View** | `/surgeons` Plastic Surgery section — chrome (eyebrow, heading, lede); displays group=plastic-surgery (non-lead) cards from g. Surgeons |
+| **e. Aesthetic-Medicine-View** | `/surgeons` Aesthetic Medicine section — chrome (eyebrow, heading, lede); displays group=aesthetic-medicine cards from g. Surgeons |
+| **f. Detail-Template** | `/surgeons/<slug>` × 8 template chrome — hero eyebrow toggle ("Lead Surgeon" / "Specialist"), hero CTA "Request a consultation", breadcrumb static labels, 3 stats-row labels (Years in practice / Distinction / Specialty), Biography eyebrow + 4 sidebar dt labels (Specialism / Credentials / Languages / Availability), Languages fallback, Availability fallback, hardcoded "Patients often describe…" paragraph, Specialty Areas eyebrow + heading template, Training & Credentials eyebrow + 5 row labels + 4 right-column phrases (MBBS/MD · Board credential · Active · Active member), Faculty eyebrow + heading ("Meet the other practitioners.") |
+| **g. Surgeons** | Surgeons Collection — 8 doctor records (all field data: name, portrait, spec, bio, years, specAreas, group, lead flag, credentials, languages, availability schedule, sortOrder, SEO). Same record feeds `/surgeons` cards + lead panel + `/surgeons/<slug>` per-doctor data + faculty grid + Doctors mega-menu + discipline Lead Surgeon panels + blog bylines. |
+
+#### Item-order rationale (Doctors)
+
+- a, b — page foundation (Main + Hero of `/surgeons`)
+- c, d, e — `/surgeons` body sections in reading order: lead spotlight → plastic grid → aesthetic grid
+- f — shared chrome for the 8 `/surgeons/<slug>` detail routes
+- g — the canonical Collection backing every surgeon surface across the site
+
+#### Coverage
+
+All visible atoms on `/surgeons` + `/surgeons/<slug>` × 8 accounted for.
+
+| Atom group | Item that owns it |
+|---|---|
+| `/surgeons` Hero (6 atoms) | b. Hero |
+| `/surgeons` Lead panel chrome (6 atoms) | c. Lead-View |
+| `/surgeons` Lead panel data (portrait, name, suffix, cred, bio, stat values) | g. Surgeons (lead=true row) |
+| `/surgeons` Plastic section chrome (3 atoms) | d. Plastic-Surgery-View |
+| `/surgeons` Plastic grid cards | g. Surgeons (group=plastic-surgery, non-lead) |
+| `/surgeons` Aesthetic section chrome (3 atoms) | e. Aesthetic-Medicine-View |
+| `/surgeons` Aesthetic grid cards | g. Surgeons (group=aesthetic-medicine) |
+| `/surgeons` page meta + SEO | a. Main |
+| `/surgeons/<slug>` per-doctor data (hero portrait, name, suffix, cred, group, bio, stats values, sidebar dd values, specialty cards, training row mids, faculty grid) | g. Surgeons (the row) |
+| `/surgeons/<slug>` template chrome (~24 atoms) | f. Detail-Template |
+
+#### Cross-bucket reads — view-only fields inside f. Detail-Template
+
+Two atoms on `/surgeons/<slug>` mirror values whose source lives outside the Doctors Bucket. Each is implemented as a read-only field on `f. Detail-Template` with `admin.description` signposting the source.
+
+| Cosmedic CMS display location | Source field | Source Bucket → Item |
+|---|---|---|
+| f. Detail-Template → hero Treatments back-link CTA label | parent discipline `title` | b. Treatments → Disciplines |
+| f. Detail-Template → Training table "Practice" row mid value ("BIMC CosMedic Centre, Bali") | clinic name + city | a. Homepage → r. Settings |
+
+No standalone view-only Items — items c / d / e source from `g. Surgeons` which lives in the same Bucket.
+
+#### Cross-bucket reads — c. Doctors as source for other Buckets
+
+`g. Surgeons` is the canonical Collection for every surgeon surface site-wide. Other Buckets display its rows read-only:
+
+| Source field on g. Surgeons | Read-only display location |
+|---|---|
+| All fields | a. Homepage → o. Surgeons-View (homepage teaser) |
+| lead=true row + selected specialists | a. Homepage → c. Header (Doctors mega-menu) |
+| lead-by-discipline | b. Treatments → discipline detail "Lead Surgeon" panel |
+| lead-by-subcategory | b. Treatments → sub-category detail "Lead Surgeon" panel |
+| authoring surgeon | h. About → c. Blog-Posts byline |
+
+Bucket `c. Doctors` carries `admin.description`: *"Governs /surgeons + the 8 /surgeons/<slug> detail pages. The Surgeons Collection (g.) is the canonical source for every doctor surface on the site — homepage Surgeons-View, Doctors mega-menu, discipline & sub-category Lead Surgeon panels, and blog bylines all read from here."*
 
 ### 2.f — Bucket "f. Journey" detail
 
@@ -366,7 +429,7 @@ None. About Bucket is fully self-contained — every editorial atom is sourced i
 |---|---|---|
 | **a. Homepage** | ✅ COMPLETE (above) | Phase R2 |
 | b. Treatments | ⏳ PENDING | Phase R3 |
-| c. Doctors | ⏳ PENDING | Phase R4 |
+| **c. Doctors** | ✅ COMPLETE (above) | Phase R4 |
 | d. Results | ⏳ PENDING (must address `/stories` move-in) | Phase R5 |
 | e. Pricing | ⏳ PENDING | Phase R6 |
 | **f. Journey** | ✅ COMPLETE (above) | Phase R7 |
