@@ -327,6 +327,11 @@ export const awardsSorted = (cms: CmsCache): Award[] =>
 export const recoveryStaysSorted = (cms: CmsCache): RecoveryStay[] =>
   [...cms.recoveryStays].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
 
+export const journeyStepsSorted = (cms: CmsCache): import('./cms').JourneyStep[] =>
+  [...cms.journeySteps].sort(
+    (a, b) => (a.order ?? a.sortOrder ?? 0) - (b.order ?? b.sortOrder ?? 0),
+  )
+
 export const blogPostsSorted = (cms: CmsCache): BlogPost[] =>
   [...cms.blogPosts].sort(
     (a, b) =>

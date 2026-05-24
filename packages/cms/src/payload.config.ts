@@ -47,6 +47,8 @@ import { ResultsPage } from './globals/pages/ResultsPage'
 import { GalleryPage } from './globals/pages/GalleryPage'
 import { PricingPage } from './globals/pages/PricingPage'
 import { JourneyPage } from './globals/pages/JourneyPage'
+import { JourneyHero } from './globals/pages/JourneyHero'
+import { JourneyStats } from './globals/pages/JourneyStats'
 import { StoriesPage } from './globals/pages/StoriesPage'
 import { RecoveryStaysPage } from './globals/pages/RecoveryStaysPage'
 import { ContactPage } from './globals/pages/ContactPage'
@@ -141,6 +143,8 @@ export default buildConfig({
     GalleryPage,
     PricingPage,
     JourneyPage,
+    JourneyHero,
+    JourneyStats,
     StoriesPage,
     RecoveryStaysPage,
     ContactPage,

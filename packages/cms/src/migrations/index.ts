@@ -8,6 +8,7 @@ import * as migration_20260524_042248_q5_drop_pricing_tiers from './20260524_042
 import * as migration_20260524_043557_q14_ba_patient_age_recovery_duration from './20260524_043557_q14_ba_patient_age_recovery_duration';
 import * as migration_20260524_044634_q19_drop_inclusion_exclusion from './20260524_044634_q19_drop_inclusion_exclusion';
 import * as migration_20260524_055500_r1_contact_globals from './20260524_055500_r1_contact_globals';
+import * as migration_20260524_140000_r7_journey_globals from './20260524_140000_r7_journey_globals';
 
 export const migrations = [
   {
@@ -63,5 +64,10 @@ export const migrations = [
     up: migration_20260524_055500_r1_contact_globals.up,
     down: migration_20260524_055500_r1_contact_globals.down,
     name: '20260524_055500_r1_contact_globals',
+  },
+  {
+    up: migration_20260524_140000_r7_journey_globals.up,
+    down: migration_20260524_140000_r7_journey_globals.down,
+    name: '20260524_140000_r7_journey_globals',
   },
 ];

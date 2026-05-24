@@ -48,6 +48,7 @@
     "src/seed/seed-globals.ts",
     "src/seed/seed-taxonomy.ts",
     "src/seed/seed-content.ts",
-    "src/seed/migrate-pricing-to-procedures.ts"
+    "src/seed/migrate-pricing-to-procedures.ts",
+    "src/seed/seed-r7-journey.ts"
   ]
 }

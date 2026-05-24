@@ -34,6 +34,9 @@ import type {
   ContactHeroGlobal,
   ContactEnquirySectionGlobal,
   ContactVisitSectionGlobal,
+  JourneyHeroGlobal,
+  JourneyStatsGlobal,
+  RecoveryStaysPageGlobal,
 } from './cms.types'
 import { fetchAll, fetchGlobal, fetchAllPageGlobals } from './cms.fetch'
 
@@ -65,6 +68,9 @@ export const EMPTY_CACHE: CmsCache = {
   contactHero: {},
   contactEnquirySection: {},
   contactVisitSection: {},
+  journeyHero: {},
+  journeyStats: {},
+  recoveryStaysPage: {},
 }
 
 let cache: CmsCache = EMPTY_CACHE
@@ -79,6 +85,7 @@ async function doLoad(): Promise<CmsCache> {
       settings, header, footer, floatingChrome, brandStats, endorsementMark,
       consultationPolicy, formDefaults, seoDefaults,
       contactHero, contactEnquirySection, contactVisitSection,
+      journeyHero, journeyStats, recoveryStaysPage,
     ] = await Promise.all([
       fetchAll<Surgeon>('surgeons', 100, 1),
       fetchAll<Discipline>('disciplines'),
@@ -105,6 +112,9 @@ async function doLoad(): Promise<CmsCache> {
       fetchGlobal<ContactHeroGlobal>('contact-hero').catch(() => ({})),
       fetchGlobal<ContactEnquirySectionGlobal>('contact-enquiry-section').catch(() => ({})),
       fetchGlobal<ContactVisitSectionGlobal>('contact-visit-section').catch(() => ({})),
+      fetchGlobal<JourneyHeroGlobal>('journey-hero').catch(() => ({})),
+      fetchGlobal<JourneyStatsGlobal>('journey-stats').catch(() => ({})),
+      fetchGlobal<RecoveryStaysPageGlobal>('recovery-stays-page').catch(() => ({})),
     ])
     return {
       loaded: true,
@@ -115,6 +125,7 @@ async function doLoad(): Promise<CmsCache> {
       settings, header, footer, floatingChrome, brandStats, endorsementMark,
       consultationPolicy, formDefaults, seoDefaults,
       contactHero, contactEnquirySection, contactVisitSection,
+      journeyHero, journeyStats, recoveryStaysPage,
     }
   } catch (err) {
     console.warn('[cms] load failed, using empty cache:', err)

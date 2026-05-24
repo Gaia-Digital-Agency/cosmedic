@@ -44,7 +44,10 @@ export const PAGE_GLOBAL_SLUGS = [
   'pricing-page',
   'journey-page',
   'stories-page',
-  'recovery-stays-page',
+  // 'recovery-stays-page' moved to a typed top-level cache slot (Phase R7) —
+  // it no longer follows the generic pageFields() shape, so flattening it into
+  // CmsPage[] would silently drop the new hero/topStats/portfolio/inclusions
+  // fields. Fetched directly by cms.cache.ts as RecoveryStaysPageGlobal.
   'contact-page',
   'video-consult-page',
   'blog-page',

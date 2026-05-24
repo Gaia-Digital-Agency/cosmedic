@@ -226,7 +226,17 @@ export type RecoveryStay = {
   slug: string
   name: string
   location?: string
+  /** Bedroom count display, e.g. "2 BR". */
+  bedrooms?: string
+  /** Pool type, e.g. "Private", "Resort". */
+  poolType?: string
   heroImage?: number | CmsMedia
+  imageHue?: number
+  /** Short paragraph shown under the meta-row on each villa card. */
+  body?: string
+  /** Optional override for "Drive to clinic" cell; if blank derived from location. */
+  driveTime?: string
+  nursingNote?: string
   gallery?: Array<{ image: number | CmsMedia }>
   descriptor?: Lexical
   amenities?: Array<{ value: string }>
@@ -256,9 +266,16 @@ export type JourneyStep = {
   id: number
   slug: string
   order?: number
+  /** Display number above the title on /journey (e.g. "01"). Falls back to order zero-padded. */
+  number?: string
   dayLabel?: string
   title: string
   body?: Lexical
+  /** 4 short bullets shown under the body on /journey. */
+  bullets?: Array<{ letter: string; text: string }>
+  /** Hero image rendered beside each step on /journey. */
+  image?: number | CmsMedia
+  imageHue?: number
   icon?: number | CmsMedia
   category?: 'consult' | 'medical' | 'surgical' | 'recovery' | 'follow-up'
   sortOrder?: number
@@ -366,6 +383,48 @@ export type EmailTemplatesGlobal = {
   templates?: Array<{ key: string; subject: string; bodyMjml?: string }>
 }
 
+export type JourneyHeroGlobal = {
+  chapter?: string
+  title?: { a?: string; b?: string }
+  lede?: string
+  heroImage?: CmsMedia | number | null
+  imageHue?: number
+  imageLabel?: string
+  breadcrumbLabel?: string
+}
+
+export type JourneyStatsGlobal = {
+  stats?: Array<{ number: string; label: string; italic?: boolean }>
+}
+
+export type RecoveryStaysPageGlobal = {
+  hero?: {
+    chapter?: string
+    title?: { a?: string; b?: string }
+    lede?: string
+    heroImage?: CmsMedia | number | null
+    imageHue?: number
+    imageLabel?: string
+    breadcrumbLabel?: string
+  }
+  topStats?: Array<{ number: string; label: string; italic?: boolean }>
+  portfolioSection?: {
+    eyebrow?: string
+    headingPre?: string
+    headingItalic?: string
+    headingPost?: string
+    lede?: string
+  }
+  inclusionsSection?: {
+    eyebrow?: string
+    headingPre?: string
+    headingItalic?: string
+    headingPost?: string
+    lede?: string
+  }
+  inclusions?: Array<{ letter: string; title: string; body: string }>
+}
+
 export type ContactHeroGlobal = {
   chapter?: string
   titleA?: string
@@ -439,4 +498,7 @@ export type CmsCache = {
   contactHero: ContactHeroGlobal
   contactEnquirySection: ContactEnquirySectionGlobal
   contactVisitSection: ContactVisitSectionGlobal
+  journeyHero: JourneyHeroGlobal
+  journeyStats: JourneyStatsGlobal
+  recoveryStaysPage: RecoveryStaysPageGlobal
 }

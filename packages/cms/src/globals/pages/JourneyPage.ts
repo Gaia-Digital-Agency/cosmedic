@@ -5,9 +5,11 @@ import { pageFields } from './_pageFields'
 
 export const JourneyPage: GlobalConfig = {
   slug: 'journey-page',
+  label: 'a. Main',
   admin: {
     group: 'f. Journey',
-    description: 'Editorial content for /journey: hero + body. The 6-step process is rendered from JourneySteps.',
+    description:
+      'Page meta + SEO + optional CmsExtraBlocks slot for /journey. The hero, the 7 patient-journey steps, and the bottom 3 stat tiles live in b. Hero / c. Steps / d. Stats — edit them there.',
   },
   access: { read: publishedOrAuthed, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
