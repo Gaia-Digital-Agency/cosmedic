@@ -9,7 +9,7 @@ type Props = { subCategorySlug: string }
 
 /**
  * Renders the CMS Procedure-record fields that don't otherwise surface in
- * the SubCategoryDetail UI: surgeonsCredentialed, excluded, recoveryTimeline,
+ * the SubCategoryDetail UI: surgeonsCredentialed, recoveryTimeline,
  * relatedBA, relatedProcedures. Filters cms.procedures by parentSubCategory
  * == this sub-category slug.
  *
@@ -46,7 +46,6 @@ export const ProcedureFactsPanel: React.FC<Props> = ({ subCategorySlug }) => {
 
 const ProcedureCard: React.FC<{ p: Procedure }> = ({ p }) => {
   const surgeons = (p.surgeonsCredentialed || []).filter((s) => typeof s !== 'number') as Surgeon[]
-  const excluded = (p.excluded || []).filter((x) => typeof x !== 'number') as Array<{ id: number; label?: string }>
   const recovery = (p.recoveryTimeline || []).filter((x) => typeof x !== 'number') as Array<{ id: number; title?: string; body?: string }>
   const relatedBA = (p.relatedBA || []).filter((x) => typeof x !== 'number') as BeforeAfterCase[]
   const relatedProc = (p.relatedProcedures || []).filter(
@@ -55,7 +54,6 @@ const ProcedureCard: React.FC<{ p: Procedure }> = ({ p }) => {
 
   const hasAnyDetail =
     surgeons.length > 0 ||
-    excluded.length > 0 ||
     recovery.length > 0 ||
     relatedBA.length > 0 ||
     relatedProc.length > 0
@@ -67,7 +65,7 @@ const ProcedureCard: React.FC<{ p: Procedure }> = ({ p }) => {
       </h3>
       {!hasAnyDetail ? (
         <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', color: 'var(--ink-60)', fontSize: 14 }}>
-          (No additional CMS facts populated yet — editors can add surgeons, exclusions, recovery,
+          (No additional CMS facts populated yet — editors can add surgeons, recovery,
           and cross-links on the Procedure record.)
         </p>
       ) : (
@@ -89,19 +87,6 @@ const ProcedureCard: React.FC<{ p: Procedure }> = ({ p }) => {
                     </li>
                   )
                 })}
-              </ul>
-            </div>
-          ) : null}
-
-          {excluded.length > 0 ? (
-            <div>
-              <Mono style={{ color: 'var(--accent-deep)' }}>Not included</Mono>
-              <ul style={{ paddingLeft: 18, margin: '8px 0 0', fontFamily: 'var(--font-serif)', fontSize: 14, color: 'var(--ink-80)' }}>
-                {excluded.map((x) => (
-                  <li key={x.id} style={{ marginBottom: 4 }}>
-                    {x.label || `(item #${x.id})`}
-                  </li>
-                ))}
               </ul>
             </div>
           ) : null}

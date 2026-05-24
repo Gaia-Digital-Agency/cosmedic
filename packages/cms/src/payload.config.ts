@@ -25,8 +25,6 @@ import { BlogPosts } from './collections/BlogPosts'
 import { BlogTags } from './collections/BlogTags'
 import { Authors } from './collections/Authors'
 import { JourneySteps } from './collections/JourneySteps'
-import { InclusionItems } from './collections/InclusionItems'
-import { ExclusionItems } from './collections/ExclusionItems'
 import { Enquiries } from './collections/Enquiries'
 
 import { Settings } from './globals/Settings'
@@ -116,8 +114,6 @@ export default buildConfig({
     BlogTags,
     Authors,
     JourneySteps,
-    InclusionItems,
-    ExclusionItems,
     Enquiries,
   ],
   globals: [

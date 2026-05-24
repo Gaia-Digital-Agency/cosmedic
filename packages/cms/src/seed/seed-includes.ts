@@ -1,6 +1,8 @@
 /**
- * Seed Inclusion / Exclusion / Journey-step records parsed from the
- * "Further Information" section of pricelist.xlsx.
+ * Seed Journey-step records parsed from the "Further Information" section
+ * of pricelist.xlsx. (Inclusion/Exclusion seeding removed in q19 alongside
+ * the dropped collections — site renders inclusion bullets from the
+ * free-text `Procedures.detail.included[]` array.)
  */
 
 import type { Payload } from 'payload'
@@ -11,14 +13,6 @@ import { parseFurtherInformation, slugify } from './parse-pricelist'
 export async function seedIncludesExcludesJourney(payload: Payload): Promise<void> {
   const further = parseFurtherInformation()
   let order = 0
-  for (const text of further.includes) {
-    await upsert(payload, 'inclusion-items', 'text', text, { text, scope: 'surgical-procedure', sortOrder: order++ })
-  }
-  order = 0
-  for (const text of further.excludes) {
-    await upsert(payload, 'exclusion-items', 'text', text, { text, scope: 'surgical-procedure', sortOrder: order++ })
-  }
-  order = 0
   for (const day of further.journey) {
     const slug = slugify(day.dayLabel)
     await upsert(payload, 'journey-steps', 'slug', slug, {
@@ -31,5 +25,5 @@ export async function seedIncludesExcludesJourney(payload: Payload): Promise<voi
       sortOrder: order,
     })
   }
-  payload.logger.info(`[seed] inclusions=${further.includes.length} exclusions=${further.excludes.length} journey-days=${further.journey.length}`)
+  payload.logger.info(`[seed] journey-days=${further.journey.length}`)
 }

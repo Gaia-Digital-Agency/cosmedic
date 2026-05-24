@@ -264,8 +264,6 @@ export type JourneyStep = {
   sortOrder?: number
 }
 
-export type InclusionItem = { id: number; text: string; scope?: string; sortOrder?: number }
-export type ExclusionItem = { id: number; text: string; scope?: string; sortOrder?: number }
 
 export type Author = {
   id: number
@@ -385,8 +383,6 @@ export type CmsCache = {
   blogPosts: BlogPost[]
   authors: Author[]
   journeySteps: JourneyStep[]
-  inclusions: InclusionItem[]
-  exclusions: ExclusionItem[]
   pages: CmsPage[]
   // Globals
   settings: Settings

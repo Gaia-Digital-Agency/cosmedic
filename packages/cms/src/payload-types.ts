@@ -82,8 +82,6 @@ export interface Config {
     'blog-tags': BlogTag;
     authors: Author;
     'journey-steps': JourneyStep;
-    'inclusion-items': InclusionItem;
-    'exclusion-items': ExclusionItem;
     enquiries: Enquiry;
     'payload-kv': PayloadKv;
     'payload-folders': FolderInterface;
@@ -112,8 +110,6 @@ export interface Config {
     'blog-tags': BlogTagsSelect<false> | BlogTagsSelect<true>;
     authors: AuthorsSelect<false> | AuthorsSelect<true>;
     'journey-steps': JourneyStepsSelect<false> | JourneyStepsSelect<true>;
-    'inclusion-items': InclusionItemsSelect<false> | InclusionItemsSelect<true>;
-    'exclusion-items': ExclusionItemsSelect<false> | ExclusionItemsSelect<true>;
     enquiries: EnquiriesSelect<false> | EnquiriesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
@@ -677,7 +673,7 @@ export interface Procedure {
      */
     recovery?: string | null;
     /**
-     * Free-text "what's included" bullets shown inside the accordion. (Workstream 4 will collapse this into the relation-based "Included" field below.)
+     * Free-text "what's included" bullets shown inside the accordion. Canonical source — edit per procedure.
      */
     included?:
       | {
@@ -686,14 +682,6 @@ export interface Procedure {
         }[]
       | null;
   };
-  /**
-   * Inclusion items shown as the "What's included" list on the procedure card. Curate items once in the InclusionItems collection, then pick relevant ones per procedure here.
-   */
-  included?: (number | InclusionItem)[] | null;
-  /**
-   * Exclusion items shown as the "Not included" list under the procedure detail. Curated once in ExclusionItems.
-   */
-  excluded?: (number | ExclusionItem)[] | null;
   /**
    * Ordered timeline of journey steps shown in the "Recovery timeline" block on the procedure detail.
    */
@@ -732,7 +720,7 @@ export interface Procedure {
     noindex?: boolean | null;
   };
   /**
-   * Lower numbers appear EARLIER in listings (mega-menu, index pages, cards). Use 0/10/20/30 leaving room to insert items between.
+   * Per-parent ordering. Lower numbers appear EARLIER inside the parent Sub-Category. Use 10/20/30… leaving gaps for later inserts. Numbers DO NOT need to be unique across the whole collection — only within the same parentSubCategory. On create, if left at 0 with a parent set, the system assigns (max sibling sortOrder) + 10 automatically. Tip: in the admin list view, filter by parentSubCategory to see the per-parent ordering in isolation.
    */
   sortOrder?: number | null;
   updatedAt: string;
@@ -1047,40 +1035,6 @@ export interface SubCategory {
   createdAt: string;
 }
 /**
- * Curated "what's included" line items shared across procedures. Procedures pick relevant ones via the Included relation. Editing a line here updates every procedure card that references it. Seeded from pricelist Further Info.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "inclusion-items".
- */
-export interface InclusionItem {
-  id: number;
-  text: string;
-  scope?: ('surgical-procedure' | 'consultation' | 'general') | null;
-  /**
-   * Lower numbers appear EARLIER in listings (mega-menu, index pages, cards). Use 0/10/20/30 leaving room to insert items between.
-   */
-  sortOrder?: number | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * Curated "what is NOT included" line items shared across procedures. Procedures pick relevant ones via the Excluded relation. Editing a line here updates every procedure card that references it.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "exclusion-items".
- */
-export interface ExclusionItem {
-  id: number;
-  text: string;
-  scope?: ('surgical-procedure' | 'consultation' | 'general') | null;
-  /**
-   * Lower numbers appear EARLIER in listings (mega-menu, index pages, cards). Use 0/10/20/30 leaving room to insert items between.
-   */
-  sortOrder?: number | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
  * Patient-journey steps shown as the timeline on /journey AND reused as the "Recovery timeline" block on procedure detail. Each step has a day label, title, body, and category.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1168,6 +1122,14 @@ export interface BeforeAfterCase {
     [k: string]: unknown;
   } | null;
   year?: number | null;
+  /**
+   * Patient age at the time of procedure. Shown on the B&A card on /results, /gallery, and the homepage Gallery teaser.
+   */
+  patientAge?: number | null;
+  /**
+   * Free-text recovery duration (e.g. "4 months", "6 weeks"). Shown alongside Age on the B&A card.
+   */
+  recoveryDuration?: string | null;
   /**
    * Show on homepage gallery teaser
    */
@@ -1658,14 +1620,6 @@ export interface PayloadLockedDocument {
         value: number | JourneyStep;
       } | null)
     | ({
-        relationTo: 'inclusion-items';
-        value: number | InclusionItem;
-      } | null)
-    | ({
-        relationTo: 'exclusion-items';
-        value: number | ExclusionItem;
-      } | null)
-    | ({
         relationTo: 'enquiries';
         value: number | Enquiry;
       } | null)
@@ -2024,8 +1978,6 @@ export interface ProceduresSelect<T extends boolean = true> {
               id?: T;
             };
       };
-  included?: T;
-  excluded?: T;
   recoveryTimeline?: T;
   relatedBA?: T;
   relatedProcedures?: T;
@@ -2062,6 +2014,8 @@ export interface BeforeAfterCasesSelect<T extends boolean = true> {
       };
   description?: T;
   year?: T;
+  patientAge?: T;
+  recoveryDuration?: T;
   isFeatured?: T;
   seo?:
     | T
@@ -2248,28 +2202,6 @@ export interface JourneyStepsSelect<T extends boolean = true> {
   body?: T;
   icon?: T;
   category?: T;
-  sortOrder?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "inclusion-items_select".
- */
-export interface InclusionItemsSelect<T extends boolean = true> {
-  text?: T;
-  scope?: T;
-  sortOrder?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "exclusion-items_select".
- */
-export interface ExclusionItemsSelect<T extends boolean = true> {
-  text?: T;
-  scope?: T;
   sortOrder?: T;
   updatedAt?: T;
   createdAt?: T;

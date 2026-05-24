@@ -3,7 +3,10 @@
  *
  * Returns typed records for each sheet so the seed orchestrator can iterate
  * and upsert PriceListItems / InjectableProducts / MachineTreatments /
- * HairRemovalAreas / InclusionItems / ExclusionItems / JourneySteps.
+ * HairRemovalAreas / JourneySteps.
+ * (InclusionItems + ExclusionItems collections removed in q19; the parser
+ * still surfaces `includes` / `excludes` on the return shape for reference
+ * but no consumer reads them.)
  *
  * Heuristics encoded here:
  *  - Sections within the surgical sheet are identified by rows where col-1
