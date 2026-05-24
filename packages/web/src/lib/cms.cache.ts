@@ -37,8 +37,19 @@ import type {
   JourneyHeroGlobal,
   JourneyStatsGlobal,
   RecoveryStaysPageGlobal,
+  SurgeonsHeroGlobal,
+  SurgeonsLeadViewGlobal,
+  SurgeonsSectionViewGlobal,
+  SurgeonDetailTemplateGlobal,
   PrivacySection,
   BlogPostTemplateGlobal,
+  PricingHeroGlobal,
+  PricingOverviewGlobal,
+  PricingFootnoteGlobal,
+  PricingInsuranceGlobal,
+  PricingPaymentGlobal,
+  PricingDisciplineListViewGlobal,
+  PricingCatalogueViewGlobal,
 } from './cms.types'
 import { fetchAll, fetchGlobal, fetchAllPageGlobals } from './cms.fetch'
 
@@ -74,7 +85,19 @@ export const EMPTY_CACHE: CmsCache = {
   journeyHero: {},
   journeyStats: {},
   recoveryStaysPage: {},
+  surgeonsHero: {},
+  surgeonsLeadView: {},
+  surgeonsPlasticView: {},
+  surgeonsAestheticView: {},
+  surgeonDetailTemplate: {},
   blogPostTemplate: {},
+  pricingHero: {},
+  pricingOverview: {},
+  pricingFootnote: {},
+  pricingInsurance: {},
+  pricingPayment: {},
+  pricingDisciplineListView: {},
+  pricingCatalogueView: {},
 }
 
 let cache: CmsCache = EMPTY_CACHE
@@ -90,7 +113,12 @@ async function doLoad(): Promise<CmsCache> {
       consultationPolicy, formDefaults, seoDefaults,
       contactHero, contactEnquirySection, contactVisitSection,
       journeyHero, journeyStats, recoveryStaysPage,
+      surgeonsHero, surgeonsLeadView, surgeonsPlasticView,
+      surgeonsAestheticView, surgeonDetailTemplate,
       blogPostTemplate,
+      pricingHero, pricingOverview, pricingFootnote,
+      pricingInsurance, pricingPayment,
+      pricingDisciplineListView, pricingCatalogueView,
     ] = await Promise.all([
       fetchAll<Surgeon>('surgeons', 100, 1),
       fetchAll<Discipline>('disciplines'),
@@ -121,8 +149,38 @@ async function doLoad(): Promise<CmsCache> {
       fetchGlobal<JourneyHeroGlobal>('journey-hero').catch(() => ({})),
       fetchGlobal<JourneyStatsGlobal>('journey-stats').catch(() => ({})),
       fetchGlobal<RecoveryStaysPageGlobal>('recovery-stays-page').catch(() => ({})),
+      fetchGlobal<SurgeonsHeroGlobal>('surgeons-hero').catch(() => ({})),
+      fetchGlobal<SurgeonsLeadViewGlobal>('surgeons-lead-view').catch(() => ({})),
+      fetchGlobal<SurgeonsSectionViewGlobal>('surgeons-plastic-view').catch(() => ({})),
+      fetchGlobal<SurgeonsSectionViewGlobal>('surgeons-aesthetic-view').catch(() => ({})),
+      fetchGlobal<SurgeonDetailTemplateGlobal>('surgeon-detail-template').catch(() => ({})),
       fetchGlobal<BlogPostTemplateGlobal>('blog-post-template').catch(() => ({})),
+      fetchGlobal<PricingHeroGlobal>('pricing-hero').catch(() => ({})),
+      fetchGlobal<PricingOverviewGlobal>('pricing-overview').catch(() => ({})),
+      fetchGlobal<PricingFootnoteGlobal>('pricing-footnote').catch(() => ({})),
+      fetchGlobal<PricingInsuranceGlobal>('pricing-insurance').catch(() => ({})),
+      fetchGlobal<PricingPaymentGlobal>('pricing-payment').catch(() => ({})),
+      fetchGlobal<PricingDisciplineListViewGlobal>('pricing-discipline-list-view').catch(() => ({})),
+      fetchGlobal<PricingCatalogueViewGlobal>('pricing-catalogue-view').catch(() => ({})),
     ])
+    // R6 — pricing-page lost its hero fields (split into pricing-hero global).
+    // Mirror pricing-hero.lede + heroImage onto the pricing-page row inside
+    // `pages` so seoFor() (which reads page.lede / page.heroImage) continues
+    // to render the same per-route SEO meta as before R6.
+    const pricingPageIdx = pages.findIndex((p) => p?.slug === 'pricing')
+    if (pricingPageIdx >= 0) {
+      const pp = pages[pricingPageIdx]
+      pages[pricingPageIdx] = {
+        ...pp,
+        lede: pp.lede || pricingHero.lede,
+        heroImage: pp.heroImage || pricingHero.heroImage || undefined,
+        chapterTitle: pp.chapterTitle || {
+          a: pricingHero.titleA,
+          b: pricingHero.titleB,
+        },
+        tagline: pp.tagline || pricingHero.chapter,
+      } as typeof pp
+    }
     return {
       loaded: true,
       loadedAt: Date.now(),
@@ -133,7 +191,12 @@ async function doLoad(): Promise<CmsCache> {
       consultationPolicy, formDefaults, seoDefaults,
       contactHero, contactEnquirySection, contactVisitSection,
       journeyHero, journeyStats, recoveryStaysPage,
+      surgeonsHero, surgeonsLeadView, surgeonsPlasticView,
+      surgeonsAestheticView, surgeonDetailTemplate,
       blogPostTemplate,
+      pricingHero, pricingOverview, pricingFootnote,
+      pricingInsurance, pricingPayment,
+      pricingDisciplineListView, pricingCatalogueView,
     }
   } catch (err) {
     console.warn('[cms] load failed, using empty cache:', err)

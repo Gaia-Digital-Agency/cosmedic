@@ -6,6 +6,7 @@ import { apiWarningField } from '../lib/api-warning'
 
 export const Surgeons: CollectionConfig = {
   slug: 'surgeons',
+  labels: { singular: 'Surgeon', plural: 'c. Surgeons' },
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'group', 'lead', 'sortOrder'],

@@ -213,7 +213,32 @@ const pageBlocks: Block[] = [
   },
 ]
 
-export function pageFields(): Field[] {
+export type PageFieldsOptions = {
+  /**
+   * When TRUE, the chapterTitle / tagline / lede / heroImage fields are omitted.
+   * Use on page Globals whose hero is owned by a dedicated section Global
+   * (e.g. surgeons-page hero lives on surgeons-hero) to keep editing
+   * single-sourced and avoid duplicate fields on the same page. (R4.)
+   */
+  hideHero?: boolean
+}
+
+export function pageFields(options: PageFieldsOptions = {}): Field[] {
+  const hero: Field[] = options.hideHero
+    ? []
+    : [
+        {
+          name: 'chapterTitle',
+          type: 'group',
+          fields: [
+            { name: 'a', type: 'text' },
+            { name: 'b', type: 'text' },
+          ],
+        },
+        { name: 'tagline', type: 'text' },
+        { name: 'lede', type: 'textarea' },
+        { name: 'heroImage', type: 'upload', relationTo: 'media' },
+      ]
   return [
     apiWarningField,
     { name: 'title', type: 'text', required: true, admin: { description: 'Admin label only' } },
@@ -229,17 +254,7 @@ export function pageFields(): Field[] {
       required: true,
       admin: { description: 'URL route this page renders on, e.g. "/", "/journey", "/pricing".' },
     },
-    {
-      name: 'chapterTitle',
-      type: 'group',
-      fields: [
-        { name: 'a', type: 'text' },
-        { name: 'b', type: 'text' },
-      ],
-    },
-    { name: 'tagline', type: 'text' },
-    { name: 'lede', type: 'textarea' },
-    { name: 'heroImage', type: 'upload', relationTo: 'media' },
+    ...hero,
     {
       name: 'sections',
       type: 'blocks',

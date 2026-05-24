@@ -12,6 +12,8 @@ import * as migration_20260524_055500_r1_contact_globals from './20260524_055500
 import * as migration_20260524_140000_r7_journey_globals from './20260524_140000_r7_journey_globals';
 import * as migration_20260524_133000_r8b_blog_post_template from './20260524_133000_r8b_blog_post_template';
 import * as migration_20260524_140000_r8c_about_chrome_fields from './20260524_140000_r8c_about_chrome_fields';
+import * as migration_20260524_141500_r4_doctors_globals from './20260524_141500_r4_doctors_globals';
+import * as migration_20260524_150000_r6_pricing_globals from './20260524_150000_r6_pricing_globals';
 
 export const migrations = [
   {
@@ -87,5 +89,15 @@ export const migrations = [
     up: migration_20260524_140000_r8c_about_chrome_fields.up,
     down: migration_20260524_140000_r8c_about_chrome_fields.down,
     name: '20260524_140000_r8c_about_chrome_fields',
+  },
+  {
+    up: migration_20260524_141500_r4_doctors_globals.up,
+    down: migration_20260524_141500_r4_doctors_globals.down,
+    name: '20260524_141500_r4_doctors_globals',
+  },
+  {
+    up: migration_20260524_150000_r6_pricing_globals.up,
+    down: migration_20260524_150000_r6_pricing_globals.down,
+    name: '20260524_150000_r6_pricing_globals',
   },
 ];

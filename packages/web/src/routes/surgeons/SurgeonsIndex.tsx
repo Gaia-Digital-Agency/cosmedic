@@ -6,6 +6,47 @@ import { Img } from '@/components/primitives/Img'
 import { Mono, Eyebrow } from '@/components/primitives/Mono'
 import { Btn } from '@/components/primitives/Btn'
 import { SURGEON_LIST, SURGEON_IMG, IMG, type Surgeon } from '@/content/seed'
+import { useCms } from '@/lib/cms-context'
+import { mediaUrl } from '@/lib/cms'
+
+/* ─── R4 defensive fallbacks ───────────────────────────────────────────── */
+/* Verbatim copies of the strings that lived in this file pre-R4. Used  */
+/* only when the CMS cache is cold / the global has no value. After the  */
+/* seed runs (`seed-doctors-section-globals.ts`), the cache supplies the */
+/* same strings — render stays byte-identical (Rule 3 / no-data-loss).   */
+const FB = {
+  hero: {
+    chapter: 'Chapter III — The Practitioners',
+    titleA: 'Hands you',
+    titleB: 'can trust.',
+    lede: 'Eight specialists across plastic surgery and aesthetic medicine — ISAPS members, fellowship-trained in Korea, Japan, and Singapore, and rooted in Bali.',
+    imageHue: 2,
+    imageLabel: 'THE PRACTITIONERS',
+    breadcrumbLabel: 'Surgeons',
+  },
+  lead: {
+    sectionEyebrow: 'Lead Plastic Surgeon',
+    blockEyebrow: 'Lead Surgeon',
+    statLabelTrained: 'Trained',
+    statLabelSpecialty: 'Specialty',
+    statLabelDistinction: 'Distinction',
+    ctaLabel: 'Read the full profile',
+  },
+  plastic: {
+    eyebrow: 'Plastic Surgery',
+    headingA: '',
+    headingItalic: 'Reconstructive',
+    headingB: ' & aesthetic.',
+    lede: 'Our plastic surgery team holds combined fellowships from Korea, Japan, Singapore, and Indonesia — and ISAPS, FICS, and craniomaxillofacial subspecialty credentials.',
+  },
+  aesthetic: {
+    eyebrow: 'Aesthetic Medicine',
+    headingA: '',
+    headingItalic: 'Quiet',
+    headingB: ' non-surgical.',
+    lede: 'Anti-aging, dermatology, venereology and aesthetics — for the considered, everyday refinements between bigger decisions.',
+  },
+}
 
 const SurgeonCard: React.FC<{ s: Surgeon; idx: number }> = ({ s, idx }) => (
   <Reveal delay={idx * 60} y={20}>
@@ -47,6 +88,26 @@ export const SurgeonsIndex: React.FC = () => {
   const PLASTIC = SURGEON_LIST.filter((s) => s.group === 'Plastic Surgery')
   const AESTHETIC = SURGEON_LIST.filter((s) => s.group === 'Aesthetic Medicine')
   const lead = SURGEON_LIST[0]
+
+  const cms = useCms()
+  const heroCms = cms?.surgeonsHero
+  const leadCms = cms?.surgeonsLeadView
+  const plasticCms = cms?.surgeonsPlasticView
+  const aestheticCms = cms?.surgeonsAestheticView
+
+  // Resolved values (CMS-or-fallback). Each line is "global || fallback string"
+  // so a partially-empty global degrades to a literal — never undefined.
+  const hero = {
+    chapter: heroCms?.chapter || FB.hero.chapter,
+    titleA: heroCms?.titleA || FB.hero.titleA,
+    titleB: heroCms?.titleB || FB.hero.titleB,
+    lede: heroCms?.lede || FB.hero.lede,
+    image: mediaUrl(heroCms?.heroImage) || IMG.clinic,
+    imageHue: heroCms?.imageHue ?? FB.hero.imageHue,
+    imageLabel: heroCms?.imageLabel || FB.hero.imageLabel,
+    breadcrumbLabel: heroCms?.breadcrumbLabel || FB.hero.breadcrumbLabel,
+  }
+
   // Defensive: during a CMS cache cold-start the lazy proxy can briefly
   // hand back an empty array. Return a minimal placeholder instead of
   // crashing the SSR render — the next request (after cache warm) renders
@@ -55,13 +116,13 @@ export const SurgeonsIndex: React.FC = () => {
     return (
       <PageShell activePage="surgeons">
         <ChapterOpener
-          chapter="Chapter III — The Practitioners"
-          title={['Hands you', 'can trust.']}
+          chapter={hero.chapter}
+          title={[hero.titleA, hero.titleB]}
           lede="Loading surgeon roster…"
-          image={IMG.clinic}
-          imageHue={2}
-          imageLabel="THE PRACTITIONERS"
-          breadcrumbs={[{ label: 'BIMC CosMedic', href: '/' }, { label: 'Surgeons' }]}
+          image={hero.image}
+          imageHue={hero.imageHue}
+          imageLabel={hero.imageLabel}
+          breadcrumbs={[{ label: 'BIMC CosMedic', href: '/' }, { label: hero.breadcrumbLabel }]}
         />
       </PageShell>
     )
@@ -69,18 +130,18 @@ export const SurgeonsIndex: React.FC = () => {
   return (
   <PageShell activePage="surgeons">
     <ChapterOpener
-      chapter="Chapter III — The Practitioners"
-      title={['Hands you', 'can trust.']}
-      lede="Eight specialists across plastic surgery and aesthetic medicine — ISAPS members, fellowship-trained in Korea, Japan, and Singapore, and rooted in Bali."
-      image={IMG.clinic}
-      imageHue={2}
-      imageLabel="THE PRACTITIONERS"
-      breadcrumbs={[{ label: 'BIMC CosMedic', href: '/' }, { label: 'Surgeons' }]}
+      chapter={hero.chapter}
+      title={[hero.titleA, hero.titleB]}
+      lede={hero.lede}
+      image={hero.image}
+      imageHue={hero.imageHue}
+      imageLabel={hero.imageLabel}
+      breadcrumbs={[{ label: 'BIMC CosMedic', href: '/' }, { label: hero.breadcrumbLabel }]}
     />
 
     <section id="surgical" className="page-section" style={{ scrollMarginTop: 100 }}>
       <Reveal>
-        <Eyebrow>Lead Plastic Surgeon</Eyebrow>
+        <Eyebrow>{leadCms?.sectionEyebrow || FB.lead.sectionEyebrow}</Eyebrow>
       </Reveal>
       <div
         className="surgeons-feature"
@@ -97,7 +158,7 @@ export const SurgeonsIndex: React.FC = () => {
           </div>
         </Reveal>
         <Reveal delay={240} style={{ paddingTop: 32 }}>
-          <Mono>Lead Surgeon</Mono>
+          <Mono>{leadCms?.blockEyebrow || FB.lead.blockEyebrow}</Mono>
           <h2 className="surgeon-name">
             <span>
               {lead.title} {lead.name.split(' ').slice(0, -1).join(' ')}
@@ -109,20 +170,20 @@ export const SurgeonsIndex: React.FC = () => {
           <p className="surgeon-body">{lead.bio}</p>
           <div className="surgeon-stats">
             <div>
-              <Mono>Trained</Mono>
+              <Mono>{leadCms?.statLabelTrained || FB.lead.statLabelTrained}</Mono>
               <span>{lead.train}</span>
             </div>
             <div>
-              <Mono>Specialty</Mono>
+              <Mono>{leadCms?.statLabelSpecialty || FB.lead.statLabelSpecialty}</Mono>
               <span>{lead.spec_areas[0]}</span>
             </div>
             <div>
-              <Mono>Distinction</Mono>
+              <Mono>{leadCms?.statLabelDistinction || FB.lead.statLabelDistinction}</Mono>
               <span>{lead.proc}</span>
             </div>
           </div>
           <Btn kind="ghost" as="a" href={`/surgeons/${lead.slug}`}>
-            Read the full profile
+            {leadCms?.ctaLabel || FB.lead.ctaLabel}
           </Btn>
         </Reveal>
       </div>
@@ -131,15 +192,14 @@ export const SurgeonsIndex: React.FC = () => {
     <section className="page-section tinted">
       <Reveal>
         <div className="section-head">
-          <Eyebrow>Plastic Surgery</Eyebrow>
+          <Eyebrow>{plasticCms?.eyebrow || FB.plastic.eyebrow}</Eyebrow>
           <div>
             <h2 className="section-title">
-              <span className="italic">Reconstructive</span> & aesthetic.
+              {plasticCms?.headingA ?? FB.plastic.headingA}
+              <span className="italic">{plasticCms?.headingItalic || FB.plastic.headingItalic}</span>
+              {plasticCms?.headingB ?? FB.plastic.headingB}
             </h2>
-            <p className="section-lede">
-              Our plastic surgery team holds combined fellowships from Korea, Japan, Singapore, and
-              Indonesia — and ISAPS, FICS, and craniomaxillofacial subspecialty credentials.
-            </p>
+            <p className="section-lede">{plasticCms?.lede || FB.plastic.lede}</p>
           </div>
         </div>
       </Reveal>
@@ -153,15 +213,14 @@ export const SurgeonsIndex: React.FC = () => {
     <section id="aesthetic" className="page-section" style={{ scrollMarginTop: 100 }}>
       <Reveal>
         <div className="section-head">
-          <Eyebrow>Aesthetic Medicine</Eyebrow>
+          <Eyebrow>{aestheticCms?.eyebrow || FB.aesthetic.eyebrow}</Eyebrow>
           <div>
             <h2 className="section-title">
-              <span className="italic">Quiet</span> non-surgical.
+              {aestheticCms?.headingA ?? FB.aesthetic.headingA}
+              <span className="italic">{aestheticCms?.headingItalic || FB.aesthetic.headingItalic}</span>
+              {aestheticCms?.headingB ?? FB.aesthetic.headingB}
             </h2>
-            <p className="section-lede">
-              Anti-aging, dermatology, venereology and aesthetics — for the considered, everyday
-              refinements between bigger decisions.
-            </p>
+            <p className="section-lede">{aestheticCms?.lede || FB.aesthetic.lede}</p>
           </div>
         </div>
       </Reveal>

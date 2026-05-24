@@ -83,6 +83,7 @@ export interface Config {
     authors: Author;
     'journey-steps': JourneyStep;
     enquiries: Enquiry;
+    'privacy-sections': PrivacySection;
     'payload-kv': PayloadKv;
     'payload-folders': FolderInterface;
     'payload-locked-documents': PayloadLockedDocument;
@@ -111,6 +112,7 @@ export interface Config {
     authors: AuthorsSelect<false> | AuthorsSelect<true>;
     'journey-steps': JourneyStepsSelect<false> | JourneyStepsSelect<true>;
     enquiries: EnquiriesSelect<false> | EnquiriesSelect<true>;
+    'privacy-sections': PrivacySectionsSelect<false> | PrivacySectionsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -137,15 +139,26 @@ export interface Config {
     'privacy-page': PrivacyPage;
     'treatments-page': TreatmentsPage;
     'surgeons-page': SurgeonsPage;
+    'surgeons-hero': SurgeonsHero;
+    'surgeons-lead-view': SurgeonsLeadView;
+    'surgeons-plastic-view': SurgeonsPlasticView;
+    'surgeons-aesthetic-view': SurgeonsAestheticView;
+    'surgeon-detail-template': SurgeonDetailTemplate;
     'results-page': ResultsPage;
     'gallery-page': GalleryPage;
     'pricing-page': PricingPage;
     'journey-page': JourneyPage;
+    'journey-hero': JourneyHero;
+    'journey-stats': JourneyStat;
     'stories-page': StoriesPage;
     'recovery-stays-page': RecoveryStaysPage;
     'contact-page': ContactPage;
+    'contact-hero': ContactHero;
+    'contact-enquiry-section': ContactEnquirySection;
+    'contact-visit-section': ContactVisitSection;
     'video-consult-page': VideoConsultPage;
     'blog-page': BlogPage;
+    'blog-post-template': BlogPostTemplate;
   };
   globalsSelect: {
     settings: SettingsSelect<false> | SettingsSelect<true>;
@@ -163,15 +176,26 @@ export interface Config {
     'privacy-page': PrivacyPageSelect<false> | PrivacyPageSelect<true>;
     'treatments-page': TreatmentsPageSelect<false> | TreatmentsPageSelect<true>;
     'surgeons-page': SurgeonsPageSelect<false> | SurgeonsPageSelect<true>;
+    'surgeons-hero': SurgeonsHeroSelect<false> | SurgeonsHeroSelect<true>;
+    'surgeons-lead-view': SurgeonsLeadViewSelect<false> | SurgeonsLeadViewSelect<true>;
+    'surgeons-plastic-view': SurgeonsPlasticViewSelect<false> | SurgeonsPlasticViewSelect<true>;
+    'surgeons-aesthetic-view': SurgeonsAestheticViewSelect<false> | SurgeonsAestheticViewSelect<true>;
+    'surgeon-detail-template': SurgeonDetailTemplateSelect<false> | SurgeonDetailTemplateSelect<true>;
     'results-page': ResultsPageSelect<false> | ResultsPageSelect<true>;
     'gallery-page': GalleryPageSelect<false> | GalleryPageSelect<true>;
     'pricing-page': PricingPageSelect<false> | PricingPageSelect<true>;
     'journey-page': JourneyPageSelect<false> | JourneyPageSelect<true>;
+    'journey-hero': JourneyHeroSelect<false> | JourneyHeroSelect<true>;
+    'journey-stats': JourneyStatsSelect<false> | JourneyStatsSelect<true>;
     'stories-page': StoriesPageSelect<false> | StoriesPageSelect<true>;
     'recovery-stays-page': RecoveryStaysPageSelect<false> | RecoveryStaysPageSelect<true>;
     'contact-page': ContactPageSelect<false> | ContactPageSelect<true>;
+    'contact-hero': ContactHeroSelect<false> | ContactHeroSelect<true>;
+    'contact-enquiry-section': ContactEnquirySectionSelect<false> | ContactEnquirySectionSelect<true>;
+    'contact-visit-section': ContactVisitSectionSelect<false> | ContactVisitSectionSelect<true>;
     'video-consult-page': VideoConsultPageSelect<false> | VideoConsultPageSelect<true>;
     'blog-page': BlogPageSelect<false> | BlogPageSelect<true>;
+    'blog-post-template': BlogPostTemplateSelect<false> | BlogPostTemplateSelect<true>;
   };
   locale: null;
   widgets: {
@@ -1035,7 +1059,7 @@ export interface SubCategory {
   createdAt: string;
 }
 /**
- * Patient-journey steps shown as the timeline on /journey AND reused as the "Recovery timeline" block on procedure detail. Each step has a day label, title, body, and category.
+ * The numbered patient-journey steps shown on /journey. Each row is one card (number, title, body paragraph, four bullets, image). Order via the `order` field (or sortOrder).
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "journey-steps".
@@ -1043,12 +1067,21 @@ export interface SubCategory {
 export interface JourneyStep {
   id: number;
   slug: string;
+  /**
+   * Numeric sort key — lower = earlier on the page. Use 1,2,3,…
+   */
   order: number;
   /**
-   * e.g. "Day 1", "Week 1", "Before you fly"
+   * Display number shown above the title, e.g. "01", "02". Two-digit format; leave blank to use the order field zero-padded.
    */
-  dayLabel?: string | null;
+  number?: string | null;
+  /**
+   * Single-word section title, e.g. "Enquiry", "Consult".
+   */
   title: string;
+  /**
+   * Body paragraph(s) under the title. Plain prose; one or two short paragraphs.
+   */
   body?: {
     root: {
       type: string;
@@ -1064,7 +1097,41 @@ export interface JourneyStep {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Four short bullet rows shown under the body. Letter is auto-uppercased in display (A./B./C./D.); text is one short phrase.
+   */
+  bullets?:
+    | {
+        /**
+         * Single letter, e.g. "A".
+         */
+        letter: string;
+        /**
+         * Short bullet sentence.
+         */
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Hero image shown beside the step. Falls back to a tinted painted-SVG card if blank.
+   */
+  image?: (number | null) | Media;
+  /**
+   * Fallback hue index (0-5) used when no image uploaded.
+   */
+  imageHue?: number | null;
+  /**
+   * OPTIONAL — used by the older "Recovery timeline" block on procedure-detail (Day 1, Day 7…). Leave blank for /journey patient-journey rows.
+   */
+  dayLabel?: string | null;
+  /**
+   * OPTIONAL — small icon used by the older procedure-detail timeline block. Not rendered on /journey.
+   */
   icon?: (number | null) | Media;
+  /**
+   * Used by the older procedure-detail timeline block for filtering. Not used by /journey.
+   */
   category?: ('consult' | 'medical' | 'surgical' | 'recovery' | 'follow-up') | null;
   /**
    * Lower numbers appear EARLIER in listings (mega-menu, index pages, cards). Use 0/10/20/30 leaving room to insert items between.
@@ -1295,7 +1362,7 @@ export interface Award {
   createdAt: string;
 }
 /**
- * Villa partner accommodations for post-op recovery. Renders as the villa-card grid on /recovery-stays. Each card shows hero image, location, price-from, descriptor, amenities.
+ * The villa-card grid on /recovery-stays. Each row is one card (hero image, location, bedrooms, pool type, price-from per night, body paragraph).
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "recovery-stays".
@@ -1303,18 +1370,51 @@ export interface Award {
 export interface RecoveryStay {
   id: number;
   slug: string;
+  /**
+   * Villa or suite name, e.g. "Villa Sembilan".
+   */
   name: string;
   /**
-   * e.g. "Seminyak", "Ubud"
+   * Suburb / area, e.g. "Nusa Dua", "Ubud", "Sanur", "Jimbaran".
    */
   location?: string | null;
+  /**
+   * e.g. "2 BR", "3 BR", "1 BR". Shown in the meta-row under the title.
+   */
+  bedrooms?: string | null;
+  /**
+   * e.g. "Private", "Resort". Renders as "{poolType} pool" in the meta-row.
+   */
+  poolType?: string | null;
+  /**
+   * Large card image. Falls back to a tinted painted-SVG card if blank.
+   */
   heroImage?: (number | null) | Media;
+  /**
+   * Fallback hue index (0-5) used when no image uploaded.
+   */
+  imageHue?: number | null;
+  /**
+   * Short paragraph (~2 sentences) shown under the meta-row.
+   */
+  body?: string | null;
+  /**
+   * Drive time to BIMC Nusa Dua, e.g. "5 min". Leave blank to compute from location (Nusa Dua=5min, Jimbaran=15min, Sanur=25min, anywhere else=45min).
+   */
+  driveTime?: string | null;
+  /**
+   * Right-most meta cell, e.g. "Available daily".
+   */
+  nursingNote?: string | null;
   gallery?:
     | {
         image: number | Media;
         id?: string | null;
       }[]
     | null;
+  /**
+   * LEGACY — long-form descriptor (currently unused on /recovery-stays).
+   */
   descriptor?: {
     root: {
       type: string;
@@ -1336,7 +1436,13 @@ export interface RecoveryStay {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Optional AUD price-from (auto-computed from IDR via Settings if blank).
+   */
   priceFromAudPerNight?: number | null;
+  /**
+   * IDR price-from per night, e.g. 2940000 displays as "From IDR 2,940,000 / night".
+   */
   priceFromIdrPerNight?: number | null;
   partnerUrl?: string | null;
   geo?: {
@@ -1536,6 +1642,44 @@ export interface Enquiry {
   createdAt: string;
 }
 /**
+ * The numbered legal sections on /privacy. One row per section (Summary, Who we are, What we collect, …). `slug` is the URL anchor (e.g. "summary" → /privacy#summary). Lower sortOrder renders first.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "privacy-sections".
+ */
+export interface PrivacySection {
+  id: number;
+  /**
+   * Used as the URL anchor (#slug). Keep lowercase, hyphen-separated, no spaces. Editors should not change once a section is live (existing inbound links would break).
+   */
+  slug: string;
+  title: string;
+  /**
+   * Body paragraphs. Renders one <p> per row. Leave empty if this section uses a bulleted list instead.
+   */
+  paragraphs?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Bulleted list items. Renders one <li> per row. Use when the section reads as a list rather than prose.
+   */
+  listItems?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Lower numbers appear EARLIER in listings (mega-menu, index pages, cards). Use 0/10/20/30 leaving room to insert items between.
+   */
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -1622,6 +1766,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'enquiries';
         value: number | Enquiry;
+      } | null)
+    | ({
+        relationTo: 'privacy-sections';
+        value: number | PrivacySection;
       } | null)
     | ({
         relationTo: 'payload-folders';
@@ -2100,7 +2248,13 @@ export interface RecoveryStaysSelect<T extends boolean = true> {
   slug?: T;
   name?: T;
   location?: T;
+  bedrooms?: T;
+  poolType?: T;
   heroImage?: T;
+  imageHue?: T;
+  body?: T;
+  driveTime?: T;
+  nursingNote?: T;
   gallery?:
     | T
     | {
@@ -2197,9 +2351,19 @@ export interface AuthorsSelect<T extends boolean = true> {
 export interface JourneyStepsSelect<T extends boolean = true> {
   slug?: T;
   order?: T;
-  dayLabel?: T;
+  number?: T;
   title?: T;
   body?: T;
+  bullets?:
+    | T
+    | {
+        letter?: T;
+        text?: T;
+        id?: T;
+      };
+  image?: T;
+  imageHue?: T;
+  dayLabel?: T;
   icon?: T;
   category?: T;
   sortOrder?: T;
@@ -2235,6 +2399,29 @@ export interface EnquiriesSelect<T extends boolean = true> {
   ip?: T;
   userAgent?: T;
   honeypot?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "privacy-sections_select".
+ */
+export interface PrivacySectionsSelect<T extends boolean = true> {
+  slug?: T;
+  title?: T;
+  paragraphs?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  listItems?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  sortOrder?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2323,47 +2510,51 @@ export interface Setting {
    */
   roundIdrTo?: number | null;
   /**
-   * Shown on /contact and in footer "Connect" column.
+   * General clinic email. Shown on /contact under "Direct lines · Email" AND in the footer "Connect" column.
    */
   contactEmail?: string | null;
   /**
-   * Shown on /contact and in footer.
+   * Press / media email. Shown on /contact under "Direct lines · Press". Edit once here.
+   */
+  pressEmail?: string | null;
+  /**
+   * Concierge phone (E.164 formatted). Shown on /contact under "Direct lines · Concierge".
    */
   contactPhone?: string | null;
   /**
-   * Drives the floating green WhatsApp bubble bottom-right of every page AND the WhatsApp link in the footer "Connect" column. Format: E.164 (+countrycode-number).
+   * Concierge WhatsApp number. Single source for: the floating green WhatsApp bubble on every page (wa.me link built from the digits), the footer "Connect" column WhatsApp link, AND the /contact "Direct lines · WhatsApp" displayed value. Format: E.164 (+countrycode-number) — the digits are extracted for wa.me; the formatted string is what readers see.
    */
   whatsappNumber?: string | null;
   /**
-   * First line of the address in the footer brand column.
+   * Line 1 of the clinic address. Shown on /contact in the Visit section and in the footer brand column. e.g. venue name.
    */
   addressLine1?: string | null;
   /**
-   * Second line of the address in the footer brand column.
+   * Line 2 of the clinic address (street / suburb).
    */
   addressLine2?: string | null;
   /**
-   * City line in the footer brand column.
+   * City. Rendered on the same line as postalCode, e.g. "Nusa Dua 80363".
    */
   city?: string | null;
   /**
-   * Postal code in the footer brand column.
+   * Postal code. Rendered alongside city.
    */
   postalCode?: string | null;
   /**
-   * Country in the footer brand column.
+   * Last line of the address (region + country, or just country).
    */
   country?: string | null;
   /**
-   * Opening hours shown on /contact.
+   * Primary clinic-hours line shown on /contact ("Hours · Clinic" block, line 1).
    */
   hoursMonFri?: string | null;
   /**
-   * Weekend hours shown on /contact.
+   * Secondary clinic-hours line shown on /contact ("Hours · Clinic" block, line 2).
    */
   hoursSatSun?: string | null;
   /**
-   * Powers the "Get directions" link / embedded map on /contact.
+   * Google Maps URL. Powers the "Open in Maps" + "Get directions" buttons in the /contact Visit section. Leave blank to hide both buttons.
    */
   googleMapsUrl?: string | null;
   /**
@@ -2681,7 +2872,7 @@ export interface ConsultationPolicy {
   createdAt?: string | null;
 }
 /**
- * Copy strings used by every enquiry form: field labels, placeholder hints, submit button text, success/error/rate-limit messages. Applies to the homepage hero quick-form AND the full /contact form.
+ * Copy strings used by every enquiry form: field labels, placeholder hints, submit button text, success/error/rate-limit messages. Applies to the homepage hero quick-form, the full /contact form, AND the /video-consult booking form. Edit once; applies everywhere.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "form-defaults".
@@ -3185,7 +3376,7 @@ export interface HomePage {
   createdAt?: string | null;
 }
 /**
- * Editorial content for /press: hero + body sections. Press mentions and awards are listed via the PressMentions / Awards collections.
+ * Editorial content for /press: hero + the two section headings (Accreditations + In the press). Each accreditation card comes from the Awards collection; each press row from PressMentions. Edit those collections to add/remove items.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "press-page".
@@ -3419,11 +3610,38 @@ export interface PressPage {
      */
     noindex?: boolean | null;
   };
+  /**
+   * Section heading above the awards grid. The cards themselves are pulled from the Awards collection.
+   */
+  accreditationsSection?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    lede?: string | null;
+  };
+  /**
+   * Section heading above the press-mention rows. The rows themselves are pulled from the PressMentions collection.
+   */
+  pressSection?: {
+    eyebrow?: string | null;
+    /**
+     * Roman part of the H2, before the italic. Trailing space included.
+     */
+    headingPre?: string | null;
+    /**
+     * Italic part of the H2.
+     */
+    headingItalic?: string | null;
+    lede?: string | null;
+  };
+  /**
+   * Label of the CTA button at the foot of /press.
+   */
+  pressEnquiriesCtaLabel?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
 /**
- * Editorial content for /privacy: hero + privacy policy body sections (Indonesian PDP Law + GDPR alignment).
+ * Editorial content for /privacy: hero, the three metadata lines (last updated / version / reading time), and the optional intro paragraph. The 10 numbered legal sections are edited in i. Privacy-Sections.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "privacy-page".
@@ -3657,6 +3875,22 @@ export interface PrivacyPage {
      */
     noindex?: boolean | null;
   };
+  /**
+   * Left-most metadata line, e.g. "Last updated · 12 May 2026". Edit when the policy is revised.
+   */
+  lastUpdatedDate?: string | null;
+  /**
+   * Middle metadata line, e.g. "Version 4.2 · Annual review cycle".
+   */
+  versionLine?: string | null;
+  /**
+   * Right-most metadata line, e.g. "Read in 6 minutes".
+   */
+  readingTimeLine?: string | null;
+  /**
+   * Optional intro paragraph rendered above the numbered legal sections. Leave blank if not needed.
+   */
+  introParagraph?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3899,7 +4133,7 @@ export interface TreatmentsPage {
   createdAt?: string | null;
 }
 /**
- * Editorial content for /surgeons (index of doctors). Doctor cards are rendered from the Surgeons collection.
+ * Page meta + SEO + extra editorial blocks slot for /surgeons. The hero (chapter / title / lede / hero image) is edited on **b. Hero** (same Bucket). The doctor cards come from **c. Surgeons** (Collection). The 3 section chrome items (Lead / Plastic Surgery / Aesthetic Medicine) are edited on **d / e / f -View** in the same Bucket.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "surgeons-page".
@@ -3918,13 +4152,6 @@ export interface SurgeonsPage {
    * URL route this page renders on, e.g. "/", "/journey", "/pricing".
    */
   route: string;
-  chapterTitle?: {
-    a?: string | null;
-    b?: string | null;
-  };
-  tagline?: string | null;
-  lede?: string | null;
-  heroImage?: (number | null) | Media;
   /**
    * Composable body sections — pick from the block library.
    */
@@ -4132,6 +4359,280 @@ export interface SurgeonsPage {
      * Tick to add <meta name="robots" content="noindex,nofollow"> and tell search engines NOT to index this page.
      */
     noindex?: boolean | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Hero (ChapterOpener) for the /surgeons index page. Single source of truth — used nowhere else.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "surgeons-hero".
+ */
+export interface SurgeonsHero {
+  id: number;
+  /**
+   * Eyebrow above the title, e.g. "Chapter III — The Practitioners".
+   */
+  chapter: string;
+  /**
+   * First line of the two-line headline, roman. e.g. "Hands you".
+   */
+  titleA: string;
+  /**
+   * Second line of the headline, italic-rendered. e.g. "can trust.".
+   */
+  titleB: string;
+  /**
+   * Single paragraph below the headline. Keep ~2 sentences.
+   */
+  lede: string;
+  /**
+   * Right-side image in the ChapterOpener. ~1200×1500 portrait crop preferred.
+   */
+  heroImage?: (number | null) | Media;
+  /**
+   * Brand-palette colour token (0–5) used as the placeholder gradient when the image fails to load.
+   */
+  imageHue?: number | null;
+  /**
+   * Caption shown on the image card (uppercase mono), e.g. "THE PRACTITIONERS".
+   */
+  imageLabel?: string | null;
+  /**
+   * Last segment in the breadcrumb trail. e.g. "Surgeons".
+   */
+  breadcrumbLabel?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Section chrome for the Lead Plastic Surgeon panel on /surgeons. The surgeon shown is NOT edited here — that comes from **c. Surgeons** (the first record by sortOrder). This item controls only the eyebrow / block eyebrow / stat labels / CTA label.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "surgeons-lead-view".
+ */
+export interface SurgeonsLeadView {
+  id: number;
+  /**
+   * Eyebrow above the section, e.g. "Lead Plastic Surgeon".
+   */
+  sectionEyebrow: string;
+  /**
+   * Eyebrow above the surgeon name inside the block, e.g. "Lead Surgeon".
+   */
+  blockEyebrow: string;
+  /**
+   * Label above the first stat (training summary).
+   */
+  statLabelTrained: string;
+  /**
+   * Label above the second stat (primary specialty).
+   */
+  statLabelSpecialty: string;
+  /**
+   * Label above the third stat (membership / distinction).
+   */
+  statLabelDistinction: string;
+  /**
+   * Button text linking to the lead surgeon's detail page.
+   */
+  ctaLabel: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Section chrome for the Plastic Surgery grid on /surgeons (the non-lead plastic-surgery doctors). The cards are NOT edited here — they come from **c. Surgeons** filtered to group=plastic-surgery, excluding the lead. This item controls only the eyebrow / heading / lede.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "surgeons-plastic-view".
+ */
+export interface SurgeonsPlasticView {
+  id: number;
+  /**
+   * Section eyebrow, e.g. "Plastic Surgery".
+   */
+  eyebrow: string;
+  /**
+   * Roman prefix before the italic word in the heading. Leave blank if the heading starts with the italic word.
+   */
+  headingA?: string | null;
+  /**
+   * The italic word(s) inside the heading. e.g. "Reconstructive".
+   */
+  headingItalic: string;
+  /**
+   * Roman suffix after the italic word. e.g. " & aesthetic.".
+   */
+  headingB: string;
+  /**
+   * Single-paragraph section lede.
+   */
+  lede: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Section chrome for the Aesthetic Medicine grid on /surgeons. The cards are NOT edited here — they come from **c. Surgeons** filtered to group=aesthetic-medicine. This item controls only the eyebrow / heading / lede.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "surgeons-aesthetic-view".
+ */
+export interface SurgeonsAestheticView {
+  id: number;
+  /**
+   * Section eyebrow, e.g. "Aesthetic Medicine".
+   */
+  eyebrow: string;
+  /**
+   * Roman prefix before the italic word in the heading.
+   */
+  headingA?: string | null;
+  /**
+   * The italic word(s) inside the heading. e.g. "Quiet".
+   */
+  headingItalic: string;
+  /**
+   * Roman suffix after the italic word. e.g. " non-surgical.".
+   */
+  headingB: string;
+  /**
+   * Single-paragraph section lede.
+   */
+  lede: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Template-level strings shared by every /surgeons/<slug> detail page (×8). Per-doctor data lives on **c. Surgeons** (the row). Two view-only mirrors point at cross-bucket sources — Treatments back-link label (← b. Treatments → e. Disciplines) and the "BIMC CosMedic Centre, Bali" Training row (← a. Homepage → l. Settings).
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "surgeon-detail-template".
+ */
+export interface SurgeonDetailTemplate {
+  id: number;
+  /**
+   * Eyebrow shown on the detail page when the surgeon's "lead" flag is TRUE.
+   */
+  heroLeadLabel: string;
+  /**
+   * Eyebrow shown when the surgeon's "lead" flag is FALSE.
+   */
+  heroSpecialistLabel: string;
+  /**
+   * Primary CTA in the hero. Always links to /contact.
+   */
+  heroCtaConsultLabel: string;
+  /**
+   * READ-ONLY mirror. The hero secondary button label is the title of the surgeon's discipline (Surgical for plastic-surgery, Non-Surgical for aesthetic-medicine). To change this label, edit **b. Treatments → e. Disciplines → title** for the relevant discipline. Resolves at read time.
+   */
+  heroCtaTreatmentsLabelTemplate?: string | null;
+  /**
+   * Fallback button label when the surgeon's discipline cannot be resolved. Rendered as the literal text, no template substitution.
+   */
+  heroCtaTreatmentsLabelFallback: string;
+  /**
+   * First crumb in the breadcrumb trail. Links to /.
+   */
+  breadcrumbHomeLabel: string;
+  /**
+   * Second crumb. Links to /surgeons.
+   */
+  breadcrumbSurgeonsLabel: string;
+  /**
+   * Label under the first stat (yearsInPractice from the surgeon record).
+   */
+  statLabelYears: string;
+  /**
+   * Label under the second stat (memberships line from the surgeon record).
+   */
+  statLabelDistinction: string;
+  /**
+   * Label under the third stat (first specialty area from the surgeon record).
+   */
+  statLabelSpecialty: string;
+  /**
+   * Eyebrow above the biography sidebar.
+   */
+  biographyEyebrow: string;
+  /**
+   * Sidebar definition-list label for the doctor's specialism / group.
+   */
+  sidebarLabelSpecialism: string;
+  /**
+   * Sidebar definition-list label for the credentials line.
+   */
+  sidebarLabelCredentials: string;
+  /**
+   * Sidebar definition-list label for the languages list.
+   */
+  sidebarLabelLanguages: string;
+  /**
+   * Sidebar definition-list label for the availability schedule.
+   */
+  sidebarLabelAvailability: string;
+  /**
+   * Fallback rendered when the surgeon record has no `languages` rows.
+   */
+  languagesFallback: string;
+  /**
+   * Fallback rendered when the surgeon record has no `availabilitySchedule` rows.
+   */
+  availabilityFallback: string;
+  /**
+   * Second paragraph of the bio body, shown after the per-surgeon `bio`. Templated — use {title} and {common} for the doctor's honorific and first name. Default: 'Patients often describe {title} {common} as quiet, deeply patient, and frank — comfortable with saying "no" when "yes" would be the easier answer. We hold this very highly.'
+   */
+  secondaryBioParagraph: string;
+  /**
+   * Eyebrow above the specialty-area grid.
+   */
+  specialtyEyebrow: string;
+  /**
+   * Specialty section heading. Templated — use {title} and {common} for the honorific and first name. The italic word(s) wrap inside {italic}…{/italic}. Default: 'What {title} {common} {italic}does best.{/italic}'
+   */
+  specialtyHeadingTemplate: string;
+  /**
+   * Eyebrow above the training & credentials table.
+   */
+  trainingEyebrow: string;
+  /**
+   * Left-column labels for the 5 training & credentials rows. Order is fixed (Medical Degree, Specialty Training, Suffix, Practice, Memberships) — do not reorder; the route relies on this order.
+   */
+  trainingRowLabels: {
+    value: string;
+    id?: string | null;
+  }[];
+  /**
+   * Right-column italic phrases for rows 1, 3, 4, 5 (row 2's right cell comes from the surgeon's `credLine`). Order: ["MBBS / MD", "Board credential", "Active", "Active member"].
+   */
+  trainingRowRights: {
+    value: string;
+    id?: string | null;
+  }[];
+  /**
+   * READ-ONLY mirror. The middle cell of the "Practice" row is composed from **a. Homepage → l. Settings → Site name + City**. Edit there to change. Resolves at read time.
+   */
+  trainingRowPracticeMid?: string | null;
+  /**
+   * Eyebrow above the "Meet the other practitioners" card grid.
+   */
+  facultyEyebrow: string;
+  /**
+   * "Meet the other practitioners." heading — split into 3 parts so the italic mid-sentence renders correctly.
+   */
+  facultyHeading: {
+    /**
+     * Roman prefix before the italic. Default "Meet the ". Include trailing space.
+     */
+    pre: string;
+    /**
+     * The italic phrase. Default "other practitioners.".
+     */
+    italic: string;
+    /**
+     * Roman suffix after the italic, if any. Default empty.
+     */
+    post?: string | null;
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -4891,7 +5392,7 @@ export interface PricingPage {
   createdAt?: string | null;
 }
 /**
- * Editorial content for /journey: hero + body. The 6-step process is rendered from JourneySteps.
+ * Page meta + SEO + optional CmsExtraBlocks slot for /journey. The hero, the 7 patient-journey steps, and the bottom 3 stat tiles live in b. Hero / c. Steps / d. Stats — edit them there.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "journey-page".
@@ -5125,6 +5626,85 @@ export interface JourneyPage {
      */
     noindex?: boolean | null;
   };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Hero (ChapterOpener) at the top of /journey. Chapter eyebrow, two-line title, lede, hero image, and breadcrumb label.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "journey-hero".
+ */
+export interface JourneyHero {
+  id: number;
+  /**
+   * Chapter eyebrow above the title, e.g. "Chapter V — Your Journey".
+   */
+  chapter?: string | null;
+  /**
+   * The two-line headline. Line A renders first, line B underneath.
+   */
+  title?: {
+    /**
+     * First line, e.g. "From enquiry,".
+     */
+    a?: string | null;
+    /**
+     * Second line, e.g. "to homecoming.".
+     */
+    b?: string | null;
+  };
+  /**
+   * Sub-paragraph under the title.
+   */
+  lede?: string | null;
+  /**
+   * Large image to the right of the chapter title.
+   */
+  heroImage?: (number | null) | Media;
+  /**
+   * Fallback hue index (0-5) used when no image is uploaded. Tints the painted-SVG placeholder.
+   */
+  imageHue?: number | null;
+  /**
+   * Tiny mono label shown on the hero image card.
+   */
+  imageLabel?: string | null;
+  /**
+   * Label shown for /journey in the breadcrumb trail.
+   */
+  breadcrumbLabel?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * The 3-tile stats row at the bottom of /journey (e.g. "24h Reply to first enquiry · 45min Initial consultation · 12mo Follow-up programme"). Edit rows here; order = display order.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "journey-stats".
+ */
+export interface JourneyStat {
+  id: number;
+  /**
+   * Each row renders as one stat block (big number + small caption).
+   */
+  stats?:
+    | {
+        /**
+         * Big serif number, e.g. "24h", "45min", "12mo".
+         */
+        number: string;
+        /**
+         * Caption under the number, e.g. "Reply to first enquiry".
+         */
+        label: string;
+        /**
+         * Render the number in italic (matches the /recovery-stays "5–21" + "All" cells). Leave off for /journey defaults.
+         */
+        italic?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -5367,7 +5947,7 @@ export interface StoriesPage {
   createdAt?: string | null;
 }
 /**
- * Editorial content for /recovery-stays: hero + body. Villa cards are rendered from the RecoveryStays collection.
+ * Whole /recovery-stays editorial: hero, the 4-tile top stats row, "The portfolio" section heading (cards come from f. Villas), and "What's included" section heading + inclusions list. The legacy chapterTitle / tagline / lede / sections fields above remain available for the optional CmsExtraBlocks slot — the new groups below are what actually render the page.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "recovery-stays-page".
@@ -5601,11 +6181,95 @@ export interface RecoveryStaysPage {
      */
     noindex?: boolean | null;
   };
+  /**
+   * ChapterOpener at the top of /recovery-stays.
+   */
+  hero?: {
+    /**
+     * Chapter eyebrow, e.g. "Chapter VII — Recovery Stays".
+     */
+    chapter?: string | null;
+    title?: {
+      /**
+       * First line of headline, e.g. "A villa, a".
+       */
+      a?: string | null;
+      /**
+       * Second line, e.g. "quiet recovery.".
+       */
+      b?: string | null;
+    };
+    lede?: string | null;
+    heroImage?: (number | null) | Media;
+    /**
+     * Fallback hue index (0-5) when no image uploaded.
+     */
+    imageHue?: number | null;
+    imageLabel?: string | null;
+    breadcrumbLabel?: string | null;
+  };
+  /**
+   * Stat tiles directly under the hero. Up to 4 rows.
+   */
+  topStats?:
+    | {
+        /**
+         * Big serif number, e.g. "6", "4", "5–21", "All".
+         */
+        number: string;
+        label: string;
+        /**
+         * Italicise the number (for word-like values such as "All" or ranges like "5–21").
+         */
+        italic?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * "The portfolio" section heading. Villa cards are rendered from f. Villas, not here.
+   */
+  portfolioSection?: {
+    eyebrow?: string | null;
+    headingPre?: string | null;
+    headingItalic?: string | null;
+    headingPost?: string | null;
+    lede?: string | null;
+  };
+  /**
+   * "What's included" section. Edit heading + lede here; edit each inclusion in the list below.
+   */
+  inclusionsSection?: {
+    eyebrow?: string | null;
+    headingPre?: string | null;
+    headingItalic?: string | null;
+    headingPost?: string | null;
+    lede?: string | null;
+  };
+  /**
+   * Each row renders as one inclusion card (letter, title, body). Order here = display order.
+   */
+  inclusions?:
+    | {
+        /**
+         * Single uppercase letter shown above the title, e.g. "A".
+         */
+        letter: string;
+        /**
+         * e.g. "Welcome provisioning".
+         */
+        title: string;
+        /**
+         * One short sentence.
+         */
+        body: string;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
 /**
- * Editorial content for /contact: hero + body. Clinic info (address/hours/phone) lives on the Settings global; enquiry form behaviour on FormDefaults.
+ * Page meta + SEO + extra block sections for /contact. The hero is edited in b. Hero, the enquiry section in c. Enquiry-Section, and the visit section in d. Visit-Section. Use the sections block-array here only for additional editor-defined content blocks.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "contact-page".
@@ -5839,6 +6503,164 @@ export interface ContactPage {
      */
     noindex?: boolean | null;
   };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Hero block on /contact: chapter eyebrow, two-line title, lede, hero image, and breadcrumb label. Edit the image and copy here; the address / hours / phone shown lower on the page live on a. Homepage → Settings.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-hero".
+ */
+export interface ContactHero {
+  id: number;
+  /**
+   * Small caps eyebrow above the hero title, e.g. "Chapter VIII — Plan Your Journey".
+   */
+  chapter?: string | null;
+  /**
+   * First line of the hero title.
+   */
+  titleA?: string | null;
+  /**
+   * Second line of the hero title (rendered on its own line, italic-friendly).
+   */
+  titleB?: string | null;
+  /**
+   * Lede paragraph beneath the title.
+   */
+  lede?: string | null;
+  /**
+   * Hero image displayed on the right of the title block. Recommended ~1600×1200, JPEG/WebP.
+   */
+  heroImage?: (number | null) | Media;
+  /**
+   * Painted-SVG fallback hue when no image is uploaded (0–6, brand palette). 3 = deep accent.
+   */
+  imageHue?: number | null;
+  /**
+   * Caption label shown over the painted-SVG fallback if no hero image is uploaded.
+   */
+  imageLabel?: string | null;
+  /**
+   * Label for the current page in the breadcrumb (the "Home → <this>" trail).
+   */
+  breadcrumbLabel?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Left column of the /contact "Enquiry" section: section eyebrow, two-line heading, intro paragraph, Direct-Lines block labels, and trust line. The phone / WhatsApp / email / press values rendered under "Direct lines" are NOT edited here — source: a. Homepage → Settings → contactPhone, whatsappNumber, contactEmail, pressEmail. Edit them once in Settings and they update on /contact, in the footer, and on the floating WhatsApp button.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-enquiry-section".
+ */
+export interface ContactEnquirySection {
+  id: number;
+  /**
+   * Small-caps eyebrow above the heading.
+   */
+  eyebrow?: string | null;
+  /**
+   * First part of the section heading (roman).
+   */
+  headingPre?: string | null;
+  /**
+   * Second part of the heading rendered in italic serif.
+   */
+  headingItalic?: string | null;
+  /**
+   * Intro paragraph under the heading.
+   */
+  intro?: string | null;
+  /**
+   * Labels for the "Direct lines" block. The actual phone / WhatsApp / email / press VALUES come from Settings — only the labels are edited here.
+   */
+  directLines?: {
+    /**
+     * Mono caption above the four contact rows.
+     */
+    sectionLabel?: string | null;
+    /**
+     * Label on the concierge phone row.
+     */
+    conciergeLabel?: string | null;
+    /**
+     * Label on the WhatsApp row.
+     */
+    whatsappLabel?: string | null;
+    /**
+     * Label on the general email row.
+     */
+    emailLabel?: string | null;
+    /**
+     * Label on the press email row.
+     */
+    pressLabel?: string | null;
+  };
+  /**
+   * Italic line shown next to the "Send enquiry" button at the bottom of the form.
+   */
+  trustLine?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Lower section on /contact: section eyebrow, two-line heading, body paragraph, map image, "Open in Maps" / "Get directions" button labels, and Hours block. The address block, opening hours, and "Get directions" URL VALUES are NOT edited here — source: a. Homepage → Settings → addressLine1, addressLine2, city, postalCode, country, hoursMonFri, hoursSatSun, googleMapsUrl. Edit them once in Settings and they update on /contact and in the footer.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-visit-section".
+ */
+export interface ContactVisitSection {
+  id: number;
+  /**
+   * Small-caps eyebrow above the heading.
+   */
+  eyebrow?: string | null;
+  /**
+   * First part of the section heading (roman).
+   */
+  headingPre?: string | null;
+  /**
+   * Second part of the heading rendered in italic serif.
+   */
+  headingItalic?: string | null;
+  /**
+   * Body paragraph above the address block.
+   */
+  body?: string | null;
+  /**
+   * Photo / map shown on the right side of the Visit section. Recommended ~1600×1200, 4:3 aspect.
+   */
+  mapImage?: (number | null) | Media;
+  /**
+   * Caption label shown over the painted-SVG fallback if no map image is uploaded.
+   */
+  mapImageLabel?: string | null;
+  /**
+   * Painted-SVG fallback hue when no map image is uploaded (0–6, brand palette).
+   */
+  mapImageHue?: number | null;
+  /**
+   * Text on the first ghost-style CTA below the address. Link target: Settings → googleMapsUrl.
+   */
+  openInMapsLabel?: string | null;
+  /**
+   * Text on the second ghost-style CTA. Link target: Settings → googleMapsUrl.
+   */
+  getDirectionsLabel?: string | null;
+  /**
+   * Mono caption above the clinic-hours row. Hours values come from Settings → hoursMonFri + hoursSatSun.
+   */
+  clinicHoursLabel?: string | null;
+  /**
+   * Mono caption above the concierge-hours row.
+   */
+  conciergeHoursLabel?: string | null;
+  /**
+   * Concierge-hours value (use a blank line to break onto a new line — no Markdown).
+   */
+  conciergeHoursValue?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -6081,7 +6903,7 @@ export interface VideoConsultPage {
   createdAt?: string | null;
 }
 /**
- * Editorial content for /blog (post index): hero + body. Posts and tags are managed via the BlogPosts / BlogTags collections.
+ * Editorial content for /blog (post index): hero, "This issue" featured callout label, and "The archive" filter section chrome. Posts and tags are managed in the BlogPosts / BlogTags collections.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "blog-page".
@@ -6315,6 +7137,80 @@ export interface BlogPage {
      */
     noindex?: boolean | null;
   };
+  /**
+   * Eyebrow above the featured-post block on /blog (top of the page, under the hero).
+   */
+  thisIssueEyebrow?: string | null;
+  /**
+   * Link label at the foot of the featured post card.
+   */
+  readTheEssayCtaLabel?: string | null;
+  /**
+   * The lower "archive" section of /blog — the grid of all past posts with the discipline filter.
+   */
+  archiveSection?: {
+    eyebrow?: string | null;
+    /**
+     * Roman part of the H2, before the italic. Trailing space included.
+     */
+    headingPre?: string | null;
+    /**
+     * Italic part of the H2.
+     */
+    headingItalic?: string | null;
+    lede?: string | null;
+    /**
+     * Label of the first filter button (shows every post).
+     */
+    filterAllLabel?: string | null;
+    /**
+     * Shown when the current filter has no matching posts.
+     */
+    emptyStateCopy?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Template-level chrome shared across every /blog/<slug> post. Per-post data (title, hero, body, author byline) lives on the BlogPosts row; this global holds only the labels + CTAs that are identical across all posts.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-post-template".
+ */
+export interface BlogPostTemplate {
+  id: number;
+  /**
+   * Labels in the byline row above the article body.
+   */
+  byline?: {
+    writtenByLabel?: string | null;
+    publishedLabel?: string | null;
+    lengthLabel?: string | null;
+    filedUnderLabel?: string | null;
+  };
+  /**
+   * The "About the author" section that appears after the article body.
+   */
+  aboutTheAuthor?: {
+    eyebrowLabel?: string | null;
+    readFullProfileCta?: string | null;
+    bookConsultationCta?: string | null;
+  };
+  /**
+   * The "More from the journal" related-posts section at the foot of every post.
+   */
+  moreFromTheJournal?: {
+    eyebrow?: string | null;
+    /**
+     * Roman part of the H2, before the italic. Trailing space included.
+     */
+    headingPre?: string | null;
+    /**
+     * Italic part of the H2.
+     */
+    headingItalic?: string | null;
+    backToJournalCta?: string | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -6330,6 +7226,7 @@ export interface SettingsSelect<T extends boolean = true> {
   audToIdrRate?: T;
   roundIdrTo?: T;
   contactEmail?: T;
+  pressEmail?: T;
   contactPhone?: T;
   whatsappNumber?: T;
   addressLine1?: T;
@@ -7032,6 +7929,22 @@ export interface PressPageSelect<T extends boolean = true> {
         canonical?: T;
         noindex?: T;
       };
+  accreditationsSection?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        lede?: T;
+      };
+  pressSection?:
+    | T
+    | {
+        eyebrow?: T;
+        headingPre?: T;
+        headingItalic?: T;
+        lede?: T;
+      };
+  pressEnquiriesCtaLabel?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -7222,6 +8135,10 @@ export interface PrivacyPageSelect<T extends boolean = true> {
         canonical?: T;
         noindex?: T;
       };
+  lastUpdatedDate?: T;
+  versionLine?: T;
+  readingTimeLine?: T;
+  introParagraph?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -7424,15 +8341,6 @@ export interface SurgeonsPageSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   route?: T;
-  chapterTitle?:
-    | T
-    | {
-        a?: T;
-        b?: T;
-      };
-  tagline?: T;
-  lede?: T;
-  heroImage?: T;
   sections?:
     | T
     | {
@@ -7601,6 +8509,117 @@ export interface SurgeonsPageSelect<T extends boolean = true> {
         ogImage?: T;
         canonical?: T;
         noindex?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "surgeons-hero_select".
+ */
+export interface SurgeonsHeroSelect<T extends boolean = true> {
+  chapter?: T;
+  titleA?: T;
+  titleB?: T;
+  lede?: T;
+  heroImage?: T;
+  imageHue?: T;
+  imageLabel?: T;
+  breadcrumbLabel?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "surgeons-lead-view_select".
+ */
+export interface SurgeonsLeadViewSelect<T extends boolean = true> {
+  sectionEyebrow?: T;
+  blockEyebrow?: T;
+  statLabelTrained?: T;
+  statLabelSpecialty?: T;
+  statLabelDistinction?: T;
+  ctaLabel?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "surgeons-plastic-view_select".
+ */
+export interface SurgeonsPlasticViewSelect<T extends boolean = true> {
+  eyebrow?: T;
+  headingA?: T;
+  headingItalic?: T;
+  headingB?: T;
+  lede?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "surgeons-aesthetic-view_select".
+ */
+export interface SurgeonsAestheticViewSelect<T extends boolean = true> {
+  eyebrow?: T;
+  headingA?: T;
+  headingItalic?: T;
+  headingB?: T;
+  lede?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "surgeon-detail-template_select".
+ */
+export interface SurgeonDetailTemplateSelect<T extends boolean = true> {
+  heroLeadLabel?: T;
+  heroSpecialistLabel?: T;
+  heroCtaConsultLabel?: T;
+  heroCtaTreatmentsLabelTemplate?: T;
+  heroCtaTreatmentsLabelFallback?: T;
+  breadcrumbHomeLabel?: T;
+  breadcrumbSurgeonsLabel?: T;
+  statLabelYears?: T;
+  statLabelDistinction?: T;
+  statLabelSpecialty?: T;
+  biographyEyebrow?: T;
+  sidebarLabelSpecialism?: T;
+  sidebarLabelCredentials?: T;
+  sidebarLabelLanguages?: T;
+  sidebarLabelAvailability?: T;
+  languagesFallback?: T;
+  availabilityFallback?: T;
+  secondaryBioParagraph?: T;
+  specialtyEyebrow?: T;
+  specialtyHeadingTemplate?: T;
+  trainingEyebrow?: T;
+  trainingRowLabels?:
+    | T
+    | {
+        value?: T;
+        id?: T;
+      };
+  trainingRowRights?:
+    | T
+    | {
+        value?: T;
+        id?: T;
+      };
+  trainingRowPracticeMid?: T;
+  facultyEyebrow?: T;
+  facultyHeading?:
+    | T
+    | {
+        pre?: T;
+        italic?: T;
+        post?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -8393,6 +9412,44 @@ export interface JourneyPageSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "journey-hero_select".
+ */
+export interface JourneyHeroSelect<T extends boolean = true> {
+  chapter?: T;
+  title?:
+    | T
+    | {
+        a?: T;
+        b?: T;
+      };
+  lede?: T;
+  heroImage?: T;
+  imageHue?: T;
+  imageLabel?: T;
+  breadcrumbLabel?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "journey-stats_select".
+ */
+export interface JourneyStatsSelect<T extends boolean = true> {
+  stats?:
+    | T
+    | {
+        number?: T;
+        label?: T;
+        italic?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "stories-page_select".
  */
 export interface StoriesPageSelect<T extends boolean = true> {
@@ -8767,6 +9824,56 @@ export interface RecoveryStaysPageSelect<T extends boolean = true> {
         canonical?: T;
         noindex?: T;
       };
+  hero?:
+    | T
+    | {
+        chapter?: T;
+        title?:
+          | T
+          | {
+              a?: T;
+              b?: T;
+            };
+        lede?: T;
+        heroImage?: T;
+        imageHue?: T;
+        imageLabel?: T;
+        breadcrumbLabel?: T;
+      };
+  topStats?:
+    | T
+    | {
+        number?: T;
+        label?: T;
+        italic?: T;
+        id?: T;
+      };
+  portfolioSection?:
+    | T
+    | {
+        eyebrow?: T;
+        headingPre?: T;
+        headingItalic?: T;
+        headingPost?: T;
+        lede?: T;
+      };
+  inclusionsSection?:
+    | T
+    | {
+        eyebrow?: T;
+        headingPre?: T;
+        headingItalic?: T;
+        headingPost?: T;
+        lede?: T;
+      };
+  inclusions?:
+    | T
+    | {
+        letter?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -8957,6 +10064,67 @@ export interface ContactPageSelect<T extends boolean = true> {
         canonical?: T;
         noindex?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-hero_select".
+ */
+export interface ContactHeroSelect<T extends boolean = true> {
+  chapter?: T;
+  titleA?: T;
+  titleB?: T;
+  lede?: T;
+  heroImage?: T;
+  imageHue?: T;
+  imageLabel?: T;
+  breadcrumbLabel?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-enquiry-section_select".
+ */
+export interface ContactEnquirySectionSelect<T extends boolean = true> {
+  eyebrow?: T;
+  headingPre?: T;
+  headingItalic?: T;
+  intro?: T;
+  directLines?:
+    | T
+    | {
+        sectionLabel?: T;
+        conciergeLabel?: T;
+        whatsappLabel?: T;
+        emailLabel?: T;
+        pressLabel?: T;
+      };
+  trustLine?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-visit-section_select".
+ */
+export interface ContactVisitSectionSelect<T extends boolean = true> {
+  eyebrow?: T;
+  headingPre?: T;
+  headingItalic?: T;
+  body?: T;
+  mapImage?: T;
+  mapImageLabel?: T;
+  mapImageHue?: T;
+  openInMapsLabel?: T;
+  getDirectionsLabel?: T;
+  clinicHoursLabel?: T;
+  conciergeHoursLabel?: T;
+  conciergeHoursValue?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -9336,6 +10504,50 @@ export interface BlogPageSelect<T extends boolean = true> {
         ogImage?: T;
         canonical?: T;
         noindex?: T;
+      };
+  thisIssueEyebrow?: T;
+  readTheEssayCtaLabel?: T;
+  archiveSection?:
+    | T
+    | {
+        eyebrow?: T;
+        headingPre?: T;
+        headingItalic?: T;
+        lede?: T;
+        filterAllLabel?: T;
+        emptyStateCopy?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-post-template_select".
+ */
+export interface BlogPostTemplateSelect<T extends boolean = true> {
+  byline?:
+    | T
+    | {
+        writtenByLabel?: T;
+        publishedLabel?: T;
+        lengthLabel?: T;
+        filedUnderLabel?: T;
+      };
+  aboutTheAuthor?:
+    | T
+    | {
+        eyebrowLabel?: T;
+        readFullProfileCta?: T;
+        bookConsultationCta?: T;
+      };
+  moreFromTheJournal?:
+    | T
+    | {
+        eyebrow?: T;
+        headingPre?: T;
+        headingItalic?: T;
+        backToJournalCta?: T;
       };
   updatedAt?: T;
   createdAt?: T;

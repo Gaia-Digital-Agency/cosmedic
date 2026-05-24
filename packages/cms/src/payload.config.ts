@@ -60,6 +60,27 @@ import { VideoConsultPage } from './globals/pages/VideoConsultPage'
 import { BlogPage } from './globals/pages/BlogPage'
 import { BlogPostTemplate } from './globals/pages/BlogPostTemplate'
 
+// Phase R4 — c. Doctors Bucket section globals.
+// 5 globals that split /surgeons + /surgeons/<slug> editorial out of the
+// hardcoded routes so every visible atom becomes CMS-editable.
+import { SurgeonsHero } from './globals/doctors/SurgeonsHero'
+import { SurgeonsLeadView } from './globals/doctors/SurgeonsLeadView'
+import { SurgeonsPlasticView } from './globals/doctors/SurgeonsPlasticView'
+import { SurgeonsAestheticView } from './globals/doctors/SurgeonsAestheticView'
+import { SurgeonDetailTemplate } from './globals/doctors/SurgeonDetailTemplate'
+
+// Phase R6 — e. Pricing Bucket section globals.
+// 7 globals that split /pricing editorial out of the legacy nested groups
+// on pricing-page (overviewBlock / footnoteBlock / insurancePaymentBlock)
+// + lift the hardcoded ClinicCatalogueTable chrome into CMS.
+import { PricingHero } from './globals/pricing/PricingHero'
+import { PricingOverview } from './globals/pricing/PricingOverview'
+import { PricingFootnote } from './globals/pricing/PricingFootnote'
+import { PricingInsurance } from './globals/pricing/PricingInsurance'
+import { PricingPayment } from './globals/pricing/PricingPayment'
+import { PricingDisciplineListView } from './globals/pricing/PricingDisciplineListView'
+import { PricingCatalogueView } from './globals/pricing/PricingCatalogueView'
+
 import { seedSuperAdmin } from './seed/admin'
 import { emailAdapter } from './lib/email-adapter'
 
@@ -142,9 +163,21 @@ export default buildConfig({
     PrivacyPage,
     TreatmentsPage,
     SurgeonsPage,
+    SurgeonsHero,
+    SurgeonsLeadView,
+    SurgeonsPlasticView,
+    SurgeonsAestheticView,
+    SurgeonDetailTemplate,
     ResultsPage,
     GalleryPage,
     PricingPage,
+    PricingHero,
+    PricingOverview,
+    PricingFootnote,
+    PricingInsurance,
+    PricingPayment,
+    PricingDisciplineListView,
+    PricingCatalogueView,
     JourneyPage,
     JourneyHero,
     JourneyStats,

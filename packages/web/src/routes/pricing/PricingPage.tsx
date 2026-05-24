@@ -8,7 +8,6 @@ import { TREATMENT_LIST, SUBCATEGORIES_BY_DISCIPLINE, IMG } from '@/content/seed
 import { SUBCATEGORY_DATA } from '@/content/subcategory-data'
 import { ClinicCatalogueTable } from './ClinicCatalogueTable'
 import { useCms } from '@/lib/cms-context'
-import { findPageBySlug } from '@/lib/cms-adapters'
 
 const DEFAULT_PAYMENT_TERMS: [string, string][] = [
   ['Deposit', '20% on confirmation'],
@@ -34,59 +33,76 @@ function parsePaymentTerms(input?: string): [string, string][] {
 
 export const PricingPage: React.FC = () => {
   const cms = useCms()
-  const page = cms ? findPageBySlug(cms, 'pricing') : undefined
 
-  const overview = page?.overviewBlock
+  const hero = cms?.pricingHero ?? {}
+  const overview = cms?.pricingOverview ?? {}
   const overviewHasContent = Boolean(
-    overview?.headingPart1 || overview?.headingPart2 || overview?.body,
+    overview.headingPart1 || overview.headingPart2 || overview.body,
   )
 
   const footnote =
-    page?.footnoteBlock?.text ||
+    cms?.pricingFootnote?.text ||
     'Prices indicative for international patients. AUD shown at 1 AUD ≈ Rp 10,500 (May 2026). Final quotes are tailored after consultation. Recovery stays, transfers, and twelve months of telehealth follow-up included on most surgical packages.'
 
-  const ip = page?.insurancePaymentBlock
-  const insuranceEyebrow = ip?.insuranceEyebrow || 'Insurance'
-  const insuranceHeadingRoman = ip?.insuranceHeadingRoman || 'Working'
-  const insuranceHeadingItalic = ip?.insuranceHeadingItalic || 'with insurers.'
-  const insuranceBodyParas = ip?.insuranceBody
-    ? ip.insuranceBody.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean)
+  const ins = cms?.pricingInsurance ?? {}
+  const insuranceEyebrow = ins.eyebrow || 'Insurance'
+  const insuranceHeadingRoman = ins.headingRoman || 'Working'
+  const insuranceHeadingItalic = ins.headingItalic || 'with insurers.'
+  const insuranceBodyParas = ins.body
+    ? ins.body.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean)
     : [
         'Cosmetic surgery is rarely covered by health insurance. Reconstructive procedures may be — and where they are, we are happy to support your claim with full documentation, surgeon\'s reports, and itemised invoicing.',
         'Travel insurance is recommended for every patient, and we work with two specialist medical-travel insurers — details supplied during consultation.',
       ]
-  const paymentEyebrow = ip?.paymentEyebrow || 'Payment'
-  const paymentHeadingRoman = ip?.paymentHeadingRoman || 'Quiet,'
-  const paymentHeadingItalic = ip?.paymentHeadingItalic || 'considered terms.'
-  const paymentTerms = parsePaymentTerms(ip?.paymentTermsText)
+
+  const pay = cms?.pricingPayment ?? {}
+  const paymentEyebrow = pay.eyebrow || 'Payment'
+  const paymentHeadingRoman = pay.headingRoman || 'Quiet,'
+  const paymentHeadingItalic = pay.headingItalic || 'considered terms.'
+  const paymentTerms = parsePaymentTerms(pay.termsText)
+
+  const list = cms?.pricingDisciplineListView ?? {}
+  const onRequestLabel = list.onRequestLabel || 'On request'
+  const includedLabel = list.includedLabel || 'Included'
+  const arrowChar = list.arrowChar || '→'
+
+  const heroImageUrl =
+    (hero.heroImage && typeof hero.heroImage === 'object' ? hero.heroImage.url : undefined) ||
+    IMG.texture
 
   return (
   <PageShell activePage="pricing">
     <ChapterOpener
-      chapter="Chapter X — Pricing"
-      title={['Every treatment,', 'every price.']}
-      lede="The complete pricing index, organised by discipline. Prices are starting figures in IDR with an Australian-dollar equivalent. Every plan is quoted precisely after a private consultation; what we quote is what you pay."
-      image={IMG.texture}
-      imageHue={2}
-      imageLabel="PRICING"
-      breadcrumbs={[{ label: 'BIMC CosMedic', href: '/' }, { label: 'Pricing' }]}
+      chapter={hero.chapter || 'Chapter X — Pricing'}
+      title={[hero.titleA || 'Every treatment,', hero.titleB || 'every price.']}
+      lede={
+        hero.lede ||
+        'The complete pricing index, organised by discipline. Prices are starting figures in IDR with an Australian-dollar equivalent. Every plan is quoted precisely after a private consultation; what we quote is what you pay.'
+      }
+      image={heroImageUrl}
+      imageHue={hero.imageHue ?? 2}
+      imageLabel={hero.imageLabel || 'PRICING'}
+      breadcrumbs={[
+        { label: 'BIMC CosMedic', href: '/' },
+        { label: hero.breadcrumbLabel || 'Pricing' },
+      ]}
     />
 
     {overviewHasContent && (
       <section className="page-section">
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
           <Reveal>
-            {overview?.eyebrow && <Eyebrow>{overview.eyebrow}</Eyebrow>}
-            {(overview?.headingPart1 || overview?.headingPart2) && (
+            {overview.eyebrow && <Eyebrow>{overview.eyebrow}</Eyebrow>}
+            {(overview.headingPart1 || overview.headingPart2) && (
               <h2 className="section-title" style={{ marginTop: 16, marginBottom: 24 }}>
-                {overview?.headingPart1 && <span>{overview.headingPart1}</span>}
-                {overview?.headingPart1 && overview?.headingPart2 && ' '}
-                {overview?.headingPart2 && (
+                {overview.headingPart1 && <span>{overview.headingPart1}</span>}
+                {overview.headingPart1 && overview.headingPart2 && ' '}
+                {overview.headingPart2 && (
                   <span className="italic">{overview.headingPart2}</span>
                 )}
               </h2>
             )}
-            {overview?.body && (
+            {overview.body && (
               <p style={{ fontSize: 17, lineHeight: 1.65, color: 'var(--ink-80)', margin: 0 }}>
                 {overview.body}
               </p>
@@ -209,7 +225,7 @@ export const PricingPage: React.FC = () => {
                                       textTransform: 'uppercase',
                                     }}
                                   >
-                                    Included
+                                    {includedLabel}
                                   </span>
                                 ) : isNumber ? (
                                   <PriceTag idr={t.priceFromIdr as number} align="right" />
@@ -222,7 +238,7 @@ export const PricingPage: React.FC = () => {
                                       color: 'var(--ink-60)',
                                     }}
                                   >
-                                    On request
+                                    {onRequestLabel}
                                   </span>
                                 )}
                               </div>
@@ -234,7 +250,7 @@ export const PricingPage: React.FC = () => {
                                   fontSize: 22,
                                 }}
                               >
-                                →
+                                {arrowChar}
                               </span>
                             </a>
                           </Reveal>

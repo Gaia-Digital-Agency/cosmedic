@@ -449,6 +449,157 @@ export type JourneyStatsGlobal = {
   stats?: Array<{ number: string; label: string; italic?: boolean }>
 }
 
+/* ─── R4 — c. Doctors Bucket section globals ───────────────────────────── */
+
+export type SurgeonsHeroGlobal = {
+  chapter?: string
+  titleA?: string
+  titleB?: string
+  lede?: string
+  heroImage?: number | CmsMedia | null
+  imageHue?: number
+  imageLabel?: string
+  breadcrumbLabel?: string
+}
+
+export type SurgeonsLeadViewGlobal = {
+  sectionEyebrow?: string
+  blockEyebrow?: string
+  statLabelTrained?: string
+  statLabelSpecialty?: string
+  statLabelDistinction?: string
+  ctaLabel?: string
+}
+
+export type SurgeonsSectionViewGlobal = {
+  eyebrow?: string
+  headingA?: string
+  headingItalic?: string
+  headingB?: string
+  lede?: string
+}
+
+export type SurgeonDetailTemplateGlobal = {
+  // Hero
+  heroLeadLabel?: string
+  heroSpecialistLabel?: string
+  heroCtaConsultLabel?: string
+  /** Read-only mirror — resolves to Disciplines.title at read time. The route ignores this and reads the source. */
+  heroCtaTreatmentsLabelTemplate?: string
+  heroCtaTreatmentsLabelFallback?: string
+  // Breadcrumb
+  breadcrumbHomeLabel?: string
+  breadcrumbSurgeonsLabel?: string
+  // Stats row
+  statLabelYears?: string
+  statLabelDistinction?: string
+  statLabelSpecialty?: string
+  // Biography sidebar
+  biographyEyebrow?: string
+  sidebarLabelSpecialism?: string
+  sidebarLabelCredentials?: string
+  sidebarLabelLanguages?: string
+  sidebarLabelAvailability?: string
+  languagesFallback?: string
+  availabilityFallback?: string
+  // Biography body
+  /** Template — uses {title} and {common} placeholders for per-doctor honorific + first name. */
+  secondaryBioParagraph?: string
+  // Specialty areas
+  specialtyEyebrow?: string
+  /** Template — uses {title}, {common}, and {italic}...{/italic} markers. */
+  specialtyHeadingTemplate?: string
+  // Training & credentials
+  trainingEyebrow?: string
+  trainingRowLabels?: Array<{ value: string }>
+  trainingRowRights?: Array<{ value: string }>
+  /** Read-only mirror — resolves to `${settings.siteName}, ${settings.city}` at read time. */
+  trainingRowPracticeMid?: string
+  // Faculty
+  facultyEyebrow?: string
+  facultyHeading?: { pre?: string; italic?: string; post?: string }
+}
+
+/* ─── R6 — e. Pricing Bucket section globals ───────────────────────────── */
+
+export type PricingHeroGlobal = {
+  chapter?: string
+  titleA?: string
+  titleB?: string
+  lede?: string
+  heroImage?: number | CmsMedia | null
+  imageHue?: number
+  imageLabel?: string
+  breadcrumbLabel?: string
+}
+
+export type PricingOverviewGlobal = {
+  eyebrow?: string
+  headingPart1?: string
+  headingPart2?: string
+  body?: string
+}
+
+export type PricingFootnoteGlobal = {
+  text?: string
+}
+
+export type PricingInsuranceGlobal = {
+  eyebrow?: string
+  headingRoman?: string
+  headingItalic?: string
+  body?: string
+}
+
+export type PricingPaymentGlobal = {
+  eyebrow?: string
+  headingRoman?: string
+  headingItalic?: string
+  termsText?: string
+}
+
+export type PricingDisciplineListViewGlobal = {
+  sectionEyebrow?: string
+  onRequestLabel?: string
+  includedLabel?: string
+  arrowChar?: string
+}
+
+export type PricingCatalogueViewGlobal = {
+  sectionEyebrow?: string
+  headingRoman?: string
+  headingItalic?: string
+  introTemplate?: string
+  sheetLabels?: {
+    surgicalTitle?: string
+    surgicalSubtitle?: string
+    machineTitle?: string
+    machineSubtitle?: string
+    injectionTitle?: string
+    injectionSubtitle?: string
+    btlTitle?: string
+    btlSubtitle?: string
+  }
+  hairZoneLabels?: {
+    face?: string
+    upperBody?: string
+    lowerBody?: string
+    packageZone?: string
+    other?: string
+  }
+  injectableCategoryLabels?: {
+    botulinumToxin?: string
+    filler?: string
+    skinBooster?: string
+    collagenStimulator?: string
+    bioRemodeling?: string
+    threadLift?: string
+    mesotherapy?: string
+    hgh?: string
+    other?: string
+  }
+}
+
 export type BlogPostTemplateGlobal = {
   byline?: {
     writtenByLabel?: string
@@ -533,6 +684,20 @@ export type CmsCache = {
   journeyHero: JourneyHeroGlobal
   journeyStats: JourneyStatsGlobal
   recoveryStaysPage: RecoveryStaysPageGlobal
+  // R4 — c. Doctors Bucket section globals
+  surgeonsHero: SurgeonsHeroGlobal
+  surgeonsLeadView: SurgeonsLeadViewGlobal
+  surgeonsPlasticView: SurgeonsSectionViewGlobal
+  surgeonsAestheticView: SurgeonsSectionViewGlobal
+  surgeonDetailTemplate: SurgeonDetailTemplateGlobal
   // R8 — h. About Bucket
   blogPostTemplate: BlogPostTemplateGlobal
+  // R6 — e. Pricing Bucket section globals
+  pricingHero: PricingHeroGlobal
+  pricingOverview: PricingOverviewGlobal
+  pricingFootnote: PricingFootnoteGlobal
+  pricingInsurance: PricingInsuranceGlobal
+  pricingPayment: PricingPaymentGlobal
+  pricingDisciplineListView: PricingDisciplineListViewGlobal
+  pricingCatalogueView: PricingCatalogueViewGlobal
 }

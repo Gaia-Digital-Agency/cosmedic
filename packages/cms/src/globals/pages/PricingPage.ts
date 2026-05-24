@@ -1,76 +1,30 @@
-import type { Field, GlobalConfig } from 'payload'
+import type { GlobalConfig } from 'payload'
 import { isAuthenticated, publishedOrAuthed } from '../../lib/access'
 import { revalidateGlobalAfterChange } from '../../lib/revalidate'
 import { pageFields } from './_pageFields'
 
 /**
- * Phase C7 A2 wiring — 3 dedicated block group fields for /pricing editorial
- * frame. Every field is OPTIONAL so the renderer falls back to hardcoded copy
- * when blank (Rule R5 byte-identical).
+ * Phase R6 — Bucket "e. Pricing" detail. The hero (chapter/title/lede/heroImage)
+ * lives on `pricing-hero`; the editorial overview lives on `pricing-overview`;
+ * the centred footnote lives on `pricing-footnote`; the two-column insurance +
+ * payment section lives on `pricing-insurance` and `pricing-payment`. This
+ * page-Global retains only the generic pageFields() — title, slug, route,
+ * publishStatus, composable `sections` block array, and SEO group.
+ *
+ * The legacy nested groups (overviewBlock / footnoteBlock / insurancePaymentBlock)
+ * are intentionally dropped from the field schema after their values have been
+ * copied into the new section globals (Rule 4 — no unilateral deletes; data
+ * is preserved in the new globals before removal).
  */
-const overviewBlock: Field = {
-  name: 'overviewBlock',
-  type: 'group',
-  admin: {
-    description:
-      'Optional editorial overview between the chapter opener and the price list. Leave blank and no section renders.',
-  },
-  fields: [
-    { name: 'eyebrow', type: 'text' },
-    { name: 'headingPart1', type: 'text', admin: { description: 'Roman text part of H2' } },
-    { name: 'headingPart2', type: 'text', admin: { description: 'Italic accent part of H2' } },
-    { name: 'body', type: 'textarea' },
-  ],
-}
-
-const footnoteBlock: Field = {
-  name: 'footnoteBlock',
-  type: 'group',
-  admin: {
-    description:
-      'Centred italic footnote rendered between the discipline price list and the full clinic catalogue table.',
-  },
-  fields: [{ name: 'text', type: 'textarea' }],
-}
-
-const insurancePaymentBlock: Field = {
-  name: 'insurancePaymentBlock',
-  type: 'group',
-  admin: {
-    description:
-      'Two-column section at the bottom of /pricing. Left column: insurance copy. Right column: payment heading + key/value terms list.',
-  },
-  fields: [
-    { name: 'insuranceEyebrow', type: 'text' },
-    { name: 'insuranceHeadingRoman', type: 'text' },
-    { name: 'insuranceHeadingItalic', type: 'text' },
-    {
-      name: 'insuranceBody',
-      type: 'textarea',
-      admin: { description: 'Body copy. Separate paragraphs with a blank line.' },
-    },
-    { name: 'paymentEyebrow', type: 'text' },
-    { name: 'paymentHeadingRoman', type: 'text' },
-    { name: 'paymentHeadingItalic', type: 'text' },
-    {
-      name: 'paymentTermsText',
-      type: 'textarea',
-      admin: {
-        description:
-          'One row per line. Format: "Label | Value". Leave blank to use hardcoded fallback.',
-      },
-    },
-  ],
-}
-
 export const PricingPage: GlobalConfig = {
   slug: 'pricing-page',
+  label: 'a. Main',
   admin: {
     group: 'e. Pricing',
     description:
-      'Editorial content for /pricing: hero (chapter / title / lede / heroImage) plus 3 A2 section blocks (overview, footnote, insurancePayment). The discipline price list and the full clinic catalogue table are data-driven from Procedures + PriceListItems.',
+      'Page-level metadata for /pricing — title, slug, route, SEO, publishStatus, and a CmsExtraBlocks slot. Hero / Overview / Footnote / Insurance / Payment are now edited via the dedicated b–f items in the e. Pricing Bucket.',
   },
   access: { read: publishedOrAuthed, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
-  fields: [...pageFields(), overviewBlock, footnoteBlock, insurancePaymentBlock],
+  fields: [...pageFields({ hideHero: true })],
 }

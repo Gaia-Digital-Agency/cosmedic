@@ -11,6 +11,71 @@ const DAY_LABEL: Record<string, string> = {
   mon: 'Mon', tue: 'Tue', wed: 'Wed', thu: 'Thu', fri: 'Fri', sat: 'Sat', sun: 'Sun',
 }
 
+/* ─── R4 defensive fallbacks ──────────────────────────────────────────── */
+/* Verbatim copies of the strings that lived in this file pre-R4. Used  */
+/* only when the CMS cache is cold / the template global has no value.  */
+/* After the seed runs, the cache supplies the same strings — render    */
+/* stays byte-identical (Rule 3 / no-data-loss).                        */
+const TFB = {
+  heroLeadLabel: 'Lead Surgeon',
+  heroSpecialistLabel: 'Specialist',
+  heroCtaConsultLabel: 'Request a consultation',
+  heroCtaTreatmentsLabelFallback: 'Treatments',
+  breadcrumbHomeLabel: 'BIMC CosMedic',
+  breadcrumbSurgeonsLabel: 'Surgeons',
+  statLabelYears: 'Years in practice',
+  statLabelDistinction: 'Distinction',
+  statLabelSpecialty: 'Specialty',
+  biographyEyebrow: 'Biography',
+  sidebarLabelSpecialism: 'Specialism',
+  sidebarLabelCredentials: 'Credentials',
+  sidebarLabelLanguages: 'Languages',
+  sidebarLabelAvailability: 'Availability',
+  languagesFallback: 'English · Bahasa Indonesia',
+  availabilityFallback: 'Mon & Thu in person · weekday mornings by video',
+  secondaryBioParagraph:
+    'Patients often describe {title} {common} as quiet, deeply patient, and frank — comfortable with saying "no" when "yes" would be the easier answer. We hold this very highly.',
+  specialtyEyebrow: 'Specialty areas',
+  specialtyHeadingTemplate: 'What {title} {common} {italic}does best.{/italic}',
+  trainingEyebrow: 'Training & credentials',
+  trainingRowLabels: ['Medical Degree', 'Specialty Training', 'Suffix', 'Practice', 'Memberships'],
+  trainingRowRights: ['MBBS / MD', 'Board credential', 'Active', 'Active member'],
+  facultyEyebrow: 'The faculty',
+  facultyHeading: { pre: 'Meet the ', italic: 'other practitioners.', post: '' },
+}
+
+/** Simple template substitution. Replaces every {key} in `tpl` with `vars[key]`. */
+function fillTemplate(tpl: string, vars: Record<string, string>): string {
+  return tpl.replace(/\{([a-zA-Z_]+)\}/g, (_, k: string) => (k in vars ? vars[k] : `{${k}}`))
+}
+
+/**
+ * Render a template like `What {title} {common} {italic}does best.{/italic}`
+ * as ReactNode, wrapping the italic section in a <span className="italic">.
+ * Supports exactly one {italic}…{/italic} pair (matches the design pattern).
+ */
+function renderItalicTemplate(tpl: string, vars: Record<string, string>): React.ReactNode {
+  const filled = fillTemplate(tpl, vars)
+  const open = '{italic}'
+  const close = '{/italic}'
+  const i = filled.indexOf(open)
+  const j = filled.indexOf(close)
+  if (i < 0 || j < 0 || j < i) {
+    // No italic markers — render as plain string.
+    return filled
+  }
+  const pre = filled.slice(0, i)
+  const mid = filled.slice(i + open.length, j)
+  const post = filled.slice(j + close.length)
+  return (
+    <>
+      {pre}
+      <span className="italic">{mid}</span>
+      {post}
+    </>
+  )
+}
+
 type Props = { slug: string }
 
 export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
@@ -18,6 +83,7 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
   if (!s) return null
 
   const cms = useCms()
+  const t = cms?.surgeonDetailTemplate
   // Pull the raw CMS Surgeon record so we can render fields that aren't
   // exposed via the seed proxy (availabilitySchedule, languages).
   const cmsSurgeon = cms?.surgeons.find((x) => x.slug === slug)
@@ -25,11 +91,38 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
   const languages = (cmsSurgeon?.languages || []).map((l) => l.code).filter(Boolean)
 
   const relSlug = s.group === 'Plastic Surgery' ? 'surgical' : 'non-surgical'
-  const relTreatment = TREATMENT_LIST.find((t) => t.slug === relSlug)
+  const relTreatment = TREATMENT_LIST.find((t2) => t2.slug === relSlug)
   const imgLabel = `DR. ${s.common.toUpperCase()}`
   const nameWords = s.name.split(' ')
   const lastWord = nameWords[nameWords.length - 1]
   const restName = nameWords.slice(0, -1).join(' ')
+
+  // Per-doctor template substitutions for the bio + specialty heading.
+  const vars = { title: s.title, common: s.common }
+
+  // Training rows. Labels (5) come from the template; row 0 mid + row 1 mid
+  // are per-doctor (s.train + s.group); rows 2-4 mid use s.suffix / clinic
+  // name / membership-conditional respectively. Right column: rows 0/2/3/4
+  // come from template; row 1 right is the per-doctor `s.cred`.
+  const labels = (t?.trainingRowLabels?.length ? t.trainingRowLabels.map((r) => r.value) : TFB.trainingRowLabels)
+  const rights = (t?.trainingRowRights?.length ? t.trainingRowRights.map((r) => r.value) : TFB.trainingRowRights)
+  const practiceMid =
+    t?.trainingRowPracticeMid && t.trainingRowPracticeMid.trim().length > 0
+      ? t.trainingRowPracticeMid
+      : 'BIMC CosMedic Centre, Bali'
+  const trainingRows: Array<[string, string, string]> = [
+    [labels[0] || TFB.trainingRowLabels[0], s.train.split(' · ')[0], rights[0] || TFB.trainingRowRights[0]],
+    [labels[1] || TFB.trainingRowLabels[1], s.group, s.cred],
+    [labels[2] || TFB.trainingRowLabels[2], s.suffix, rights[1] || TFB.trainingRowRights[1]],
+    [labels[3] || TFB.trainingRowLabels[3], practiceMid, rights[2] || TFB.trainingRowRights[2]],
+    [
+      labels[4] || TFB.trainingRowLabels[4],
+      s.cred.includes('ISAPS') ? 'ISAPS · IPRAS' : 'National Society · International courses',
+      rights[3] || TFB.trainingRowRights[3],
+    ],
+  ]
+
+  const facultyHeading = t?.facultyHeading ?? TFB.facultyHeading
 
   return (
     <PageShell activePage={`surgeon-${slug}`}>
@@ -40,7 +133,7 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
         <div className="surgeon-hero-body">
           <Reveal>
             <Eyebrow>
-              {s.lead ? 'Lead Surgeon' : 'Specialist'} · {s.group}
+              {s.lead ? (t?.heroLeadLabel || TFB.heroLeadLabel) : (t?.heroSpecialistLabel || TFB.heroSpecialistLabel)} · {s.group}
             </Eyebrow>
             <h1 className="surgeon-hero-name">
               <span>
@@ -53,10 +146,10 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
           <Reveal delay={120}>
             <div className="surgeon-hero-ctas">
               <Btn kind="primary" as="a" href="/contact">
-                Request a consultation
+                {t?.heroCtaConsultLabel || TFB.heroCtaConsultLabel}
               </Btn>
               <Btn kind="ghost" as="a" href={`/treatments/${relSlug}`}>
-                {relTreatment?.t || 'Treatments'}
+                {relTreatment?.t || (t?.heroCtaTreatmentsLabelFallback || TFB.heroCtaTreatmentsLabelFallback)}
               </Btn>
             </div>
           </Reveal>
@@ -64,9 +157,9 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
       </section>
 
       <nav className="page-breadcrumb page-breadcrumb--cream" aria-label="Breadcrumb">
-        <a href="/">BIMC CosMedic</a>
+        <a href="/">{t?.breadcrumbHomeLabel || TFB.breadcrumbHomeLabel}</a>
         <span className="sep">/</span>
-        <a href="/surgeons">Surgeons</a>
+        <a href="/surgeons">{t?.breadcrumbSurgeonsLabel || TFB.breadcrumbSurgeonsLabel}</a>
         <span className="sep">/</span>
         <span>Dr. {s.common}</span>
       </nav>
@@ -75,19 +168,19 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
         <Reveal>
           <div className="stat-block">
             <span className="stat-num">{s.years}</span>
-            <span className="stat-label">Years in practice</span>
+            <span className="stat-label">{t?.statLabelYears || TFB.statLabelYears}</span>
           </div>
         </Reveal>
         <Reveal delay={80}>
           <div className="stat-block">
             <span className="stat-num italic">{s.proc}</span>
-            <span className="stat-label">Distinction</span>
+            <span className="stat-label">{t?.statLabelDistinction || TFB.statLabelDistinction}</span>
           </div>
         </Reveal>
         <Reveal delay={240}>
           <div className="stat-block">
             <span className="stat-num italic">{s.spec_areas[0]}</span>
-            <span className="stat-label">Specialty</span>
+            <span className="stat-label">{t?.statLabelSpecialty || TFB.statLabelSpecialty}</span>
           </div>
         </Reveal>
       </div>
@@ -96,35 +189,35 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
         <div className="surgeon-bio-layout">
           <aside className="surgeon-bio-aside">
             <Reveal>
-              <Eyebrow>Biography</Eyebrow>
+              <Eyebrow>{t?.biographyEyebrow || TFB.biographyEyebrow}</Eyebrow>
             </Reveal>
             <Reveal delay={80}>
               <dl className="surgeon-bio-facts">
                 <div>
                   <dt>
-                    <Mono>Specialism</Mono>
+                    <Mono>{t?.sidebarLabelSpecialism || TFB.sidebarLabelSpecialism}</Mono>
                   </dt>
                   <dd>{s.group}</dd>
                 </div>
                 <div>
                   <dt>
-                    <Mono>Credentials</Mono>
+                    <Mono>{t?.sidebarLabelCredentials || TFB.sidebarLabelCredentials}</Mono>
                   </dt>
                   <dd>{s.cred}</dd>
                 </div>
                 <div>
                   <dt>
-                    <Mono>Languages</Mono>
+                    <Mono>{t?.sidebarLabelLanguages || TFB.sidebarLabelLanguages}</Mono>
                   </dt>
                   <dd>
                     {languages.length > 0
                       ? languages.map((c) => c.toUpperCase()).join(' · ')
-                      : 'English · Bahasa Indonesia'}
+                      : (t?.languagesFallback || TFB.languagesFallback)}
                   </dd>
                 </div>
                 <div>
                   <dt>
-                    <Mono>Availability</Mono>
+                    <Mono>{t?.sidebarLabelAvailability || TFB.sidebarLabelAvailability}</Mono>
                   </dt>
                   <dd>
                     {schedule.length > 0 ? (
@@ -138,7 +231,7 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
                         ))}
                       </ul>
                     ) : (
-                      'Mon & Thu in person · weekday mornings by video'
+                      (t?.availabilityFallback || TFB.availabilityFallback)
                     )}
                   </dd>
                 </div>
@@ -155,9 +248,7 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
             </Reveal>
             <Reveal delay={280}>
               <p className="surgeon-bio-text">
-                Patients often describe {s.title} {s.common} as quiet, deeply patient, and frank —
-                comfortable with saying "no" when "yes" would be the easier answer. We hold this
-                very highly.
+                {fillTemplate(t?.secondaryBioParagraph || TFB.secondaryBioParagraph, vars)}
               </p>
             </Reveal>
           </div>
@@ -166,11 +257,11 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
 
       <section className="page-section tinted">
         <Reveal>
-          <Eyebrow>Specialty areas</Eyebrow>
+          <Eyebrow>{t?.specialtyEyebrow || TFB.specialtyEyebrow}</Eyebrow>
         </Reveal>
         <Reveal delay={120}>
           <h2 className="section-title" style={{ marginTop: 16, marginBottom: 60 }}>
-            What {s.title} {s.common} <span className="italic">does best.</span>
+            {renderItalicTemplate(t?.specialtyHeadingTemplate || TFB.specialtyHeadingTemplate, vars)}
           </h2>
         </Reveal>
         <div className="surgeon-specialty-grid">
@@ -187,24 +278,10 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
 
       <section className="page-section">
         <Reveal>
-          <Eyebrow>Training & credentials</Eyebrow>
+          <Eyebrow>{t?.trainingEyebrow || TFB.trainingEyebrow}</Eyebrow>
         </Reveal>
         <div style={{ marginTop: 40, borderTop: '1px solid var(--ink-20)' }}>
-          {(
-            [
-              ['Medical Degree', s.train.split(' · ')[0], 'MBBS / MD'],
-              ['Specialty Training', s.group, s.cred],
-              ['Suffix', s.suffix, 'Board credential'],
-              ['Practice', 'BIMC CosMedic Centre, Bali', 'Active'],
-              [
-                'Memberships',
-                s.cred.includes('ISAPS')
-                  ? 'ISAPS · IPRAS'
-                  : 'National Society · International courses',
-                'Active member',
-              ],
-            ] as [string, string, string][]
-          ).map(([h, mid, right], i) => (
+          {trainingRows.map(([h, mid, right], i) => (
             <Reveal key={i} delay={i * 50}>
               <div className="surgeon-credentials-row">
                 <span className="mono" style={{ color: 'var(--accent-deep)' }}>
@@ -240,10 +317,12 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
       <section className="page-section tinted">
         <Reveal>
           <div className="section-head">
-            <Eyebrow>The faculty</Eyebrow>
+            <Eyebrow>{t?.facultyEyebrow || TFB.facultyEyebrow}</Eyebrow>
             <div>
               <h2 className="section-title">
-                Meet the <span className="italic">other practitioners.</span>
+                {facultyHeading.pre ?? TFB.facultyHeading.pre}
+                <span className="italic">{facultyHeading.italic ?? TFB.facultyHeading.italic}</span>
+                {facultyHeading.post ?? TFB.facultyHeading.post}
               </h2>
             </div>
           </div>

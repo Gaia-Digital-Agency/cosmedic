@@ -28,14 +28,14 @@ const fmtAud = (n: number | undefined | null): string => {
   return 'AUD ' + n.toLocaleString('en-AU')
 }
 
-const SHEET_LABEL: Record<CatalogueGroup, { title: string; subtitle: string }> = {
+const DEFAULT_SHEET_LABEL: Record<CatalogueGroup, { title: string; subtitle: string }> = {
   surgical: { title: 'Surgical Procedures', subtitle: '2025 & 2026 pricing · IDR + AUD' },
   machine: { title: 'Machine Treatments', subtitle: 'Erbium · AFT · Q-switched · Pixel' },
   injection: { title: 'Injectable Catalogue', subtitle: 'Named brand pricing per ml / unit' },
   btl: { title: 'BTL Hair Removal', subtitle: 'Per area · per session' },
 }
 
-const HAIR_ZONE_LABEL: Record<NonNullable<Procedure['bodyZone']>, string> = {
+const DEFAULT_HAIR_ZONE_LABEL: Record<NonNullable<Procedure['bodyZone']>, string> = {
   face: 'Face',
   'upper-body': 'Upper Body',
   'lower-body': 'Lower Body',
@@ -43,18 +43,15 @@ const HAIR_ZONE_LABEL: Record<NonNullable<Procedure['bodyZone']>, string> = {
   other: 'Other BTL',
 }
 
-function labelInjectableCategory(c: string | undefined): string {
-  switch (c) {
-    case 'botulinum-toxin': return 'Botulinum Toxin'
-    case 'filler': return 'Dermal Fillers'
-    case 'skin-booster': return 'Skin Boosters'
-    case 'collagen-stimulator': return 'Collagen Stimulators'
-    case 'bio-remodeling': return 'Bio-Remodeling'
-    case 'thread-lift': return 'Thread Lift'
-    case 'mesotherapy': return 'Mesotherapy'
-    case 'hgh': return 'HGH'
-    default: return c || 'Other'
-  }
+const DEFAULT_INJECTABLE_LABEL: Record<string, string> = {
+  'botulinum-toxin': 'Botulinum Toxin',
+  filler: 'Dermal Fillers',
+  'skin-booster': 'Skin Boosters',
+  'collagen-stimulator': 'Collagen Stimulators',
+  'bio-remodeling': 'Bio-Remodeling',
+  'thread-lift': 'Thread Lift',
+  mesotherapy: 'Mesotherapy',
+  hgh: 'HGH',
 }
 
 function groupBy<T, K extends string>(items: T[], key: (t: T) => K): Record<K, T[]> {
@@ -194,6 +191,10 @@ const TableRow: React.FC<{
   </div>
 )
 
+type SheetLabel = { title: string; subtitle: string }
+type SheetLabelMap = Record<CatalogueGroup, SheetLabel>
+type HairZoneLabelMap = Record<NonNullable<Procedure['bodyZone']>, string>
+
 const CategoryGroup: React.FC<{ heading: string; children: React.ReactNode }> = ({
   heading,
   children,
@@ -219,10 +220,11 @@ const CategoryGroup: React.FC<{ heading: string; children: React.ReactNode }> = 
   </div>
 )
 
-const SheetSection: React.FC<{ group: CatalogueGroup; children: React.ReactNode }> = ({
-  group,
-  children,
-}) => (
+const SheetSection: React.FC<{
+  group: CatalogueGroup
+  labels: SheetLabelMap
+  children: React.ReactNode
+}> = ({ group, labels, children }) => (
   <div style={{ marginBottom: 96 }}>
     <Reveal>
       <div
@@ -232,7 +234,7 @@ const SheetSection: React.FC<{ group: CatalogueGroup; children: React.ReactNode 
           marginBottom: 28,
         }}
       >
-        <Eyebrow>{SHEET_LABEL[group].subtitle}</Eyebrow>
+        <Eyebrow>{labels[group].subtitle}</Eyebrow>
         <h2
           style={{
             fontFamily: 'var(--font-serif)',
@@ -243,7 +245,7 @@ const SheetSection: React.FC<{ group: CatalogueGroup; children: React.ReactNode 
             lineHeight: 1,
           }}
         >
-          {SHEET_LABEL[group].title}
+          {labels[group].title}
         </h2>
       </div>
     </Reveal>
@@ -254,6 +256,48 @@ const SheetSection: React.FC<{ group: CatalogueGroup; children: React.ReactNode 
 export const ClinicCatalogueTable: React.FC = () => {
   const cms = useCms()
   if (!cms || !cms.loaded) return null
+
+  const view = cms.pricingCatalogueView ?? {}
+  const sheetLabels: SheetLabelMap = {
+    surgical: {
+      title: view.sheetLabels?.surgicalTitle || DEFAULT_SHEET_LABEL.surgical.title,
+      subtitle: view.sheetLabels?.surgicalSubtitle || DEFAULT_SHEET_LABEL.surgical.subtitle,
+    },
+    machine: {
+      title: view.sheetLabels?.machineTitle || DEFAULT_SHEET_LABEL.machine.title,
+      subtitle: view.sheetLabels?.machineSubtitle || DEFAULT_SHEET_LABEL.machine.subtitle,
+    },
+    injection: {
+      title: view.sheetLabels?.injectionTitle || DEFAULT_SHEET_LABEL.injection.title,
+      subtitle: view.sheetLabels?.injectionSubtitle || DEFAULT_SHEET_LABEL.injection.subtitle,
+    },
+    btl: {
+      title: view.sheetLabels?.btlTitle || DEFAULT_SHEET_LABEL.btl.title,
+      subtitle: view.sheetLabels?.btlSubtitle || DEFAULT_SHEET_LABEL.btl.subtitle,
+    },
+  }
+  const hairZoneLabels: HairZoneLabelMap = {
+    face: view.hairZoneLabels?.face || DEFAULT_HAIR_ZONE_LABEL.face,
+    'upper-body': view.hairZoneLabels?.upperBody || DEFAULT_HAIR_ZONE_LABEL['upper-body'],
+    'lower-body': view.hairZoneLabels?.lowerBody || DEFAULT_HAIR_ZONE_LABEL['lower-body'],
+    package: view.hairZoneLabels?.packageZone || DEFAULT_HAIR_ZONE_LABEL.package,
+    other: view.hairZoneLabels?.other || DEFAULT_HAIR_ZONE_LABEL.other,
+  }
+  const injectableOtherLabel = view.injectableCategoryLabels?.other || 'Other'
+  const labelInjectableCategory = (c: string | undefined): string => {
+    if (!c) return injectableOtherLabel
+    const map: Record<string, string | undefined> = {
+      'botulinum-toxin': view.injectableCategoryLabels?.botulinumToxin,
+      filler: view.injectableCategoryLabels?.filler,
+      'skin-booster': view.injectableCategoryLabels?.skinBooster,
+      'collagen-stimulator': view.injectableCategoryLabels?.collagenStimulator,
+      'bio-remodeling': view.injectableCategoryLabels?.bioRemodeling,
+      'thread-lift': view.injectableCategoryLabels?.threadLift,
+      mesotherapy: view.injectableCategoryLabels?.mesotherapy,
+      hgh: view.injectableCategoryLabels?.hgh,
+    }
+    return map[c] || DEFAULT_INJECTABLE_LABEL[c] || c
+  }
 
   const procs = [...cms.procedures].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
 
@@ -313,10 +357,19 @@ export const ClinicCatalogueTable: React.FC = () => {
   // ── BTL
   const btl = procs.filter((p) => p.catalogueGroup === 'btl')
   const btlByZone = groupBy(btl, (p) =>
-    p.bodyZone ? HAIR_ZONE_LABEL[p.bodyZone] : 'Other BTL',
+    p.bodyZone ? hairZoneLabels[p.bodyZone] : (hairZoneLabels.other || 'Other BTL'),
   )
 
   const totalCatalogueRows = surgical.length + collapsedMachine.length + injection.length + btl.length
+
+  // ── Section chrome (eyebrow / heading / intro)
+  const sectionEyebrow = view.sectionEyebrow || 'Clinic catalogue · CMS-managed'
+  const headingRoman = view.headingRoman || 'The full'
+  const headingItalic = view.headingItalic || 'clinic catalogue.'
+  const introTemplate =
+    view.introTemplate ||
+    'Every line item below is edited in Cosmedic CMS by the clinic team and sourced from our 2025/2026 price list. Surgical, machine, injection, and BTL hair-removal services — {n}+ items in total.'
+  const introText = introTemplate.replace('{n}', String(totalCatalogueRows))
 
   return (
     <section className="page-section" style={{ paddingTop: 0, paddingBottom: 80 }}>
@@ -331,9 +384,9 @@ export const ClinicCatalogueTable: React.FC = () => {
               textAlign: 'center',
             }}
           >
-            <Eyebrow>Clinic catalogue · CMS-managed</Eyebrow>
+            <Eyebrow>{sectionEyebrow}</Eyebrow>
             <h2 className="section-title" style={{ marginTop: 16, marginBottom: 12 }}>
-              The full <span className="italic">clinic catalogue.</span>
+              {headingRoman} <span className="italic">{headingItalic}</span>
             </h2>
             <p
               style={{
@@ -348,15 +401,13 @@ export const ClinicCatalogueTable: React.FC = () => {
                 lineHeight: 1.55,
               }}
             >
-              Every line item below is edited in Cosmedic CMS by the clinic team and sourced from
-              our 2025/2026 price list. Surgical, machine, injection, and BTL hair-removal services
-              — {totalCatalogueRows}+ items in total.
+              {introText}
             </p>
           </div>
         </Reveal>
 
         {/* Surgical */}
-        <SheetSection group="surgical">
+        <SheetSection group="surgical" labels={sheetLabels}>
           {Object.entries(surgicalByCategory).map(([cat, rows]) => (
             <CategoryGroup key={cat} heading={cat}>
               {rows.map((p) => {
@@ -390,7 +441,7 @@ export const ClinicCatalogueTable: React.FC = () => {
         </SheetSection>
 
         {/* Machine */}
-        <SheetSection group="machine">
+        <SheetSection group="machine" labels={sheetLabels}>
           {Object.entries(machineByMachine).map(([machine, rows]) => (
             <CategoryGroup key={machine} heading={machine}>
               {(rows as CollapsedMachine[]).map((m, i) => (
@@ -407,7 +458,7 @@ export const ClinicCatalogueTable: React.FC = () => {
         </SheetSection>
 
         {/* Injectables */}
-        <SheetSection group="injection">
+        <SheetSection group="injection" labels={sheetLabels}>
           {Object.entries(injectionByCategory).map(([cat, prods]) => (
             <CategoryGroup key={cat} heading={cat}>
               {(prods as Procedure[]).map((p) => (
@@ -426,7 +477,7 @@ export const ClinicCatalogueTable: React.FC = () => {
         </SheetSection>
 
         {/* BTL */}
-        <SheetSection group="btl">
+        <SheetSection group="btl" labels={sheetLabels}>
           {Object.entries(btlByZone).map(([zone, rows]) => (
             <CategoryGroup key={zone} heading={zone}>
               {(rows as Procedure[]).map((p) => (
