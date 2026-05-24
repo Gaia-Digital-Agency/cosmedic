@@ -92,7 +92,7 @@
 .page-breadcrumb span:not(.sep) { color: var(--ink-100); }
 .page-breadcrumb .sep { color: var(--ink-40); }
 @media (max-width: 700px) {
-  .page-breadcrumb { padding: 20px 24px 0; }
+  .page-breadcrumb { padding: 20px var(--page-x) 0; }
 }
 
 /* --- Generic page section --- */
