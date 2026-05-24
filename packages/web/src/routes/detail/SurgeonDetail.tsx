@@ -63,11 +63,7 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
         </div>
       </section>
 
-      <nav
-        className="page-breadcrumb"
-        aria-label="Breadcrumb"
-        style={{ background: 'var(--cream)', paddingTop: 24, paddingBottom: 24 }}
-      >
+      <nav className="page-breadcrumb page-breadcrumb--cream" aria-label="Breadcrumb">
         <a href="/">BIMC CosMedic</a>
         <span className="sep">/</span>
         <a href="/surgeons">Surgeons</a>

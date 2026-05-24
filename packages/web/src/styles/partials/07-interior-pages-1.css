@@ -54,22 +54,6 @@
   color: rgba(255,255,255,0.85);
   margin: 0;
 }
-.chapter-breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 6px;
-}
-.chapter-breadcrumb a, .chapter-breadcrumb span {
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.7);
-}
-.chapter-breadcrumb a:hover { color: white; }
-.chapter-breadcrumb .sep { color: rgba(255,255,255,0.4); }
-
 /* Page-level breadcrumb — sits beneath the chapter opener on paper background */
 .page-breadcrumb {
   padding: 24px var(--page-x) 0;
@@ -91,8 +75,14 @@
 .page-breadcrumb a:hover { color: var(--ink-100); border-bottom-color: var(--accent); }
 .page-breadcrumb span:not(.sep) { color: var(--ink-100); }
 .page-breadcrumb .sep { color: var(--ink-40); }
+.page-breadcrumb--cream {
+  background: var(--cream);
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
 @media (max-width: 700px) {
   .page-breadcrumb { padding: 20px var(--page-x) 0; }
+  .page-breadcrumb--cream { padding-top: 20px; padding-bottom: 20px; }
 }
 
 /* --- Generic page section --- */
