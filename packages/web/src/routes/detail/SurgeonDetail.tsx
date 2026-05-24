@@ -55,7 +55,7 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
               <Btn kind="primary" as="a" href="/contact">
                 Request a consultation
               </Btn>
-              <Btn kind="ghost" as="a" href={`/treatment-${relSlug}`}>
+              <Btn kind="ghost" as="a" href={`/treatments/${relSlug}`}>
                 {relTreatment?.t || 'Treatments'}
               </Btn>
             </div>
@@ -258,7 +258,7 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
             .map((other, i) => (
               <Reveal key={other.slug} delay={i * 60}>
                 <a
-                  href={`/surgeon-${other.slug}`}
+                  href={`/surgeons/${other.slug}`}
                   style={{ color: 'inherit', display: 'block' }}
                 >
                   <div className="surgeon-card" data-surgeon={other.slug}>

@@ -243,7 +243,7 @@ const ProcedureListBlock: React.FC<{ block: Extract<PageBlock, { blockType: 'pro
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 24 }}>
         {procs.map((p, i) => (
           <Reveal key={p.id} delay={i * 40}>
-            <a href={`/treatment-${p.slug}`} style={{ display: 'block', padding: 20, border: '1px solid var(--ink-20)', color: 'inherit', textDecoration: 'none' }}>
+            <a href={`/treatments/${p.slug}`} style={{ display: 'block', padding: 20, border: '1px solid var(--ink-20)', color: 'inherit', textDecoration: 'none' }}>
               <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: 22, margin: 0 }}>{p.name}</h4>
               {p.pricing?.priceIdr2026 || p.pricing?.priceIdr2025 ? (
                 <div style={{ marginTop: 8 }}>
@@ -270,7 +270,7 @@ const SurgeonListBlock: React.FC<{ block: Extract<PageBlock, { blockType: 'surge
       <div style={{ display: 'grid', gridTemplateColumns: `repeat(${block.layout === 'grid' ? 4 : 4}, minmax(0, 1fr))`, gap: 20 }}>
         {surgeons.map((s, i) => (
           <Reveal key={s.id} delay={i * 30}>
-            <a href={`/surgeon-${s.slug}`} style={{ color: 'inherit', textDecoration: 'none', display: 'block' }}>
+            <a href={`/surgeons/${s.slug}`} style={{ color: 'inherit', textDecoration: 'none', display: 'block' }}>
               <div style={{ aspectRatio: '4 / 5', overflow: 'hidden' }}>
                 <Img src={surgeonPortraitUrl(s)} alt={s.name} fallbackLabel={`DR. ${(s.commonName || s.name).toUpperCase()}`} fallbackHue={s.hue} />
               </div>

@@ -10,7 +10,7 @@ export const Disciplines: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'sortOrder'],
     group: 'Treatments',
-    description: 'The 6 top-level treatment disciplines (Surgical / Reconstructive / Non-surgical / Hair / Dental / Concierge). Each renders at /treatment-{slug} AND drives the top level of the Treatments mega-menu, the homepage Treatments grid, and the /treatments index cards.',
+    description: 'The 6 top-level treatment disciplines (Surgical / Reconstructive / Non-surgical / Hair / Dental / Concierge). Each renders at /treatments/{slug} AND drives the top level of the Treatments mega-menu, the homepage Treatments grid, and the /treatments index cards.',
   },
   access: {
     read: readPublic,
@@ -22,7 +22,7 @@ export const Disciplines: CollectionConfig = {
   fields: [
     apiWarningField,
     { name: 'slug', type: 'text', required: true, unique: true, index: true,
-      admin: { description: 'URL fragment for the discipline page. "surgical" → https://cosmedic.gaiada.online/treatment-surgical. Lowercase, hyphens only.' } },
+      admin: { description: 'URL fragment for the discipline page. "surgical" → https://cosmedic.gaiada.online/treatments/surgical. Lowercase, hyphens only.' } },
     { name: 'title', type: 'text', required: true,
       admin: { description: 'Display name of the discipline. Shown on the mega-menu, /treatments grid, and as the discipline page heading. e.g. "Surgical".' } },
     { name: 'subtitle', type: 'text',
@@ -36,7 +36,7 @@ export const Disciplines: CollectionConfig = {
     {
       name: 'chapterTitle',
       type: 'group',
-      admin: { description: 'Two-line hero headline on /treatment-{slug}. Split between roman first line and italic accent second line.' },
+      admin: { description: 'Two-line hero headline on /treatments/{slug}. Split between roman first line and italic accent second line.' },
       fields: [
         { name: 'a', type: 'text',
           admin: { description: 'First line (roman type).' } },
@@ -45,19 +45,19 @@ export const Disciplines: CollectionConfig = {
       ],
     },
     { name: 'tagline', type: 'text',
-      admin: { description: 'Small mono-font eyebrow shown above the hero title on /treatment-{slug}.' } },
+      admin: { description: 'Small mono-font eyebrow shown above the hero title on /treatments/{slug}.' } },
     { name: 'lede', type: 'textarea',
-      admin: { description: 'Lede paragraph rendered under the hero title on /treatment-{slug}.' } },
+      admin: { description: 'Lede paragraph rendered under the hero title on /treatments/{slug}.' } },
     { name: 'overview', type: 'richText',
-      admin: { description: 'Long-form overview rich-text block rendered as the body content of /treatment-{slug}.' } },
+      admin: { description: 'Long-form overview rich-text block rendered as the body content of /treatments/{slug}.' } },
     { name: 'heroImage', type: 'upload', relationTo: 'media',
-      admin: { description: 'Hero background image on /treatment-{slug}. Also feeds the discipline thumbnail on the homepage Treatments grid + /treatments index.' } },
+      admin: { description: 'Hero background image on /treatments/{slug}. Also feeds the discipline thumbnail on the homepage Treatments grid + /treatments index.' } },
     { name: 'leadSurgeons', type: 'relationship', relationTo: 'surgeons', hasMany: true,
       admin: { description: 'Surgeons who lead this discipline. Rendered as "Lead surgeons" mini-cards in the discipline page sidebar.' } },
     {
       name: 'faqs',
       type: 'array',
-      admin: { description: 'Frequently-asked-questions section at the bottom of /treatment-{slug}.' },
+      admin: { description: 'Frequently-asked-questions section at the bottom of /treatments/{slug}.' },
       fields: [
         { name: 'q', type: 'text', required: true,
           admin: { description: 'The question shown as the accordion header.' } },

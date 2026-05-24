@@ -175,7 +175,7 @@ export const DisciplineDetail: React.FC<Props> = ({ slug }) => {
                     <Reveal key={sc.slug} delay={i * 60} y={20}>
                       {sc.available ? (
                         <a
-                          href={`/treatment-${sc.slug}`}
+                          href={`/treatments/${sc.slug}`}
                           style={{ color: 'inherit', textDecoration: 'none', display: 'block' }}
                         >
                           {inner}
@@ -276,7 +276,7 @@ export const DisciplineDetail: React.FC<Props> = ({ slug }) => {
             .map((rel, i) => (
               <Reveal key={rel.slug} delay={i * 80}>
                 <a
-                  href={`/treatment-${rel.slug}`}
+                  href={`/treatments/${rel.slug}`}
                   className="related-card"
                   style={{ color: 'inherit' }}
                 >

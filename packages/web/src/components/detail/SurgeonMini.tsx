@@ -24,7 +24,7 @@ export const SurgeonMini: React.FC<Props> = ({ surgeon }) => (
       </h4>
       <span className="smm-spec">{surgeon.cred}</span>
     </div>
-    <Btn kind="ghost" as="a" href={`/surgeon-${surgeon.slug}`}>
+    <Btn kind="ghost" as="a" href={`/surgeons/${surgeon.slug}`}>
       Read profile
     </Btn>
   </div>

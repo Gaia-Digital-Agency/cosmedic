@@ -165,7 +165,7 @@ export const PricingPage: React.FC = () => {
                         return (
                           <Reveal key={tIdx} delay={tIdx * 20}>
                             <a
-                              href={`/treatment-${subSlug}`}
+                              href={`/treatments/${subSlug}`}
                               className="pricing-overview-row"
                             >
                               <h4

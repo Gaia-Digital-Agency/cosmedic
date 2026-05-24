@@ -9,7 +9,7 @@ import { SURGEON_LIST, SURGEON_IMG, IMG, type Surgeon } from '@/content/seed'
 
 const SurgeonCard: React.FC<{ s: Surgeon; idx: number }> = ({ s, idx }) => (
   <Reveal delay={idx * 60} y={20}>
-    <a href={`/surgeon-${s.slug}`} style={{ color: 'inherit', display: 'block' }}>
+    <a href={`/surgeons/${s.slug}`} style={{ color: 'inherit', display: 'block' }}>
       <div className="surgeon-card" data-surgeon={s.slug}>
         <div className="surgeon-card-img" style={{ aspectRatio: '4 / 5' }}>
           <Img
@@ -121,7 +121,7 @@ export const SurgeonsIndex: React.FC = () => {
               <span>{lead.proc}</span>
             </div>
           </div>
-          <Btn kind="ghost" as="a" href={`/surgeon-${lead.slug}`}>
+          <Btn kind="ghost" as="a" href={`/surgeons/${lead.slug}`}>
             Read the full profile
           </Btn>
         </Reveal>

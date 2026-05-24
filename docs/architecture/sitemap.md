@@ -2,7 +2,7 @@
 
 > Every page · subpage · link · sublink · button. Source of truth for navigation IA, routing, and Pixel-Fidelity Gate sign-off (Phase 11). Keep in sync with `Header` + `Footer` Payload globals.
 >
-> **Updated 2026-05-23:** the live router uses **flat slugs** — `/treatment-surgical-breast-breast-augmentation`, not the nested `/treatments/surgical/breast/breast-augmentation` shown in the route tables below. Examples below were authored against the originally-planned nested structure; nested-vs-flat slug restructure is captured as **Phase Q decision #1** in [all_todo.md](all_todo.md) and pending. Until that decision, treat the flat slugs in `packages/web/src/router.ts` as authoritative. CMS bucket source of truth: [CMS_structure.md](CMS_structure.md).
+> **Updated 2026-05-24 (Phase Q q11):** slug structure rewritten from `/treatment-<slug>` / `/surgeon-<slug>` / `/blog-<slug>` to `/treatments/<slug>` / `/surgeons/<slug>` / `/blog/<slug>`. Flat structure (discipline + sub-category siblings under `/treatments/`, e.g. `/treatments/surgical` + `/treatments/surgical-face`). Old URLs hard-404 (no redirect layer — per user, "so we can pick up errors later"). Authoritative router: `packages/web/src/router.ts`. CMS bucket source of truth: [CMS_structure.md](CMS_structure.md).
 
 ---
 
@@ -86,16 +86,16 @@ Columns of `[Group] → [surgeon list]`:
 - `/treatments/dental`
 - `/treatments/recovery` (Weight Loss — slug retained from design)
 
-### Sub-category pages (18 routes)
+### Sub-category pages (17 routes)
 
-Under each discipline:
+Sub-category slugs are **flat** under `/treatments/` (post-q11): the parent discipline prefix is embedded in the slug itself, not the URL path.
 
-- `/treatments/surgical/{face, body, breast}`
-- `/treatments/reconstructive/{breast, trauma, craniofacial}`
-- `/treatments/non-surgical/{injectables, laser, skin}`
-- `/treatments/hair/{fue, therapy}`
-- `/treatments/dental/{veneers, alignment, whitening}`
-- `/treatments/recovery/{medical, endoscopic, surgical}`
+- `/treatments/surgical-face` · `/treatments/surgical-body` · `/treatments/surgical-breast`
+- `/treatments/reconstructive-breast` · `/treatments/reconstructive-trauma` · `/treatments/reconstructive-craniofacial`
+- `/treatments/non-surgical-injectables` · `/treatments/non-surgical-laser` · `/treatments/non-surgical-skin`
+- `/treatments/hair-fue` · `/treatments/hair-therapy`
+- `/treatments/dental-veneers` · `/treatments/dental-alignment` · `/treatments/dental-whitening`
+- `/treatments/weight-loss-medical` · `/treatments/weight-loss-endoscopic` · `/treatments/weight-loss-surgical`
 
 ### Procedure pages (41+ routes)
 
@@ -123,17 +123,16 @@ Under each sub-category — these are the **editorial** procedures from `pages/s
 
 ### Surgeon pages (8 routes)
 
-Production uses **flat-slug URLs** (single dash, not slash) — matches the
-design source. Same pattern as `/treatment-{slug}` for disciplines + sub-categories.
+Same pattern as `/treatments/{slug}` for disciplines + sub-categories (post-q11).
 
-- `/surgeon-suka`
-- `/surgeon-astri`
-- `/surgeon-indra`
-- `/surgeon-wara`
-- `/surgeon-sissy`
-- `/surgeon-rosa`
-- `/surgeon-risma`
-- `/surgeon-theresia`
+- `/surgeons/suka`
+- `/surgeons/astri`
+- `/surgeons/indra`
+- `/surgeons/wara`
+- `/surgeons/sissy`
+- `/surgeons/rosa`
+- `/surgeons/risma`
+- `/surgeons/theresia`
 
 ### Localised mirrors
 

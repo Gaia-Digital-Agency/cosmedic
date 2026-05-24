@@ -164,16 +164,16 @@ async function createServer() {
     ]
     const dynamic: string[] = []
     for (const d of cms.disciplines || []) {
-      dynamic.push(`/treatment-${d.slug}`)
+      dynamic.push(`/treatments/${d.slug}`)
     }
     for (const sc of cms.subCategories || []) {
-      dynamic.push(`/treatment-${sc.slug}`)
+      dynamic.push(`/treatments/${sc.slug}`)
     }
     for (const s of cms.surgeons || []) {
-      dynamic.push(`/surgeon-${s.slug}`)
+      dynamic.push(`/surgeons/${s.slug}`)
     }
     for (const bp of cms.blogPosts || []) {
-      dynamic.push(`/blog-${bp.slug}`)
+      dynamic.push(`/blog/${bp.slug}`)
     }
     const all = [...staticRoutes, ...dynamic]
     const now = new Date().toISOString()

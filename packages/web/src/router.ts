@@ -60,7 +60,7 @@ export function resolveRoute(pathname: string): Route {
 
   if (STATIC_ROUTES[path]) return STATIC_ROUTES[path]
 
-  const treatment = path.match(/^\/treatment-([a-z0-9-]+)$/)
+  const treatment = path.match(/^\/treatments\/([a-z0-9-]+)$/)
   if (treatment) {
     const slug = treatment[1]
     if (getDisciplineSlugs().has(slug)) return { kind: 'discipline', slug }
@@ -68,14 +68,14 @@ export function resolveRoute(pathname: string): Route {
     return { kind: 'notfound' }
   }
 
-  const surgeon = path.match(/^\/surgeon-([a-z0-9-]+)$/)
+  const surgeon = path.match(/^\/surgeons\/([a-z0-9-]+)$/)
   if (surgeon) {
     const slug = surgeon[1]
     if (getSurgeonSlugs().has(slug)) return { kind: 'surgeon', slug }
     return { kind: 'notfound' }
   }
 
-  const blog = path.match(/^\/blog-([a-z0-9-]+)$/)
+  const blog = path.match(/^\/blog\/([a-z0-9-]+)$/)
   if (blog) {
     const slug = blog[1]
     if (BLOG_POST_BODIES[slug]) return { kind: 'blog-post', slug }

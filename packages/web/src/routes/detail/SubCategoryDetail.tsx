@@ -32,7 +32,7 @@ export const SubCategoryDetail: React.FC<Props> = ({ slug }) => {
         breadcrumbs={[
           { label: 'BIMC CosMedic', href: '/' },
           { label: 'Treatments', href: '/treatments' },
-          { label: parent?.t || 'Treatments', href: `/treatment-${s.parent}` },
+          { label: parent?.t || 'Treatments', href: `/treatments/${s.parent}` },
           { label: s.title },
         ]}
       />

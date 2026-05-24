@@ -60,7 +60,7 @@ export const BlogPost: React.FC<Props> = ({ slug }) => {
           <div className="blog-byline-inner">
             <div className="blog-byline-author">
               <a
-                href={`/surgeon-${author.slug}`}
+                href={`/surgeons/${author.slug}`}
                 className="blog-byline-portrait"
                 data-surgeon={author.slug}
               >
@@ -79,7 +79,7 @@ export const BlogPost: React.FC<Props> = ({ slug }) => {
                 <span className="blog-byline-role">{author.group}</span>
                 {linkedSurgeonSlug ? (
                   <a
-                    href={`/surgeon-${linkedSurgeonSlug}`}
+                    href={`/surgeons/${linkedSurgeonSlug}`}
                     style={{
                       display: 'inline-block',
                       marginTop: 6,
@@ -156,7 +156,7 @@ export const BlogPost: React.FC<Props> = ({ slug }) => {
         <Reveal>
           <div className="blog-author-callout">
             <a
-              href={`/surgeon-${author.slug}`}
+              href={`/surgeons/${author.slug}`}
               className="blog-author-portrait"
               data-surgeon={author.slug}
             >
@@ -178,7 +178,7 @@ export const BlogPost: React.FC<Props> = ({ slug }) => {
               <p className="blog-author-cred">{author.cred}</p>
               <p className="blog-author-bio">{author.bio}</p>
               <div style={{ display: 'flex', gap: 16, marginTop: 20, flexWrap: 'wrap' }}>
-                <Btn kind="primary" as="a" href={`/surgeon-${author.slug}`}>
+                <Btn kind="primary" as="a" href={`/surgeons/${author.slug}`}>
                   Read full profile
                 </Btn>
                 <Btn kind="ghost" as="a" href="/contact">
@@ -207,7 +207,7 @@ export const BlogPost: React.FC<Props> = ({ slug }) => {
             if (!r) return null
             return (
               <Reveal key={relSlug} delay={i * 80}>
-                <a href={`/blog-${relSlug}`} className="blog-card">
+                <a href={`/blog/${relSlug}`} className="blog-card">
                   <div className="blog-card-img">
                     <Img
                       src={r.img}

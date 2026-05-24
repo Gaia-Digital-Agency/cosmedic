@@ -25,7 +25,7 @@ export const Procedures: CollectionConfig = {
     { name: 'slug', type: 'text', required: true, unique: true, index: true,
       admin: { description: 'URL fragment for the procedure (e.g. "breast-augmentation"). Used in /pricing cross-links and any future /procedure-{slug} routes.' } },
     { name: 'name', type: 'text', required: true,
-      admin: { description: 'Display name shown in the procedure accordion on /treatment-{sub-slug} AND on /pricing rows.' } },
+      admin: { description: 'Display name shown in the procedure accordion on /treatments/{sub-slug} AND on /pricing rows.' } },
     { name: 'shortName', type: 'text',
       admin: { description: 'Optional shorter label used on cards and nav where space is tight.' } },
     // ── Catalogue hierarchy (Phase C9) ──────────────────────────────────
@@ -82,7 +82,7 @@ export const Procedures: CollectionConfig = {
     { name: 'parentDiscipline', type: 'relationship', relationTo: 'disciplines',
       admin: { description: 'Which top-level discipline this procedure belongs to. Required for editorial procedures; optional for catalogue line items.' } },
     { name: 'parentSubCategory', type: 'relationship', relationTo: 'sub-categories',
-      admin: { description: 'Which sub-category this procedure renders under. Drives which /treatment-{sub-slug} page lists this procedure in its accordion.' } },
+      admin: { description: 'Which sub-category this procedure renders under. Drives which /treatments/{sub-slug} page lists this procedure in its accordion.' } },
     { name: 'description', type: 'richText',
       admin: { description: 'Top-of-record description shown when the procedure expands in the sub-category accordion.' } },
     {
@@ -134,7 +134,7 @@ export const Procedures: CollectionConfig = {
     {
       name: 'detail',
       type: 'group',
-      admin: { description: 'Detail fields shown inside the procedure accordion on /treatment-{sub-slug}.' },
+      admin: { description: 'Detail fields shown inside the procedure accordion on /treatments/{sub-slug}.' },
       fields: [
         { name: 'duration', type: 'text',
           admin: { description: 'How long the procedure takes. e.g. "3.5 hours".' } },

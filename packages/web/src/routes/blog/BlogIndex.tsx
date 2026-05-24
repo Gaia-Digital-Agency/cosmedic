@@ -13,7 +13,7 @@ import { mediaUrl } from '@/lib/cms'
 
 const PostCard: React.FC<{ p: BlogPostMeta; i: number }> = ({ p, i }) => (
   <Reveal delay={i * 60}>
-    <a href={`/blog-${p.slug}`} className="blog-card">
+    <a href={`/blog/${p.slug}`} className="blog-card">
       <div className="blog-card-img">
         <Img src={p.img} fallbackLabel={p.category.toUpperCase()} fallbackHue={p.hue} alt="" />
       </div>
@@ -70,7 +70,7 @@ export const BlogIndex: React.FC = () => {
           <Eyebrow>This issue</Eyebrow>
         </Reveal>
         <Reveal delay={120}>
-          <a href={`/blog-${featured.slug}`} className="blog-feature">
+          <a href={`/blog/${featured.slug}`} className="blog-feature">
             <div className="blog-feature-img">
               <Img
                 src={featured.img}

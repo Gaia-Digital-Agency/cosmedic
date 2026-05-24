@@ -88,7 +88,7 @@ export const Surgeons: React.FC = () => {
               <span>{leadStat3Value}</span>
             </div>
           </div>
-          <Btn kind="ghost" as="a" href={`/surgeon-${lead.slug}`}>
+          <Btn kind="ghost" as="a" href={`/surgeons/${lead.slug}`}>
             {leadCtaLabel}
           </Btn>
         </Reveal>

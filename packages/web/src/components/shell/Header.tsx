@@ -114,7 +114,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
                   return (
                     <div key={t.slug} className="dropdown-discipline">
                       <a
-                        href={`/treatment-${t.slug}`}
+                        href={`/treatments/${t.slug}`}
                         className={`dropdown-discipline-head ${
                           activePage === `treatment-${t.slug}` ? 'active' : ''
                         }`}
@@ -125,7 +125,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
                         {subs.map(([slug, title]) => (
                           <li key={slug}>
                             <a
-                              href={`/treatment-${slug}`}
+                              href={`/treatments/${slug}`}
                               className={activePage === `treatment-${slug}` ? 'active' : ''}
                             >
                               {title}
@@ -163,7 +163,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
                       {SURGEON_LIST.filter((s) => s.group === col.group).map((s) => (
                         <li key={s.slug}>
                           <a
-                            href={`/surgeon-${s.slug}`}
+                            href={`/surgeons/${s.slug}`}
                             className={activePage === `surgeon-${s.slug}` ? 'active' : ''}
                           >
                             {s.title} {s.name}
@@ -272,7 +272,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
                   return (
                     <div key={t.slug} className="mobile-discipline">
                       <a
-                        href={`/treatment-${t.slug}`}
+                        href={`/treatments/${t.slug}`}
                         className={`mobile-discipline-head ${
                           activePage === `treatment-${t.slug}` ? 'active' : ''
                         }`}
@@ -284,7 +284,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
                           {subs.map(([slug, title]) => (
                             <li key={slug}>
                               <a
-                                href={`/treatment-${slug}`}
+                                href={`/treatments/${slug}`}
                                 className={activePage === `treatment-${slug}` ? 'active' : ''}
                               >
                                 {title}
@@ -323,7 +323,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
                       {SURGEON_LIST.filter((s) => s.group === col.group).map((s) => (
                         <li key={s.slug}>
                           <a
-                            href={`/surgeon-${s.slug}`}
+                            href={`/surgeons/${s.slug}`}
                             className={activePage === `surgeon-${s.slug}` ? 'active' : ''}
                           >
                             {s.title} {s.name}
