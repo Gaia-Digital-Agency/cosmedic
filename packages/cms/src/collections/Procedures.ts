@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
-import { seoGroup, sortOrderField } from '../lib/seo'
+import { seoGroup } from '../lib/seo'
 import { apiWarningField } from '../lib/api-warning'
 
 export const Procedures: CollectionConfig = {
@@ -19,7 +19,37 @@ export const Procedures: CollectionConfig = {
     update: isAuthenticated,
     delete: isAuthenticated,
   },
-  hooks: revalidationHooks(),
+  hooks: {
+    ...revalidationHooks(),
+    beforeChange: [
+      // q15: scope sortOrder per parentSubCategory. On create, when the editor
+      // hasn't set sortOrder (null/0) and a parent is chosen, default to
+      // (max sortOrder among siblings in the same parent) + 10. Keeps the
+      // "leave gaps for inserts" convention.
+      async ({ data, operation, req }) => {
+        if (operation !== 'create') return data
+        if (!data.parentSubCategory) return data
+        if (data.sortOrder && data.sortOrder !== 0) return data
+        const parentId =
+          typeof data.parentSubCategory === 'object' && data.parentSubCategory !== null
+            ? (data.parentSubCategory as { id: number }).id
+            : data.parentSubCategory
+        const siblings = await req.payload.find({
+          collection: 'procedures',
+          where: { parentSubCategory: { equals: parentId } },
+          depth: 0,
+          pagination: false,
+          limit: 0,
+        })
+        const max = siblings.docs.reduce(
+          (m: number, p: { sortOrder?: number | null }) => Math.max(m, p.sortOrder ?? 0),
+          0,
+        )
+        data.sortOrder = max + 10
+        return data
+      },
+    ],
+  },
   fields: [
     apiWarningField,
     { name: 'slug', type: 'text', required: true, unique: true, index: true,
@@ -156,6 +186,16 @@ export const Procedures: CollectionConfig = {
     { name: 'relatedProcedures', type: 'relationship', relationTo: 'procedures', hasMany: true,
       admin: { description: 'Sibling/related procedures shown as cross-links at the bottom of the procedure detail.' } },
     seoGroup,
-    sortOrderField,
+    {
+      name: 'sortOrder',
+      type: 'number',
+      label: 'Sort within Sub-Category',
+      defaultValue: 0,
+      admin: {
+        position: 'sidebar',
+        description:
+          'Per-parent ordering. Lower numbers appear EARLIER inside the parent Sub-Category. Use 10/20/30… leaving gaps for later inserts. Numbers DO NOT need to be unique across the whole collection — only within the same parentSubCategory. On create, if left at 0 with a parent set, the system assigns (max sibling sortOrder) + 10 automatically. Tip: in the admin list view, filter by parentSubCategory to see the per-parent ordering in isolation.',
+      },
+    },
   ],
 }
