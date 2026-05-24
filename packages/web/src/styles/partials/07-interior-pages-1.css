@@ -232,7 +232,7 @@
   margin: 0 0 24px;
 }
 .detail-body h2:not(:first-child) { margin-top: 80px; }
-.detail-body { max-width: 760px; }
+.detail-body { max-width: clamp(640px, 70vw, 920px); }
 .detail-body > section + section { margin-top: 80px; }
 .detail-body > section > :is(h2, h3):first-child { margin-top: 0; }
 .detail-body h3 {
