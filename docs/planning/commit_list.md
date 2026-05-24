@@ -111,3 +111,119 @@ Site-break (route returns 500 / blank / wrong content) OR admin-break (form won'
 [2026-05-23 08:08 UTC]  87a434c  docs(cms)     Media collection admin.description explains Browse-by-Folder + Category as independent organisation mechanisms.
 [2026-05-23 08:10 UTC]  e90302f  N3            Harmonise /pricing table column widths  Upper table now uses same 1.6fr/1.2fr/220px ratio as the lower ClinicCatalogueTable.
 ```
+
+
+---
+
+## Full commit history — numbered (oldest → newest)
+
+1. `6405444` — Initial import: BIMC CosMedic design handoff + documentation
+2. `2d1bcc4` — Reorg: move root design source files into design_reference/
+3. `91d308a` — Reorg: uploads/ → discovery/ with semantic subfolders
+4. `4e86342` — Reorg: assets/ → design_reference/assets/
+5. `10dd61f` — docs: add db_ops.md + cms_ops.md (operational reference)
+6. `255da40` — docs: add cms_schema.md (UI↔CMS coverage matrix) + cms_ops.md + db_ops.md
+7. `20bb066` — docs: add plan.md (14-phase execution plan, moved from ~/.claude/plans)
+8. `591baa7` — Phase 0: base 3PRTVN install + design_reference → design rename + docs/todo.md
+9. `3fff63d` — Phase 1: monorepo scaffold + Cosmedic CMS branding
+10. `60a5ad1` — Phase 2: theme + PageShell — chrome ported pixel-identical to Claude Design
+11. `4478b9c` — Phase 3: homepage — 11 sections matching design/index.html
+12. `8518c70` — docs: remove stale Phase 3 checklist duplicates from todo.md
+13. `186c952` — Phase 4: detail templates — 37 live routes (homepage + 6 disciplines + 22 sub-categories + 8 surgeons)
+14. `cc01afe` — Phase 5: index pages — 14 more routes (51 total live)
+15. `510d983` — Phase 6a: Payload schema + xlsx pricing pipeline + /pricing rewired to CMS
+16. `cf79c78` — Phase 6b + 6c: every page now reads from CMS; afterChange revalidate hooks
+17. `4e484a5` — Phase 7: enquiry form backend (POST /api/enquiry → Enquiries → emails)
+18. `055c4dc` — Phase 8: live at https://cosmedic.gaiada.online
+19. `e799716` — admin polish: favicon + BeforeLogin centring + COSMEDIC icon
+20. `561ecc4` — admin polish v2: COSMEDIC wordmark + stethoscope avatar
+21. `bc5fdd4` — admin polish v3: square favicons + compact COSMEDIC + fixed meta.icons
+22. `2bb7476` — admin polish v4 + Phase 10 media seed
+23. `6b68521` — Phase 10 infra: <Img> + Payload responsive variants + nginx media cache
+24. `4ce12a3` — ops/nginx: sync cosmedic snapshot with Phase 10 media-cache block
+25. `76ea085` — Phase 11 (partial): mobile drawer a11y + form QA + sitemap doc fix
+26. `5d792c3` — Phase 12 (partial): placeholders + runbook + smoke + helper env
+27. `394d46e` — admin: developer-only API warning banner on every edit form
+28. `52b17aa` — Phase 13 + Phase 9 quick wins + Phase 14 doable + admin polish + UX
+29. `188dc58` — ui: deactivate EN|ID switcher until Phase 9 lengthy ships
+30. `e965b63` — Phase M (partial) + cms_todo.md: mobile sweep checkpoint + N-series queued
+31. `670eeb9` — cms_todo.md: queue 2026-05-22 DO FIRST — CMS image upload nginx fix
+32. `fde91de` — cms_todo.md: queue DO SECOND — Pages → 14 Globals CMS UI restructure
+33. `6c5299b` — ops: fix CMS image upload nginx redirect loop (DO FIRST done)
+34. `3bc02e5` — feat(cms): restructure admin nav — Pages collection → 14 Page Globals
+35. `cfa64e8` — docs(CLAUDE.md): record 2026-05-22 CMS UI restructure + gotchas
+36. `5e5ece1` — phase-D: refresh 11 docs to reflect CMS_structure.md + consolidate to one TODO file
+37. `bbc068e` — phase-C2: move BlogPosts/BlogTags/Authors/BlogPage to JOURNEY bucket
+38. `bdcac0c` — phase-C3: remove orphan Pages collection (Step 10 — Rule 4 explicit approval)
+39. `d7e2ee2` — phase-C4: add CmsSidebarExplainer banner to admin nav
+40. `34ef42f` — phase-C5: wire Blog Page global to /blog index (R5 byte-identical)
+41. `693a6bb` — phase-C6a: Home Page schema — add 9 A2 block group fields
+42. `4cb1bbc` — feat(home): C6b — 9 home sections read CMS A2 blocks with hardcoded fallbacks
+43. `1825844` — docs(commit_list): mark C6a + C6b shipped (rows + log)
+44. `8be5b79` — feat(pricing): C7 — Pricing Page A2 wiring (3 blocks)
+45. `be4706a` — docs(commit_list): mark C7 shipped (row + log)
+46. `aed3e07` — feat(results): C8 — Before/After full editorial wiring
+47. `792977b` — docs(commit_list): mark C8 shipped (row + log)
+48. `3958e59` — feat(cms): C9a — Procedures catalogue schema (single source for all pricing)
+49. `bd0a3fa` — docs(commit_list): mark C9a shipped (row + log)
+50. `f93f650` — feat(cms): C9b — migrate 101 line items into Procedures
+51. `af8019d` — docs(commit_list): mark C9b shipped (row + log)
+52. `6313cfd` — feat(pricing): C9c-renderer — ClinicCatalogueTable reads from Procedures
+53. `809bb9a` — docs(commit_list): mark C9c-renderer shipped; C9c-delete deferred
+54. `aebdc99` — feat(cms): C9c-delete — drop 4 stale collections (DB tables retained)
+55. `1c6bae0` — docs(commit_list): mark C9c-delete shipped (row + log)
+56. `cd2004c` — fix(cms): prefix admin.group with sort number to match CMS_structure.md order
+57. `1d502e6` — Revert "fix(cms): prefix admin.group with sort number to match CMS_structure.md order"
+58. `abded5e` — chore: C10 — R1-R7 audit + R1 dead-field cleanup
+59. `7a872f3` — docs(commit_list): mark C10 shipped (row + log)
+60. `148ebfc` — chore(design): archive 51 reference HTML files into design/_html-archive/
+61. `1ab4d64` — feat(web): P — install new favicon icon-set from cosmedic-favico.zip
+62. `00fb317` — docs(commit_list): mark P shipped (row + log)
+63. `f053733` — fix(header): N1 — remove duplicate "Managed by BIMC Hospital" sibling
+64. `cf27514` — docs(commit_list): mark N1 shipped (row + log)
+65. `e6f8c8b` — fix(chrome): N2 — Back-to-Top FAB matches WhatsApp FAB dimensions
+66. `2f3eb83` — docs(commit_list): mark N2 shipped (row + log)
+67. `87a434c` — docs(cms): explain Browse-by-Folder + Category in Media admin description
+68. `e90302f` — fix(pricing): N3 — harmonise table column widths across /pricing tables
+69. `0c5da0f` — docs(commit_list): mark N3 + Media-description shipped (row + log)
+70. `5db0d38` — docs(cms): add Browse-by-Folder note to sidebar explainer
+71. `0ee7046` — chore: Phase M complete + globals.css split + docs reorg
+72. `b90037e` — docs(phase-q): reconcile change2a.pdf addendum + add q18 brand-token swap
+73. `dc9278d` — fix(detail): q1 — .detail-body max-width → clamp(640px, 70vw, 920px)
+74. `bb69bdb` — fix(hero): q2 — homepage mobile hero top padding 140px (≤700px)
+75. `3713aa8` — docs(phase-q): add Notes + Commit columns to tracker; backfill q1 + q2
+76. `a5e5e9e` — fix(brand): q18 — dark-brown token #6B4A2B → #533E27
+77. `c5254aa` — docs(phase-q): mark q18 complete + commit ref a5e5e9e
+78. `85e1412` — fix(hero): q3 — unified --hero-top-pad token (mobile)
+79. `117a9cd` — docs(phase-q): mark q3 complete + commit ref 85e1412
+80. `f114156` — feat(pricing): q16 — flip web consumers IDR-primary, AUD derived
+81. `2762e9c` — docs(phase-q): mark q16 complete + commit ref f114156
+82. `19c5600` — feat(home): q4 — single team photo replaces 6-card associates grid
+83. `a6ddbcf` — docs(phase-q): mark q4 complete + commit ref 19c5600
+84. `9afd1f4` — fix(layout): q9 — .page-breadcrumb tracks --page-x at ≤700px
+85. `66936fe` — docs(phase-q): mark q9 complete + commit ref 9afd1f4
+86. `2c6414e` — feat(primitives): q10 — shared <StatsRow> primitive (home + /treatments)
+87. `ba18b94` — docs(phase-q): mark q10 complete + commit ref 2c6414e
+88. `d2a1ce4` — feat(footer): q7 — dark-brown 3-column footer reskin (change2a Item 5)
+89. `3ca8ffa` — docs(phase-q): mark q7 complete + commit ref d2a1ce4
+90. `2670b77` — docs(phase-q): mark q8 complete — N/A, verification only
+91. `8de7eb5` — fix(routing): q11 — flat slug rewrite /treatment-* → /treatments/*
+92. `288a8d9` — docs(phase-q): mark q11 complete + commit ref 8de7eb5
+93. `a18c700` — fix(cms): unblock next build — exclude 3 cross-package seed scripts
+94. `39d21e6` — fix(breadcrumbs): q12 — unify SurgeonDetail + purge dead .chapter-breadcrumb
+95. `e602e08` — docs(phase-q): mark q12 complete + commit ref 39d21e6
+96. `2ed9f27` — docs(phase-q): mark q6 complete (audit-only) + add q19 follow-up
+97. `ee24996` — docs(phase-q): q18 — CMS admin theme now live (build unblocked by a18c700)
+98. `a1601e5` — feat(cms): q5 — remove PricingTiers collection (config + adapters + DB)
+99. `05338e0` — docs(phase-q): mark q5 complete + commit ref a1601e5
+100. `507622e` — fix(q13): wire stub forms to /api/enquiry + add 6 blog placeholder bodies
+101. `d5bb63d` — docs(phase-q): mark q13 complete + commit ref 507622e
+102. `72a769e` — docs(phase-q): q13 — fill Commit column + note test-data cleanup
+103. `f1a2571` — docs(phase-q): q19 re-audit — re-scope to drop full inclusion/exclusion pipeline
+104. `8cc80ae` — feat(cms): q15 — procedure sortOrder scoped per parentSubCategory
+105. `7b6a9d7` — docs(phase-q): mark q15 complete + commit ref 8cc80ae
+106. `9b99753` — feat(b&a): q14 — patient age + recovery duration on Before/After cards
+107. `14d4f7b` — docs(phase-q): mark q14 complete + commit ref 9b99753
+108. `1b35bfb` — feat(cms): q19 — drop InclusionItems + ExclusionItems pipeline end-to-end
+109. `b95f926` — docs(phase-q): mark q19 complete + commit ref 1b35bfb
+110. `c73a764` — docs(phase-q): q19 — fill Commit column + correct net-diff figures
