@@ -24,7 +24,7 @@
     padding-left: 24px;
     padding-right: 24px;
   }
-  .chapter-content { padding-top: 40px; padding-bottom: 60px; gap: 30px; }
+  .chapter-content { padding-top: var(--hero-top-pad); padding-bottom: 60px; gap: 30px; }
   .pricing-grid, .gallery-grid-4, .related-grid, .press-grid { grid-template-columns: 1fr; }
   .surgeon-hero { grid-template-columns: 1fr; }
   .surgeon-mini { grid-template-columns: 80px 1fr; gap: 14px 16px; }
@@ -33,7 +33,7 @@
   .surgeon-hero-img,
   .surgeon-hero-body { min-width: 0; }
   .surgeon-hero-img { aspect-ratio: 1; }
-  .surgeon-hero-body { padding: 50px 24px 40px; }
+  .surgeon-hero-body { padding: var(--hero-top-pad) 24px 40px; }
   .surgeon-hero-name { font-size: 36px; }
   .surgeon-cred { font-size: 16px; }
   .surgeon-hero-body .eyebrow { font-size: 9px; letter-spacing: 0.18em; flex-wrap: wrap; }

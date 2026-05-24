@@ -13,6 +13,10 @@
     /* Section horizontal padding — single source of truth */
     --page-x: 80px;
 
+    /* Hero top-padding — clears the fixed header on first-screen hero patterns.
+     * Mobile override below sized to ~88px header + buffer. q3 (2026-05-24). */
+    --hero-top-pad: 120px;
+
     --ink-100: #1F1B16;        /* black */
     --ink-90: #1F1B16;         /* collapsed → black */
     --ink-80: #1F1B16;         /* collapsed → black */
@@ -29,7 +33,7 @@
   }
 
   @media (max-width: 1100px) { :root { --page-x: 48px; } }
-  @media (max-width: 700px)  { :root { --page-x: 24px; } }
+  @media (max-width: 700px)  { :root { --page-x: 24px; --hero-top-pad: 140px; } }
 
 
   * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
