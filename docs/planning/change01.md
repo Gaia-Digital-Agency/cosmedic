@@ -1,6 +1,8 @@
-# Phase Q tracker — `changes01.docx` 27-item batch
+# Phase Q tracker — `changes01.docx` 27-item batch (+ Q-7 addendum from change2a.pdf)
 
 > Source: [/changes/changes01.docx](../changes/changes01.docx) — user-provided change list (2026-05-22 scp upload). Each item below maps to one of the 6 clustered Phase Q commits in [all_todo.md](all_todo.md). Tick `[x]` as each Phase Q commit lands and verifies. After **Phase Q is fully shipped, every item below should be `[x]`**.
+>
+> **Addendum 2026-05-24** — [change2a.pdf](./change2a.pdf) (28 items, image + text pairs) is a visual reference for the items below. Reconciliation: confirmed `#533E27` for dark-brown (Q-7 / #28); change2a Items 9 (Bali Recovery Guide) and 21 ("Align the treament well") **dropped** per user; #15, #26, #27 missing from change2a but kept in scope, reconciled via existing q16 / q6 / Phase P. See [changerequest_21May.md](./changerequest_21May.md) Reconciliation log for full detail.
 
 ---
 
@@ -38,6 +40,10 @@
 - [ ] **#19** Fix bug — CTA click from treatment detail page: once changed, cannot select more detailed treatment
 - [ ] **#25** Audit Inclusion/Exclusion item usage; remove if not rendered anywhere
 - [ ] **#26** CMS backend — set light menu theme as the default
+
+## Q-7 — Brand-token tune (commit ref TBD)
+
+- [ ] **#28** Dark-brown brand colour: `#6B4A2B` → `#533E27` — single-token swap across `--accent-deep` (web), `--cs-brown` (CMS admin), and `placeholder.ts` painted-SVG fallback. Source confirmed by [change2a.pdf](./change2a.pdf) Item 10 (swatch labelled `--DARK-BROWN`, scope: "Primary buttons; eyebrow rules."). Full pre-audit in [changerequest_21May.md#q18](changerequest_21May.md). Verify against [brand-guidelines.pdf](../assets/brand-guidelines.pdf) before commit.
 
 ---
 
