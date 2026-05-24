@@ -31,6 +31,9 @@ import type {
   ConsultationPolicy,
   FormDefaults,
   SeoDefaultsGlobal,
+  ContactHeroGlobal,
+  ContactEnquirySectionGlobal,
+  ContactVisitSectionGlobal,
 } from './cms.types'
 import { fetchAll, fetchGlobal, fetchAllPageGlobals } from './cms.fetch'
 
@@ -59,6 +62,9 @@ export const EMPTY_CACHE: CmsCache = {
   consultationPolicy: {},
   formDefaults: {},
   seoDefaults: {},
+  contactHero: {},
+  contactEnquirySection: {},
+  contactVisitSection: {},
 }
 
 let cache: CmsCache = EMPTY_CACHE
@@ -72,6 +78,7 @@ async function doLoad(): Promise<CmsCache> {
       blogPosts, authors, journeySteps, pages,
       settings, header, footer, floatingChrome, brandStats, endorsementMark,
       consultationPolicy, formDefaults, seoDefaults,
+      contactHero, contactEnquirySection, contactVisitSection,
     ] = await Promise.all([
       fetchAll<Surgeon>('surgeons', 100, 1),
       fetchAll<Discipline>('disciplines'),
@@ -95,6 +102,9 @@ async function doLoad(): Promise<CmsCache> {
       fetchGlobal<ConsultationPolicy>('consultation-policy'),
       fetchGlobal<FormDefaults>('form-defaults'),
       fetchGlobal<SeoDefaultsGlobal>('seo-defaults'),
+      fetchGlobal<ContactHeroGlobal>('contact-hero').catch(() => ({})),
+      fetchGlobal<ContactEnquirySectionGlobal>('contact-enquiry-section').catch(() => ({})),
+      fetchGlobal<ContactVisitSectionGlobal>('contact-visit-section').catch(() => ({})),
     ])
     return {
       loaded: true,
@@ -104,6 +114,7 @@ async function doLoad(): Promise<CmsCache> {
       blogPosts, authors, journeySteps, pages,
       settings, header, footer, floatingChrome, brandStats, endorsementMark,
       consultationPolicy, formDefaults, seoDefaults,
+      contactHero, contactEnquirySection, contactVisitSection,
     }
   } catch (err) {
     console.warn('[cms] load failed, using empty cache:', err)

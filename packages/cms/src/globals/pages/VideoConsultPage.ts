@@ -6,6 +6,7 @@ import { pageFields } from './_pageFields'
 export const VideoConsultPage: GlobalConfig = {
   slug: 'video-consult-page',
   dbName: 'vid_consult_pg',
+  label: 'h. Video-Consult',
   admin: {
     group: 'g. Contact',
     description: 'Editorial content for /video-consult: hero + body. Pre-travel encrypted video consultation landing page.',

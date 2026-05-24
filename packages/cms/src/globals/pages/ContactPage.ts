@@ -5,9 +5,10 @@ import { pageFields } from './_pageFields'
 
 export const ContactPage: GlobalConfig = {
   slug: 'contact-page',
+  label: 'a. Main',
   admin: {
     group: 'g. Contact',
-    description: 'Editorial content for /contact: hero + body. Clinic info (address/hours/phone) lives on the Settings global; enquiry form behaviour on FormDefaults.',
+    description: 'Page meta + SEO + extra block sections for /contact. The hero is edited in b. Hero, the enquiry section in c. Enquiry-Section, and the visit section in d. Visit-Section. Use the sections block-array here only for additional editor-defined content blocks.',
   },
   access: { read: publishedOrAuthed, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),

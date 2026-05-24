@@ -50,6 +50,9 @@ import { JourneyPage } from './globals/pages/JourneyPage'
 import { StoriesPage } from './globals/pages/StoriesPage'
 import { RecoveryStaysPage } from './globals/pages/RecoveryStaysPage'
 import { ContactPage } from './globals/pages/ContactPage'
+import { ContactHero } from './globals/pages/ContactHero'
+import { ContactEnquirySection } from './globals/pages/ContactEnquirySection'
+import { ContactVisitSection } from './globals/pages/ContactVisitSection'
 import { VideoConsultPage } from './globals/pages/VideoConsultPage'
 import { BlogPage } from './globals/pages/BlogPage'
 
@@ -141,6 +144,9 @@ export default buildConfig({
     StoriesPage,
     RecoveryStaysPage,
     ContactPage,
+    ContactHero,
+    ContactEnquirySection,
+    ContactVisitSection,
     VideoConsultPage,
     BlogPage,
   ],

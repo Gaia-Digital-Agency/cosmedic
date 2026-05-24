@@ -7,6 +7,8 @@ import { Img } from '@/components/primitives/Img'
 import { Mono, Eyebrow } from '@/components/primitives/Mono'
 import { Btn } from '@/components/primitives/Btn'
 import { TREATMENT_LIST, IMG } from '@/content/seed'
+import { useCms } from '@/lib/cms-context'
+import { mediaUrl } from '@/lib/cms'
 
 const INTENT_COPY: Record<string, { eyebrow: string; title: string; lede: string }> = {
   estimate: {
@@ -42,6 +44,13 @@ const OPTIONAL_LABEL = (
 )
 
 export const ContactPage: React.FC = () => {
+  const cms = useCms()
+  const hero = cms?.contactHero ?? {}
+  const enquiry = cms?.contactEnquirySection ?? {}
+  const visit = cms?.contactVisitSection ?? {}
+  const settings = cms?.settings ?? {}
+  const directLines = enquiry.directLines ?? {}
+
   const [showOptional, setShowOptional] = useState(false)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -101,39 +110,64 @@ export const ContactPage: React.FC = () => {
         setErrorMessage(body.issues?.[0]?.message || 'Please check the form and try again.')
       } else {
         setStatus('error')
-        setErrorMessage('Something went wrong. Please email cosmedic@bimcbali.com if it persists.')
+        setErrorMessage(`Something went wrong. Please email ${settings.contactEmail || 'cosmedic@bimcbali.com'} if it persists.`)
       }
     } catch {
       setStatus('error')
-      setErrorMessage('Network error. Please try again or email cosmedic@bimcbali.com.')
+      setErrorMessage(`Network error. Please try again or email ${settings.contactEmail || 'cosmedic@bimcbali.com'}.`)
     } finally {
       setSubmitting(false)
     }
   }
 
+  const heroImage = mediaUrl(hero.heroImage ?? null, IMG.reception) || IMG.reception
+  const mapImage = mediaUrl(visit.mapImage ?? null, IMG.bali) || IMG.bali
+  const mapsUrl = settings.googleMapsUrl
+
+  const titleLines: [string, string] = intent
+    ? [intent.title, '']
+    : [hero.titleA || 'Begin, when', hero.titleB || 'you are ready.']
+  const heroLede = intent
+    ? intent.lede
+    : hero.lede
+      || 'Write to us in your own time, in your own words. A concierge will reply within twenty-four hours, in English or Bahasa Indonesia. There is no obligation — and no pressure — to proceed.'
+  const heroChapter = intent
+    ? `Chapter VIII — ${intent.eyebrow}`
+    : hero.chapter || 'Chapter VIII — Plan Your Journey'
+  const heroBreadcrumb = hero.breadcrumbLabel || 'Plan Your Journey'
+
+  const addressLines: string[] = [
+    settings.addressLine1,
+    settings.addressLine2,
+    [settings.city, settings.postalCode].filter(Boolean).join(' '),
+    settings.country,
+  ].filter((s): s is string => Boolean(s && s.trim()))
+
+  const conciergeHoursLines = (visit.conciergeHoursValue || 'Twenty-four hours\nReplies within ten minutes')
+    .split('\n')
+    .map((s) => s.trim())
+    .filter(Boolean)
+
   return (
     <PageShell activePage="contact" hideCTA>
       <ChapterOpener
-        chapter={intent ? `Chapter VIII — ${intent.eyebrow}` : 'Chapter VIII — Plan Your Journey'}
-        title={intent ? [intent.title, ''] : ['Begin, when', 'you are ready.']}
-        lede={
-          intent
-            ? intent.lede
-            : 'Write to us in your own time, in your own words. A concierge will reply within twenty-four hours, in English or Bahasa Indonesia. There is no obligation — and no pressure — to proceed.'
-        }
-        image={IMG.reception}
-        imageHue={3}
-        imageLabel="PLAN YOUR JOURNEY"
-        breadcrumbs={[{ label: 'BIMC CosMedic', href: '/' }, { label: 'Plan Your Journey' }]}
+        chapter={heroChapter}
+        title={titleLines}
+        lede={heroLede}
+        image={heroImage}
+        imageHue={hero.imageHue ?? 3}
+        imageLabel={hero.imageLabel || 'PLAN YOUR JOURNEY'}
+        breadcrumbs={[{ label: 'BIMC CosMedic', href: '/' }, { label: heroBreadcrumb }]}
       />
 
       <section className="page-section">
         <div className="two-col" style={{ alignItems: 'start' }}>
           <Reveal>
             <div>
-              <Eyebrow>The Enquiry</Eyebrow>
+              <Eyebrow>{enquiry.eyebrow || 'The Enquiry'}</Eyebrow>
               <h2 className="section-title" style={{ marginTop: 16 }}>
-                Tell us a little <span className="italic">about you.</span>
+                {enquiry.headingPre || 'Tell us a little'}{' '}
+                <span className="italic">{enquiry.headingItalic || 'about you.'}</span>
               </h2>
               <p
                 style={{
@@ -144,8 +178,8 @@ export const ContactPage: React.FC = () => {
                   maxWidth: 320,
                 }}
               >
-                Every field is optional. Tell us only what you are comfortable telling us today —
-                we will follow up with the rest.
+                {enquiry.intro
+                  || 'Every field is optional. Tell us only what you are comfortable telling us today — we will follow up with the rest.'}
               </p>
               <div
                 style={{
@@ -154,7 +188,7 @@ export const ContactPage: React.FC = () => {
                   borderTop: '1px solid var(--ink-20)',
                 }}
               >
-                <Mono>Direct lines</Mono>
+                <Mono>{directLines.sectionLabel || 'Direct lines'}</Mono>
                 <ul
                   style={{
                     listStyle: 'none',
@@ -165,30 +199,38 @@ export const ContactPage: React.FC = () => {
                     gap: 14,
                   }}
                 >
-                  <li>
-                    <Mono>Concierge</Mono>
-                    <div style={{ fontFamily: 'var(--font-serif)', fontSize: 19, marginTop: 4 }}>
-                      +62 361 3000 911
-                    </div>
-                  </li>
-                  <li>
-                    <Mono>WhatsApp</Mono>
-                    <div style={{ fontFamily: 'var(--font-serif)', fontSize: 19, marginTop: 4 }}>
-                      +62 811 3888 911
-                    </div>
-                  </li>
-                  <li>
-                    <Mono>Email</Mono>
-                    <div style={{ fontFamily: 'var(--font-serif)', fontSize: 19, marginTop: 4 }}>
-                      concierge@bimccosmedic.com
-                    </div>
-                  </li>
-                  <li>
-                    <Mono>Press</Mono>
-                    <div style={{ fontFamily: 'var(--font-serif)', fontSize: 19, marginTop: 4 }}>
-                      press@bimccosmedic.com
-                    </div>
-                  </li>
+                  {settings.contactPhone && (
+                    <li>
+                      <Mono>{directLines.conciergeLabel || 'Concierge'}</Mono>
+                      <div style={{ fontFamily: 'var(--font-serif)', fontSize: 19, marginTop: 4 }}>
+                        {settings.contactPhone}
+                      </div>
+                    </li>
+                  )}
+                  {settings.whatsappNumber && (
+                    <li>
+                      <Mono>{directLines.whatsappLabel || 'WhatsApp'}</Mono>
+                      <div style={{ fontFamily: 'var(--font-serif)', fontSize: 19, marginTop: 4 }}>
+                        {settings.whatsappNumber}
+                      </div>
+                    </li>
+                  )}
+                  {settings.contactEmail && (
+                    <li>
+                      <Mono>{directLines.emailLabel || 'Email'}</Mono>
+                      <div style={{ fontFamily: 'var(--font-serif)', fontSize: 19, marginTop: 4 }}>
+                        {settings.contactEmail}
+                      </div>
+                    </li>
+                  )}
+                  {settings.pressEmail && (
+                    <li>
+                      <Mono>{directLines.pressLabel || 'Press'}</Mono>
+                      <div style={{ fontFamily: 'var(--font-serif)', fontSize: 19, marginTop: 4 }}>
+                        {settings.pressEmail}
+                      </div>
+                    </li>
+                  )}
                 </ul>
               </div>
             </div>
@@ -301,7 +343,8 @@ export const ContactPage: React.FC = () => {
                     maxWidth: 380,
                   }}
                 >
-                  Held in confidence. Reviewed by a credentialed surgeon. We reply within 24 hours.
+                  {enquiry.trustLine
+                    || 'Held in confidence. Reviewed by a credentialed surgeon. We reply within 24 hours.'}
                 </p>
                 <button type="submit" className="btn btn-accent" disabled={submitting}>
                   <span>{submitting ? 'Sending…' : status === 'success' ? 'Sent — thank you' : 'Send enquiry'}</span>
@@ -331,9 +374,10 @@ export const ContactPage: React.FC = () => {
         <div className="two-col">
           <Reveal>
             <div>
-              <Eyebrow>Visit</Eyebrow>
+              <Eyebrow>{visit.eyebrow || 'Visit'}</Eyebrow>
               <h2 className="section-title" style={{ marginTop: 16, marginBottom: 24 }}>
-                Find us in <span className="italic">Nusa Dua.</span>
+                {visit.headingPre || 'Find us in'}{' '}
+                <span className="italic">{visit.headingItalic || 'Nusa Dua.'}</span>
               </h2>
               <p
                 style={{
@@ -344,30 +388,43 @@ export const ContactPage: React.FC = () => {
                   maxWidth: 480,
                 }}
               >
-                Within the BIMC Hospital Nusa Dua, on the southernmost reach of Bali. Twelve
-                minutes from Ngurah Rai International Airport.
+                {visit.body
+                  || 'Within the BIMC Hospital Nusa Dua, on the southernmost reach of Bali. Twelve minutes from Ngurah Rai International Airport.'}
               </p>
-              <div style={{ borderTop: '1px solid var(--ink-20)', paddingTop: 20 }}>
-                <p
-                  style={{
-                    margin: 0,
-                    fontFamily: 'var(--font-serif)',
-                    fontSize: 19,
-                    lineHeight: 1.55,
-                  }}
-                >
-                  BIMC Hospital Nusa Dua
-                  <br />
-                  Kawasan ITDC Blok D
-                  <br />
-                  Nusa Dua 80363
-                  <br />
-                  Bali, Indonesia
-                </p>
-              </div>
+              {addressLines.length > 0 && (
+                <div style={{ borderTop: '1px solid var(--ink-20)', paddingTop: 20 }}>
+                  <p
+                    style={{
+                      margin: 0,
+                      fontFamily: 'var(--font-serif)',
+                      fontSize: 19,
+                      lineHeight: 1.55,
+                    }}
+                  >
+                    {addressLines.map((line, i) => (
+                      <React.Fragment key={i}>
+                        {line}
+                        {i < addressLines.length - 1 && <br />}
+                      </React.Fragment>
+                    ))}
+                  </p>
+                </div>
+              )}
               <div style={{ marginTop: 24, display: 'flex', gap: 12 }}>
-                <Btn kind="ghost">Open in Maps</Btn>
-                <Btn kind="ghost">Get directions</Btn>
+                {mapsUrl ? (
+                  <Btn kind="ghost" href={mapsUrl} target="_blank" rel="noopener">
+                    {visit.openInMapsLabel || 'Open in Maps'}
+                  </Btn>
+                ) : (
+                  <Btn kind="ghost">{visit.openInMapsLabel || 'Open in Maps'}</Btn>
+                )}
+                {mapsUrl ? (
+                  <Btn kind="ghost" href={mapsUrl} target="_blank" rel="noopener">
+                    {visit.getDirectionsLabel || 'Get directions'}
+                  </Btn>
+                ) : (
+                  <Btn kind="ghost">{visit.getDirectionsLabel || 'Get directions'}</Btn>
+                )}
               </div>
             </div>
           </Reveal>
@@ -376,11 +433,16 @@ export const ContactPage: React.FC = () => {
               <div
                 style={{ aspectRatio: '4 / 3', overflow: 'hidden', background: 'var(--cream)' }}
               >
-                <Img src={IMG.bali} fallbackLabel="NUSA DUA · BALI" fallbackHue={4} alt="" />
+                <Img
+                  src={mapImage}
+                  fallbackLabel={visit.mapImageLabel || 'NUSA DUA · BALI'}
+                  fallbackHue={visit.mapImageHue ?? 4}
+                  alt=""
+                />
               </div>
               <div className="contact-hours-grid">
                 <div>
-                  <Mono>Hours · Clinic</Mono>
+                  <Mono>{visit.clinicHoursLabel || 'Hours · Clinic'}</Mono>
                   <p
                     style={{
                       margin: '10px 0 0',
@@ -389,13 +451,17 @@ export const ContactPage: React.FC = () => {
                       lineHeight: 1.55,
                     }}
                   >
-                    Mon – Sat · 09:00 – 19:00
-                    <br />
-                    Sun · By appointment
+                    {settings.hoursMonFri || 'Mon – Sat · 09:00 – 19:00'}
+                    {settings.hoursSatSun && (
+                      <>
+                        <br />
+                        {settings.hoursSatSun}
+                      </>
+                    )}
                   </p>
                 </div>
                 <div>
-                  <Mono>Hours · Concierge</Mono>
+                  <Mono>{visit.conciergeHoursLabel || 'Hours · Concierge'}</Mono>
                   <p
                     style={{
                       margin: '10px 0 0',
@@ -404,9 +470,12 @@ export const ContactPage: React.FC = () => {
                       lineHeight: 1.55,
                     }}
                   >
-                    Twenty-four hours
-                    <br />
-                    Replies within ten minutes
+                    {conciergeHoursLines.map((line, i) => (
+                      <React.Fragment key={i}>
+                        {line}
+                        {i < conciergeHoursLines.length - 1 && <br />}
+                      </React.Fragment>
+                    ))}
                   </p>
                 </div>
               </div>

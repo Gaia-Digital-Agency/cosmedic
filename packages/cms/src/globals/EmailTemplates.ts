@@ -5,6 +5,7 @@ import { apiWarningField } from '../lib/api-warning'
 
 export const EmailTemplates: GlobalConfig = {
   slug: 'email-templates',
+  label: 'f. Email',
   admin: {
     group: 'g. Contact',
     description: 'Outgoing email templates: the clinic-notify email sent to staff when a lead comes in, the auto-responder sent back to the enquirer, and any future transactional emails.',

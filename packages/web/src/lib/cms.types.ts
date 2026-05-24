@@ -285,6 +285,7 @@ export type Settings = {
   audToIdrRate?: number
   roundIdrTo?: number
   contactEmail?: string
+  pressEmail?: string
   contactPhone?: string
   whatsappNumber?: string
   addressLine1?: string
@@ -365,6 +366,47 @@ export type EmailTemplatesGlobal = {
   templates?: Array<{ key: string; subject: string; bodyMjml?: string }>
 }
 
+export type ContactHeroGlobal = {
+  chapter?: string
+  titleA?: string
+  titleB?: string
+  lede?: string
+  heroImage?: CmsMedia | number | null
+  imageHue?: number
+  imageLabel?: string
+  breadcrumbLabel?: string
+}
+
+export type ContactEnquirySectionGlobal = {
+  eyebrow?: string
+  headingPre?: string
+  headingItalic?: string
+  intro?: string
+  directLines?: {
+    sectionLabel?: string
+    conciergeLabel?: string
+    whatsappLabel?: string
+    emailLabel?: string
+    pressLabel?: string
+  }
+  trustLine?: string
+}
+
+export type ContactVisitSectionGlobal = {
+  eyebrow?: string
+  headingPre?: string
+  headingItalic?: string
+  body?: string
+  mapImage?: CmsMedia | number | null
+  mapImageLabel?: string
+  mapImageHue?: number
+  openInMapsLabel?: string
+  getDirectionsLabel?: string
+  clinicHoursLabel?: string
+  conciergeHoursLabel?: string
+  conciergeHoursValue?: string
+}
+
 /* ─── Cache shape ──────────────────────────────────────────────────────── */
 
 export type CmsCache = {
@@ -394,4 +436,7 @@ export type CmsCache = {
   consultationPolicy: ConsultationPolicy
   formDefaults: FormDefaults
   seoDefaults: SeoDefaultsGlobal
+  contactHero: ContactHeroGlobal
+  contactEnquirySection: ContactEnquirySectionGlobal
+  contactVisitSection: ContactVisitSectionGlobal
 }
