@@ -80,7 +80,7 @@
   }
   .footer-top {
     display: grid;
-    grid-template-columns: 1.8fr 1.2fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 56px;
     padding-bottom: 60px;
     border-bottom: 1px solid rgba(255,255,255,0.12);

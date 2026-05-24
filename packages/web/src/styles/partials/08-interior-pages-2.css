@@ -470,7 +470,7 @@
 /* Dark footer wrapper — combines CTA band + footer with one shared starburst */
 .dark-foot {
   position: relative;
-  background: var(--ink-100);
+  background: var(--accent-deep);
   overflow: hidden;
 }
 .dark-foot::before {
