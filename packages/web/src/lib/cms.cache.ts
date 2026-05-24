@@ -55,6 +55,11 @@ import type {
   PricingPaymentGlobal,
   PricingDisciplineListViewGlobal,
   PricingCatalogueViewGlobal,
+  ResultsHeroGlobal,
+  ResultsFeaturedCasesViewGlobal,
+  ResultsStoriesViewGlobal,
+  LibraryCtaGlobal,
+  ShareCtaGlobal,
 } from './cms.types'
 import { fetchAll, fetchGlobal, fetchAllPageGlobals } from './cms.fetch'
 
@@ -108,6 +113,11 @@ export const EMPTY_CACHE: CmsCache = {
   pricingPayment: {},
   pricingDisciplineListView: {},
   pricingCatalogueView: {},
+  resultsHero: {},
+  resultsFeaturedCasesView: {},
+  resultsStoriesView: {},
+  libraryCta: {},
+  shareCta: {},
 }
 
 let cache: CmsCache = EMPTY_CACHE
@@ -131,6 +141,8 @@ async function doLoad(): Promise<CmsCache> {
       pricingHero, pricingOverview, pricingFootnote,
       pricingInsurance, pricingPayment,
       pricingDisciplineListView, pricingCatalogueView,
+      resultsHero, resultsFeaturedCasesView, resultsStoriesView,
+      libraryCta, shareCta,
     ] = await Promise.all([
       fetchAll<Surgeon>('surgeons', 100, 1),
       fetchAll<Discipline>('disciplines'),
@@ -179,6 +191,11 @@ async function doLoad(): Promise<CmsCache> {
       fetchGlobal<PricingPaymentGlobal>('pricing-payment').catch(() => ({})),
       fetchGlobal<PricingDisciplineListViewGlobal>('pricing-discipline-list-view').catch(() => ({})),
       fetchGlobal<PricingCatalogueViewGlobal>('pricing-catalogue-view').catch(() => ({})),
+      fetchGlobal<ResultsHeroGlobal>('results-hero').catch(() => ({})),
+      fetchGlobal<ResultsFeaturedCasesViewGlobal>('results-featured-cases-view').catch(() => ({})),
+      fetchGlobal<ResultsStoriesViewGlobal>('results-stories-view').catch(() => ({})),
+      fetchGlobal<LibraryCtaGlobal>('library-cta').catch(() => ({})),
+      fetchGlobal<ShareCtaGlobal>('share-cta').catch(() => ({})),
     ])
     // R6 — pricing-page lost its hero fields (split into pricing-hero global).
     // Mirror pricing-hero.lede + heroImage onto the pricing-page row inside
@@ -198,6 +215,22 @@ async function doLoad(): Promise<CmsCache> {
         tagline: pp.tagline || pricingHero.chapter,
       } as typeof pp
     }
+    // R5 — same mirror trick for /results so seoFor() still picks up the
+    // hero lede + image after R5 lifts the editorial off results-page.
+    const resultsPageIdx = pages.findIndex((p) => p?.slug === 'results')
+    if (resultsPageIdx >= 0) {
+      const rp = pages[resultsPageIdx]
+      pages[resultsPageIdx] = {
+        ...rp,
+        lede: rp.lede || resultsHero.lede,
+        heroImage: rp.heroImage || resultsHero.heroImage || undefined,
+        chapterTitle: rp.chapterTitle || {
+          a: resultsHero.titleA,
+          b: resultsHero.titleB,
+        },
+        tagline: rp.tagline || resultsHero.chapter,
+      } as typeof rp
+    }
     return {
       loaded: true,
       loadedAt: Date.now(),
@@ -216,6 +249,8 @@ async function doLoad(): Promise<CmsCache> {
       pricingHero, pricingOverview, pricingFootnote,
       pricingInsurance, pricingPayment,
       pricingDisciplineListView, pricingCatalogueView,
+      resultsHero, resultsFeaturedCasesView, resultsStoriesView,
+      libraryCta, shareCta,
     }
   } catch (err) {
     console.warn('[cms] load failed, using empty cache:', err)

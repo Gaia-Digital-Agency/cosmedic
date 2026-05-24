@@ -5,9 +5,11 @@ import { pageFields } from './_pageFields'
 
 export const ResultsPage: GlobalConfig = {
   slug: 'results-page',
+  label: 'a. Main',
   admin: {
     group: 'd. Results',
-    description: 'Editorial content for /results: hero + body. The case grid is rendered from BeforeAfterCases collection.',
+    description:
+      'Page meta + SEO + the optional CmsExtraBlocks slot for /results. The hero is edited in **b. Hero**; the two on-page sections are edited in **i. Featured-Cases-View** + **j. Stories-View**; the two CTAs are edited in **c. Library-Cta** + **d. Share-Cta**. The cards/rows come from g. Before-After-Cases and h. Patient-Stories.',
   },
   access: { read: publishedOrAuthed, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),

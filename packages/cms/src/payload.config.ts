@@ -92,6 +92,16 @@ import { TreatmentsStats } from './globals/treatments/TreatmentsStats'
 import { DisciplineDetailTemplate } from './globals/treatments/DisciplineDetailTemplate'
 import { SubCategoryDetailTemplate } from './globals/treatments/SubCategoryDetailTemplate'
 
+// Phase R5 — d. Results Bucket section globals.
+// 5 globals that lift /results + /gallery + /stories editorial out of the
+// hardcoded routes; the two shared CTAs (library / share) close the prior
+// cross-page duplication between /results+/gallery and /results+/stories.
+import { ResultsHero } from './globals/results/ResultsHero'
+import { ResultsFeaturedCasesView } from './globals/results/ResultsFeaturedCasesView'
+import { ResultsStoriesView } from './globals/results/ResultsStoriesView'
+import { LibraryCta } from './globals/results/LibraryCta'
+import { ShareCta } from './globals/results/ShareCta'
+
 import { seedSuperAdmin } from './seed/admin'
 import { emailAdapter } from './lib/email-adapter'
 
@@ -185,6 +195,11 @@ export default buildConfig({
     SurgeonsAestheticView,
     SurgeonDetailTemplate,
     ResultsPage,
+    ResultsHero,
+    LibraryCta,
+    ShareCta,
+    ResultsFeaturedCasesView,
+    ResultsStoriesView,
     GalleryPage,
     PricingPage,
     PricingHero,

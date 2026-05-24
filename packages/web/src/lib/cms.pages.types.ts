@@ -174,4 +174,10 @@ export type CmsPage = {
   versionLine?: string
   readingTimeLine?: string
   introParagraph?: string
+  // Phase R5 — gallery-page + stories-page hero/filter additions.
+  imageHue?: number
+  imageLabel?: string
+  breadcrumbLabel?: string
+  filterBarLabel?: string
+  countFormat?: string
 }

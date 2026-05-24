@@ -6,6 +6,7 @@ import { apiWarningField } from '../lib/api-warning'
 
 export const BeforeAfterCases: CollectionConfig = {
   slug: 'before-after-cases',
+  labels: { singular: 'Before-After-Case', plural: 'g. Before-After-Cases' },
   admin: {
     useAsTitle: 'caseLabel',
     defaultColumns: ['caseLabel', 'procedure', 'isFeatured', 'sortOrder'],

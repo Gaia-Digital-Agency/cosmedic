@@ -187,6 +187,10 @@ export type Story = {
   patientLabel: string
   country?: string
   procedure?: number | Procedure
+  /** Free-text procedure + year line displayed under city on /stories + /results, e.g. "Rhinoplasty · 2025". */
+  procedureLabel?: string
+  /** Brand-palette hue (0-5) for the portrait fallback gradient. */
+  hue?: number
   portrait?: number | CmsMedia
   quote?: string
   body?: Lexical
@@ -670,6 +674,54 @@ export type PricingCatalogueViewGlobal = {
   }
 }
 
+/* ─── R5 — d. Results Bucket section globals ───────────────────────────── */
+
+export type ResultsHeroGlobal = {
+  chapter?: string
+  titleA?: string
+  titleB?: string
+  lede?: string
+  heroImage?: number | CmsMedia | null
+  imageHue?: number
+  imageLabel?: string
+  breadcrumbLabel?: string
+}
+
+export type ResultsFeaturedCasesViewGlobal = {
+  eyebrow?: string
+  headingPre?: string
+  headingItalic?: string
+  lede?: string
+  filterBarLabel?: string
+  countFormat?: string
+}
+
+export type ResultsStoriesViewGlobal = {
+  eyebrow?: string
+  headingPre?: string
+  headingItalic?: string
+  lede?: string
+}
+
+export type LibraryCtaGlobal = {
+  eyebrow?: string
+  headingPre?: string
+  headingItalic?: string
+  body?: string
+  buttonLabel?: string
+  buttonHref?: string
+}
+
+export type ShareCtaGlobal = {
+  eyebrow?: string
+  headingPre?: string
+  headingItalic?: string
+  headingPost?: string
+  body?: string
+  buttonLabel?: string
+  buttonHref?: string
+}
+
 export type BlogPostTemplateGlobal = {
   byline?: {
     writtenByLabel?: string
@@ -776,4 +828,10 @@ export type CmsCache = {
   pricingPayment: PricingPaymentGlobal
   pricingDisciplineListView: PricingDisciplineListViewGlobal
   pricingCatalogueView: PricingCatalogueViewGlobal
+  // R5 — d. Results Bucket section globals
+  resultsHero: ResultsHeroGlobal
+  resultsFeaturedCasesView: ResultsFeaturedCasesViewGlobal
+  resultsStoriesView: ResultsStoriesViewGlobal
+  libraryCta: LibraryCtaGlobal
+  shareCta: ShareCtaGlobal
 }
