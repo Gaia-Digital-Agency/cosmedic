@@ -56,7 +56,7 @@ const pricingTeaserBlock: Field = {
 const surgeonsBlock: Field = {
   name: 'surgeonsBlock',
   type: 'group',
-  admin: { description: 'Surgeons strip section frame on / (lead surgeon + associates).' },
+  admin: { description: 'Surgeons strip section frame on / (lead surgeon + team group photo). q4 (2026-05-24): the 6-card associates grid was replaced with a single team photo. Per-surgeon profiles still live under /surgeons.' },
   fields: [
     { name: 'eyebrow', type: 'text' },
     { name: 'leadSurgeonEyebrow', type: 'text' },
@@ -68,7 +68,10 @@ const surgeonsBlock: Field = {
     { name: 'leadStat3Label', type: 'text' },
     { name: 'leadStat3Value', type: 'text' },
     { name: 'leadCtaLabel', type: 'text' },
-    { name: 'associatesEyebrow', type: 'text' },
+    { name: 'associatesEyebrow', type: 'text', admin: { description: 'Eyebrow label on the team-photo row (left side).' } },
+    { name: 'teamCaption', type: 'text', admin: { description: 'Caption on the team-photo row (right side). Replaces the legacy "{N} practitioners" count. Defaults to "The Cosmedic Team".' } },
+    { name: 'groupPhoto', type: 'upload', relationTo: 'media', admin: { description: 'Single team group photo replacing the legacy 6-card associates grid. Falls back to /assets/surgeons/team-placeholder.webp when unset.' } },
+    { name: 'groupPhotoAlt', type: 'text', admin: { description: 'Alt text for the team photo (accessibility). Falls back to the associatesEyebrow value.' } },
   ],
 }
 

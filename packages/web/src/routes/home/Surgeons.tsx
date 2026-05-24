@@ -6,6 +6,9 @@ import { Btn } from '@/components/primitives/Btn'
 import { SURGEON_LIST, SURGEON_IMG } from '@/content/seed'
 import { useCms } from '@/lib/cms-context'
 import { findPageBySlug } from '@/lib/cms-adapters'
+import { mediaUrl } from '@/lib/cms.media'
+
+const TEAM_PLACEHOLDER = '/assets/surgeons/team-placeholder.webp'
 
 export const Surgeons: React.FC = () => {
   const cms = useCms()
@@ -28,9 +31,15 @@ export const Surgeons: React.FC = () => {
   const leadStat3Value = block?.leadStat3Value || 'ISAPS Member'
   const leadCtaLabel = block?.leadCtaLabel || 'Read the full profile'
   const associatesEyebrow = block?.associatesEyebrow || 'Associate Surgeons & Aestheticians'
+  const teamCaption = block?.teamCaption || 'The Cosmedic Team'
+
+  const groupPhotoSrc = mediaUrl(block?.groupPhoto, TEAM_PLACEHOLDER) || TEAM_PLACEHOLDER
+  const groupPhotoAlt =
+    block?.groupPhotoAlt ||
+    (block?.groupPhoto && typeof block.groupPhoto === 'object' ? block.groupPhoto.alt : undefined) ||
+    associatesEyebrow
 
   const lead = SURGEON_LIST[0]
-  const associates = SURGEON_LIST.slice(1, 7)
   const leadFirstNames = lead.name.split(' ').slice(0, -1).join(' ')
   const leadLastName = lead.name.split(' ').slice(-1)[0]
 
@@ -96,37 +105,17 @@ export const Surgeons: React.FC = () => {
         }}
       >
         <Mono>{associatesEyebrow}</Mono>
-        <Mono>{associates.length} practitioners</Mono>
+        <Mono>{teamCaption}</Mono>
       </div>
-      <div className="surgeons-grid" style={{ marginTop: 32 }}>
-        {associates.map((s, i) => (
-          <Reveal key={s.slug} delay={i * 60} y={20}>
-            <a href={`/surgeon-${s.slug}`} style={{ color: 'inherit' }}>
-              <div className="surgeon-card" data-surgeon={s.slug}>
-                <div className="surgeon-card-img">
-                  <Img
-                    media={s.portrait}
-                    src={SURGEON_IMG(s.slug)}
-                    fallbackLabel={`DR. ${s.common.toUpperCase()}`}
-                    fallbackHue={s.hue}
-                    alt={`Portrait of ${s.title} ${s.common}`}
-                    sizes="(max-width: 700px) 50vw, (max-width: 1100px) 33vw, 280px"
-                  />
-                </div>
-                <div className="surgeon-card-meta">
-                  <h4>
-                    {s.title} {s.common}
-                  </h4>
-                  <Mono>{s.spec.split(' — ')[0].split(',')[0]}</Mono>
-                  <span className="surgeon-train">
-                    {s.years} yrs · {s.train.split(' · ')[0]}
-                  </span>
-                </div>
-              </div>
-            </a>
-          </Reveal>
-        ))}
-      </div>
+      <Reveal delay={80}>
+        <div className="surgeons-team-photo" style={{ marginTop: 32 }}>
+          <Img
+            src={groupPhotoSrc}
+            alt={groupPhotoAlt}
+            sizes="(max-width: 700px) 100vw, (max-width: 1100px) 92vw, 1200px"
+          />
+        </div>
+      </Reveal>
     </section>
   )
 }

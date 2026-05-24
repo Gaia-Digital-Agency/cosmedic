@@ -72,6 +72,9 @@ export type CmsPage = {
     leadStat3Value?: string
     leadCtaLabel?: string
     associatesEyebrow?: string
+    teamCaption?: string
+    groupPhoto?: number | CmsMedia | null
+    groupPhotoAlt?: string
   }
   galleryBlock?: {
     eyebrow?: string

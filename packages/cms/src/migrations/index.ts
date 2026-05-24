@@ -3,6 +3,7 @@ import * as migration_20260520_123550_phase_6_catalogue from './20260520_123550_
 import * as migration_20260520_125136_rename_section_anchor from './20260520_125136_rename_section_anchor';
 import * as migration_20260521_042540_add_media_isPlaceholder from './20260521_042540_add_media_isPlaceholder';
 import * as migration_20260522_072509_pages_to_globals from './20260522_072509_pages_to_globals';
+import * as migration_20260524_031454_q4_team_group_photo from './20260524_031454_q4_team_group_photo';
 
 export const migrations = [
   {
@@ -34,4 +35,9 @@ export const migrations = [
   // via psql (per docs/db_ops.md gotcha — payload migrate can't run because
   // Drizzle wants to DROP orphan pages_blocks_* tables which C3 preserved
   // as data backup). Migration registered in payload_migrations table.
+  {
+    up: migration_20260524_031454_q4_team_group_photo.up,
+    down: migration_20260524_031454_q4_team_group_photo.down,
+    name: '20260524_031454_q4_team_group_photo',
+  },
 ];
