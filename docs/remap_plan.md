@@ -860,3 +860,99 @@ No site downtime at any point (warm builds, sub-second `pm2 restart`).
 ## Greenlight gate
 
 Do not start **Phase R0** until user confirms the 9-Bucket structure in [remap.md](./remap.md) §1.2 and §1.3.
+
+---
+
+## Appendix A — Cross-Bucket Data Flow (source-of-truth reference)
+
+Where data sourced in one Bucket is **displayed read-only** in another. Editor edits the source row; consumers update on next cache bust. Used to drive `admin.description` notes + `-View` suffix decisions.
+
+### A.1 — a. Homepage → l. Settings (the single source of truth for clinic identity)
+
+| Source field on l. Settings | Read-only display location |
+|---|---|
+| `contactPhone`, `whatsappNumber`, `contactEmail`, `pressEmail` | g. Contact → c. Enquiry-Section (Direct lines block) |
+| `addressLine1` / `addressLine2` / `city` / `postalCode` / `country` | g. Contact → d. Visit-Section (Address block) + a. Homepage → d. Footer (address block) |
+| `hoursMonFri` / `hoursSatSun` | g. Contact → d. Visit-Section (Clinic hours) |
+| `googleMapsUrl` | g. Contact → d. Visit-Section (Open in Maps / Get directions) |
+| `whatsappNumber` | a. Homepage → i. Floating-CTA (WhatsApp button) + a. Homepage → d. Footer (WhatsApp link in Connect column) |
+| `socialLinks[]` | a. Homepage → d. Footer (Connect column) |
+| `audToIdrRate`, `roundIdrTo`, `currencyDisplayMode` | b. Treatments + e. Pricing (every price render) |
+| clinic name + city | c. Doctors → f. Detail-Template (Practice row) |
+
+### A.2 — c. Doctors → g. Surgeons (the canonical Collection for every surgeon surface)
+
+| Source on g. Surgeons | Read-only display location |
+|---|---|
+| All fields | a. Homepage → o. Surgeons-View (homepage teaser) |
+| lead=true row + selected specialists | a. Homepage → c. Header (Doctors mega-menu) |
+| lead-by-discipline | b. Treatments → discipline detail "Lead Surgeon" panel |
+| lead-by-subcategory | b. Treatments → sub-category detail "Lead Surgeon" panel |
+| authoring surgeon | h. About → c. Blog-Posts byline |
+
+### A.3 — b. Treatments → Disciplines (catalogue + nav source)
+
+| Source on Disciplines | Read-only display location |
+|---|---|
+| All rows (title + sortOrder) | a. Homepage → d. Footer (Treatments column — auto-built) |
+| All rows | a. Homepage → m. Treatments-View (homepage teaser cards) |
+| All rows | a. Homepage → c. Header (Treatments mega-menu) |
+| Parent discipline `title` | c. Doctors → f. Detail-Template (hero Treatments back-link CTA) |
+
+### A.4 — d. Results → i. Before-After-Cases + j. Patient-Stories
+
+| Source | Read-only display location |
+|---|---|
+| i. Before-After-Cases (all rows) | d. Results → c. Featured-Cases-View (`/results` grid) + d. Results → g. Gallery (`/gallery` grid) + a. Homepage → p. Gallery-View |
+| j. Patient-Stories (all rows) | d. Results → d. Stories-View (`/results` story rows) + d. Results → h. Stories (`/stories` rows) + a. Homepage → r. Stories-View |
+
+### A.5 — d. Results → e. Library-Cta + f. Share-Cta (shared CTA blocks)
+
+| Source | Read-only display location |
+|---|---|
+| e. Library-Cta | `/results` "Want to see more?" + `/gallery` "Want to see more?" |
+| f. Share-Cta | `/results` "Have a story to share?" + `/stories` "Have a story to share?" |
+
+### A.6 — f. Journey → c. Steps (the canonical step Collection)
+
+| Source on c. Steps | Read-only display location |
+|---|---|
+| All 7 rows | f. Journey → b. Hero context + a. Homepage → q. Journey-View (step previews) |
+
+---
+
+## Appendix B — Naming conventions
+
+| Item type | Convention | Examples |
+|---|---|---|
+| Global (page-section editorial) | Singular descriptive | a. Main · b. Hero · c. Enquiry-Section · d. Visit-Section · e. Form · f. Email · d. Stats |
+| Collection (data rows) | Plural noun | c. Steps · e. Authors · f. Villas · g. Inbox · g. Surgeons · h. Awards · i. Before-After-Cases · j. Patient-Stories |
+| Sibling page collapsed to one Item | Page name with hyphen | e. Recovery-Stays (in f. Journey) · h. Video-Consult (in g. Contact) · g. Gallery + h. Stories (in d. Results) |
+| View-only mirror Item (cards from another Item) | Suffix `-View` | m. Treatments-View · n. Pricing-View · o. Surgeons-View · p. Gallery-View · q. Journey-View · r. Stories-View (all in a. Homepage) · c. Featured-Cases-View · d. Stories-View (in d. Results) · c. Lead-View · d. Plastic-Surgery-View · e. Aesthetic-Medicine-View (in c. Doctors) |
+| Shared CTA Global serving 2+ pages | `*-Cta` | e. Library-Cta · f. Share-Cta (both in d. Results) |
+| Bucket label | `a. Name` … `i. Name` prefix matching site IA reading order | a. Homepage · b. Treatments · c. Doctors · d. Results · e. Pricing · f. Journey · g. Contact · h. About · i. Media Library |
+
+---
+
+## Appendix C — Postgres + Payload migration gotchas (referenced from CLAUDE.md)
+
+Carry into every per-Bucket phase that creates new Globals or Collections. Lessons from Item 2 (`Pages → 14 Globals` refactor):
+
+1. **`payload migrate` hangs silently** on large migrations even with `--force-accept-warning`. Workaround: extract the `await db.execute(sql\`...\`)` body to a `.sql` file and pipe to `psql --single-transaction -v ON_ERROR_STOP=1`. Then `INSERT INTO payload_migrations (name, batch, created_at, updated_at) VALUES ('<migration-name>', <next-batch>, NOW(), NOW())` to register.
+2. **Postgres 63-char identifier limit** — block field enums named `enum_<gslug>_blocks_<bslug>_<field>` can exceed it for long global slugs. Use `dbName: '...'` override on the GlobalConfig (e.g. `recovery-stays-page` needed `dbName: 'rec_stays_pg'`).
+3. **Direct psql DDL leaves objects owned by `postgres`** — the Payload runtime connects as `cosmedic` and gets `permission denied` on `ALTER`. After applying schema directly, run `ALTER TABLE/SEQUENCE/TYPE OWNER TO cosmedic` for every new public-schema object. One-shot: `psql -tAc "SELECT 'ALTER TABLE \"' || tablename || '\" OWNER TO cosmedic;' FROM pg_tables WHERE schemaname='public'" | psql`. Also `ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO cosmedic`.
+4. **`tsx` scripts that call `getPayload()` trigger `pushDevSchema`** unless `NODE_ENV=production` is set. The drizzle push tries `ALTER TABLE ... DROP CONSTRAINT` and fails on non-owner. Always invoke one-off migration / seed scripts as `NODE_ENV=production pnpm --filter @cosmedic/cms exec tsx <script>`.
+5. **`git stash -u` will sweep untracked top-level directories** — `changes/` got vacuumed once. Recoverable via `git checkout stash@{0}^3 -- <path>`. `/changes/` is now in `.gitignore`.
+
+Reference these in any phase's R*.6 seed migration + R*.8 verification when DDL or seed-script work is in scope.
+
+---
+
+## Appendix D — Per-phase rollback path
+
+R0 path is `git revert <commit>` (pure string edits). Every per-Bucket phase R1–R8 follows the same shape:
+
+1. **Git revert** the commits in reverse — restores `admin.group` labels, route files, `cms.ts` fetches, `CmsCache` interface, seed scripts.
+2. **DB**: new Global tables (`globals_<slug>` + `_locales` + `_rels`) can be left in place after revert — Payload ignores tables for unregistered Globals. Drop only if cleanup is requested: `DROP TABLE IF EXISTS globals_<slug>, globals_<slug>_locales, globals_<slug>_rels CASCADE;` then `DELETE FROM payload_migrations WHERE name = '<migration-name>';`.
+3. **Sibling sites unaffected** at all times — Phase R is single-site work.
+4. **Visual invariance gate** is the safety net: a phase that produces a visual diff before commit doesn't ship.
