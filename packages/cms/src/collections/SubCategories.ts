@@ -6,6 +6,7 @@ import { apiWarningField } from '../lib/api-warning'
 
 export const SubCategories: CollectionConfig = {
   slug: 'sub-categories',
+  labels: { singular: 'Sub-Category', plural: 'f. Sub-Categories' },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'parent', 'slug', 'sortOrder'],

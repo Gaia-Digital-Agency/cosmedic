@@ -9,8 +9,48 @@ import { FAQItem } from '@/components/detail/FAQItem'
 import { SurgeonMini } from '@/components/detail/SurgeonMini'
 import { TREATMENT_LIST, SURGEON_LIST, TREATMENT_IMG } from '@/content/seed'
 import { TREATMENT_CONTENT } from '@/content/treatment-content'
+import { useCms } from '@/lib/cms-context'
 
 type Props = { slug: string }
+
+/* ─── R3 defensive fallbacks ───────────────────────────────────────────── */
+/* Verbatim copies of the template strings that lived in this file pre-R3.*/
+/* Used only when the CMS cache is cold / discipline-detail-template      */
+/* global has no value. After seed runs the cache supplies the same       */
+/* strings — render stays byte-identical (Rule 3 / no-data-loss).         */
+const FB = {
+  toc: {
+    onThisPageLabel: 'On this page',
+    overviewLabel: 'Overview',
+    subCategoriesLabel: 'Sub-categories',
+    proceduresLabel: 'Procedures',
+    faqsLabel: 'FAQs',
+  },
+  overview: { heading: 'Overview' },
+  chooseAFocus: {
+    heading: 'Choose a focus',
+    bodyTemplate:
+      'This discipline is organised into {count} areas. Each page lists every treatment we offer with its starting price.',
+    availableLabel: 'Read more →',
+    comingLabel: 'Coming v1.4',
+  },
+  procedures: {
+    heading: 'Procedures',
+    intro:
+      'The full list, with our typical price-from. We will give you a precise quote during consultation.',
+  },
+  faqs: { heading: 'Frequently asked' },
+  related: {
+    eyebrow: 'Related',
+    headingItalic: 'Often considered',
+    headingRoman: 'alongside.',
+    ledeTemplate:
+      'Many of our patients combine treatments across disciplines. These pair particularly well with {discipline}.',
+  },
+}
+
+const countWord = (n: number): string =>
+  n === 2 ? 'two' : n === 3 ? 'three' : String(n)
 
 export const DisciplineDetail: React.FC<Props> = ({ slug }) => {
   const t = TREATMENT_LIST.find((x) => x.slug === slug)
@@ -18,6 +58,34 @@ export const DisciplineDetail: React.FC<Props> = ({ slug }) => {
   if (!t || !c) return null
   const surgeon = SURGEON_LIST.find((s) => s.slug === c.leadSurgeon)
   const heroImg = TREATMENT_IMG(slug)
+
+  const cms = useCms()
+  const tpl = cms?.disciplineDetailTemplate
+  const toc = {
+    onThisPageLabel: tpl?.toc?.onThisPageLabel || FB.toc.onThisPageLabel,
+    overviewLabel: tpl?.toc?.overviewLabel || FB.toc.overviewLabel,
+    subCategoriesLabel: tpl?.toc?.subCategoriesLabel || FB.toc.subCategoriesLabel,
+    proceduresLabel: tpl?.toc?.proceduresLabel || FB.toc.proceduresLabel,
+    faqsLabel: tpl?.toc?.faqsLabel || FB.toc.faqsLabel,
+  }
+  const overview = { heading: tpl?.overview?.heading || FB.overview.heading }
+  const chooseAFocus = {
+    heading: tpl?.chooseAFocus?.heading || FB.chooseAFocus.heading,
+    bodyTemplate: tpl?.chooseAFocus?.bodyTemplate || FB.chooseAFocus.bodyTemplate,
+    availableLabel: tpl?.chooseAFocus?.availableLabel || FB.chooseAFocus.availableLabel,
+    comingLabel: tpl?.chooseAFocus?.comingLabel || FB.chooseAFocus.comingLabel,
+  }
+  const procedures = {
+    heading: tpl?.procedures?.heading || FB.procedures.heading,
+    intro: tpl?.procedures?.intro || FB.procedures.intro,
+  }
+  const faqsBlock = { heading: tpl?.faqs?.heading || FB.faqs.heading }
+  const related = {
+    eyebrow: tpl?.related?.eyebrow || FB.related.eyebrow,
+    headingItalic: tpl?.related?.headingItalic || FB.related.headingItalic,
+    headingRoman: tpl?.related?.headingRoman || FB.related.headingRoman,
+    ledeTemplate: tpl?.related?.ledeTemplate || FB.related.ledeTemplate,
+  }
 
   return (
     <PageShell activePage={`treatment-${slug}`}>
@@ -37,10 +105,10 @@ export const DisciplineDetail: React.FC<Props> = ({ slug }) => {
 
       <div className="detail-layout">
         <aside className="detail-toc">
-          <Mono>On this page</Mono>
+          <Mono>{toc.onThisPageLabel}</Mono>
           <ol>
             <li>
-              <a href="#overview">Overview</a>
+              <a href="#overview">{toc.overviewLabel}</a>
             </li>
             {c.sections.map((s) => (
               <li key={s.id}>
@@ -49,15 +117,15 @@ export const DisciplineDetail: React.FC<Props> = ({ slug }) => {
             ))}
             {c.subcategories ? (
               <li>
-                <a href="#subcategories">Sub-categories</a>
+                <a href="#subcategories">{toc.subCategoriesLabel}</a>
               </li>
             ) : (
               <li>
-                <a href="#procedures">Procedures</a>
+                <a href="#procedures">{toc.proceduresLabel}</a>
               </li>
             )}
             <li>
-              <a href="#faqs">FAQs</a>
+              <a href="#faqs">{toc.faqsLabel}</a>
             </li>
           </ol>
         </aside>
@@ -65,7 +133,7 @@ export const DisciplineDetail: React.FC<Props> = ({ slug }) => {
         <div className="detail-body">
           <section id="overview">
             <Reveal>
-              <h2>Overview</h2>
+              <h2>{overview.heading}</h2>
               <p className="lede" style={{ fontSize: 18 }}>
                 {c.overview}
               </p>
@@ -89,15 +157,12 @@ export const DisciplineDetail: React.FC<Props> = ({ slug }) => {
           {c.subcategories && (
             <section id="subcategories">
               <Reveal>
-                <h2>Choose a focus</h2>
+                <h2>{chooseAFocus.heading}</h2>
                 <p>
-                  This discipline is organised into{' '}
-                  {c.subcategories.length === 2
-                    ? 'two'
-                    : c.subcategories.length === 3
-                      ? 'three'
-                      : c.subcategories.length}{' '}
-                  areas. Each page lists every treatment we offer with its starting price.
+                  {chooseAFocus.bodyTemplate.replace(
+                    '{count}',
+                    countWord(c.subcategories.length),
+                  )}
                 </p>
               </Reveal>
               <div style={{ marginTop: 40, borderTop: '1px solid var(--ink-20)' }}>
@@ -154,7 +219,7 @@ export const DisciplineDetail: React.FC<Props> = ({ slug }) => {
                             color: sc.available ? 'var(--accent-deep)' : 'var(--ink-40)',
                           }}
                         >
-                          {sc.available ? 'Read more →' : 'Coming v1.4'}
+                          {sc.available ? chooseAFocus.availableLabel : chooseAFocus.comingLabel}
                         </span>
                       </div>
                       <span
@@ -193,11 +258,8 @@ export const DisciplineDetail: React.FC<Props> = ({ slug }) => {
           {!c.subcategories && c.procedures && (
             <section id="procedures">
               <Reveal>
-                <h2>Procedures</h2>
-                <p>
-                  The full list, with our typical price-from. We will give you a precise quote
-                  during consultation.
-                </p>
+                <h2>{procedures.heading}</h2>
+                <p>{procedures.intro}</p>
               </Reveal>
               <div style={{ marginTop: 32, borderTop: '1px solid var(--ink-20)' }}>
                 {c.procedures.map((p, i) => (
@@ -244,7 +306,7 @@ export const DisciplineDetail: React.FC<Props> = ({ slug }) => {
 
           <section id="faqs">
             <Reveal>
-              <h2>Frequently asked</h2>
+              <h2>{faqsBlock.heading}</h2>
             </Reveal>
             <div className="faq-list">
               {c.faqs.map((f, i) => (
@@ -258,14 +320,13 @@ export const DisciplineDetail: React.FC<Props> = ({ slug }) => {
       <section className="page-section tinted">
         <Reveal>
           <div className="section-head">
-            <Eyebrow>Related</Eyebrow>
+            <Eyebrow>{related.eyebrow}</Eyebrow>
             <div>
               <h2 className="section-title">
-                <span className="italic">Often considered</span> alongside.
+                <span className="italic">{related.headingItalic}</span> {related.headingRoman}
               </h2>
               <p className="section-lede">
-                Many of our patients combine treatments across disciplines. These pair particularly
-                well with {t.t.toLowerCase()}.
+                {related.ledeTemplate.replace('{discipline}', t.t.toLowerCase())}
               </p>
             </div>
           </div>

@@ -449,6 +449,76 @@ export type JourneyStatsGlobal = {
   stats?: Array<{ number: string; label: string; italic?: boolean }>
 }
 
+/* ─── R3 — b. Treatments Bucket section globals ────────────────────────── */
+
+export type TreatmentsHeroGlobal = {
+  chapter?: string
+  titleA?: string
+  titleB?: string
+  lede?: string
+  heroImage?: number | CmsMedia | null
+  imageHue?: number
+  imageLabel?: string
+  breadcrumbLabel?: string
+}
+
+export type TreatmentsIndexSectionGlobal = {
+  eyebrow?: string
+  heading?: string
+  lede?: string
+  readMoreLabel?: string
+  readMoreArrow?: string
+}
+
+export type TreatmentsStatsGlobal = {
+  stats?: Array<{ number: string; label: string }>
+}
+
+export type DisciplineDetailTemplateGlobal = {
+  toc?: {
+    onThisPageLabel?: string
+    overviewLabel?: string
+    subCategoriesLabel?: string
+    proceduresLabel?: string
+    faqsLabel?: string
+  }
+  overview?: { heading?: string }
+  chooseAFocus?: {
+    heading?: string
+    bodyTemplate?: string
+    availableLabel?: string
+    comingLabel?: string
+  }
+  procedures?: { heading?: string; intro?: string }
+  faqs?: { heading?: string }
+  related?: {
+    eyebrow?: string
+    headingItalic?: string
+    headingRoman?: string
+    ledeTemplate?: string
+  }
+}
+
+export type SubCategoryDetailTemplateGlobal = {
+  chapterSeparator?: string
+  toc?: {
+    onThisPageLabel?: string
+    overviewLabel?: string
+    treatmentsLabel?: string
+    faqsLabel?: string
+  }
+  takeAStep?: {
+    eyebrow?: string
+    videoConsultLabel?: string
+    estimateLabel?: string
+    whatsappLabel?: string
+    replyLine?: string
+  }
+  overview?: { heading?: string }
+  treatments?: { heading?: string; intro?: string }
+  faqs?: { heading?: string }
+}
+
 /* ─── R4 — c. Doctors Bucket section globals ───────────────────────────── */
 
 export type SurgeonsHeroGlobal = {
@@ -684,6 +754,12 @@ export type CmsCache = {
   journeyHero: JourneyHeroGlobal
   journeyStats: JourneyStatsGlobal
   recoveryStaysPage: RecoveryStaysPageGlobal
+  // R3 — b. Treatments Bucket section globals
+  treatmentsHero: TreatmentsHeroGlobal
+  treatmentsIndexSection: TreatmentsIndexSectionGlobal
+  treatmentsStats: TreatmentsStatsGlobal
+  disciplineDetailTemplate: DisciplineDetailTemplateGlobal
+  subCategoryDetailTemplate: SubCategoryDetailTemplateGlobal
   // R4 — c. Doctors Bucket section globals
   surgeonsHero: SurgeonsHeroGlobal
   surgeonsLeadView: SurgeonsLeadViewGlobal

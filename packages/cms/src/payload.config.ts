@@ -81,6 +81,17 @@ import { PricingPayment } from './globals/pricing/PricingPayment'
 import { PricingDisciplineListView } from './globals/pricing/PricingDisciplineListView'
 import { PricingCatalogueView } from './globals/pricing/PricingCatalogueView'
 
+// Phase R3 — b. Treatments Bucket section globals.
+// 5 globals that lift the /treatments index chrome + the shared
+// /treatments/<discipline> + /treatments/<sub-cat> template chrome out
+// of the route source so every visible atom across the 29 treatment
+// routes becomes CMS-editable.
+import { TreatmentsHero } from './globals/treatments/TreatmentsHero'
+import { TreatmentsIndexSection } from './globals/treatments/TreatmentsIndexSection'
+import { TreatmentsStats } from './globals/treatments/TreatmentsStats'
+import { DisciplineDetailTemplate } from './globals/treatments/DisciplineDetailTemplate'
+import { SubCategoryDetailTemplate } from './globals/treatments/SubCategoryDetailTemplate'
+
 import { seedSuperAdmin } from './seed/admin'
 import { emailAdapter } from './lib/email-adapter'
 
@@ -162,6 +173,11 @@ export default buildConfig({
     PressPage,
     PrivacyPage,
     TreatmentsPage,
+    TreatmentsHero,
+    TreatmentsIndexSection,
+    TreatmentsStats,
+    DisciplineDetailTemplate,
+    SubCategoryDetailTemplate,
     SurgeonsPage,
     SurgeonsHero,
     SurgeonsLeadView,

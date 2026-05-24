@@ -6,6 +6,7 @@ import { apiWarningField } from '../lib/api-warning'
 
 export const Procedures: CollectionConfig = {
   slug: 'procedures',
+  labels: { singular: 'Procedure', plural: 'g. Procedures' },
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'catalogueGroup', 'mainCategory', 'parentSubCategory', 'featuredRank', 'sortOrder'],

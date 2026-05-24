@@ -5,9 +5,11 @@ import { pageFields } from './_pageFields'
 
 export const TreatmentsPage: GlobalConfig = {
   slug: 'treatments-page',
+  label: 'a. Main',
   admin: {
     group: 'b. Treatments',
-    description: 'Editorial content for /treatments (index of disciplines). Discipline cards are rendered from the Disciplines collection.',
+    description:
+      'Page meta + SEO + CmsExtraBlocks slot for /treatments. The editorial hero / stats / index chrome lives in the dedicated b. Hero, c. Index, and d. Stats globals; discipline cards render from e. Disciplines.',
   },
   access: { read: publishedOrAuthed, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),

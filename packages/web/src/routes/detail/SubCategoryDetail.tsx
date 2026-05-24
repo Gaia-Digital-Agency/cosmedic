@@ -9,8 +9,38 @@ import { SurgeonMini } from '@/components/detail/SurgeonMini'
 import { ProcedureFactsPanel } from '@/components/detail/ProcedureFactsPanel'
 import { TREATMENT_LIST, SURGEON_LIST, TREATMENT_IMG, IMG } from '@/content/seed'
 import { SUBCATEGORY_DATA } from '@/content/subcategory-data'
+import { useCms } from '@/lib/cms-context'
 
 type Props = { slug: string }
+
+/* ─── R3 defensive fallbacks ───────────────────────────────────────────── */
+/* Verbatim copies of the template strings that lived in this file pre-R3.*/
+/* Used only when the CMS cache is cold / sub-category-detail-template    */
+/* global has no value. After seed runs the cache supplies the same       */
+/* strings — render stays byte-identical (Rule 3 / no-data-loss).         */
+const FB = {
+  chapterSeparator: ' · ',
+  toc: {
+    onThisPageLabel: 'On this page',
+    overviewLabel: 'Overview',
+    treatmentsLabel: 'Treatments',
+    faqsLabel: 'FAQs',
+  },
+  takeAStep: {
+    eyebrow: 'Take a step',
+    videoConsultLabel: 'Book a video consult →',
+    estimateLabel: 'Get a written estimate →',
+    whatsappLabel: 'WhatsApp the concierge →',
+    replyLine: 'Replies within 24 hours. No obligation.',
+  },
+  overview: { heading: 'Overview' },
+  treatments: {
+    heading: 'Treatments',
+    intro:
+      'The full list, with our typical price-from. Tap any treatment to expand details. Final quote is tailored after consultation.',
+  },
+  faqs: { heading: 'Frequently asked' },
+}
 
 export const SubCategoryDetail: React.FC<Props> = ({ slug }) => {
   const s = SUBCATEGORY_DATA[slug]
@@ -20,10 +50,33 @@ export const SubCategoryDetail: React.FC<Props> = ({ slug }) => {
   const surgeon = SURGEON_LIST.find((x) => x.slug === s.leadSurgeon)
   const heroImg = parent ? TREATMENT_IMG(parent.slug) : IMG.hero
 
+  const cms = useCms()
+  const tpl = cms?.subCategoryDetailTemplate
+  const sep = tpl?.chapterSeparator || FB.chapterSeparator
+  const toc = {
+    onThisPageLabel: tpl?.toc?.onThisPageLabel || FB.toc.onThisPageLabel,
+    overviewLabel: tpl?.toc?.overviewLabel || FB.toc.overviewLabel,
+    treatmentsLabel: tpl?.toc?.treatmentsLabel || FB.toc.treatmentsLabel,
+    faqsLabel: tpl?.toc?.faqsLabel || FB.toc.faqsLabel,
+  }
+  const takeAStep = {
+    eyebrow: tpl?.takeAStep?.eyebrow || FB.takeAStep.eyebrow,
+    videoConsultLabel: tpl?.takeAStep?.videoConsultLabel || FB.takeAStep.videoConsultLabel,
+    estimateLabel: tpl?.takeAStep?.estimateLabel || FB.takeAStep.estimateLabel,
+    whatsappLabel: tpl?.takeAStep?.whatsappLabel || FB.takeAStep.whatsappLabel,
+    replyLine: tpl?.takeAStep?.replyLine || FB.takeAStep.replyLine,
+  }
+  const overview = { heading: tpl?.overview?.heading || FB.overview.heading }
+  const treatments = {
+    heading: tpl?.treatments?.heading || FB.treatments.heading,
+    intro: tpl?.treatments?.intro || FB.treatments.intro,
+  }
+  const faqsBlock = { heading: tpl?.faqs?.heading || FB.faqs.heading }
+
   return (
     <PageShell activePage={`treatment-${s.parent}`}>
       <ChapterOpener
-        chapter={`${parent?.t || 'Treatment'} · ${s.title}`}
+        chapter={`${parent?.t || 'Treatment'}${sep}${s.title}`}
         title={s.chapterTitle}
         lede={s.lede}
         image={heroImg}
@@ -39,10 +92,10 @@ export const SubCategoryDetail: React.FC<Props> = ({ slug }) => {
 
       <div className="detail-layout">
         <aside className="detail-toc">
-          <Mono>On this page</Mono>
+          <Mono>{toc.onThisPageLabel}</Mono>
           <ol>
             <li>
-              <a href="#overview">Overview</a>
+              <a href="#overview">{toc.overviewLabel}</a>
             </li>
             {s.sections.map((sec) => (
               <li key={sec.id}>
@@ -50,10 +103,10 @@ export const SubCategoryDetail: React.FC<Props> = ({ slug }) => {
               </li>
             ))}
             <li>
-              <a href="#treatments">Treatments</a>
+              <a href="#treatments">{toc.treatmentsLabel}</a>
             </li>
             <li>
-              <a href="#faqs">FAQs</a>
+              <a href="#faqs">{toc.faqsLabel}</a>
             </li>
           </ol>
 
@@ -67,7 +120,7 @@ export const SubCategoryDetail: React.FC<Props> = ({ slug }) => {
               gap: 12,
             }}
           >
-            <Mono style={{ color: 'var(--accent-deep)' }}>Take a step</Mono>
+            <Mono style={{ color: 'var(--accent-deep)' }}>{takeAStep.eyebrow}</Mono>
             <a
               href={`/video-consult?procedure=${encodeURIComponent(s.title)}`}
               style={{
@@ -83,7 +136,7 @@ export const SubCategoryDetail: React.FC<Props> = ({ slug }) => {
                 textDecoration: 'none',
               }}
             >
-              Book a video consult →
+              {takeAStep.videoConsultLabel}
             </a>
             <a
               href={`/contact?intent=estimate&procedure=${encodeURIComponent(s.title)}`}
@@ -100,7 +153,7 @@ export const SubCategoryDetail: React.FC<Props> = ({ slug }) => {
                 textDecoration: 'none',
               }}
             >
-              Get a written estimate →
+              {takeAStep.estimateLabel}
             </a>
             <a
               href={`https://wa.me/6281339001911?text=${encodeURIComponent(
@@ -121,7 +174,7 @@ export const SubCategoryDetail: React.FC<Props> = ({ slug }) => {
                 textDecoration: 'none',
               }}
             >
-              WhatsApp the concierge →
+              {takeAStep.whatsappLabel}
             </a>
             <p
               style={{
@@ -133,7 +186,7 @@ export const SubCategoryDetail: React.FC<Props> = ({ slug }) => {
                 lineHeight: 1.45,
               }}
             >
-              Replies within 24 hours. No obligation.
+              {takeAStep.replyLine}
             </p>
           </div>
         </aside>
@@ -141,7 +194,7 @@ export const SubCategoryDetail: React.FC<Props> = ({ slug }) => {
         <div className="detail-body">
           <section id="overview">
             <Reveal>
-              <h2>Overview</h2>
+              <h2>{overview.heading}</h2>
               <p className="lede" style={{ fontSize: 18 }}>
                 {s.overview}
               </p>
@@ -164,11 +217,8 @@ export const SubCategoryDetail: React.FC<Props> = ({ slug }) => {
 
           <section id="treatments">
             <Reveal>
-              <h2>Treatments</h2>
-              <p>
-                The full list, with our typical price-from. Tap any treatment to expand details.
-                Final quote is tailored after consultation.
-              </p>
+              <h2>{treatments.heading}</h2>
+              <p>{treatments.intro}</p>
             </Reveal>
             <div style={{ marginTop: 32, borderTop: '1px solid var(--ink-20)' }}>
               {s.treatments.map((t, i) => (
@@ -184,7 +234,7 @@ export const SubCategoryDetail: React.FC<Props> = ({ slug }) => {
           {s.faqs && s.faqs.length > 0 && (
             <section id="faqs">
               <Reveal>
-                <h2>Frequently asked</h2>
+                <h2>{faqsBlock.heading}</h2>
               </Reveal>
               <div className="faq-list">
                 {s.faqs.map((f, i) => (
