@@ -15,7 +15,6 @@ import type {
   Surgeon,
   RecoveryStay,
   PressMention,
-  PricingTier,
   Award,
   BlogPost,
   BeforeAfterCase,
@@ -234,16 +233,6 @@ export type LegacyDisciplineContent = {
   sections: Array<{ id: string; t: string; body: string }>
   procedures?: Array<{ n: string; d: string; priceFromIdr: number | null }>
   faqs: Array<{ q: string; a: string }>
-  pricing: Array<{
-    tier: string
-    italic: string
-    amountIdr: number | null
-    from: string
-    small: string
-    items: string[]
-    cta: string
-    featured?: boolean
-  }>
 }
 
 export function adaptDisciplineContent(slug: string, cms: CmsCache): LegacyDisciplineContent | null {
@@ -279,29 +268,6 @@ export function adaptDisciplineContent(slug: string, cms: CmsCache): LegacyDisci
       priceFromIdr: p.pricing?.priceIdr2026 ?? p.pricing?.priceIdr2025 ?? null,
     }))
 
-  const pricingTiersForDisc = [...cms.pricingTiers].sort(
-    (a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0),
-  )
-  const audToIdrRate = cms.settings?.audToIdrRate || 10500
-  const pricing = pricingTiersForDisc.map((t) => {
-    const idr =
-      t.priceFromIdr != null
-        ? t.priceFromIdr
-        : t.priceFromAud != null
-          ? t.priceFromAud * audToIdrRate
-          : null
-    return {
-      tier: t.name,
-      italic: lexicalToText(t.descriptor).split(' — ')[0] || '',
-      amountIdr: idr,
-      from: idr === 0 || idr == null ? 'Complimentary' : 'IDR · from',
-      small: lexicalToText(t.descriptor).split(' — ').slice(1).join(' — ') || '',
-      items: (t.inclusions ?? []).map((i) => i.value),
-      cta: idr === 0 || idr == null ? 'Book a consult' : 'Plan your journey',
-      featured: Boolean(t.isFeatured),
-    }
-  })
-
   return {
     chapter: d.tagline || '',
     title: [d.chapterTitle?.a || '', d.chapterTitle?.b || ''],
@@ -312,7 +278,6 @@ export function adaptDisciplineContent(slug: string, cms: CmsCache): LegacyDisci
     sections: [],
     procedures,
     faqs: d.faqs ?? [],
-    pricing,
   }
 }
 
@@ -361,9 +326,6 @@ export const awardsSorted = (cms: CmsCache): Award[] =>
 
 export const recoveryStaysSorted = (cms: CmsCache): RecoveryStay[] =>
   [...cms.recoveryStays].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
-
-export const pricingTiersSorted = (cms: CmsCache): PricingTier[] =>
-  [...cms.pricingTiers].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
 
 export const blogPostsSorted = (cms: CmsCache): BlogPost[] =>
   [...cms.blogPosts].sort(

@@ -29,7 +29,6 @@ import {
   seedAwards,
   seedPressMentions,
   seedRecoveryStays,
-  seedPricingTiers,
   seedBlogPosts,
 } from './seed-content'
 import { seedPageGlobals } from './seed-page-globals'
@@ -49,7 +48,6 @@ export async function runContentSeed(payload: Payload): Promise<void> {
   await seedAwards(payload)
   await seedPressMentions(payload)
   await seedRecoveryStays(payload)
-  await seedPricingTiers(payload)
   await seedBlogPosts(payload)
 
   await seedPageGlobals(payload)

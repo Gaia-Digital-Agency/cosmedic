@@ -73,16 +73,11 @@ export interface Config {
     disciplines: Discipline;
     'sub-categories': SubCategory;
     procedures: Procedure;
-    'price-list-items': PriceListItem;
-    'injectable-products': InjectableProduct;
-    'machine-treatments': MachineTreatment;
-    'hair-removal-areas': HairRemovalArea;
     'before-after-cases': BeforeAfterCase;
     stories: Story;
     'press-mentions': PressMention;
     awards: Award;
     'recovery-stays': RecoveryStay;
-    'pricing-tiers': PricingTier;
     'blog-posts': BlogPost;
     'blog-tags': BlogTag;
     authors: Author;
@@ -108,16 +103,11 @@ export interface Config {
     disciplines: DisciplinesSelect<false> | DisciplinesSelect<true>;
     'sub-categories': SubCategoriesSelect<false> | SubCategoriesSelect<true>;
     procedures: ProceduresSelect<false> | ProceduresSelect<true>;
-    'price-list-items': PriceListItemsSelect<false> | PriceListItemsSelect<true>;
-    'injectable-products': InjectableProductsSelect<false> | InjectableProductsSelect<true>;
-    'machine-treatments': MachineTreatmentsSelect<false> | MachineTreatmentsSelect<true>;
-    'hair-removal-areas': HairRemovalAreasSelect<false> | HairRemovalAreasSelect<true>;
     'before-after-cases': BeforeAfterCasesSelect<false> | BeforeAfterCasesSelect<true>;
     stories: StoriesSelect<false> | StoriesSelect<true>;
     'press-mentions': PressMentionsSelect<false> | PressMentionsSelect<true>;
     awards: AwardsSelect<false> | AwardsSelect<true>;
     'recovery-stays': RecoveryStaysSelect<false> | RecoveryStaysSelect<true>;
-    'pricing-tiers': PricingTiersSelect<false> | PricingTiersSelect<true>;
     'blog-posts': BlogPostsSelect<false> | BlogPostsSelect<true>;
     'blog-tags': BlogTagsSelect<false> | BlogTagsSelect<true>;
     authors: AuthorsSelect<false> | AuthorsSelect<true>;
@@ -241,7 +231,7 @@ export interface User {
   collection: 'users';
 }
 /**
- * Every image used anywhere on the site — hero images, doctor portraits, before/after composites, logos, OG/share previews, lifestyle imagery. Filter by "Placeholder" to see the seed-shipped images still awaiting real photos from the clinic. Use the Category field to group assets by the bucket they belong to (Homepage, Treatments, Doctors, etc.). Upload here once → reference everywhere via Upload fields on other collections.
+ * Every image used anywhere on the site — hero images, doctor portraits, before/after composites, logos, OG/share previews, lifestyle imagery. Filter by "Placeholder" to see the seed-shipped images still awaiting real photos from the clinic. TWO ways to organise: (1) the Category dropdown tags each asset to a site bucket (Homepage, Treatments, Doctors, …) — use this to filter the list view; (2) the "Browse by Folder" toggle gives a desktop-style folder tree (drag-and-drop, create/rename folders) for free-form organisation — like grouping all assets from a 2026 brand refresh under one folder. Folders and Category are independent — an asset can live in any folder and still be tagged to any Category. Upload here once → reference everywhere via Upload fields on other collections.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
@@ -343,7 +333,7 @@ export interface FolderInterface {
   createdAt: string;
 }
 /**
- * The clinic's surgeons. Each record renders on: (1) the /surgeons listing card, (2) the /surgeon-{slug} detail page, (3) the Doctors mega-menu, (4) blog bylines when the surgeon is the author, (5) discipline + sub-category pages as Lead Surgeon. Edit ONCE here — every page using this doctor updates.
+ * The clinic's surgeons. Each record renders on: (1) the /surgeons listing card, (2) the /surgeons/{slug} detail page, (3) the Doctors mega-menu, (4) blog bylines when the surgeon is the author, (5) discipline + sub-category pages as Lead Surgeon. Edit ONCE here — every page using this doctor updates.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "surgeons".
@@ -351,11 +341,11 @@ export interface FolderInterface {
 export interface Surgeon {
   id: number;
   /**
-   * URL fragment for the doctor's page. "suka" → https://cosmedic.gaiada.online/surgeon-suka. Lowercase, hyphens only.
+   * URL fragment for the doctor's page. "suka" → https://cosmedic.gaiada.online/surgeons/suka. Lowercase, hyphens only.
    */
   slug: string;
   /**
-   * Full formal name including credentials. Rendered as the page heading on /surgeon-{slug} and the byline on cards. e.g. "dr. I Made Suka Adnyana, SpBP-RE (K)".
+   * Full formal name including credentials. Rendered as the page heading on /surgeons/{slug} and the byline on cards. e.g. "dr. I Made Suka Adnyana, SpBP-RE (K)".
    */
   name: string;
   /**
@@ -371,7 +361,7 @@ export interface Surgeon {
    */
   suffix?: string | null;
   /**
-   * One-line specialty headline shown on the surgeon's grid card and as the eyebrow on /surgeon-{slug}. e.g. "Facial Aesthetics".
+   * One-line specialty headline shown on the surgeon's grid card and as the eyebrow on /surgeons/{slug}. e.g. "Facial Aesthetics".
    */
   spec?: string | null;
   /**
@@ -379,7 +369,7 @@ export interface Surgeon {
    */
   train?: string | null;
   /**
-   * Memberships line shown as the "Distinction" stat block on /surgeon-{slug}. e.g. "ISAPS Member".
+   * Memberships line shown as the "Distinction" stat block on /surgeons/{slug}. e.g. "ISAPS Member".
    */
   proc?: string | null;
   /**
@@ -387,7 +377,7 @@ export interface Surgeon {
    */
   credLine?: string | null;
   /**
-   * Big number shown in the "Years in practice" stat block on /surgeon-{slug}.
+   * Big number shown in the "Years in practice" stat block on /surgeons/{slug}.
    */
   yearsInPractice?: number | null;
   /**
@@ -403,7 +393,7 @@ export interface Surgeon {
    */
   lead?: boolean | null;
   /**
-   * Long-form biography rendered as the body content on /surgeon-{slug}. Rich text (headings, paragraphs, emphasis).
+   * Long-form biography rendered as the body content on /surgeons/{slug}. Rich text (headings, paragraphs, emphasis).
    */
   bio?: {
     root: {
@@ -430,7 +420,7 @@ export interface Surgeon {
       }[]
     | null;
   /**
-   * The surgeon's portrait shown on: (1) /surgeons grid card, (2) /surgeon-{slug} hero, (3) Doctors mega-menu thumbnail, (4) blog byline when this surgeon authored. Square crop ideal, ~500×500 minimum.
+   * The surgeon's portrait shown on: (1) /surgeons grid card, (2) /surgeons/{slug} hero, (3) Doctors mega-menu thumbnail, (4) blog byline when this surgeon authored. Square crop ideal, ~500×500 minimum.
    */
   portrait?: (number | null) | Media;
   /**
@@ -438,7 +428,7 @@ export interface Surgeon {
    */
   portraitPosition?: string | null;
   /**
-   * Renders as the "Availability" line in the bio sidebar of /surgeon-{slug}. Each row = one weekday + time window. Sourced from clinic pricelist Further Info.
+   * Renders as the "Availability" line in the bio sidebar of /surgeons/{slug}. Each row = one weekday + time window. Sourced from clinic pricelist Further Info.
    */
   availabilitySchedule?:
     | {
@@ -462,7 +452,7 @@ export interface Surgeon {
       }[]
     | null;
   /**
-   * Languages this doctor consults in. Rendered as a row in the bio sidebar of /surgeon-{slug}.
+   * Languages this doctor consults in. Rendered as a row in the bio sidebar of /surgeons/{slug}.
    */
   languages?:
     | {
@@ -507,7 +497,7 @@ export interface Surgeon {
   createdAt: string;
 }
 /**
- * Editorial detail for each individual procedure (Rhinoplasty, Breast Augmentation, …). Renders as the accordion items on the relevant sub-category page (/treatment-{sub-slug}) and supplies pricing/cross-link data shown on /pricing rows.
+ * Single source of truth for ALL pricing (Phase C9). Holds the 41 editorial surgical procedures AND the 101 catalogue line items absorbed from MachineTreatments / InjectableProducts / HairRemovalAreas. Catalogue fields (catalogueGroup, mainCategory, subCategory, brand, productLine, manufacturer, fdaApproved, bodyZone, audienceTier, unit) drive grouping in the /pricing tables; editorial fields (description, sections, faqs, surgeonsCredentialed, etc.) only need to be populated on the editorial procedures. PRICING bucket points back to this collection — pricing edits land here.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "procedures".
@@ -519,7 +509,7 @@ export interface Procedure {
    */
   slug: string;
   /**
-   * Display name shown in the procedure accordion on /treatment-{sub-slug} AND on /pricing rows.
+   * Display name shown in the procedure accordion on /treatments/{sub-slug} AND on /pricing rows.
    */
   name: string;
   /**
@@ -527,11 +517,51 @@ export interface Procedure {
    */
   shortName?: string | null;
   /**
-   * Which top-level discipline this procedure belongs to. Required so the procedure can be located in the catalogue.
+   * Drives which /pricing table this row appears in. surgical = full editorial; machine / injection / btl = catalogue-only line items.
    */
-  parentDiscipline: number | Discipline;
+  catalogueGroup?: ('surgical' | 'machine' | 'injection' | 'btl') | null;
   /**
-   * Which sub-category this procedure renders under. Drives which /treatment-{sub-slug} page lists this procedure in its accordion.
+   * Main Category — e.g. "Face & Neck" (surgical), "Laser AFT Rejuvenation" (machine), "DERMAL FILLER" (injection), "Upper Body" (btl)
+   */
+  mainCategory?: string | null;
+  /**
+   * Optional 3rd-level grouping label inside Main Category. Distinct from the parentSubCategory relationship below — this is a free-text bucket for catalogue items without an editorial Sub Category entry.
+   */
+  subCategory?: string | null;
+  /**
+   * e.g. "1 ml", "per unit", "per thread", "Face", "Half Arm"
+   */
+  unit?: string | null;
+  /**
+   * Pricing tier for multi-tier rows (machine 3-tier).
+   */
+  audienceTier?: ('standard' | 'tourist' | 'kitas_ktp' | 'package') | null;
+  /**
+   * Injection only — e.g. "Juvederm"
+   */
+  brand?: string | null;
+  /**
+   * Injection only — e.g. "Volux"
+   */
+  productLine?: string | null;
+  /**
+   * Injection only — e.g. "Allergan"
+   */
+  manufacturer?: string | null;
+  /**
+   * Injection only — FDA-approved badge.
+   */
+  fdaApproved?: boolean | null;
+  /**
+   * BTL only — body zone for hair removal grouping.
+   */
+  bodyZone?: ('face' | 'upper-body' | 'lower-body' | 'package' | 'other') | null;
+  /**
+   * Which top-level discipline this procedure belongs to. Required for editorial procedures; optional for catalogue line items.
+   */
+  parentDiscipline?: (number | null) | Discipline;
+  /**
+   * Which sub-category this procedure renders under. Drives which /treatments/{sub-slug} page lists this procedure in its accordion.
    */
   parentSubCategory?: (number | null) | SubCategory;
   /**
@@ -635,7 +665,7 @@ export interface Procedure {
    */
   includesImplant?: boolean | null;
   /**
-   * Detail fields shown inside the procedure accordion on /treatment-{sub-slug}.
+   * Detail fields shown inside the procedure accordion on /treatments/{sub-slug}.
    */
   detail?: {
     /**
@@ -709,7 +739,7 @@ export interface Procedure {
   createdAt: string;
 }
 /**
- * The 6 top-level treatment disciplines (Surgical / Reconstructive / Non-surgical / Hair / Dental / Concierge). Each renders at /treatment-{slug} AND drives the top level of the Treatments mega-menu, the homepage Treatments grid, and the /treatments index cards.
+ * The 6 top-level treatment disciplines (Surgical / Reconstructive / Non-surgical / Hair / Dental / Concierge). Each renders at /treatments/{slug} AND drives the top level of the Treatments mega-menu, the homepage Treatments grid, and the /treatments index cards.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "disciplines".
@@ -717,7 +747,7 @@ export interface Procedure {
 export interface Discipline {
   id: number;
   /**
-   * URL fragment for the discipline page. "surgical" → https://cosmedic.gaiada.online/treatment-surgical. Lowercase, hyphens only.
+   * URL fragment for the discipline page. "surgical" → https://cosmedic.gaiada.online/treatments/surgical. Lowercase, hyphens only.
    */
   slug: string;
   /**
@@ -755,7 +785,7 @@ export interface Discipline {
     [k: string]: unknown;
   } | null;
   /**
-   * Two-line hero headline on /treatment-{slug}. Split between roman first line and italic accent second line.
+   * Two-line hero headline on /treatments/{slug}. Split between roman first line and italic accent second line.
    */
   chapterTitle?: {
     /**
@@ -768,15 +798,15 @@ export interface Discipline {
     b?: string | null;
   };
   /**
-   * Small mono-font eyebrow shown above the hero title on /treatment-{slug}.
+   * Small mono-font eyebrow shown above the hero title on /treatments/{slug}.
    */
   tagline?: string | null;
   /**
-   * Lede paragraph rendered under the hero title on /treatment-{slug}.
+   * Lede paragraph rendered under the hero title on /treatments/{slug}.
    */
   lede?: string | null;
   /**
-   * Long-form overview rich-text block rendered as the body content of /treatment-{slug}.
+   * Long-form overview rich-text block rendered as the body content of /treatments/{slug}.
    */
   overview?: {
     root: {
@@ -794,7 +824,7 @@ export interface Discipline {
     [k: string]: unknown;
   } | null;
   /**
-   * Hero background image on /treatment-{slug}. Also feeds the discipline thumbnail on the homepage Treatments grid + /treatments index.
+   * Hero background image on /treatments/{slug}. Also feeds the discipline thumbnail on the homepage Treatments grid + /treatments index.
    */
   heroImage?: (number | null) | Media;
   /**
@@ -802,7 +832,7 @@ export interface Discipline {
    */
   leadSurgeons?: (number | Surgeon)[] | null;
   /**
-   * Frequently-asked-questions section at the bottom of /treatment-{slug}.
+   * Frequently-asked-questions section at the bottom of /treatments/{slug}.
    */
   faqs?:
     | {
@@ -850,7 +880,7 @@ export interface Discipline {
   createdAt: string;
 }
 /**
- * The 22 sub-categories nested under disciplines (e.g. Face / Body / Breast under Surgical). Each renders at /treatment-{slug} AND fills the second level of the Treatments mega-menu under its parent discipline.
+ * The 22 sub-categories nested under disciplines (e.g. Face / Body / Breast under Surgical). Each renders at /treatments/{slug} AND fills the second level of the Treatments mega-menu under its parent discipline.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "sub-categories".
@@ -858,7 +888,7 @@ export interface Discipline {
 export interface SubCategory {
   id: number;
   /**
-   * URL fragment for the sub-category page. "surgical-breast" → https://cosmedic.gaiada.online/treatment-surgical-breast.
+   * URL fragment for the sub-category page. "surgical-breast" → https://cosmedic.gaiada.online/treatments/surgical-breast.
    */
   slug: string;
   /**
@@ -870,7 +900,7 @@ export interface SubCategory {
    */
   title: string;
   /**
-   * Two-line hero headline on /treatment-{slug}. Split between roman first line and italic accent second line.
+   * Two-line hero headline on /treatments/{slug}. Split between roman first line and italic accent second line.
    */
   chapterTitle?: {
     /**
@@ -909,7 +939,7 @@ export interface SubCategory {
     [k: string]: unknown;
   } | null;
   /**
-   * Long-form overview rich-text block rendered as the body content of /treatment-{slug}.
+   * Long-form overview rich-text block rendered as the body content of /treatments/{slug}.
    */
   overview?: {
     root: {
@@ -931,12 +961,12 @@ export interface SubCategory {
    */
   leadSurgeon?: (number | null) | Surgeon;
   /**
-   * Body sections rendered in order on /treatment-{slug}. Each section gets a heading + anchor link in the sticky-TOC sidebar.
+   * Body sections rendered in order on /treatments/{slug}. Each section gets a heading + anchor link in the sticky-TOC sidebar.
    */
   sections?:
     | {
         /**
-         * URL-safe anchor id used in the TOC link and href, e.g. "overview" → /treatment-X#overview.
+         * URL-safe anchor id used in the TOC link and href, e.g. "overview" → /treatments/X#overview.
          */
         anchorId: string;
         /**
@@ -965,7 +995,7 @@ export interface SubCategory {
       }[]
     | null;
   /**
-   * Frequently-asked-questions accordion at the bottom of /treatment-{slug}.
+   * Frequently-asked-questions accordion at the bottom of /treatments/{slug}.
    */
   faqs?:
     | {
@@ -981,7 +1011,7 @@ export interface SubCategory {
       }[]
     | null;
   /**
-   * Hero background image on /treatment-{slug}. Inherits parent discipline's hero when empty.
+   * Hero background image on /treatments/{slug}. Inherits parent discipline's hero when empty.
    */
   heroImage?: (number | null) | Media;
   /**
@@ -1167,167 +1197,6 @@ export interface BeforeAfterCase {
      */
     noindex?: boolean | null;
   };
-  /**
-   * Lower numbers appear EARLIER in listings (mega-menu, index pages, cards). Use 0/10/20/30 leaving room to insert items between.
-   */
-  sortOrder?: number | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * The complete clinic price catalogue (~200 rows from docs/pricelist.xlsx). Renders as the big tables on /pricing, grouped by Sheet (Surgical / Non-Surgical / Machine / Injection / BTL) and then by Category. This is the canonical source for every price on the site.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "price-list-items".
- */
-export interface PriceListItem {
-  id: number;
-  /**
-   * Auto-generated from sheet + name during seed
-   */
-  slug: string;
-  sheet: 'surgical' | 'non-surgical' | 'machine' | 'injection' | 'btl';
-  /**
-   * e.g. "Face & Neck"
-   */
-  category?: string | null;
-  /**
-   * e.g. "Breast"
-   */
-  subCategory?: string | null;
-  name: string;
-  /**
-   * e.g. "1 ml", "per thread", "Face"
-   */
-  unit?: string | null;
-  audienceTier?: ('standard' | 'tourist' | 'kitas_ktp' | 'package') | null;
-  /**
-   * Parenthetical notes from the row
-   */
-  notes?: string | null;
-  priceIdr2025?: number | null;
-  priceAud2025?: number | null;
-  priceIdr2026?: number | null;
-  priceAud2026?: number | null;
-  priceIdrRangeLow?: number | null;
-  priceIdrRangeHigh?: number | null;
-  /**
-   * 1/2/3 from "Top 3" marker in xlsx column 1
-   */
-  featuredRank?: number | null;
-  includesImplant?: boolean | null;
-  /**
-   * If this row maps to a curated editorial procedure
-   */
-  linkedProcedure?: (number | null) | Procedure;
-  linkedInjectableProduct?: (number | null) | InjectableProduct;
-  linkedMachineTreatment?: (number | null) | MachineTreatment;
-  /**
-   * Lower numbers appear EARLIER in listings (mega-menu, index pages, cards). Use 0/10/20/30 leaving room to insert items between.
-   */
-  sortOrder?: number | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * Named injectable products (Restylane, Juvederm, Teosyal, Botox, …). Renders as rows in the Injectable Catalogue section of /pricing, grouped by category. Each row shows brand, name, price, manufacturer, and FDA badge.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "injectable-products".
- */
-export interface InjectableProduct {
-  id: number;
-  slug: string;
-  name: string;
-  /**
-   * e.g. "Juvederm"
-   */
-  brand?: string | null;
-  /**
-   * e.g. "Volux"
-   */
-  productLine?: string | null;
-  category:
-    | 'filler'
-    | 'botulinum-toxin'
-    | 'skin-booster'
-    | 'collagen-stimulator'
-    | 'bio-remodeling'
-    | 'hgh'
-    | 'thread-lift'
-    | 'mesotherapy';
-  /**
-   * e.g. "1 ml", "per unit", "per thread"
-   */
-  unit?: string | null;
-  priceIdr?: number | null;
-  priceAud?: number | null;
-  notes?: string | null;
-  manufacturer?: string | null;
-  fdaApproved?: boolean | null;
-  /**
-   * Lower numbers appear EARLIER in listings (mega-menu, index pages, cards). Use 0/10/20/30 leaving room to insert items between.
-   */
-  sortOrder?: number | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * Laser / RF / non-injection machine treatments. Renders as rows in the Machine Treatments section of /pricing, grouped by machine name. Three-tier pricing per row (Tourist standard / Kitas+KTP / optional Package).
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "machine-treatments".
- */
-export interface MachineTreatment {
-  id: number;
-  /**
-   * e.g. "laser-erbium-resurfacing-face"
-   */
-  slug: string;
-  /**
-   * e.g. "Laser Erbium Resurfacing"
-   */
-  machineName: string;
-  /**
-   * e.g. "Face", "Neck", "Half Arm"
-   */
-  area: string;
-  pricing?: {
-    /**
-     * BIMC Tourist (standard) IDR
-     */
-    standardIdr?: number | null;
-    /**
-     * Kitas + KTP holder IDR
-     */
-    kitasKtpIdr?: number | null;
-    /**
-     * Package price IDR (optional)
-     */
-    packageIdr?: number | null;
-  };
-  notes?: string | null;
-  linkedProcedure?: (number | null) | Procedure;
-  /**
-   * Lower numbers appear EARLIER in listings (mega-menu, index pages, cards). Use 0/10/20/30 leaving room to insert items between.
-   */
-  sortOrder?: number | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * BTL hair-removal areas and other BTL services. Renders as rows in the BTL Hair Removal section of /pricing, grouped by body zone (Face / Upper Body / Lower Body / Package / Other).
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "hair-removal-areas".
- */
-export interface HairRemovalArea {
-  id: number;
-  slug: string;
-  area: string;
-  bodyZone: 'face' | 'upper-body' | 'lower-body' | 'package' | 'other';
-  priceIdr?: number | null;
-  notes?: string | null;
   /**
    * Lower numbers appear EARLIER in listings (mega-menu, index pages, cards). Use 0/10/20/30 leaving room to insert items between.
    */
@@ -1545,48 +1414,7 @@ export interface RecoveryStay {
   createdAt: string;
 }
 /**
- * Concierge package tiers (Sanctuary, Restorative, …) shown as the tier-cards section near the top of /pricing.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pricing-tiers".
- */
-export interface PricingTier {
-  id: number;
-  slug: string;
-  name: string;
-  descriptor?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  priceFromAud?: number | null;
-  priceFromIdr?: number | null;
-  inclusions?:
-    | {
-        value: string;
-        id?: string | null;
-      }[]
-    | null;
-  isFeatured?: boolean | null;
-  /**
-   * Lower numbers appear EARLIER in listings (mega-menu, index pages, cards). Use 0/10/20/30 leaving room to insert items between.
-   */
-  sortOrder?: number | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * Journal articles. Each post renders at /blog-{slug} and appears as a card on /blog. Has title, lede, rich-text body, hero image, author, tags, publish status, per-post SEO.
+ * Journal articles. Each post renders at /blog/{slug} and appears as a card on /blog. Has title, lede, rich-text body, hero image, author, tags, publish status, per-post SEO.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "blog-posts".
@@ -1653,7 +1481,7 @@ export interface BlogPost {
   createdAt: string;
 }
 /**
- * Blog post authors. Each author has a name, role, portrait, bio, and an optional link to a Surgeon record (when the author is one of the clinic's clinicians). Powers the byline + "About the author" callout on each /blog-{slug} page.
+ * Blog post authors. Each author has a name, role, portrait, bio, and an optional link to a Surgeon record (when the author is one of the clinic's clinicians). Powers the byline + "About the author" callout on each /blog/{slug} page.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "authors".
@@ -1794,22 +1622,6 @@ export interface PayloadLockedDocument {
         value: number | Procedure;
       } | null)
     | ({
-        relationTo: 'price-list-items';
-        value: number | PriceListItem;
-      } | null)
-    | ({
-        relationTo: 'injectable-products';
-        value: number | InjectableProduct;
-      } | null)
-    | ({
-        relationTo: 'machine-treatments';
-        value: number | MachineTreatment;
-      } | null)
-    | ({
-        relationTo: 'hair-removal-areas';
-        value: number | HairRemovalArea;
-      } | null)
-    | ({
         relationTo: 'before-after-cases';
         value: number | BeforeAfterCase;
       } | null)
@@ -1828,10 +1640,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'recovery-stays';
         value: number | RecoveryStay;
-      } | null)
-    | ({
-        relationTo: 'pricing-tiers';
-        value: number | PricingTier;
       } | null)
     | ({
         relationTo: 'blog-posts';
@@ -2160,6 +1968,16 @@ export interface ProceduresSelect<T extends boolean = true> {
   slug?: T;
   name?: T;
   shortName?: T;
+  catalogueGroup?: T;
+  mainCategory?: T;
+  subCategory?: T;
+  unit?: T;
+  audienceTier?: T;
+  brand?: T;
+  productLine?: T;
+  manufacturer?: T;
+  fdaApproved?: T;
+  bodyZone?: T;
   parentDiscipline?: T;
   parentSubCategory?: T;
   description?: T;
@@ -2220,89 +2038,6 @@ export interface ProceduresSelect<T extends boolean = true> {
         canonical?: T;
         noindex?: T;
       };
-  sortOrder?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "price-list-items_select".
- */
-export interface PriceListItemsSelect<T extends boolean = true> {
-  slug?: T;
-  sheet?: T;
-  category?: T;
-  subCategory?: T;
-  name?: T;
-  unit?: T;
-  audienceTier?: T;
-  notes?: T;
-  priceIdr2025?: T;
-  priceAud2025?: T;
-  priceIdr2026?: T;
-  priceAud2026?: T;
-  priceIdrRangeLow?: T;
-  priceIdrRangeHigh?: T;
-  featuredRank?: T;
-  includesImplant?: T;
-  linkedProcedure?: T;
-  linkedInjectableProduct?: T;
-  linkedMachineTreatment?: T;
-  sortOrder?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "injectable-products_select".
- */
-export interface InjectableProductsSelect<T extends boolean = true> {
-  slug?: T;
-  name?: T;
-  brand?: T;
-  productLine?: T;
-  category?: T;
-  unit?: T;
-  priceIdr?: T;
-  priceAud?: T;
-  notes?: T;
-  manufacturer?: T;
-  fdaApproved?: T;
-  sortOrder?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "machine-treatments_select".
- */
-export interface MachineTreatmentsSelect<T extends boolean = true> {
-  slug?: T;
-  machineName?: T;
-  area?: T;
-  pricing?:
-    | T
-    | {
-        standardIdr?: T;
-        kitasKtpIdr?: T;
-        packageIdr?: T;
-      };
-  notes?: T;
-  linkedProcedure?: T;
-  sortOrder?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "hair-removal-areas_select".
- */
-export interface HairRemovalAreasSelect<T extends boolean = true> {
-  slug?: T;
-  area?: T;
-  bodyZone?: T;
-  priceIdr?: T;
-  notes?: T;
   sortOrder?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -2443,27 +2178,6 @@ export interface RecoveryStaysSelect<T extends boolean = true> {
         canonical?: T;
         noindex?: T;
       };
-  sortOrder?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pricing-tiers_select".
- */
-export interface PricingTiersSelect<T extends boolean = true> {
-  slug?: T;
-  name?: T;
-  descriptor?: T;
-  priceFromAud?: T;
-  priceFromIdr?: T;
-  inclusions?:
-    | T
-    | {
-        value?: T;
-        id?: T;
-      };
-  isFeatured?: T;
   sortOrder?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -3435,7 +3149,7 @@ export interface HomePage {
     viewAllHref?: string | null;
   };
   /**
-   * Surgeons strip section frame on / (lead surgeon + associates).
+   * Surgeons strip section frame on / (lead surgeon + team group photo). q4 (2026-05-24): the 6-card associates grid was replaced with a single team photo. Per-surgeon profiles still live under /surgeons.
    */
   surgeonsBlock?: {
     eyebrow?: string | null;
@@ -3448,7 +3162,22 @@ export interface HomePage {
     leadStat3Label?: string | null;
     leadStat3Value?: string | null;
     leadCtaLabel?: string | null;
+    /**
+     * Eyebrow label on the team-photo row (left side).
+     */
     associatesEyebrow?: string | null;
+    /**
+     * Caption on the team-photo row (right side). Replaces the legacy "{N} practitioners" count. Defaults to "The Cosmedic Team".
+     */
+    teamCaption?: string | null;
+    /**
+     * Single team group photo replacing the legacy 6-card associates grid. Falls back to /assets/surgeons/team-placeholder.webp when unset.
+     */
+    groupPhoto?: (number | null) | Media;
+    /**
+     * Alt text for the team photo (accessibility). Falls back to the associatesEyebrow value.
+     */
+    groupPhotoAlt?: string | null;
   };
   /**
    * Gallery (Before & After) teaser section frame on /.
@@ -4952,7 +4681,7 @@ export interface GalleryPage {
   createdAt?: string | null;
 }
 /**
- * Editorial content for /pricing: hero text only. The clinic catalogue table is rendered line-by-line from PriceListItems.
+ * Editorial content for /pricing: hero (chapter / title / lede / heroImage) plus 3 A2 section blocks (overview, footnote, insurancePayment). The discipline price list and the full clinic catalogue table are data-driven from Procedures + PriceListItems.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pricing-page".
@@ -5185,6 +4914,46 @@ export interface PricingPage {
      * Tick to add <meta name="robots" content="noindex,nofollow"> and tell search engines NOT to index this page.
      */
     noindex?: boolean | null;
+  };
+  /**
+   * Optional editorial overview between the chapter opener and the price list. Leave blank and no section renders.
+   */
+  overviewBlock?: {
+    eyebrow?: string | null;
+    /**
+     * Roman text part of H2
+     */
+    headingPart1?: string | null;
+    /**
+     * Italic accent part of H2
+     */
+    headingPart2?: string | null;
+    body?: string | null;
+  };
+  /**
+   * Centred italic footnote rendered between the discipline price list and the full clinic catalogue table.
+   */
+  footnoteBlock?: {
+    text?: string | null;
+  };
+  /**
+   * Two-column section at the bottom of /pricing. Left column: insurance copy. Right column: payment heading + key/value terms list.
+   */
+  insurancePaymentBlock?: {
+    insuranceEyebrow?: string | null;
+    insuranceHeadingRoman?: string | null;
+    insuranceHeadingItalic?: string | null;
+    /**
+     * Body copy. Separate paragraphs with a blank line.
+     */
+    insuranceBody?: string | null;
+    paymentEyebrow?: string | null;
+    paymentHeadingRoman?: string | null;
+    paymentHeadingItalic?: string | null;
+    /**
+     * One row per line. Format: "Label | Value". Leave blank to use hardcoded fallback.
+     */
+    paymentTermsText?: string | null;
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -7078,6 +6847,9 @@ export interface HomePageSelect<T extends boolean = true> {
         leadStat3Value?: T;
         leadCtaLabel?: T;
         associatesEyebrow?: T;
+        teamCaption?: T;
+        groupPhoto?: T;
+        groupPhotoAlt?: T;
       };
   galleryBlock?:
     | T
@@ -8467,6 +8239,31 @@ export interface PricingPageSelect<T extends boolean = true> {
         ogImage?: T;
         canonical?: T;
         noindex?: T;
+      };
+  overviewBlock?:
+    | T
+    | {
+        eyebrow?: T;
+        headingPart1?: T;
+        headingPart2?: T;
+        body?: T;
+      };
+  footnoteBlock?:
+    | T
+    | {
+        text?: T;
+      };
+  insurancePaymentBlock?:
+    | T
+    | {
+        insuranceEyebrow?: T;
+        insuranceHeadingRoman?: T;
+        insuranceHeadingItalic?: T;
+        insuranceBody?: T;
+        paymentEyebrow?: T;
+        paymentHeadingRoman?: T;
+        paymentHeadingItalic?: T;
+        paymentTermsText?: T;
       };
   updatedAt?: T;
   createdAt?: T;

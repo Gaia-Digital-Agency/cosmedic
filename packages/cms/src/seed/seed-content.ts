@@ -78,24 +78,6 @@ export async function seedRecoveryStays(payload: Payload): Promise<void> {
   payload.logger.info(`[seed] recovery-stays=${villas.length}`)
 }
 
-export async function seedPricingTiers(payload: Payload): Promise<void> {
-  const tierSource = TREATMENT_CONTENT.surgical?.pricing ?? []
-  for (let i = 0; i < tierSource.length; i++) {
-    const tier = tierSource[i]
-    const tslug = slugify(tier.tier)
-    await upsert(payload, 'pricing-tiers', 'slug', tslug, {
-      slug: tslug,
-      name: tier.tier,
-      descriptor: plainTextToLexical(tier.italic + ' — ' + tier.small),
-      priceFromAud: tier.amount === '0' ? 0 : Number(String(tier.amount).replace(/,/g, '')) || undefined,
-      inclusions: tier.items.map((value: string) => ({ value })),
-      isFeatured: Boolean(tier.featured),
-      sortOrder: i,
-    })
-  }
-  payload.logger.info(`[seed] pricing-tiers=${tierSource.length}`)
-}
-
 function parseLooseDate(s: string): string | undefined {
   if (!s) return undefined
   const direct = new Date(s)

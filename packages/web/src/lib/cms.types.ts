@@ -235,18 +235,6 @@ export type RecoveryStay = {
   sortOrder?: number
 }
 
-export type PricingTier = {
-  id: number
-  slug: string
-  name: string
-  descriptor?: Lexical
-  priceFromAud?: number
-  priceFromIdr?: number
-  inclusions?: Array<{ value: string }>
-  isFeatured?: boolean
-  sortOrder?: number
-}
-
 export type BlogPost = {
   id: number
   slug: string
@@ -392,7 +380,6 @@ export type CmsCache = {
   pressMentions: PressMention[]
   awards: Award[]
   recoveryStays: RecoveryStay[]
-  pricingTiers: PricingTier[]
   blogPosts: BlogPost[]
   authors: Author[]
   journeySteps: JourneyStep[]

@@ -20,16 +20,6 @@ export type DisciplineContent = {
   sections: Array<{ id: string; t: string; body: string }>
   procedures?: Array<{ n: string; d: string; priceFromIdr: number | null }>
   faqs: Array<{ q: string; a: string }>
-  pricing: Array<{
-    tier: string
-    italic: string
-    amountIdr: number | null
-    from: string
-    small: string
-    items: string[]
-    cta: string
-    featured?: boolean
-  }>
 }
 
 export const TREATMENT_CONTENT = lazyRecord<DisciplineContent>((cms: CmsCache) => {

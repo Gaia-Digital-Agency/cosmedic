@@ -21,7 +21,6 @@ import { Stories } from './collections/Stories'
 import { PressMentions } from './collections/PressMentions'
 import { Awards } from './collections/Awards'
 import { RecoveryStays } from './collections/RecoveryStays'
-import { PricingTiers } from './collections/PricingTiers'
 import { BlogPosts } from './collections/BlogPosts'
 import { BlogTags } from './collections/BlogTags'
 import { Authors } from './collections/Authors'
@@ -113,7 +112,6 @@ export default buildConfig({
     PressMentions,
     Awards,
     RecoveryStays,
-    PricingTiers,
     BlogPosts,
     BlogTags,
     Authors,

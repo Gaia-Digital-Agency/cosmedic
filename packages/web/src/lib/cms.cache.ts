@@ -19,7 +19,6 @@ import type {
   PressMention,
   Award,
   RecoveryStay,
-  PricingTier,
   BlogPost,
   Author,
   JourneyStep,
@@ -49,7 +48,6 @@ export const EMPTY_CACHE: CmsCache = {
   pressMentions: [],
   awards: [],
   recoveryStays: [],
-  pricingTiers: [],
   blogPosts: [],
   authors: [],
   journeySteps: [],
@@ -75,7 +73,7 @@ async function doLoad(): Promise<CmsCache> {
     const [
       surgeons, disciplines, subCategories, procedures,
       beforeAfterCases, stories, pressMentions, awards, recoveryStays,
-      pricingTiers, blogPosts, authors, journeySteps, inclusions, exclusions, pages,
+      blogPosts, authors, journeySteps, inclusions, exclusions, pages,
       settings, header, footer, floatingChrome, brandStats, endorsementMark,
       consultationPolicy, formDefaults, seoDefaults,
     ] = await Promise.all([
@@ -88,7 +86,6 @@ async function doLoad(): Promise<CmsCache> {
       fetchAll<PressMention>('press-mentions'),
       fetchAll<Award>('awards'),
       fetchAll<RecoveryStay>('recovery-stays'),
-      fetchAll<PricingTier>('pricing-tiers'),
       fetchAll<BlogPost>('blog-posts', 100, 2),
       fetchAll<Author>('authors', 100, 1),
       fetchAll<JourneyStep>('journey-steps'),
@@ -110,7 +107,7 @@ async function doLoad(): Promise<CmsCache> {
       loadedAt: Date.now(),
       surgeons, disciplines, subCategories, procedures,
       beforeAfterCases, stories, pressMentions, awards, recoveryStays,
-      pricingTiers, blogPosts, authors, journeySteps, inclusions, exclusions, pages,
+      blogPosts, authors, journeySteps, inclusions, exclusions, pages,
       settings, header, footer, floatingChrome, brandStats, endorsementMark,
       consultationPolicy, formDefaults, seoDefaults,
     }
