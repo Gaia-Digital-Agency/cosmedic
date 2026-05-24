@@ -5,8 +5,8 @@
 > Scope: Whole admin sidebar (top-level Buckets + per-Bucket items). Bucket realignment is the first slice; per-Bucket item detail follows Bucket by Bucket.
 >
 > **Planning state:**
-> - ✅ COMPLETE — User · Media · Journey · Contact · Homepage · About · Doctors
-> - ⏳ PENDING — Treatments · Results · Pricing
+> - ✅ COMPLETE — User · Media · Journey · Contact · Homepage · About · Doctors · Results
+> - ⏳ PENDING — Treatments · Pricing
 
 ## Goal
 
@@ -121,7 +121,7 @@ Implementation lives in [remap_plan.md](./remap_plan.md) Phase R0.
 
 ## 2. Per-Bucket Detail
 
-Each Bucket's Admin Items vs Site Section detail follows in its own sub-section. **Completed:** a. Homepage · c. Doctors · f. Journey · g. Contact · h. About. **Pending:** b. Treatments · d. Results · e. Pricing. (i. Media Library + Users have no editorial detail — asset store + auth plumbing respectively.)
+Each Bucket's Admin Items vs Site Section detail follows in its own sub-section. **Completed:** a. Homepage · c. Doctors · d. Results · f. Journey · g. Contact · h. About. **Pending:** b. Treatments · e. Pricing. (i. Media Library + Users have no editorial detail — asset store + auth plumbing respectively.)
 
 ### 2.a — Bucket "a. Homepage" detail
 
@@ -266,6 +266,61 @@ No standalone view-only Items — items c / d / e source from `g. Surgeons` whic
 | authoring surgeon | h. About → c. Blog-Posts byline |
 
 Bucket `c. Doctors` carries `admin.description`: *"Governs /surgeons + the 8 /surgeons/<slug> detail pages. The Surgeons Collection (g.) is the canonical source for every doctor surface on the site — homepage Surgeons-View, Doctors mega-menu, discipline & sub-category Lead Surgeon panels, and blog bylines all read from here."*
+
+### 2.d — Bucket "d. Results" detail
+
+Covers routes `/results`, `/gallery`, `/stories`. `/results` is the hybrid index page (shows both BA cases AND patient stories as teasers); `/gallery` is the full BA list; `/stories` is the full patient-quote list. Two CTA blocks are shared across pages (Rule 8 — single source). Two intra-Bucket `-View` items carry section chrome whose cards live in the same Bucket's collections.
+
+| Admin Item (d. Results) | Site section it governs |
+|---|---|
+| **a. Main** | `/results` page meta — admin title, slug, route, publishStatus, SEO meta, bottom `<CmsExtraBlocks slug="results"/>` slot |
+| **b. Hero** | `/results` ChapterOpener — chapter "Chapter IV — Results & Stories", title A "Quietly", title B "transformative.", lede, hero image, imageHue, imageLabel "RESULTS & STORIES", breadcrumbs |
+| **c. Featured-Cases-View** | `/results` "Four signature cases, shared with permission." section chrome — eyebrow + heading + lede + filter-bar Mono label + "{n} cases · facial" count format. *Cards from `i. Before-After-Cases`* |
+| **d. Stories-View** | `/results` "Stories, not slogans." section chrome — eyebrow + heading + lede. *Rows from `j. Patient-Stories`* |
+| **e. Library-Cta** | "Private gallery / Want to see more?" CTA block — eyebrow, heading, body, button label, button href. **Shared by `/results` AND `/gallery`** — single source of truth |
+| **f. Share-Cta** | "Sharing your story / Have a story to share?" CTA block — eyebrow, heading, body, button label, button href. **Shared by `/results` AND `/stories`** — single source of truth |
+| **g. Gallery** | Whole `/gallery` page — hero (chapter "Chapter IV — Selected Results", title, lede, image, breadcrumbs) + filter-bar Mono label + "{n} cases · facial" count format. *Cards from `i. Before-After-Cases`; CTA from `e. Library-Cta`* |
+| **h. Stories** | Whole `/stories` page — hero (chapter "Chapter VI — Stories", title A "In their", title B "own words.", lede, image, breadcrumbs) + story-rows section chrome. *Rows from `j. Patient-Stories`; CTA from `f. Share-Cta`* |
+| **i. Before-After-Cases** | BeforeAfterCases Collection — the cases themselves. Backs `/results` Featured-Cases-View + `/gallery` grid |
+| **j. Patient-Stories** | Stories Collection (label-only rename to disambiguate from `h. Stories` page) — the patient-quote rows. Backs `/stories` rows + `/results` Stories-View |
+
+#### Item-order rationale (Results)
+
+- a, b — `/results` page foundation (Main + Hero)
+- c, d — `/results` mid-page section chrome (Featured-Cases-View + Stories-View, both intra-Bucket reads)
+- e, f — shared CTA blocks (Library-Cta serves /results + /gallery; Share-Cta serves /results + /stories)
+- g, h — sibling pages collapsed to one item each (`/gallery` + `/stories`)
+- i, j — backing Collections (alphabetised plural nouns, mirroring f. Journey's c. Steps + f. Villas pattern)
+
+#### Coverage
+
+All atoms across the 3 routes accounted for. Zero orphans. Zero duplication (the 2 CTA blocks that today render twice on different pages collapse to one source each).
+
+| Route | Atom group | Item that owns it |
+|---|---|---|
+| `/results` | page meta + SEO + CmsExtraBlocks slot | a. Main |
+| `/results` | Hero (6 atoms) | b. Hero |
+| `/results` | "Four signature cases…" section chrome (4 atoms) | c. Featured-Cases-View |
+| `/results` | BA card data | i. Before-After-Cases (read by c.) |
+| `/results` | "Stories, not slogans." section chrome (3 atoms) | d. Stories-View |
+| `/results` | story-row data | j. Patient-Stories (read by d.) |
+| `/results` | "Want to see more?" CTA (5 atoms) | e. Library-Cta |
+| `/results` | "Have a story to share?" CTA (5 atoms) | f. Share-Cta |
+| `/results` | § divider | decorative — no editing |
+| `/gallery` | Hero + filter chrome | g. Gallery |
+| `/gallery` | BA card data | i. Before-After-Cases |
+| `/gallery` | "Want to see more?" CTA | e. Library-Cta (shared) |
+| `/stories` | Hero + story-rows section chrome | h. Stories |
+| `/stories` | 8 story rows | j. Patient-Stories |
+| `/stories` | "Have a story to share?" CTA | f. Share-Cta (shared) |
+
+#### Cross-bucket source
+
+None. d. Results is fully self-contained — every editorial atom is sourced inside the Bucket. The two `-View` items read from collections in the same Bucket (intra-Bucket mirrors); the suffix signals "edit the cards in the named Item" regardless of Bucket.
+
+#### Naming note — Stories disambiguation
+
+Two items share the word "Stories": `h. Stories` (the page Global) + `j. Patient-Stories` (the collection of patient-quote rows that back it). The collection gets the prefix label `Patient-` to disambiguate in the sidebar — Payload slug stays `stories` (no DB change).
 
 ### 2.f — Bucket "f. Journey" detail
 
@@ -430,7 +485,7 @@ None. About Bucket is fully self-contained — every editorial atom is sourced i
 | **a. Homepage** | ✅ COMPLETE (above) | Phase R2 |
 | b. Treatments | ⏳ PENDING | Phase R3 |
 | **c. Doctors** | ✅ COMPLETE (above) | Phase R4 |
-| d. Results | ⏳ PENDING (must address `/stories` move-in) | Phase R5 |
+| **d. Results** | ✅ COMPLETE (above) | Phase R5 |
 | e. Pricing | ⏳ PENDING | Phase R6 |
 | **f. Journey** | ✅ COMPLETE (above) | Phase R7 |
 | **g. Contact** | ✅ COMPLETE (above) | Phase R1 |

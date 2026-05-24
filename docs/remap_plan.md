@@ -6,8 +6,8 @@
 > Scope: Two-stage rollout. **Phase R0** realigns the top-level Buckets to match site IA (sidebar move). **Phase R1, R7** ship per-Bucket detail for Contact + Journey (planning complete). Other per-Bucket phases follow as the user signs off their map.
 >
 > **Planning state mirrors [remap.md](./remap.md):**
-> - ✅ COMPLETE — User · Media · Journey · Contact · Homepage · About · Doctors
-> - ⏳ PENDING — Treatments · Results · Pricing
+> - ✅ COMPLETE — User · Media · Journey · Contact · Homepage · About · Doctors · Results
+> - ⏳ PENDING — Treatments · Pricing
 
 ## Direct answer to the editability question
 
@@ -471,6 +471,147 @@ diff /tmp/surgeon-detail-before.html <(curl -s https://cosmedic.gaiada.online/su
 
 ---
 
+## Phase R5 — Bucket "d. Results" Detail
+
+> Goal: split `/results` editorial out of the orphan-field `results-page` Global into 5 new section globals (Hero + 2 view-only chrome items + 2 shared CTA blocks); rewire `/results` + `/gallery` + `/stories` to read from them; relabel both collections so every visible atom across the 3 routes becomes editable. Closes the 4 `/results` orphans and the 2 CTA duplications (Want-to-see-more + Have-a-story-to-share) via single-source-of-truth shared globals.
+
+### R5.1 — CMS schema: 5 new Globals, 3 page-Global renames, 2 Collection renames
+
+| Item | Action | Slug (Payload) | Fields |
+|---|---|---|---|
+| **a. Main** | Rename existing `results-page` Global label. Strip hero fields (move to `b. Hero`); strip section editorial (move to c., d., e., f.). | `results-page` (unchanged) | title, slug, route, publishStatus, sections, seo group |
+| **b. Hero** | **New** Global | `results-hero` | chapter, titleA, titleB, lede, heroImage, imageHue, imageLabel, breadcrumbLabel |
+| **c. Featured-Cases-View** | **New** Global | `results-featured-cases-view` | eyebrow, heading, lede, filterBarLabel, countFormat (e.g. `"{n} cases · facial"`) |
+| **d. Stories-View** | **New** Global | `results-stories-view` | eyebrow, heading, lede |
+| **e. Library-Cta** | **New** Global | `library-cta` | eyebrow, heading, body, buttonLabel, buttonHref. **Shared** by `/results` + `/gallery` |
+| **f. Share-Cta** | **New** Global | `share-cta` | eyebrow, heading, body, buttonLabel, buttonHref. **Shared** by `/results` + `/stories` |
+| **g. Gallery** | Rename existing `gallery-page` Global label. Expand fields to cover full editorial (hero + filter chrome). | `gallery-page` (unchanged) | hero (chapter, titleA, titleB, lede, heroImage, imageHue, imageLabel, breadcrumbLabel), filterBarLabel, countFormat |
+| **h. Stories** | Rename existing `stories-page` Global label. Expand fields to cover full editorial (hero + story-rows section chrome). | `stories-page` (unchanged) | hero (chapter, titleA, titleB, lede, heroImage, imageHue, imageLabel, breadcrumbLabel) |
+| **i. Before-After-Cases** | Rename `before-after-cases` Collection label only | `before-after-cases` (unchanged) | (no field changes) |
+| **j. Patient-Stories** | Rename `stories` Collection label only (sidebar shows "j. Patient-Stories") | `stories` (unchanged — keeps DB table + API URLs) | (no field changes) |
+
+**Important:** slugs do **not** change for renamed items. The Stories collection keeps slug `stories` (DB table `stories`) — only the admin sidebar label gains the `j. Patient-Stories` prefix. New globals get new slugs.
+
+### R5.2 — `admin.description` notes
+
+**On Bucket `d. Results`:**
+
+> Governs /results + /gallery + /stories — the three routes under the "Results" top-nav link. Fully self-contained; no Settings reads. Two shared CTA blocks (e. Library-Cta + f. Share-Cta) render on two pages each — edit once, applies to both.
+
+**On `c. Featured-Cases-View`:**
+
+> The before/after cards shown in this section are **not edited here**. Source: **i. Before-After-Cases** (same Bucket). This item controls only the section eyebrow, heading, lede, filter-bar label, and count format string.
+
+**On `d. Stories-View`:**
+
+> The patient-quote rows shown in this section are **not edited here**. Source: **j. Patient-Stories** (same Bucket). This item controls only the section eyebrow, heading, and lede.
+
+**On `e. Library-Cta`:**
+
+> Used by **both** `/results` (bottom of "Featured cases") and `/gallery` (bottom of grid). Edit once; applies to both pages.
+
+**On `f. Share-Cta`:**
+
+> Used by **both** `/results` (bottom of "Stories") and `/stories` (bottom of page). Edit once; applies to both pages.
+
+**On `j. Patient-Stories`:**
+
+> The patient-quote rows that back the `/stories` page and `/results` Stories-View section. Renamed in the sidebar from "Stories" to "Patient-Stories" to disambiguate from `h. Stories` (the `/stories` page Global). Payload slug `stories` is unchanged.
+
+### R5.3 — Settings field additions
+
+None. d. Results is self-contained.
+
+### R5.4 — Web data layer
+
+Extend [`packages/web/src/lib/cms.ts`](../packages/web/src/lib/cms.ts) parallel cache load with the 5 new globals:
+
+- `fetchGlobal('results-hero')`
+- `fetchGlobal('results-featured-cases-view')`
+- `fetchGlobal('results-stories-view')`
+- `fetchGlobal('library-cta')`
+- `fetchGlobal('share-cta')`
+
+Also extend any per-page global fetches if `gallery-page` and `stories-page` gain new fields (R5.1 rows g + h).
+
+Extend `CmsCache` TypeScript interface accordingly.
+
+### R5.5 — Route rewire
+
+Replace hardcoded content in three route files:
+
+| File | Hardcoded today | Becomes |
+|---|---|---|
+| [ResultsPage.tsx](../packages/web/src/routes/results/ResultsPage.tsx) | ChapterOpener literals (L71-79) | reads from `cms.resultsHero.*` |
+| [ResultsPage.tsx](../packages/web/src/routes/results/ResultsPage.tsx) | "Four signature cases" section title + lede (L82-92) | reads from `cms.resultsFeaturedCasesView.{eyebrow,heading,lede}` |
+| [ResultsPage.tsx](../packages/web/src/routes/results/ResultsPage.tsx) | filter Mono + count format (L94-99) | reads from `cms.resultsFeaturedCasesView.{filterBarLabel,countFormat}` |
+| [ResultsPage.tsx](../packages/web/src/routes/results/ResultsPage.tsx) | "Private gallery / Want to see more?" CTA block (L172-208) | reads from `cms.libraryCta.*` |
+| [ResultsPage.tsx](../packages/web/src/routes/results/ResultsPage.tsx) | "Stories, not slogans" section title + lede (L218-227) | reads from `cms.resultsStoriesView.{eyebrow,heading,lede}` |
+| [ResultsPage.tsx](../packages/web/src/routes/results/ResultsPage.tsx) | inline `STORIES` array (L10-67) | drops — quotes pulled from `cms.patientStories` (collection `stories`) |
+| [ResultsPage.tsx](../packages/web/src/routes/results/ResultsPage.tsx) | "Sharing your story / Have a story to share?" CTA (L255-280) | reads from `cms.shareCta.*` |
+| [GalleryPage.tsx](../packages/web/src/routes/gallery/GalleryPage.tsx) | ChapterOpener literals (L15-23) | reads from `cms.galleryPage.hero.*` |
+| [GalleryPage.tsx](../packages/web/src/routes/gallery/GalleryPage.tsx) | filter Mono + count format (L26-30) | reads from `cms.galleryPage.{filterBarLabel,countFormat}` |
+| [GalleryPage.tsx](../packages/web/src/routes/gallery/GalleryPage.tsx) | "Private gallery / Want to see more?" CTA block (L104-133) | reads from `cms.libraryCta.*` |
+| [StoriesPage.tsx](../packages/web/src/routes/stories/StoriesPage.tsx) | ChapterOpener literals (L72-80) | reads from `cms.storiesPage.hero.*` |
+| [StoriesPage.tsx](../packages/web/src/routes/stories/StoriesPage.tsx) | inline `STORIES` array (L11-68) | drops — quotes pulled from `cms.patientStories` (collection `stories`) |
+| [StoriesPage.tsx](../packages/web/src/routes/stories/StoriesPage.tsx) | "Sharing your story / Have a story to share?" CTA (L111-126) | reads from `cms.shareCta.*` |
+
+### R5.6 — Seed migration (visual invariance gate)
+
+Write `packages/cms/src/seed/seed-results-section-globals.ts` (run once, idempotent):
+
+1. Read hero fields off existing `results-page` Global → upsert into new `results-hero` Global.
+2. Upsert `results-featured-cases-view` with eyebrow/heading/lede/filterBarLabel/countFormat copied verbatim from `ResultsPage.tsx` L82-99.
+3. Upsert `results-stories-view` with eyebrow/heading/lede copied verbatim from `ResultsPage.tsx` L218-227.
+4. Upsert `library-cta` with eyebrow/heading/body/buttonLabel/buttonHref copied from `ResultsPage.tsx` L172-208 (preferred verbiage) — note `GalleryPage.tsx` L104-133 has near-identical prose with minor variance; pick the `/results` version as canonical and update `/gallery` to match (visual invariance gate verifies acceptable).
+5. Upsert `share-cta` with eyebrow/heading/body/buttonLabel/buttonHref copied from `ResultsPage.tsx` L255-280 — same canonical-pick treatment versus `StoriesPage.tsx` L111-126.
+6. Expand `gallery-page` Global with hero + filterBarLabel + countFormat seeded from `GalleryPage.tsx` hardcoded.
+7. Expand `stories-page` Global with hero seeded from `StoriesPage.tsx` hardcoded.
+8. Confirm `stories` Collection has 8 rows matching the 2 hardcoded `STORIES` arrays; seed missing rows (idempotent).
+9. After verifying everything reads correctly, **propose** (under rule 4 — no unilateral deletes) removing the now-unused hero + section fields from `results-page` Global for user approval.
+
+### R5.7 — Revalidate hooks
+
+Spread `revalidateGlobalAfterChange()` from [`packages/cms/src/lib/revalidate.ts`](../packages/cms/src/lib/revalidate.ts) onto the 5 new globals. `gallery-page` + `stories-page` + `before-after-cases` + `stories` collections already have hooks.
+
+### R5.8 — Verification
+
+```bash
+pnpm --filter @cosmedic/cms build
+pnpm --filter @cosmedic/web build
+pm2 restart cosmedic-cms cosmedic-web
+
+# Admin sanity — 10 items in d. Results Bucket, alphabetical order
+curl -s http://127.0.0.1:4007/admin | grep -E "a\. Main|b\. Hero|c\. Featured-Cases-View|d\. Stories-View|e\. Library-Cta|f\. Share-Cta|g\. Gallery|h\. Stories|i\. Before-After-Cases|j\. Patient-Stories"
+
+# Visual invariance — all 3 routes must be byte-identical
+for route in /results /gallery /stories; do
+  curl -s "https://cosmedic.gaiada.online${route}" > "/tmp/results-before${route//\//-}.html"
+done
+# ... apply changes ...
+for route in /results /gallery /stories; do
+  diff "/tmp/results-before${route//\//-}.html" <(curl -s "https://cosmedic.gaiada.online${route}")
+done
+
+# Editability proof — edit each new global + shared CTAs, confirm propagation
+# 1. b. Hero → change lede → revisit /results → see → revert
+# 2. c. Featured-Cases-View → change heading → revisit /results → see → revert
+# 3. d. Stories-View → change heading → revisit /results → see → revert
+# 4. e. Library-Cta → change body → revisit /results AND /gallery → see in BOTH → revert
+# 5. f. Share-Cta → change body → revisit /results AND /stories → see in BOTH → revert
+# 6. g. Gallery → change filterBarLabel → revisit /gallery → see → revert
+# 7. h. Stories → change hero lede → revisit /stories → see → revert
+# 8. j. Patient-Stories → edit one row quote → revisit /stories AND /results Stories-View → see in BOTH → revert
+```
+
+### R5.9 Estimate
+
+- **Commits:** ~12–14 (5 new globals + 2 expanded page globals + 2 collection label renames + 3 routes rewired + 1 seed migration)
+- **Time:** ~4–5 hours including verification
+- **Downtime:** none (warm builds, sub-second `pm2 restart`)
+
+---
+
 ## Phase R7 — Bucket "f. Journey" Detail
 
 > Goal: replace hardcoded STEPS array + ChapterOpener literals in [JourneyPage.tsx](../packages/web/src/routes/journey/JourneyPage.tsx) with reads from JourneyPage Global + JourneySteps Collection; collapse /recovery-stays editorial into a sibling global + wire RecoveryStays Collection to back the villa grid.
@@ -669,9 +810,9 @@ done
 
 ---
 
-## Phases R3, R5, R6 — Other Bucket Details (pending)
+## Phases R3, R6 — Other Bucket Details (pending)
 
-Each remaining Bucket gets its own phase, following the same R1/R4/R7/R8 shape:
+Each remaining Bucket gets its own phase, following the same R1/R4/R5/R7/R8 shape:
 
 1. Add detail to [remap.md](./remap.md) §2 (the per-Bucket item map).
 2. Get user sign-off on the map.
@@ -685,7 +826,6 @@ Each remaining Bucket gets its own phase, following the same R1/R4/R7/R8 shape:
 | Phase | Bucket | Notes / known scope |
 |---|---|---|
 | **R3** | b. Treatments | Treatment index + discipline + sub-category pages. Largest by route count (28 routes). Lots of editorial chrome on detail templates currently hardcoded. |
-| **R5** | d. Results | `/results`, `/gallery`, `/stories`. Includes the Stories move-in from Journey (already covered by R0). Stories patient-quote data is in collection; chrome is hardcoded. |
 | **R6** | e. Pricing | `/pricing`. Already partially CMS-driven via PriceListItems. Hero + insurance section chrome hardcoded. |
 
 Each phase ships independently. User signs off on the per-Bucket map (in [remap.md](./remap.md)) before that phase's code work starts.
@@ -709,7 +849,7 @@ Each phase ships independently. User signs off on the per-Bucket map (in [remap.
 | R2 — a. Homepage detail | 5–7 hours |
 | R3 — b. Treatments | 6–8 hours (28 routes) |
 | R4 — c. Doctors | 3–4 hours (9 routes) |
-| R5 — d. Results | 2–3 hours (3 routes) |
+| R5 — d. Results detail | 4–5 hours (3 routes, 5 new globals, 2 shared CTAs) |
 | R6 — e. Pricing | 2 hours |
 | R7 — f. Journey detail | 4–5 hours |
 | R8 — h. About detail | 4–5 hours (4 routes, lots of hardcoded prose) |
