@@ -224,7 +224,7 @@ export const DisciplineDetail: React.FC<Props> = ({ slug }) => {
                       >
                         {p.d}
                       </p>
-                      <PriceTag aud={p.priceFrom} align="right" />
+                      <PriceTag idr={p.priceFromIdr} align="right" />
                       <span
                         style={{
                           display: 'flex',

@@ -3,14 +3,12 @@ import { PageShell } from '@/components/shell/PageShell'
 import { ChapterOpener } from '@/components/primitives/ChapterOpener'
 import { Reveal } from '@/components/primitives/Reveal'
 import { Mono, Eyebrow } from '@/components/primitives/Mono'
+import { PriceTag } from '@/components/primitives/PriceTag'
 import { TREATMENT_LIST, SUBCATEGORIES_BY_DISCIPLINE, IMG } from '@/content/seed'
 import { SUBCATEGORY_DATA } from '@/content/subcategory-data'
 import { ClinicCatalogueTable } from './ClinicCatalogueTable'
 import { useCms } from '@/lib/cms-context'
 import { findPageBySlug } from '@/lib/cms-adapters'
-
-const fmtIDR = (aud: number) =>
-  'Rp ' + (Math.round((aud * 10500) / 50000) * 50000).toLocaleString('de-DE')
 
 const DEFAULT_PAYMENT_TERMS: [string, string][] = [
   ['Deposit', '20% on confirmation'],
@@ -161,9 +159,9 @@ export const PricingPage: React.FC = () => {
                     </Reveal>
                     <div>
                       {sub.treatments.map((t, tIdx) => {
-                        const isNumber = typeof t.priceFromAud === 'number'
+                        const isNumber = typeof t.priceFromIdr === 'number'
                         const isIncluded =
-                          t.priceFromAud === 'included' || t.priceFromAud === 'complimentary'
+                          t.priceFromIdr === 'included' || t.priceFromIdr === 'complimentary'
                         return (
                           <Reveal key={tIdx} delay={tIdx * 20}>
                             <a
@@ -214,29 +212,7 @@ export const PricingPage: React.FC = () => {
                                     Included
                                   </span>
                                 ) : isNumber ? (
-                                  <>
-                                    <span
-                                      style={{
-                                        fontFamily: 'var(--font-mono)',
-                                        fontSize: 11,
-                                        letterSpacing: '0.18em',
-                                        color: 'var(--accent-deep)',
-                                        whiteSpace: 'nowrap',
-                                      }}
-                                    >
-                                      {fmtIDR(t.priceFromAud as number)}
-                                    </span>
-                                    <span
-                                      style={{
-                                        fontFamily: 'var(--font-serif)',
-                                        fontStyle: 'italic',
-                                        fontSize: 13,
-                                        color: 'var(--ink-60)',
-                                      }}
-                                    >
-                                      ≈ AUD {(t.priceFromAud as number).toLocaleString('en-AU')}
-                                    </span>
-                                  </>
+                                  <PriceTag idr={t.priceFromIdr as number} align="right" />
                                 ) : (
                                   <span
                                     style={{

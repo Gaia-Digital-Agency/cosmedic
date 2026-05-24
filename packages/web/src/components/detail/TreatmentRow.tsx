@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Mono } from '@/components/primitives/Mono'
+import { priceParts } from '@/lib/pricing'
 import type { SubCategoryEntry } from '@/content/subcategory-data'
 
 type Treatment = SubCategoryEntry['treatments'][number]
@@ -9,7 +10,7 @@ type Props = {
   subTitle: string
 }
 
-function formatPrice(val: Treatment['priceFromAud']): {
+function formatPrice(val: Treatment['priceFromIdr']): {
   idr: string | null
   aud: string | null
   label: string | null
@@ -17,15 +18,15 @@ function formatPrice(val: Treatment['priceFromAud']): {
   if (val === 'included' || val === 'complimentary') {
     return { idr: null, aud: null, label: val.charAt(0).toUpperCase() + val.slice(1) }
   }
-  const aud = typeof val === 'number' ? val : parseInt(val, 10)
-  if (!aud || isNaN(aud)) return { idr: null, aud: null, label: null }
-  const idr = 'Rp ' + (Math.round((aud * 10500) / 50000) * 50000).toLocaleString('de-DE')
-  return { idr, aud: 'AUD ' + aud.toLocaleString('en-AU'), label: null }
+  const idrNum = typeof val === 'number' ? val : parseInt(val, 10)
+  const parts = priceParts(idrNum)
+  if (!parts) return { idr: null, aud: null, label: null }
+  return { idr: parts.idr, aud: parts.aud, label: null }
 }
 
 export const TreatmentRow: React.FC<Props> = ({ t, subTitle }) => {
   const [open, setOpen] = useState(false)
-  const price = formatPrice(t.priceFromAud)
+  const price = formatPrice(t.priceFromIdr)
   const procParam = encodeURIComponent(`${subTitle} — ${t.name}`)
 
   return (

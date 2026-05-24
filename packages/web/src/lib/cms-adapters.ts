@@ -140,7 +140,7 @@ export function adaptSubCategoriesByDiscipline(cms: CmsCache): Record<string, Le
 export type LegacyTreatmentRow = {
   name: string
   short: string
-  priceFromAud: number | 'included' | 'complimentary'
+  priceFromIdr: number | 'included' | 'complimentary'
   detail: {
     description: string
     duration: string
@@ -184,7 +184,7 @@ export function adaptSubCategoryEntry(s: SubCategory, cms: CmsCache): LegacySubC
     .map<LegacyTreatmentRow>((p) => ({
       name: p.name,
       short: p.shortName || '',
-      priceFromAud: p.pricing?.priceAud2026 ?? p.pricing?.priceAud2025 ?? 0,
+      priceFromIdr: p.pricing?.priceIdr2026 ?? p.pricing?.priceIdr2025 ?? 0,
       detail: {
         description: lexicalToText(p.description) || '',
         duration: p.detail?.duration || '',
@@ -232,12 +232,12 @@ export type LegacyDisciplineContent = {
   subcategories?: Array<{ slug: string; title: string; short: string; available: boolean }>
   overview: string
   sections: Array<{ id: string; t: string; body: string }>
-  procedures?: Array<{ n: string; d: string; priceFrom: string }>
+  procedures?: Array<{ n: string; d: string; priceFromIdr: number | null }>
   faqs: Array<{ q: string; a: string }>
   pricing: Array<{
     tier: string
     italic: string
-    amount: string
+    amountIdr: number | null
     from: string
     small: string
     items: string[]
@@ -276,24 +276,31 @@ export function adaptDisciplineContent(slug: string, cms: CmsCache): LegacyDisci
     .map((p) => ({
       n: p.name,
       d: lexicalToText(p.description).slice(0, 200) || (p.shortName ?? ''),
-      priceFrom: p.pricing?.priceAud2026 || p.pricing?.priceAud2025
-        ? `AUD ${(p.pricing?.priceAud2026 ?? p.pricing?.priceAud2025)?.toLocaleString('en-AU')}`
-        : 'On request',
+      priceFromIdr: p.pricing?.priceIdr2026 ?? p.pricing?.priceIdr2025 ?? null,
     }))
 
   const pricingTiersForDisc = [...cms.pricingTiers].sort(
     (a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0),
   )
-  const pricing = pricingTiersForDisc.map((t) => ({
-    tier: t.name,
-    italic: lexicalToText(t.descriptor).split(' — ')[0] || '',
-    amount: t.priceFromAud != null ? String(t.priceFromAud) : '0',
-    from: t.priceFromAud === 0 ? 'Complimentary' : 'AUD · from',
-    small: lexicalToText(t.descriptor).split(' — ').slice(1).join(' — ') || '',
-    items: (t.inclusions ?? []).map((i) => i.value),
-    cta: t.priceFromAud === 0 ? 'Book a consult' : 'Plan your journey',
-    featured: Boolean(t.isFeatured),
-  }))
+  const audToIdrRate = cms.settings?.audToIdrRate || 10500
+  const pricing = pricingTiersForDisc.map((t) => {
+    const idr =
+      t.priceFromIdr != null
+        ? t.priceFromIdr
+        : t.priceFromAud != null
+          ? t.priceFromAud * audToIdrRate
+          : null
+    return {
+      tier: t.name,
+      italic: lexicalToText(t.descriptor).split(' — ')[0] || '',
+      amountIdr: idr,
+      from: idr === 0 || idr == null ? 'Complimentary' : 'IDR · from',
+      small: lexicalToText(t.descriptor).split(' — ').slice(1).join(' — ') || '',
+      items: (t.inclusions ?? []).map((i) => i.value),
+      cta: idr === 0 || idr == null ? 'Book a consult' : 'Plan your journey',
+      featured: Boolean(t.isFeatured),
+    }
+  })
 
   return {
     chapter: d.tagline || '',

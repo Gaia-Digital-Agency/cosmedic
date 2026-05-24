@@ -2,6 +2,7 @@ import React from 'react'
 import { Reveal } from '@/components/primitives/Reveal'
 import { Mono, Eyebrow } from '@/components/primitives/Mono'
 import { Img } from '@/components/primitives/Img'
+import { PriceTag } from '@/components/primitives/PriceTag'
 import { useCms } from '@/lib/cms-context'
 import { lexicalToParagraphs, mediaUrl, type PageBlock } from '@/lib/cms'
 import {
@@ -244,10 +245,10 @@ const ProcedureListBlock: React.FC<{ block: Extract<PageBlock, { blockType: 'pro
           <Reveal key={p.id} delay={i * 40}>
             <a href={`/treatment-${p.slug}`} style={{ display: 'block', padding: 20, border: '1px solid var(--ink-20)', color: 'inherit', textDecoration: 'none' }}>
               <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: 22, margin: 0 }}>{p.name}</h4>
-              {p.pricing?.priceAud2026 || p.pricing?.priceAud2025 ? (
-                <Mono style={{ marginTop: 8 }}>
-                  AUD {(p.pricing?.priceAud2026 ?? p.pricing?.priceAud2025)?.toLocaleString('en-AU')}
-                </Mono>
+              {p.pricing?.priceIdr2026 || p.pricing?.priceIdr2025 ? (
+                <div style={{ marginTop: 8 }}>
+                  <PriceTag idr={p.pricing?.priceIdr2026 ?? p.pricing?.priceIdr2025} align="left" />
+                </div>
               ) : null}
             </a>
           </Reveal>
@@ -351,10 +352,10 @@ const RecoveryStayListBlock: React.FC<{ block: Extract<PageBlock, { blockType: '
               <Img src={recoveryHeroUrl(v, '') || ''} alt={v.name} fallbackLabel={v.name.toUpperCase()} />
               <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: 22, margin: '12px 0 4px' }}>{v.name}</h4>
               <Mono>{v.location || ''}</Mono>
-              {v.priceFromAudPerNight != null ? (
-                <p style={{ marginTop: 6, fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: 14 }}>
-                  From AUD {v.priceFromAudPerNight.toLocaleString('en-AU')}/night
-                </p>
+              {v.priceFromIdrPerNight != null ? (
+                <div style={{ marginTop: 6 }}>
+                  <PriceTag idr={v.priceFromIdrPerNight} suffix=" / night" align="left" />
+                </div>
               ) : null}
             </article>
           </Reveal>

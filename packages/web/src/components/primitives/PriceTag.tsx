@@ -3,16 +3,16 @@ import { priceParts } from '@/lib/pricing'
 import { useLocale } from '@/i18n'
 
 type Props = {
-  aud: string | null | undefined
+  idr: number | null | undefined
   align?: 'left' | 'right'
   invert?: boolean
+  suffix?: string
 }
 
-export const PriceTag: React.FC<Props> = ({ aud, align = 'right', invert = false }) => {
-  const p = priceParts(aud)
+export const PriceTag: React.FC<Props> = ({ idr, align = 'right', invert = false, suffix }) => {
+  const p = priceParts(idr, { suffix })
   const locale = useLocale()
   if (!p) return null
-  // Per Phase 9.G: IDR is always primary; AUD secondary only when locale=en.
   const showAud = locale === 'en' && Boolean(p.aud)
   if (!showAud) {
     return (

@@ -14,7 +14,7 @@ const VILLAS = [
     loc: 'Nusa Dua',
     br: '2 BR',
     pool: 'Private',
-    from: 'AUD 280 / night',
+    fromIdr: 2_940_000,
     img: IMG.villa1,
     hue: 0,
     body:
@@ -25,7 +25,7 @@ const VILLAS = [
     loc: 'Ubud',
     br: '3 BR',
     pool: 'Private',
-    from: 'AUD 420 / night',
+    fromIdr: 4_410_000,
     img: IMG.villa2,
     hue: 1,
     body:
@@ -36,7 +36,7 @@ const VILLAS = [
     loc: 'Jimbaran',
     br: '2 BR',
     pool: 'Private',
-    from: 'AUD 320 / night',
+    fromIdr: 3_360_000,
     img: IMG.villa3,
     hue: 2,
     body:
@@ -47,7 +47,7 @@ const VILLAS = [
     loc: 'Nusa Dua',
     br: '4 BR',
     pool: 'Private',
-    from: 'AUD 580 / night',
+    fromIdr: 6_090_000,
     img: IMG.villa4,
     hue: 3,
     body:
@@ -58,7 +58,7 @@ const VILLAS = [
     loc: 'Nusa Dua',
     br: '1 BR',
     pool: 'Resort',
-    from: 'AUD 520 / night',
+    fromIdr: 5_460_000,
     img: IMG.villa5,
     hue: 4,
     body:
@@ -69,7 +69,7 @@ const VILLAS = [
     loc: 'Sanur',
     br: '3 BR',
     pool: 'Private',
-    from: 'AUD 380 / night',
+    fromIdr: 3_990_000,
     img: IMG.villa6,
     hue: 5,
     body:
@@ -162,7 +162,7 @@ export const RecoveryStaysPage: React.FC = () => (
               <div className="villa-meta">
                 <div>
                   <Mono>From</Mono>
-                  <PriceTag aud={v.from} align="left" />
+                  <PriceTag idr={v.fromIdr} suffix=" / night" align="left" />
                 </div>
                 <div>
                   <Mono>Drive to clinic</Mono>

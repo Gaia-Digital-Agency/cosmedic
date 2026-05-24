@@ -18,12 +18,12 @@ export type DisciplineContent = {
   subcategories?: Array<{ slug: string; title: string; short: string; available: boolean }>
   overview: string
   sections: Array<{ id: string; t: string; body: string }>
-  procedures?: Array<{ n: string; d: string; priceFrom: string }>
+  procedures?: Array<{ n: string; d: string; priceFromIdr: number | null }>
   faqs: Array<{ q: string; a: string }>
   pricing: Array<{
     tier: string
     italic: string
-    amount: string
+    amountIdr: number | null
     from: string
     small: string
     items: string[]
