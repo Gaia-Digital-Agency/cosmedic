@@ -59,6 +59,13 @@ export const GalleryPage: React.FC = () => {
                     </div>
                     <span className="ba-time">{c.time}</span>
                   </figcaption>
+                  {(c.patientAge != null || c.recoveryDuration) && (
+                    <Mono style={{ marginTop: 8, display: 'block', color: 'var(--ink-60)' }}>
+                      {c.patientAge != null && <>Age · {c.patientAge}</>}
+                      {c.patientAge != null && c.recoveryDuration && ' · '}
+                      {c.recoveryDuration && <>Recovery · {c.recoveryDuration}</>}
+                    </Mono>
+                  )}
                   {c.surgeonName && (
                     <Mono style={{ marginTop: 8, display: 'block', color: 'var(--ink-60)' }}>
                       Surgeon ·{' '}

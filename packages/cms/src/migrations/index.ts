@@ -5,6 +5,7 @@ import * as migration_20260521_042540_add_media_isPlaceholder from './20260521_0
 import * as migration_20260522_072509_pages_to_globals from './20260522_072509_pages_to_globals';
 import * as migration_20260524_031454_q4_team_group_photo from './20260524_031454_q4_team_group_photo';
 import * as migration_20260524_042248_q5_drop_pricing_tiers from './20260524_042248_q5_drop_pricing_tiers';
+import * as migration_20260524_043557_q14_ba_patient_age_recovery_duration from './20260524_043557_q14_ba_patient_age_recovery_duration';
 
 export const migrations = [
   {
@@ -45,5 +46,10 @@ export const migrations = [
     up: migration_20260524_042248_q5_drop_pricing_tiers.up,
     down: migration_20260524_042248_q5_drop_pricing_tiers.down,
     name: '20260524_042248_q5_drop_pricing_tiers',
+  },
+  {
+    up: migration_20260524_043557_q14_ba_patient_age_recovery_duration.up,
+    down: migration_20260524_043557_q14_ba_patient_age_recovery_duration.down,
+    name: '20260524_043557_q14_ba_patient_age_recovery_duration',
   },
 ];

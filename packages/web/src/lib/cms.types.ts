@@ -175,6 +175,8 @@ export type BeforeAfterCase = {
   tags?: Array<{ value: string }>
   description?: Lexical
   year?: number
+  patientAge?: number
+  recoveryDuration?: string
   isFeatured?: boolean
   sortOrder?: number
 }

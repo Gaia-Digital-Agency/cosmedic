@@ -71,6 +71,9 @@ export type BaPair = {
   surgeonName?: string
   surgeonSlug?: string
   isFeatured?: boolean
+  // q14 — patient age + recovery duration shown on B&A cards.
+  patientAge?: number
+  recoveryDuration?: string
 }
 
 /* ─── Live, CMS-backed exports ────────────────────────────────────────── */
@@ -122,6 +125,8 @@ export const BA_PAIRS = lazyArray<BaPair>((cms) =>
         surgeonName,
         surgeonSlug: surgeonDoc?.slug,
         isFeatured: Boolean(ba.isFeatured),
+        patientAge: ba.patientAge,
+        recoveryDuration: ba.recoveryDuration,
       }
     }),
 )
