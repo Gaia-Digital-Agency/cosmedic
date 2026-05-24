@@ -28,6 +28,7 @@
   }
   @media (max-width: 700px) {
     .hero-headline { left: 32px; bottom: 60px; }
+    .hero-v2-content { padding-top: 140px; }
     .hero-aside { padding: 40px 28px; }
     .treatments-grid, .gallery-grid, .stories-grid, .surgeons-grid, .journey-steps, .footer-top { grid-template-columns: 1fr; }
     .header-inner { padding: 16px 20px; gap: 12px; }
