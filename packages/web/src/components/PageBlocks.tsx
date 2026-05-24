@@ -18,9 +18,10 @@ import {
 } from '@/lib/cms-adapters'
 
 /**
- * Renderer for the Pages.sections block array. Every block kind defined in
- * `packages/cms/src/collections/Pages.ts` has a matching React element here.
- * Use anywhere a CMS Page record's editorial body needs to render.
+ * Renderer for the `sections` block array shared by the 14 Page Globals.
+ * Every block kind defined in `packages/cms/src/globals/pages/_pageFields.ts`
+ * (`pageBlocks: Block[]`) has a matching React element here. Use anywhere a
+ * Page Global's editorial body needs to render.
  *
  * For pages that have a strict design layout (home, journey, contact,
  * pricing, etc.), keep the static layout but append the PageBlocks beneath
