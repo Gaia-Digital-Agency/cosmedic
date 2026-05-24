@@ -167,7 +167,7 @@ Cross-cutting (every phase): **multisite hygiene** (never `pm2 restart all`, alw
    - [CLAUDE.md](./CLAUDE.md) — guide for Claude Code sessions on this folder
    - [docs/architecture_info.md](./docs/architecture_info.md) — end-state architecture (north star)
    - [docs/sitemap.md](./docs/sitemap.md) — every page · subpage · link · button
-   - [docs/runbook.md](./docs/runbook.md) — ops playbook (deploy, restore, incident)
+   - [docs/architecture/runbook.md](./docs/architecture/runbook.md) — ops playbook (deploy, restore, incident)
    - [design/](./design/) — original Claude Design source (READ-ONLY)
 
    ## Dev (server-first on gda-s01)
@@ -1059,14 +1059,14 @@ Cross-cutting (every phase): **multisite hygiene** (never `pm2 restart all`, alw
    - nginx error log → email alert (logwatch or a small filebeat/journald-based emitter).
    - `pm2 monit` — note baseline RAM + CPU.
 4. **Internal announcement** to clinic team.
-5. **Handover doc** at `docs/runbook.md`:
+5. **Handover doc** at `docs/architecture/runbook.md`:
    - How to restart services (`pm2 restart cosmedic-cms cosmedic-web` — exact names).
    - How to add a procedure / surgeon / B&A case via /admin.
    - How to roll back a bad deploy.
    - SMTP credential rotation procedure.
    - Who to contact on incident (Gaia digital + clinic ops).
 
-**Critical files created**: `docs/runbook.md`, monitoring config.
+**Critical files created**: `docs/architecture/runbook.md`, monitoring config.
 
 **Verification**: 48-hour soak with zero unresolved incidents. Final user sign-off.
 
@@ -1130,7 +1130,7 @@ Cross-cutting (every phase): **multisite hygiene** (never `pm2 restart all`, alw
 4. **Editor training**:
    - 1-hour walkthrough of /admin with clinic content owner.
    - Quick-reference cheatsheet in `docs/editor-cheatsheet.md`.
-5. **Runbook** (`docs/runbook.md` from Phase 12, expanded):
+5. **Runbook** (`docs/architecture/runbook.md` from Phase 12, expanded):
    - Deploy procedure (git pull → pnpm install → build → pm2 restart).
    - Incident response (site down, form not sending, admin locked out).
    - Rollback procedure (git revert + redeploy).
@@ -1141,7 +1141,7 @@ Cross-cutting (every phase): **multisite hygiene** (never `pm2 restart all`, alw
    - `npm audit` + Payload security advisories.
    - Sibling-site impact check (touch nothing).
 
-**Critical files created**: cron entries, backup scripts at `scripts/backup-*.sh`, `docs/runbook.md` finalised, `docs/editor-cheatsheet.md`.
+**Critical files created**: cron entries, backup scripts at `scripts/backup-*.sh`, `docs/architecture/runbook.md` finalised, `docs/editor-cheatsheet.md`.
 
 **Verification**: Backup cron creates a file daily. Restore drill succeeds. Cert renewal logs show no errors for 60+ days.
 
@@ -1259,7 +1259,7 @@ SSL cert: shared from /etc/letsencrypt/live/templategen.gaiada.online/.
 │   ├── content-model.md             ← full Payload collection schemas + xlsx mapping (Phase 6)
 │   ├── cms-customization.md         ← Cosmedic CMS branding spec + palette mapping (Phase 0/1)
 │   ├── editor-cheatsheet.md         ← how clinic staff manage content via Cosmedic CMS (Phase 14)
-│   ├── runbook.md                   ← ops playbook (Phase 14)
+│   ├── architecture/runbook.md      ← ops playbook (Phase 14)
 │   ├── brand-guidelines.pdf         ← BIMC CosMedic Brand Guidelines v1.0 (moved from /brand.pdf in Phase 0)
 │   └── pricelist.xlsx               ← clinic's canonical price + procedure catalogue (moved from /procedure.xlsx in Phase 0); CMS seed source for Phase 6
 │

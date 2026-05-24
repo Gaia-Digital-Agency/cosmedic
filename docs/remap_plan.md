@@ -1,0 +1,585 @@
+# Cosmedic CMS Remap — Implementation Plan
+
+> Date: 2026-05-24
+> Status: PROPOSED — awaiting greenlight before code touched.
+> Companion: [remap.md](./remap.md) — the target Admin ↔ Site map this plan implements.
+> Scope: Two-stage rollout. **Phase R0** realigns the top-level Buckets to match site IA (sidebar move). **Phase R1, R7** ship per-Bucket detail for Contact + Journey (planning complete). Other per-Bucket phases follow as the user signs off their map.
+>
+> **Planning state mirrors [remap.md](./remap.md):**
+> - ✅ COMPLETE — User · Media · Journey · Contact · Homepage · About
+> - ⏳ PENDING — Treatments · Doctors · Results · Pricing
+
+## Direct answer to the editability question
+
+**Will Hero image + text be editable after this remap?** Yes — *if and only if* each per-Bucket phase pairs CMS schema with route rewiring. Today `/contact`'s hero is hardcoded in [`packages/web/src/routes/contact/ContactPage.tsx`](../packages/web/src/routes/contact/ContactPage.tsx) (around lines 117–128). Creating a `b. Hero` global without rewiring the route would just be another orphan field. The Contact Bucket plan (Phase R1) pairs both. Subsequent per-Bucket phases follow the same pattern.
+
+---
+
+## Phase R0 — Bucket Realignment (top-level admin.group rename + 7 Bucket moves)
+
+> Goal: move every Collection + Global into the Bucket its site IA says it belongs in, and add alphabetic prefixes so Payload's default sort matches editor reading order. **No field changes. No data migration. No site UI change.** Pure `admin.group` string edits.
+
+### R0.1 Touched files (24 total)
+
+See [remap.md](./remap.md) §1.3 for the full file-by-file table. Summary:
+
+- **7 items MOVE Bucket** (Stories collection + StoriesPage → d. Results; BlogPosts + BlogTags + Authors + BlogPage → h. About; PressMentions + Awards + PressPage → h. About; PrivacyPage → h. About)
+- **17 items rename only** (existing Bucket gains `a./b./c./…` prefix; "Journey" relabels to "f. Journey"; "Homepage" → "a. Homepage"; etc.)
+
+### R0.2 Edit pattern (per file)
+
+```ts
+// packages/cms/src/collections/Stories.ts — BEFORE
+admin: {
+  group: 'Journey',
+  ...
+}
+
+// AFTER
+admin: {
+  group: 'd. Results',
+  ...
+}
+```
+
+Every file edit is one string replacement. No imports change, no fields change, no schema migration runs.
+
+### R0.3 Verification (before merging Phase R0)
+
+```bash
+# Type-check + build
+pnpm --filter @cosmedic/cms typecheck
+pnpm --filter @cosmedic/cms build
+
+# Restart CMS only — web is untouched in R0
+pm2 restart cosmedic-cms
+
+# Admin sidebar smoke — 9 prefixed Buckets present
+curl -s -c /tmp/cookies.txt -d 'email=admin@bimccosmedic.com&password=...' http://127.0.0.1:4007/api/users/login
+curl -s -b /tmp/cookies.txt http://127.0.0.1:4007/admin | \
+  grep -oE "(a\. Homepage|b\. Treatments|c\. Doctors|d\. Results|e\. Pricing|f\. Journey|g\. Contact|h\. About|i\. Media Library)" | \
+  sort -u
+# Expected: 9 lines, one per Bucket. Users sits ungrouped above.
+
+# Site smoke — nothing should change because no route reads admin.group
+diff <(curl -s https://cosmedic.gaiada.online/contact) <(curl -s https://cosmedic.gaiada.online/contact)
+# (Re-run a couple of times to confirm static; full visual diff vs pre-R0 snapshot kept locally)
+
+# Visual confirmation in browser — log into /admin, confirm:
+#   - Bucket order matches [remap.md](./remap.md) §1.2 a→i top-to-bottom
+#   - Stories now appears under "d. Results"
+#   - /press, /blog, /privacy items now under "h. About"
+#   - Users sits ungrouped at the top
+```
+
+### R0.4 Rollback path
+
+If anything breaks: `git revert <commit>` — pure string edits revert cleanly. No DB schema, no data, no migrations to undo.
+
+### R0.5 Estimate
+
+- **Commits:** 1 (the 24-file admin.group sweep)
+- **Time:** ~30–45 minutes including verification
+- **Risk:** very low (no behavioural change, only labels)
+
+### R0.6 Greenlight gate
+
+Do not start R0 until user confirms the 9-Bucket structure in [remap.md](./remap.md) §1.2.
+
+---
+
+## Phase R1 — Bucket "g. Contact" Detail
+
+> Goal: split `/contact` editorial out of the orphan-field `Contact Page` global into purpose-named globals + a renamed collection + a sibling-page global, then rewire [ContactPage.tsx](../packages/web/src/routes/contact/ContactPage.tsx) to read from them so every visible atom becomes editable.
+
+### R1.1 — CMS schema: 3 new Globals, 5 label renames
+
+| Item | Action | Slug (Payload) | Fields |
+|---|---|---|---|
+| **a. Main** | Rename existing `contact-page` Global sidebar label. Strip hero fields (move to `b. Hero`). | `contact-page` (unchanged) | title, slug, route, publishStatus, sections, seo group |
+| **b. Hero** | **New** Global | `contact-hero` | chapter, titleA, titleB, lede, heroImage, breadcrumbLabel |
+| **c. Enquiry-Section** | **New** Global | `contact-enquiry-section` | eyebrow, heading, intro, trustLine + read-only live-preview rows for the 4 Direct-lines values pulled from Settings |
+| **d. Visit-Section** | **New** Global | `contact-visit-section` | eyebrow, heading, body, openInMapsLabel, getDirectionsLabel, mapImage, conciergeHoursLabel, conciergeHoursValue + read-only live-preview rows for address / clinic hours / maps URL pulled from Settings |
+| **e. Form** | Rename `form-defaults` Global label only | `form-defaults` (unchanged) | (no field changes) |
+| **f. Email** | Rename `email-templates` Global label only | `email-templates` (unchanged) | (no field changes) |
+| **g. Inbox** | Rename `enquiries` Collection label only | `enquiries` (unchanged) | (no field changes) |
+| **h. Video-Consult** | Rename `video-consult-page` Global label only | `video-consult-page` (unchanged) | (no field changes) |
+
+**Important:** slugs do **not** change for renamed items — only the admin sidebar label changes. This keeps existing data, existing API URLs, and existing route reads intact.
+
+### R1.2 — `admin.description` notes
+
+**On Bucket `g. Contact`:**
+
+> Governs /contact + /video-consult. Address, hours, phone, email shown on /contact are edited in **a. Homepage → Settings** — single source of truth for clinic identity site-wide.
+
+**On `c. Enquiry-Section`:**
+
+> The phone / WhatsApp / email lines shown in this section are **not edited here**. Source: **a. Homepage → Settings → `contactPhone`, `whatsappNumber`, `contactEmail`, `pressEmail`**. Edit them once in Settings — they update on /contact, in the footer, and on the floating WhatsApp button.
+
+**On `d. Visit-Section`:**
+
+> The address block, opening hours, and "Get directions" URL are **not edited here**. Source: **a. Homepage → Settings → `addressLine1`, `addressLine2`, `city`, `postalCode`, `country`, `hoursMonFri`, `hoursSatSun`, `googleMapsUrl`**. Edit them once in Settings — they update on /contact and in the footer.
+
+**On `e. Form` AND `f. Email`:**
+
+> Used by every enquiry form on the site — /contact, the homepage hero quick-form, /video-consult booking. Edit once; applies everywhere.
+
+### R1.3 — Settings field additions (one gap to close)
+
+Today's hardcoded `/contact` page shows a "Press" email (`press@bimccosmedic.com`) that has no source in Settings. Add **one new field** to Settings to preserve visual invariance:
+
+| New field | Type | Default value (seed from hardcoded) |
+|---|---|---|
+| `pressEmail` | text | `press@bimccosmedic.com` |
+
+(Concierge phone `+62 361 3000 911` goes into the existing `contactPhone` field, which is currently blank; seed it from the hardcoded value.)
+
+### R1.4 — Web data layer
+
+Extend [`packages/web/src/lib/cms.ts`](../packages/web/src/lib/cms.ts):
+
+- Add three `fetchGlobal` calls to the parallel cache load:
+  - `fetchGlobal('contact-hero')`
+  - `fetchGlobal('contact-enquiry-section')`
+  - `fetchGlobal('contact-visit-section')`
+- Extend the `CmsCache` TypeScript interface with the three new globals.
+- Add adapter functions in [`packages/web/src/lib/cms-adapters.ts`](../packages/web/src/lib/cms-adapters.ts) if needed for shape normalisation.
+
+### R1.5 — Route rewire
+
+Replace hardcoded strings in [`packages/web/src/routes/contact/ContactPage.tsx`](../packages/web/src/routes/contact/ContactPage.tsx):
+
+| Hardcoded today | Becomes |
+|---|---|
+| Chapter / title / lede / image (L117–128) | `chapter={hero.chapter}` … `image={hero.heroImage.url}` |
+| Eyebrow "The Enquiry", heading, intro (L134–149) | reads from `enquirySection.eyebrow / heading / intro` |
+| "Held in confidence…" trust line (L294–305) | reads from `enquirySection.trustLine` |
+| Concierge / WhatsApp / Email / Press block (L157–192) | reads from `settings.contactPhone / whatsappNumber / contactEmail / pressEmail` |
+| Eyebrow "Visit", heading, body (L334–349) | reads from `visitSection.eyebrow / heading / body` |
+| Address block (L358–367) | reads from `settings.addressLine1 / addressLine2 / city / postalCode / country` |
+| "Open in Maps" / "Get directions" buttons (L368–371) | reads from `settings.googleMapsUrl` + `visitSection.openInMapsLabel / getDirectionsLabel` |
+| Clinic hours (L383–395) | reads from `settings.hoursMonFri / hoursSatSun` |
+| Concierge hours (L397–411) | reads from `visitSection.conciergeHoursLabel / conciergeHoursValue` |
+
+### R1.6 — Seed migration (visual invariance gate)
+
+Write `packages/cms/src/seed/seed-contact-section-globals.ts` (run once, idempotent):
+
+1. Read the four hero fields off the existing `contact-page` global → upsert into new `contact-hero` global.
+2. Upsert `contact-enquiry-section` and `contact-visit-section` with strings copied verbatim from the current `ContactPage.tsx` source.
+3. Patch Settings: set `contactPhone = "+62 361 3000 911"`, add `pressEmail = "press@bimccosmedic.com"`.
+4. After verifying everything reads correctly, **propose** (under rule 4 — no unilateral deletes) removing the now-unused hero fields from `contact-page` for user approval.
+
+### R1.7 — Revalidate hooks
+
+Spread `revalidateGlobalAfterChange()` from [`packages/cms/src/lib/revalidate.ts`](../packages/cms/src/lib/revalidate.ts) onto the 3 new globals. Standard project pattern — every edit POSTs to web `/api/revalidate` to bust the 60s cache.
+
+### R1.8 — Verification
+
+```bash
+pnpm --filter @cosmedic/cms build
+pnpm --filter @cosmedic/web build
+pm2 restart cosmedic-cms cosmedic-web
+
+# Admin sanity — 8 items in g. Contact Bucket, alphabetical order
+curl -s http://127.0.0.1:4007/admin | grep -E "a\. Main|b\. Hero|c\. Enquiry-Section|d\. Visit-Section|e\. Form|f\. Email|g\. Inbox|h\. Video-Consult"
+
+# Visual invariance — snapshot before + after, diff must be empty
+curl -s https://cosmedic.gaiada.online/contact > /tmp/contact-before.html  # before changes
+# ... apply changes ...
+curl -s https://cosmedic.gaiada.online/contact > /tmp/contact-after.html
+diff /tmp/contact-before.html /tmp/contact-after.html  # must be empty
+
+# Editability proof — edit each new global, wait 60s, confirm change appears
+# 1. b. Hero → change lede → revisit /contact → see new lede → revert
+# 2. c. Enquiry-Section → change heading → revisit → see → revert
+# 3. d. Visit-Section → change body → revisit → see → revert
+# 4. Settings → change contactEmail → revisit /contact AND footer → see in both → revert
+```
+
+### R1.9 Estimate
+
+- **Commits:** ~8–10
+- **Time:** ~3–4 hours including verification
+- **Downtime:** none (warm builds, sub-second `pm2 restart`)
+
+---
+
+## Phase R2 — Bucket "a. Homepage" Detail
+
+> Goal: split `/` editorial out of the part-orphan `HomePage` global into 10 new section globals + 8 label renames + 3 new fields on Footer, then rewire each home/* section component in [packages/web/src/routes/home/](../packages/web/src/routes/home/) to read from its dedicated global so every visible atom on `/` plus every sitewide chrome surface becomes editable. Closes the 2 hardcoded footer-bottom strings ("PT Trisaka Reksa Waluya" + "Designed in Bali") via 3 new fields on the Footer global.
+
+### R2.1 — CMS schema: 10 new Globals, 8 label renames, 3 new fields on Footer
+
+| Item | Action | Slug (Payload) | Fields |
+|---|---|---|---|
+| **a. Main** | Rename existing `home-page` Global label. Strip section editorial fields (move to b, k, m, n). | `home-page` (unchanged) | title, slug, route, publishStatus, sections, seo group |
+| **b. Hero** | **New** Global | `home-hero` | chapter, title, lede, heroImage, breadcrumbLabel, quickFormLabelsOverride |
+| **c. Header** | Rename `header` Global label only | `header` (unchanged) | (no field changes) |
+| **d. Footer** | Rename `footer` Global label + **add 3 new fields** | `footer` (unchanged) | existing + `managementLine` text, `legalEntityLine` text, `designerLine` text |
+| **e. Treatments-Teaser** | **New** Global | `home-treatments-teaser` | eyebrow, heading, lede, ctaLabel, ctaHref |
+| **f. Pricing-Teaser** | **New** Global | `home-pricing-teaser` | eyebrow, heading, lede, footnote, ctaLabel, ctaHref |
+| **g. Surgeons-Teaser** | **New** Global | `home-surgeons-teaser` | eyebrow, heading, lede, leadSurgeonLabel, leadSurgeonRef (relationship → Surgeons), ctaLabel, ctaHref |
+| **h. Gallery-Teaser** | **New** Global | `home-gallery-teaser` | eyebrow, heading, lede, ctaLabel, ctaHref |
+| **i. Journey-Teaser** | **New** Global | `home-journey-teaser` | eyebrow, heading, lede, ctaLabel, ctaHref |
+| **j. Stories-Teaser** | **New** Global | `home-stories-teaser` | eyebrow, heading, lede, ctaLabel, ctaHref |
+| **k. Intro** | **New** Global | `home-intro` | pullQuotePre, pullQuoteAccent, pullQuotePost, col1Body (richText), col2Body (richText) |
+| **l. Trust-Strip** | Rename `brand-stats` Global label only | `brand-stats` (unchanged) | (no field changes — already holds stat tiles) |
+| **m. Lead-Magnet** | **New** Global | `home-lead-magnet` | coverTitle, coverFooter, bodyEyebrow, bodyHeading, bodyLede, formLabels group, successMessage |
+| **n. Place** | **New** Global | `home-place` | eyebrow, heading, body, rows array (4 rows: A/B/C/D + text) |
+| **o. Floating-CTA** | Rename `floating-chrome` Global label only | `floating-chrome` (unchanged) | (no field changes) |
+| **p. Endorsement** | Rename `endorsement-mark` Global label only | `endorsement-mark` (unchanged) | (no field changes) |
+| **q. SEO-Defaults** | Rename `seo-defaults` Global label only | `seo-defaults` (unchanged) | (no field changes) |
+| **r. Settings** | Rename `settings` Global label only | `settings` (unchanged) | (no field changes — note: this is the source for clinic identity used by g. Contact + d. Footer + o. Floating-CTA) |
+
+**Important:** slugs do **not** change for renamed items — only the admin sidebar label changes. All existing data + API URLs + route reads intact.
+
+### R2.2 — `admin.description` notes
+
+**On Bucket `a. Homepage`:**
+
+> Governs the homepage editorial (items a, b, e–n) and every sitewide chrome surface that appears on every page (items c, d, o, p, q, r). Settings (r.) is the single source of truth for clinic identity used by /contact, the footer, and the floating WhatsApp button.
+
+**On items e–j (the 6 teasers):**
+
+> The cards / data shown in this section's grid are **not edited here**. Edit the source in [bucket → collection] (e. → b. Treatments → Disciplines; f. → e. Pricing → PriceListItems; g. → c. Doctors → Surgeons; h. → d. Results → BeforeAfterCases; i. → f. Journey → Steps; j. → d. Results → Stories). This item controls only the section eyebrow, heading, lede, and "view all" CTA label.
+
+**On `d. Footer`:**
+
+> The Treatments link column is auto-built from b. Treatments → Disciplines (sortOrder + title). The Connect column's WhatsApp link uses r. Settings → whatsappNumber. The address block uses r. Settings → addressLine1/2 + city + postalCode + country. Edit those in their source; this item controls only the About column items + copyright template + management / legal-entity / designer lines.
+
+### R2.3 — Settings field additions
+
+None needed. The 3 footer-bottom strings ("Managed by BIMC Hospital, Nusa Dua" — appended to copyright; "PT Trisaka Reksa Waluya"; "Designed in Bali") are added as new fields on Footer (R2.1 row d), not Settings.
+
+### R2.4 — Web data layer
+
+Extend [`packages/web/src/lib/cms.ts`](../packages/web/src/lib/cms.ts) parallel cache load with the 10 new globals:
+
+- `fetchGlobal('home-hero')`
+- `fetchGlobal('home-treatments-teaser')`
+- `fetchGlobal('home-pricing-teaser')`
+- `fetchGlobal('home-surgeons-teaser')`
+- `fetchGlobal('home-gallery-teaser')`
+- `fetchGlobal('home-journey-teaser')`
+- `fetchGlobal('home-stories-teaser')`
+- `fetchGlobal('home-intro')`
+- `fetchGlobal('home-lead-magnet')`
+- `fetchGlobal('home-place')`
+
+Extend `CmsCache` TypeScript interface accordingly. Footer interface gains 3 new optional string fields.
+
+### R2.5 — Route rewire
+
+Replace fallback / hardcoded strings in each homepage section component:
+
+| Component | Hardcoded today | Becomes |
+|---|---|---|
+| [home/Hero.tsx](../packages/web/src/routes/home/Hero.tsx) | Fallback eyebrow / title / lede (L13-15, L81-86, L92-111); fallback form labels (L135-209) | reads from `cms.homeHero.*` |
+| [home/Intro.tsx](../packages/web/src/routes/home/Intro.tsx) | Pull-quote pre/accent/post + 2 column body (L11-19) | reads from `cms.homeIntro.*` |
+| [home/Treatments.tsx](../packages/web/src/routes/home/Treatments.tsx) | Eyebrow / heading / lede (L12-17) | reads from `cms.homeTreatmentsTeaser.*` |
+| [home/PricingTeaser.tsx](../packages/web/src/routes/home/PricingTeaser.tsx) | Eyebrow / heading / lede / footnote (L25-33); PRICE_TEASER array (L8-17) | reads from `cms.homePricingTeaser.*`; PRICE_TEASER drops, prices pulled from PriceListItems |
+| [home/Surgeons.tsx](../packages/web/src/routes/home/Surgeons.tsx) | Fallback labels + lead body (L17-32) | reads from `cms.homeSurgeonsTeaser.*` |
+| [home/Gallery.tsx](../packages/web/src/routes/home/Gallery.tsx) | Eyebrow / heading / lede / CTA (L13-18) | reads from `cms.homeGalleryTeaser.*` |
+| [home/Journey.tsx](../packages/web/src/routes/home/Journey.tsx) | STEPS array (L8-14); heading / CTA (L19-23) | reads from `cms.homeJourneyTeaser.*`; step previews pulled from JourneySteps collection |
+| [home/Stories.tsx](../packages/web/src/routes/home/Stories.tsx) | STORIES array (L10-38); eyebrow / heading / lede (L43-59) | reads from `cms.homeStoriesTeaser.*`; quotes pulled from Stories collection |
+| [home/LeadMagnet.tsx](../packages/web/src/routes/home/LeadMagnet.tsx) | Cover title / footer (L15-20); body eyebrow / heading / lede / form labels / success (L21-31) | reads from `cms.homeLeadMagnet.*` |
+| [home/Place.tsx](../packages/web/src/routes/home/Place.tsx) | Eyebrow / heading / body (L34-39); DEFAULT_ROWS (L10-15) | reads from `cms.homePlace.*` |
+| [shell/Footer.tsx](../packages/web/src/components/shell/Footer.tsx) | "PT Trisaka Reksa Waluya" (L97), "Designed in Bali" (L98), copyright "Managed by BIMC Hospital, Nusa Dua" suffix | reads from `cms.footer.managementLine` (composed into copyright), `cms.footer.legalEntityLine`, `cms.footer.designerLine` |
+
+### R2.6 — Seed migration (visual invariance gate)
+
+Write `packages/cms/src/seed/seed-home-section-globals.ts` (run once, idempotent):
+
+1. Upsert each new global (`home-hero`, `home-treatments-teaser`, …, `home-place`) with strings copied verbatim from the current `home/*.tsx` fallback / hardcoded source.
+2. Patch Footer: set `managementLine`, `legalEntityLine`, `designerLine` to current hardcoded values.
+3. After verifying everything reads correctly, **propose** (under rule 4 — no unilateral deletes) removing the now-unused section fields from `home-page` for user approval.
+
+### R2.7 — Revalidate hooks
+
+Spread `revalidateGlobalAfterChange()` onto all 10 new globals. Standard project pattern.
+
+### R2.8 — Verification
+
+```bash
+pnpm --filter @cosmedic/cms build
+pnpm --filter @cosmedic/web build
+pm2 restart cosmedic-cms cosmedic-web
+
+# Admin sanity — 18 items in a. Homepage Bucket, alphabetical order
+curl -s http://127.0.0.1:4007/admin | grep -E "a\. Main|b\. Hero|c\. Header|d\. Footer|e\. Treatments-Teaser|f\. Pricing-Teaser|g\. Surgeons-Teaser|h\. Gallery-Teaser|i\. Journey-Teaser|j\. Stories-Teaser|k\. Intro|l\. Trust-Strip|m\. Lead-Magnet|n\. Place|o\. Floating-CTA|p\. Endorsement|q\. SEO-Defaults|r\. Settings"
+
+# Visual invariance — / + footer on every page must be byte-identical
+curl -s https://cosmedic.gaiada.online/ > /tmp/home-before.html
+# ... apply changes ...
+diff /tmp/home-before.html <(curl -s https://cosmedic.gaiada.online/)
+# (Footer also visible on every page — spot-check 3 routes for footer diff)
+
+# Editability proof — edit each new global, wait 60s, confirm change appears
+# 1. b. Hero → change lede → revisit / → see → revert
+# 2. e–j. each teaser → change heading → revisit / → see → revert
+# 3. k. Intro → change col1 body → revisit / → see → revert
+# 4. m. Lead-Magnet → change cover title → revisit / → see → revert
+# 5. n. Place → change body → revisit / → see → revert
+# 6. d. Footer → change managementLine → revisit ANY page → see in footer → revert
+```
+
+### R2.9 Estimate
+
+- **Commits:** ~15–18 (more sections than Contact or Journey)
+- **Time:** ~5–7 hours including verification (largest single-bucket phase)
+- **Downtime:** none
+
+---
+
+## Phase R7 — Bucket "f. Journey" Detail
+
+> Goal: replace hardcoded STEPS array + ChapterOpener literals in [JourneyPage.tsx](../packages/web/src/routes/journey/JourneyPage.tsx) with reads from JourneyPage Global + JourneySteps Collection; collapse /recovery-stays editorial into a sibling global + wire RecoveryStays Collection to back the villa grid.
+
+### R7.1 — CMS schema: 3 new Globals, 3 renames
+
+| Item | Action | Slug (Payload) | Fields |
+|---|---|---|---|
+| **a. Main** | Rename existing `journey-page` Global label. Strip hero fields (move to `b. Hero`); strip stats (move to `d. Stats`). | `journey-page` (unchanged) | title, slug, route, publishStatus, sections, seo group |
+| **b. Hero** | **New** Global | `journey-hero` | chapter, titleA, titleB, lede, heroImage, breadcrumbLabel |
+| **c. Steps** | Rename `journey-steps` Collection label only. **Wire it to the route** (replaces hardcoded `STEPS` array). | `journey-steps` (unchanged) | (per-row: number, title, body, bullets[4], image — already exists in code) |
+| **d. Stats** | **New** Global | `journey-stats` | stats array (3 rows: number, label) |
+| **e. Recovery-Stays** | Rename existing `recovery-stays-page` Global label. Repurpose to cover the full `/recovery-stays` editorial (hero + top stats + portfolio chrome + inclusions chrome). | `recovery-stays-page` (unchanged) | full editorial section block array |
+| **f. Villas** | Rename `recovery-stays` Collection label only. **Wire it to the route** (replaces hardcoded `VILLAS` array). | `recovery-stays` (unchanged) | (per-row already exists: name, location, br, pool, fromIdr, body, img, hue) |
+
+### R7.2 — Web data layer
+
+Extend [`packages/web/src/lib/cms.ts`](../packages/web/src/lib/cms.ts) parallel cache load:
+- `fetchGlobal('journey-hero')`
+- `fetchGlobal('journey-stats')`
+- (JourneySteps + RecoveryStays Collections are already fetched; confirm `fetchAll` calls present.)
+
+Extend `CmsCache` interface accordingly.
+
+### R7.3 — Route rewire
+
+Replace hardcoded content in [JourneyPage.tsx](../packages/web/src/routes/journey/JourneyPage.tsx):
+
+| Hardcoded today | Becomes |
+|---|---|
+| `STEPS` array (L10–109) | `cms.journeySteps.sort(byStepNumber).map(...)` |
+| ChapterOpener literals (L113–120) | `chapter={journeyHero.chapter}` … |
+| Stats row literals (L148–166) | `journeyStats.stats.map(...)` |
+
+Replace hardcoded content in [RecoveryStaysPage.tsx](../packages/web/src/routes/recovery-stays/RecoveryStaysPage.tsx):
+
+| Hardcoded today | Becomes |
+|---|---|
+| `VILLAS` array (L11–78) | `cms.recoveryStays.map(...)` |
+| `INCLUSIONS` array (L80–89) | reads from `recoveryStaysPage.inclusions` |
+| ChapterOpener literals (L96–104) | reads from `recoveryStaysPage.hero.*` |
+| Stats row literals (L106–131) | reads from `recoveryStaysPage.stats[]` |
+| Section heads "The portfolio" + "What's included" (L134–148, L182–195) | reads from `recoveryStaysPage.portfolioSection.*` + `recoveryStaysPage.inclusionsSection.*` |
+
+### R7.4 — Seed migration
+
+Write `packages/cms/src/seed/seed-journey-section-globals.ts` (run once, idempotent):
+
+1. Read the 4 hero fields off `journey-page` global → upsert into new `journey-hero`.
+2. Create `journey-stats` with the 3 hardcoded stat rows seeded verbatim.
+3. Re-seed `journey-steps` Collection with the 7 hardcoded STEPS rows (confirm existing 6 seeded rows + add Step 07 Homecoming if missing).
+4. Repurpose `recovery-stays-page` global with full editorial fields seeded from current RecoveryStaysPage.tsx hardcoded strings.
+5. Re-seed `recovery-stays` Collection with the 6 hardcoded VILLAS rows (confirm existing 6 seeded rows match the hardcoded content).
+
+### R7.5 — Revalidate hooks
+
+Spread `revalidateGlobalAfterChange()` onto `journey-hero` + `journey-stats`. (`journey-steps`, `recovery-stays-page`, `recovery-stays` already have hooks.)
+
+### R7.6 — Verification
+
+```bash
+pnpm --filter @cosmedic/cms build
+pnpm --filter @cosmedic/web build
+pm2 restart cosmedic-cms cosmedic-web
+
+# Admin sanity — 6 items in f. Journey Bucket
+curl -s http://127.0.0.1:4007/admin | grep -E "a\. Main|b\. Hero|c\. Steps|d\. Stats|e\. Recovery-Stays|f\. Villas"
+
+# Visual invariance — /journey AND /recovery-stays must be byte-identical
+curl -s https://cosmedic.gaiada.online/journey > /tmp/journey-before.html
+curl -s https://cosmedic.gaiada.online/recovery-stays > /tmp/rs-before.html
+# ... apply changes ...
+diff /tmp/journey-before.html <(curl -s https://cosmedic.gaiada.online/journey)
+diff /tmp/rs-before.html <(curl -s https://cosmedic.gaiada.online/recovery-stays)
+
+# Editability proof — edit one step body, confirm /journey changes; edit one villa, confirm /recovery-stays changes
+```
+
+### R7.7 Estimate
+
+- **Commits:** ~10–12
+- **Time:** ~4–5 hours including verification (more atoms than Contact)
+- **Downtime:** none
+
+---
+
+## Phase R8 — Bucket "h. About" Detail
+
+> Goal: split `/blog`-index and `/blog/<slug>`-template editorial into 2 globals (one each) + create a new collection backing the 10 hardcoded `/privacy` legal sections. Wire each /blog, /blog/<slug>, /press, /privacy route component to read from its dedicated global / collection so every visible atom becomes editable. About is fully self-contained — no Settings reads, no cross-bucket dependencies in either direction.
+
+### R8.1 — CMS schema: 1 new Global, 1 new Collection, 8 label renames
+
+| Item | Action | Slug (Payload) | Fields |
+|---|---|---|---|
+| **a. Blog** | Rename existing `blog-page` Global label. Strip per-post template fields (move to b. Blog-Post-Template). | `blog-page` (unchanged) | hero (chapter, titleA, titleB, lede, heroImage), thisIssueEyebrow, readTheEssayCtaLabel, archiveEyebrow, archiveHeading, archiveLede, archiveFilterLabel, archiveEmptyStateCopy |
+| **b. Blog-Post-Template** | **New** Global | `blog-post-template` | aboutTheAuthorHeading, moreFromTheJournalHeading, bylineFormatTemplate (optional) |
+| **c. Blog-Posts** | Rename `blog-posts` Collection label only | `blog-posts` (unchanged) | (no field changes) |
+| **d. Blog-Tags** | Rename `blog-tags` Collection label only | `blog-tags` (unchanged) | (no field changes) |
+| **e. Authors** | Rename `authors` Collection label only | `authors` (unchanged) | (no field changes) |
+| **f. Press** | Rename `press-page` Global label only | `press-page` (unchanged) | hero (existing) + accreditationsEyebrow, accreditationsHeading, accreditationsLede, pressEyebrow, pressHeading, pressLede |
+| **g. Press-Mentions** | Rename `press-mentions` Collection label only | `press-mentions` (unchanged) | (no field changes — already has headline, date, outlet, url) |
+| **h. Awards** | Rename `awards` Collection label only | `awards` (unchanged) | (per-row already has: name, fullName, notes, image) |
+| **i. Privacy** | Rename `privacy-page` Global label. Strip the hardcoded section fields (move to j. Privacy-Sections). | `privacy-page` (unchanged) | hero (chapter, titleA, titleB, lede, heroImage), lastUpdatedDate, introParagraph |
+| **j. Privacy-Sections** | **New** Collection | `privacy-sections` | sortOrder, heading, body (richText) |
+
+### R8.2 — `admin.description` notes
+
+**On Bucket `h. About`:**
+
+> Editorial pages reached from the footer "About" column — Press, Blog (+ posts), Privacy & Terms. There is no `/about` page itself. Fully self-contained — no Settings or cross-bucket reads needed.
+
+**On `b. Blog-Post-Template`:**
+
+> Template-level strings that apply to every `/blog/<slug>` post page. Per-post hero / body / byline lives on c. Blog-Posts (the row); this global controls only the "About the author" and "More from the journal" section headings shared across all posts.
+
+**On `j. Privacy-Sections`:**
+
+> The 10 legal sections shown on `/privacy`. One row per section. Use `sortOrder` to control rendering order. Each row's `body` field is rich text (supports paragraphs + lists + emphasis).
+
+### R8.3 — Settings field additions
+
+None. About Bucket is self-contained.
+
+### R8.4 — Web data layer
+
+Extend [`packages/web/src/lib/cms.ts`](../packages/web/src/lib/cms.ts) parallel cache load:
+
+- `fetchGlobal('blog-post-template')` (new)
+- `fetchAll('privacy-sections')` (new collection)
+- Existing `blog-page`, `press-page`, `privacy-page` globals + `blog-posts`, `blog-tags`, `authors`, `press-mentions`, `awards` collections — already fetched; confirm.
+
+Extend `CmsCache` interface with the new global + collection types.
+
+### R8.5 — Route rewire
+
+Replace hardcoded strings in:
+
+| File | Hardcoded today | Becomes |
+|---|---|---|
+| [BlogIndex.tsx](../packages/web/src/routes/blog/BlogIndex.tsx) | "The archive" heading + lede (L110-118), filter row label, empty-state copy | reads from `cms.blogPage.archive*` |
+| [BlogPost.tsx](../packages/web/src/routes/blog/BlogPost.tsx) | "About the author" heading (L171), "More from the journal" heading (L196, L198) | reads from `cms.blogPostTemplate.aboutTheAuthorHeading / moreFromTheJournalHeading` |
+| [PressPage.tsx](../packages/web/src/routes/press/PressPage.tsx) | ACCREDITATIONS array (L10-51) — 8 entries | reads from `cms.awards` (8 rows) |
+| [PressPage.tsx](../packages/web/src/routes/press/PressPage.tsx) | PRESS array (L53-60) — 6 headlines | reads from `cms.pressMentions` (6 rows) |
+| [PressPage.tsx](../packages/web/src/routes/press/PressPage.tsx) | ChapterOpener (L64-71) + section heads (L105-110, L163-169) | reads from `cms.pressPage.hero.*` + `cms.pressPage.{accreditations,press}{Eyebrow,Heading,Lede}` |
+| [PrivacyPage.tsx](../packages/web/src/routes/privacy/PrivacyPage.tsx) | SECTIONS array (L17-103) — 10 legal sections | reads from `cms.privacySections` (10 rows, sorted by `sortOrder`) |
+| [PrivacyPage.tsx](../packages/web/src/routes/privacy/PrivacyPage.tsx) | ChapterOpener (L108-114) + Last updated "12 May 2026" (L133) | reads from `cms.privacyPage.hero.*` + `cms.privacyPage.lastUpdatedDate` |
+
+### R8.6 — Seed migration (visual invariance gate)
+
+Write `packages/cms/src/seed/seed-about-section-content.ts` (run once, idempotent):
+
+1. Read the existing `blog-page` Global, split fields between `a. Blog` (index chrome) and new `b. Blog-Post-Template` global (which gets seeded with hardcoded "About the author" + "More from the journal" headings from current BlogPost.tsx).
+2. Update `press-page` Global with the 6 new section-chrome fields seeded from hardcoded section heads.
+3. Update `privacy-page` Global with `lastUpdatedDate = "12 May 2026"` + introParagraph (if any).
+4. Upsert `privacy-sections` collection with 10 rows from hardcoded SECTIONS array (sortOrder 1-10).
+5. Confirm `awards` collection has 8 rows matching hardcoded ACCREDITATIONS; seed if missing.
+6. Confirm `press-mentions` collection has 6 rows matching hardcoded PRESS array; seed if missing.
+7. After verifying everything reads correctly, **propose** (under rule 4 — no unilateral deletes) removing the now-unused per-post template fields from `blog-page` for user approval.
+
+### R8.7 — Revalidate hooks
+
+Spread `revalidateGlobalAfterChange()` onto new `blog-post-template` Global. Standard `revalidationHooks()` onto new `privacy-sections` Collection. Other globals + collections already wired.
+
+### R8.8 — Verification
+
+```bash
+pnpm --filter @cosmedic/cms build
+pnpm --filter @cosmedic/web build
+pm2 restart cosmedic-cms cosmedic-web
+
+# Admin sanity — 10 items in h. About Bucket
+curl -s http://127.0.0.1:4007/admin | grep -E "a\. Blog|b\. Blog-Post-Template|c\. Blog-Posts|d\. Blog-Tags|e\. Authors|f\. Press|g\. Press-Mentions|h\. Awards|i\. Privacy|j\. Privacy-Sections"
+
+# Visual invariance — all 4 routes must be byte-identical
+for route in /blog /press /privacy; do
+  curl -s "https://cosmedic.gaiada.online${route}" > "/tmp/about-before${route//\//-}.html"
+done
+# ... apply changes ...
+for route in /blog /press /privacy; do
+  diff "/tmp/about-before${route//\//-}.html" <(curl -s "https://cosmedic.gaiada.online${route}")
+done
+# Spot-check one /blog/<slug> route too
+
+# Editability proof
+# 1. a. Blog → change archiveLede → revisit /blog → see → revert
+# 2. b. Blog-Post-Template → change moreFromTheJournalHeading → revisit /blog/<slug> → see → revert
+# 3. f. Press → change accreditationsLede → revisit /press → see → revert
+# 4. j. Privacy-Sections → edit row 1 body → revisit /privacy → see → revert
+```
+
+### R8.9 Estimate
+
+- **Commits:** ~10–12 (4 routes touched, 1 new global, 1 new collection, 1 schema migration)
+- **Time:** ~4–5 hours (10 hardcoded privacy sections are the bulk — accurate verbatim seeding is the gate)
+- **Downtime:** none
+
+---
+
+## Phases R3–R6 — Other Bucket Details (pending)
+
+Each remaining Bucket gets its own phase, following the same R1/R7 shape:
+
+1. Add detail to [remap.md](./remap.md) §2 (the per-Bucket item map).
+2. Get user sign-off on the map.
+3. CMS schema work (new globals as needed, label renames, `admin.description` notes).
+4. Web data-layer extension.
+5. Route rewire (replace hardcoded strings).
+6. Seed migration to preserve visual invariance.
+7. Revalidate hooks.
+8. Verify (curl smoke + visual diff + editability proof).
+
+| Phase | Bucket | Notes / known scope |
+|---|---|---|
+| **R3** | b. Treatments | Treatment index + discipline + sub-category pages. Largest by route count (28 routes). Lots of editorial chrome on detail templates currently hardcoded. |
+| **R4** | c. Doctors | `/surgeons` index + 8 surgeon detail templates. Surgeon bio chrome currently hardcoded. |
+| **R5** | d. Results | `/results`, `/gallery`, `/stories`. Includes the Stories move-in from Journey (already covered by R0). Stories patient-quote data is in collection; chrome is hardcoded. |
+| **R6** | e. Pricing | `/pricing`. Already partially CMS-driven via PriceListItems. Hero + insurance section chrome hardcoded. |
+
+Each phase ships independently. User signs off on the per-Bucket map (in [remap.md](./remap.md)) before that phase's code work starts.
+
+---
+
+## Risks (whole remap)
+
+1. **Phase R0 is the safest; Phases R1–R8 each carry seed-migration risk.** Visual diff must be empty for each Bucket; if not, the seed mismatched the hardcoded source — fix the seed, redeploy, re-diff.
+2. **Renaming Payload Global slugs is destructive.** The plan keeps slugs unchanged for all renamed items; new globals get new slugs.
+3. **Splitting hero fields off `contact-page` / `journey-page` requires tiny data migrations** (R1.6, R7.4) — same pattern when other Bucket detail phases split fields off existing globals.
+4. **Payload admin label / sidebar-label mechanism needs verification** before relying on `labels: { singular, plural }` to render the renamed labels — `admin.group` alone may suffice for Bucket labels, but per-item labels may need additional Payload API research. Rule "Never guess" — verify before coding R0.
+5. **Settings stays the single source of truth for clinic identity** across the realignment. Any new field added to Settings (e.g. `pressEmail` in R1.3) is a one-time addition, not a duplication into another Bucket.
+
+## Estimate (whole remap)
+
+| Phase | Estimate |
+|---|---|
+| R0 — Bucket realignment | 30–45 min |
+| R1 — g. Contact detail | 3–4 hours |
+| R2 — a. Homepage detail | 5–7 hours |
+| R3 — b. Treatments | 6–8 hours (28 routes) |
+| R4 — c. Doctors | 3–4 hours (9 routes) |
+| R5 — d. Results | 2–3 hours (3 routes) |
+| R6 — e. Pricing | 2 hours |
+| R7 — f. Journey detail | 4–5 hours |
+| R8 — h. About detail | 4–5 hours (4 routes, lots of hardcoded prose) |
+| **Total** | **~30–35 hours** spread across 9+ phased commits |
+
+No site downtime at any point (warm builds, sub-second `pm2 restart`).
+
+## Greenlight gate
+
+Do not start **Phase R0** until user confirms the 9-Bucket structure in [remap.md](./remap.md) §1.2 and §1.3.

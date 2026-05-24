@@ -1,6 +1,6 @@
 # Cosmedic CMS — Editor Cheatsheet
 
-> Quick reference for clinic editorial team. For deeper ops, see [runbook.md](./runbook.md).
+> Quick reference for clinic editorial team. For deeper ops, see [runbook.md](../architecture/runbook.md).
 >
 > **Bucket structure source of truth:** [CMS_structure.md](./CMS_structure.md) — full table of every bucket / entity / field. This cheatsheet is the friendly version.
 

@@ -770,7 +770,7 @@ This section is the verbatim contents of the now-deleted `docs/todo.md`. Preserv
   - [ ] **Open**: Re-activate EN|ID language switcher in `<Header>` — currently visible-but-disabled (`aria-disabled`, `pointer-events: none`, 55% opacity, "Indonesian locale coming soon" tooltip). Was causing CSS inconsistency because clicking it linked to `/id/*` routes that don't have SSR support yet. Re-activate alongside Phase 9 lengthy when locale routing + ID editorial content land.
 
 - [~] **PHASE 12 — Launch** *(infra + docs done; SMTP / editor accounts / pw rotation blocked on user input)*
-  - [x] `docs/runbook.md` written — full ops playbook (deploy / restart / logs / nginx / TLS / Postgres / enquiry pipeline / incident / rollback / health endpoints)
+  - [x] `docs/architecture/runbook.md` written — full ops playbook (deploy / restart / logs / nginx / TLS / Postgres / enquiry pipeline / incident / rollback / health endpoints)
   - [x] `ops/smoke.sh` — curl-based smoke checker (10 cosmedic endpoints + every sibling site). Exits non-zero on failure. Use pre/post-deploy.
   - [x] BeforeLogin sign-in helper is now env-gated (`PAYLOAD_SHOW_SIGNIN_HELPER=false` in cms `.env` hides the card after password rotation)
   - [x] Production smoke (Phase 12.6 first pass): bash ops/smoke.sh — all 10 cosmedic checks green; sibling sites unaffected (`gtec` pre-existing red, not us)
@@ -853,7 +853,7 @@ If delivery fails:
 | Run Lighthouse CI + axe + Playwright visual regression | Dev | Phase 11 backlog |
 | Phase 9 lengthy (Payload localization config + localized:true flags on every editorial field + Indonesian editorial copy drafted via ML and reviewed by clinic) | Dev + clinic | Deferred per user; resumes after launch + at least one editorial-team training |
   - [ ] `docs/editor_cheatsheet.md` written
-  - [ ] `docs/runbook.md` finalized (deploy / incident / rollback / restore)
+  - [ ] `docs/architecture/runbook.md` finalized (deploy / incident / rollback / restore)
   - [ ] Quarterly audit cycle set up
 
 ---

@@ -36,7 +36,7 @@
 │   ├── CMS_structure.md             ← (2026-05-23) SOURCE OF TRUTH — locked sidebar buckets + entities + fields
 │   ├── cms_custom_change.md         ← (2026-05-23) Reusable playbook — mirror CMS admin to site IA
 │   ├── editor_cheatsheet.md         ← how clinic staff use Cosmedic CMS
-│   ├── runbook.md                   ← ops playbook
+│   ├── architecture/runbook.md      ← ops playbook
 │   ├── site_features.md             ← visitor-eye narrative of every screen and feature
 │   ├── plan.md                      ← 14-phase execution plan
 │   ├── all_todo.md                  ← (2026-05-23) Single TODO file — replaces former cms_todo.md + todo.md
