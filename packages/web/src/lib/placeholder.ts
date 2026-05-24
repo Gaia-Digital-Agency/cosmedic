@@ -7,7 +7,7 @@
 const HUES: [string, string][] = [
   ['#E6DCC8', '#C9B89A'],
   ['#EFE8DA', '#A67C52'],
-  ['#DCD0B8', '#6B4A2B'],
+  ['#DCD0B8', '#533E27'],
   ['#F4EFE6', '#B58963'],
   ['#C9B89A', '#423B30'],
   ['#E6DCC8', '#6B6354'],
