@@ -4,9 +4,9 @@
 > Status: PROPOSED — not yet implemented. Implementation plan: [remap_plan.md](./remap_plan.md).
 > Scope: Whole admin sidebar (top-level Buckets + per-Bucket items). Bucket realignment is the first slice; per-Bucket item detail follows Bucket by Bucket.
 >
-> **Planning state:**
-> - ✅ COMPLETE — User · Media · Journey · Contact · Homepage · About · Doctors · Results
-> - ⏳ PENDING — Treatments · Pricing
+> **Planning state:** ✅ ALL 10 BUCKETS MAPPED (Users · a. Homepage · b. Treatments · c. Doctors · d. Results · e. Pricing · f. Journey · g. Contact · h. About · i. Media Library)
+>
+> **Item ordering rule (applied uniformly):** within each Bucket, directly-editable Items come first; **-View** and **-Template** Items are placed last (they are secondary — view items display data from elsewhere, template items hold chrome shared across N detail routes).
 
 ## Goal
 
@@ -119,9 +119,9 @@ Implementation lives in [remap_plan.md](./remap_plan.md) Phase R0.
 
 ---
 
-## 2. Per-Bucket Detail (8 of 10 mapped)
+## 2. Per-Bucket Detail (10 of 10 mapped)
 
-Each Bucket's Admin Items → Site Page → Site Surface in one table per Bucket. **Mapped:** Users · a. Homepage · c. Doctors · d. Results · f. Journey · g. Contact · h. About · i. Media Library. **Pending:** b. Treatments · e. Pricing. Implementation detail (CMS schema, route rewires, seed migrations, verification, estimates) lives in [remap_plan.md](./remap_plan.md) Phases R1–R8.
+Each Bucket's Admin Items → Site Page → Site Surface in one table per Bucket. **All 10 mapped.** Implementation detail (CMS schema, route rewires, seed migrations, verification, estimates) lives in [remap_plan.md](./remap_plan.md) Phases R1–R8.
 
 ### 2.0 — Bucket "Users" (ungrouped — admin auth)
 
@@ -154,6 +154,22 @@ Covers `/` plus every sitewide chrome surface. Items a–l are directly editable
 | q. Journey-View | `/` | Journey preview chrome — eyebrow / heading / lede / CTA (steps from f. Journey → c. Steps) |
 | r. Stories-View | `/` | Stories preview chrome — eyebrow / heading / lede / CTA (quotes from d. Results → j. Patient-Stories) |
 
+### 2.b — Bucket "b. Treatments"
+
+Covers `/treatments` (index) + `/treatments/<discipline>` × 6 + `/treatments/<sub-cat>` × 22 = **29 routes**. The 3 Collections (e/f/g) are the canonical source — Disciplines feed mega-menu L1 + homepage Treatments-View; Sub-Categories feed mega-menu L2; Procedures feed sub-category accordions + `/pricing` tables (cross-bucket read by `e. Pricing`).
+
+| Admin Item | Site Page | Site Surface |
+|---|---|---|
+| a. Main | `/treatments` | Page meta + SEO + CmsExtraBlocks slot |
+| b. Hero | `/treatments` | ChapterOpener — chapter, title A, title B, lede, hero image, imageHue, imageLabel, breadcrumbs |
+| c. Index | `/treatments` | "An Index" section — eyebrow, heading, lede, "Read more →" CTA template |
+| d. Stats | `/treatments` | StatsRow — 4 stat tiles (number + label each) |
+| e. Disciplines | `/treatments` + `/treatments/<discipline>` × 6 | Disciplines Collection — 6 records (title, subtitle, displayCount, hue, body, chapterTitle, tagline, lede, overview, heroImage, leadSurgeons, faqs, SEO). Also feeds Treatments mega-menu L1 + `/` Treatments-View + Footer Treatments column |
+| f. Sub-Categories | `/treatments/<sub-cat>` × 22 | Sub-Categories Collection — 22 records (title, parent, chapterTitle, tagline, lede, intro, overview, leadSurgeon, sections, faqs, heroImage, SEO). Also feeds Treatments mega-menu L2 |
+| g. Procedures | `/treatments/<sub-cat>` accordion + `/pricing` tables (cross-bucket → e. Pricing) | Procedures Collection — 233 records (slug, name, catalogueGroup, pricing.*, editorial fields where populated, surgeonsCredentialed, relatedBA, relatedProcedures, sortOrder, SEO) |
+| h. Discipline-Template | `/treatments/<discipline>` × 6 | Shared template chrome — TOC labels, "Choose a focus" heading + body, "Read more →"/"Coming v1.4" labels, "Frequently asked" heading, "Related" eyebrow + heading + lede template |
+| i. Sub-Category-Template | `/treatments/<sub-cat>` × 22 | Shared template chrome — chapter format template, TOC labels, "Take a step" sidebar (3 CTA labels + reply line), "Treatments" h2 + intro, ProcedureFactsPanel chrome, "Frequently asked" heading |
+
 ### 2.c — Bucket "c. Doctors"
 
 Covers `/surgeons` (index) + `/surgeons/<slug>` × 8 (detail). The Surgeons Collection (g.) is the canonical source consumed sitewide.
@@ -162,11 +178,11 @@ Covers `/surgeons` (index) + `/surgeons/<slug>` × 8 (detail). The Surgeons Coll
 |---|---|---|
 | a. Main | `/surgeons` | Page meta + SEO + CmsExtraBlocks slot |
 | b. Hero | `/surgeons` | Hero — chapter eyebrow, 2-line title, lede, hero image, image label, breadcrumbs |
-| c. Lead-View | `/surgeons` | Lead Surgeon panel chrome — section eyebrow, block eyebrow, 3 stat labels, "Read the full profile" CTA (lead row from g.) |
-| d. Plastic-Surgery-View | `/surgeons` | Plastic Surgery section chrome — eyebrow, heading, lede (cards from g., group=plastic-surgery non-lead) |
-| e. Aesthetic-Medicine-View | `/surgeons` | Aesthetic Medicine section chrome — eyebrow, heading, lede (cards from g., group=aesthetic-medicine) |
-| f. Detail-Template | `/surgeons/<slug>` × 8 | Shared template chrome — hero eyebrow toggle, hero CTA, breadcrumb labels, 3 stat labels, Biography eyebrow + 4 sidebar dt labels, fallbacks, Specialty Areas + Training & Credentials + Faculty section headings |
-| g. Surgeons | `/surgeons` + `/surgeons/<slug>` × 8 | Surgeons Collection — 8 doctor records (name, portrait, spec, bio, years, specAreas, group, lead flag, credentials, languages, availability, sortOrder, SEO). Read also by `/`, `/treatments/<discipline>`, `/blog/<slug>` |
+| c. Surgeons | `/surgeons` + `/surgeons/<slug>` × 8 | Surgeons Collection — 8 doctor records (name, portrait, spec, bio, years, specAreas, group, lead flag, credentials, languages, availability, sortOrder, SEO). Read also by `/`, `/treatments/<discipline>`, `/blog/<slug>` |
+| d. Lead-View | `/surgeons` | Lead Surgeon panel chrome — section eyebrow, block eyebrow, 3 stat labels, "Read the full profile" CTA (lead row from c.) |
+| e. Plastic-Surgery-View | `/surgeons` | Plastic Surgery section chrome — eyebrow, heading, lede (cards from c., group=plastic-surgery non-lead) |
+| f. Aesthetic-Medicine-View | `/surgeons` | Aesthetic Medicine section chrome — eyebrow, heading, lede (cards from c., group=aesthetic-medicine) |
+| g. Detail-Template | `/surgeons/<slug>` × 8 | Shared template chrome — hero eyebrow toggle, hero CTA, breadcrumb labels, 3 stat labels, Biography eyebrow + 4 sidebar dt labels, fallbacks, Specialty Areas + Training & Credentials + Faculty section headings |
 
 ### 2.d — Bucket "d. Results"
 
@@ -176,14 +192,30 @@ Covers `/results` (hybrid index — both BA + Stories teasers) + `/gallery` (ful
 |---|---|---|
 | a. Main | `/results` | Page meta + SEO + CmsExtraBlocks slot |
 | b. Hero | `/results` | ChapterOpener — chapter, title A, title B, lede, hero image, imageHue, imageLabel, breadcrumbs |
-| c. Featured-Cases-View | `/results` | "Four signature cases" chrome — eyebrow, heading, lede, filter-bar label, "{n} cases · facial" count format (cards from i.) |
-| d. Stories-View | `/results` | "Stories, not slogans" chrome — eyebrow, heading, lede (rows from j.) |
-| e. Library-Cta | `/results` + `/gallery` | "Private gallery / Want to see more?" CTA — eyebrow, heading, body, button label, href (shared) |
-| f. Share-Cta | `/results` + `/stories` | "Sharing your story / Have a story to share?" CTA — eyebrow, heading, body, button label, href (shared) |
-| g. Gallery | `/gallery` | Whole page — hero, filter chrome (cards from i.; CTA from e.) |
-| h. Stories | `/stories` | Whole page — hero, story-rows section chrome (rows from j.; CTA from f.) |
-| i. Before-After-Cases | `/results` + `/gallery` | BeforeAfterCases Collection — the case rows |
-| j. Patient-Stories | `/results` + `/stories` | Stories Collection (label-only rename to disambiguate from h.) — patient-quote rows. Payload slug `stories` unchanged. |
+| c. Library-Cta | `/results` + `/gallery` | "Private gallery / Want to see more?" CTA — eyebrow, heading, body, button label, href (shared) |
+| d. Share-Cta | `/results` + `/stories` | "Sharing your story / Have a story to share?" CTA — eyebrow, heading, body, button label, href (shared) |
+| e. Gallery | `/gallery` | Whole page — hero, filter chrome (cards from g.; CTA from c.) |
+| f. Stories | `/stories` | Whole page — hero, story-rows section chrome (rows from h.; CTA from d.) |
+| g. Before-After-Cases | `/results` + `/gallery` | BeforeAfterCases Collection — the case rows |
+| h. Patient-Stories | `/results` + `/stories` | Stories Collection (label-only rename to disambiguate from f.) — patient-quote rows. Payload slug `stories` unchanged. |
+| i. Featured-Cases-View | `/results` | "Four signature cases" chrome — eyebrow, heading, lede, filter-bar label, "{n} cases · facial" count format (cards from g.) |
+| j. Stories-View | `/results` | "Stories, not slogans" chrome — eyebrow, heading, lede (rows from h.) |
+
+### 2.e — Bucket "e. Pricing"
+
+Covers `/pricing`. Discipline price list + clinic catalogue table cards are sourced cross-bucket from b. Treatments (e. Disciplines + f. Sub-Categories + g. Procedures); this Bucket owns the section chrome and the consultation policy callout.
+
+| Admin Item | Site Page | Site Surface |
+|---|---|---|
+| a. Main | `/pricing` | Page meta + SEO + CmsExtraBlocks slot |
+| b. Hero | `/pricing` | ChapterOpener — chapter, title A, title B, lede, hero image, imageHue, imageLabel, breadcrumbs |
+| c. Overview | `/pricing` | Editorial overview between hero and price list — eyebrow, heading parts (roman + italic), body |
+| d. Footnote | `/pricing` | Centred italic footnote text |
+| e. Insurance | `/pricing` | Insurance section — eyebrow, heading roman + italic, body paragraphs |
+| f. Payment | `/pricing` | Payment section — eyebrow, heading roman + italic, key/value terms list |
+| g. Consultation | `/pricing` (+ optional `/contact`, `/procedure-detail` per displayOn) | Consultation fee callout — feeIdr, feeAud, waiverConditionText, displayOn select |
+| h. Discipline-List-View | `/pricing` | Discipline-grouped price list chrome — "On request" / "Included" / arrow labels (rows from b. Treatments → e. + f. + g.) |
+| i. Catalogue-View | `/pricing` | Clinic catalogue table chrome — eyebrow, heading + italic accent, intro paragraph template, 4 sheet titles + subtitles (Surgical / Machine / Injection / BTL), category-group chrome, hair-zone labels, injectable-category labels (rows from b. Treatments → g. Procedures filtered by catalogueGroup) |
 
 ### 2.f — Bucket "f. Journey"
 
@@ -220,15 +252,15 @@ Covers `/blog`, `/blog/<slug>`, `/press`, `/privacy` — the 4 routes the footer
 | Admin Item | Site Page | Site Surface |
 |---|---|---|
 | a. Blog | `/blog` | Hero + "This issue" featured chrome + "The archive" section chrome (eyebrow, heading, lede, "filter by" label, empty-state copy) |
-| b. Blog-Post-Template | `/blog/<slug>` | Per-post template — byline chrome, "About the author" + "More from the journal" section headings (NEW global) |
-| c. Blog-Posts | `/blog` + `/blog/<slug>` | BlogPosts Collection — every post row (hero, body, dek, author ref, tag refs, date, image, featured flag) |
-| d. Blog-Tags | `/blog` | BlogTags Collection — filter taxonomy |
-| e. Authors | `/blog/<slug>` | Authors Collection — author rows (name, role, bio, portrait) |
-| f. Press | `/press` | Hero + Accreditations section chrome + Press section chrome |
-| g. Press-Mentions | `/press` | PressMentions Collection — headline rows |
-| h. Awards | `/press` | Awards Collection — accreditation rows |
-| i. Privacy | `/privacy` | Hero + "Last updated" date + intro chrome |
-| j. Privacy-Sections | `/privacy` | NEW Collection — 10 legal section rows (sortOrder, heading, rich-text body) |
+| b. Blog-Posts | `/blog` + `/blog/<slug>` | BlogPosts Collection — every post row (hero, body, dek, author ref, tag refs, date, image, featured flag) |
+| c. Blog-Tags | `/blog` | BlogTags Collection — filter taxonomy |
+| d. Authors | `/blog/<slug>` | Authors Collection — author rows (name, role, bio, portrait) |
+| e. Press | `/press` | Hero + Accreditations section chrome + Press section chrome |
+| f. Press-Mentions | `/press` | PressMentions Collection — headline rows |
+| g. Awards | `/press` | Awards Collection — accreditation rows |
+| h. Privacy | `/privacy` | Hero + "Last updated" date + intro chrome |
+| i. Privacy-Sections | `/privacy` | NEW Collection — 10 legal section rows (sortOrder, heading, rich-text body) |
+| j. Blog-Post-Template | `/blog/<slug>` | Per-post template — byline chrome, "About the author" + "More from the journal" section headings (NEW global) |
 
 ### 2.i — Bucket "i. Media Library"
 

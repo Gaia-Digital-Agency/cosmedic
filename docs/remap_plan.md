@@ -5,9 +5,9 @@
 > Companion: [remap.md](./remap.md) — the target Admin ↔ Site map this plan implements.
 > Scope: Two-stage rollout. **Phase R0** realigns the top-level Buckets to match site IA (sidebar move). **Phase R1, R7** ship per-Bucket detail for Contact + Journey (planning complete). Other per-Bucket phases follow as the user signs off their map.
 >
-> **Planning state mirrors [remap.md](./remap.md):**
-> - ✅ COMPLETE — User · Media · Journey · Contact · Homepage · About · Doctors · Results
-> - ⏳ PENDING — Treatments · Pricing
+> **Planning state mirrors [remap.md](./remap.md):** ✅ ALL 10 BUCKETS MAPPED (User · Media · Homepage · Treatments · Doctors · Results · Pricing · Journey · Contact · About)
+>
+> **Item ordering rule (uniform):** within each Bucket, directly-editable Items first; `-View` and `-Template` Items last. Applied to all 10 maps in remap.md and reflected in the schema tables below.
 
 ## Direct answer to the editability question
 
@@ -335,6 +335,143 @@ diff /tmp/home-before.html <(curl -s https://cosmedic.gaiada.online/)
 
 ---
 
+## Phase R3 — Bucket "b. Treatments" Detail
+
+> Goal: split `/treatments` editorial out of the generic-pageFields-only `TreatmentsPage` global into 4 new section globals + 2 new detail-template globals, then rewire [TreatmentsIndex.tsx](../packages/web/src/routes/treatments/TreatmentsIndex.tsx) + [DisciplineDetail.tsx](../packages/web/src/routes/detail/DisciplineDetail.tsx) + [SubCategoryDetail.tsx](../packages/web/src/routes/detail/SubCategoryDetail.tsx) to read from them. Disciplines + SubCategories + Procedures Collections stay as-is — already provide per-row data, just get label renames. Closes the orphan editorial chrome on 29 routes (1 index + 6 discipline + 22 sub-category).
+
+### R3.1 — CMS schema: 5 new Globals, 4 label renames
+
+| Item | Action | Slug (Payload) | Fields |
+|---|---|---|---|
+| **a. Main** | Rename existing `treatments-page` Global label. Keep generic `pageFields()`. | `treatments-page` (unchanged) | title, slug, route, publishStatus, sections, seo group |
+| **b. Hero** | **New** Global | `treatments-hero` | chapter, titleA, titleB, lede, heroImage, imageHue, imageLabel, breadcrumbLabel |
+| **c. Index** | **New** Global | `treatments-index-section` | eyebrow, heading, lede, readMoreCtaTemplate |
+| **d. Stats** | **New** Global | `treatments-stats` | stats array (4 rows: number, label) |
+| **e. Disciplines** | Rename `disciplines` Collection label only | `disciplines` (unchanged) | (no field changes) |
+| **f. Sub-Categories** | Rename `sub-categories` Collection label only | `sub-categories` (unchanged) | (no field changes) |
+| **g. Procedures** | Rename `procedures` Collection label only | `procedures` (unchanged) | (no field changes) |
+| **h. Discipline-Template** | **New** Global | `discipline-detail-template` | tocOnThisPageLabel, tocOverviewLabel, tocSubCategoriesLabel, tocProceduresLabel, tocFaqsLabel, chooseAFocusHeading, chooseAFocusBodyTemplate, readMoreLabel, comingLabel, faqsHeading, relatedEyebrow, relatedHeadingTemplate, relatedLedeTemplate |
+| **i. Sub-Category-Template** | **New** Global | `sub-category-detail-template` | chapterFormatTemplate, tocOnThisPageLabel, tocOverviewLabel, tocTreatmentsLabel, tocFaqsLabel, takeAStepEyebrow, bookVideoConsultCtaLabel, getEstimateCtaLabel, whatsappConciergeCtaLabel, replyLine, treatmentsHeading, treatmentsIntro, faqsHeading |
+
+**Important:** slugs do **not** change for renamed items. All existing Discipline + SubCategory + Procedure rows untouched.
+
+### R3.2 — `admin.description` notes
+
+**On Bucket `b. Treatments`:**
+
+> Governs `/treatments` + 6 `/treatments/<discipline>` + 22 `/treatments/<sub-cat>` = 29 routes. The 3 Collections (e/f/g) are the canonical source consumed sitewide — Disciplines feed mega-menu L1 + homepage Treatments-View + Footer Treatments column; Sub-Categories feed mega-menu L2; Procedures feed sub-category accordions and `/pricing` tables (cross-bucket read by `e. Pricing`).
+
+**On items h / i (the 2 templates):**
+
+> Template-level strings shared across every `/treatments/<discipline>` (6 routes) or `/treatments/<sub-cat>` (22 routes). Per-discipline / per-sub-category data lives on the row in e. Disciplines / f. Sub-Categories.
+
+### R3.3 — Settings field additions
+
+None.
+
+### R3.4 — Web data layer
+
+Extend [`packages/web/src/lib/cms.ts`](../packages/web/src/lib/cms.ts) parallel cache load:
+
+- `fetchGlobal('treatments-hero')`
+- `fetchGlobal('treatments-index-section')`
+- `fetchGlobal('treatments-stats')`
+- `fetchGlobal('discipline-detail-template')`
+- `fetchGlobal('sub-category-detail-template')`
+
+Extend `CmsCache` interface with the 5 new globals. Disciplines + SubCategories + Procedures Collections already fetched.
+
+### R3.5 — Route rewire
+
+Replace hardcoded strings in [TreatmentsIndex.tsx](../packages/web/src/routes/treatments/TreatmentsIndex.tsx):
+
+| Hardcoded today | Becomes |
+|---|---|
+| `TREATMENTS_STATS` array (L10-15) | reads from `cms.treatmentsStats.stats` |
+| ChapterOpener literals (L19-27) | reads from `cms.treatmentsHero.*` |
+| "An Index" eyebrow + heading + lede (L32-39) | reads from `cms.treatmentsIndexSection.*` |
+| "Read more →" template (L58-60) | reads from `cms.treatmentsIndexSection.readMoreCtaTemplate` |
+| `TREATMENT_LIST` (web seed) | reads from `cms.disciplines` (sorted by sortOrder) |
+
+Replace hardcoded strings in [DisciplineDetail.tsx](../packages/web/src/routes/detail/DisciplineDetail.tsx):
+
+| Hardcoded today | Becomes |
+|---|---|
+| TOC labels (L40-61) | reads from `cms.disciplineDetailTemplate.toc*` |
+| ChapterOpener literals + hero data (L24-36) | derived from `cms.disciplines` row (chapterTitle, tagline, lede, heroImage) |
+| "Choose a focus" heading + body template (L92-101) | reads from `cms.disciplineDetailTemplate.chooseAFocus*` |
+| "Read more →" / "Coming v1.4" labels (L157, L170) | reads from `cms.disciplineDetailTemplate.readMoreLabel / comingLabel` |
+| "Frequently asked" heading (L247) | reads from `cms.disciplineDetailTemplate.faqsHeading` |
+| "Related" eyebrow + heading + lede template (L261-269) | reads from `cms.disciplineDetailTemplate.related*` |
+| Sub-categories list | derived from `cms.subCategories.filter(parent === discipline)` |
+| Procedures list | derived from `cms.procedures.filter(parentDiscipline === discipline AND no parentSubCategory)` |
+| `TREATMENT_CONTENT` (web seed) | DELETED — all sections + faqs come from `cms.disciplines` row |
+
+Replace hardcoded strings in [SubCategoryDetail.tsx](../packages/web/src/routes/detail/SubCategoryDetail.tsx):
+
+| Hardcoded today | Becomes |
+|---|---|
+| Chapter format template (L26) | reads from `cms.subCategoryDetailTemplate.chapterFormatTemplate` |
+| TOC labels (L42-58) | reads from `cms.subCategoryDetailTemplate.toc*` |
+| "Take a step" sidebar block (L60-138) | all labels read from `cms.subCategoryDetailTemplate.takeAStep* / bookVideoConsultCtaLabel / getEstimateCtaLabel / whatsappConciergeCtaLabel / replyLine` |
+| "Treatments" h2 + intro (L167-171) | reads from `cms.subCategoryDetailTemplate.treatmentsHeading / treatmentsIntro` |
+| "Frequently asked" heading (L187) | reads from `cms.subCategoryDetailTemplate.faqsHeading` |
+| `SUBCATEGORY_DATA` (web seed) | DELETED — all data comes from `cms.subCategories` row + `cms.procedures` filtered by parentSubCategory |
+| ProcedureFactsPanel chrome | reads from `cms.procedures` per-row detail fields |
+
+### R3.6 — Seed migration (visual invariance gate)
+
+Write `packages/cms/src/seed/seed-treatments-section-globals.ts` (run once, idempotent):
+
+1. Upsert `treatments-hero` with 8 atoms from TreatmentsIndex.tsx L19-27 verbatim.
+2. Upsert `treatments-index-section` with strings from L32-39 + L58-60.
+3. Upsert `treatments-stats` with the 4 hardcoded stat tiles (L10-15).
+4. Upsert `discipline-detail-template` with ~13 chrome strings from DisciplineDetail.tsx.
+5. Upsert `sub-category-detail-template` with ~13 chrome strings from SubCategoryDetail.tsx.
+6. **Reconcile editorial content**: copy any per-discipline sections/faqs from `packages/web/src/content/treatment-content.ts` (web seed) into the matching Disciplines collection rows (verify existing rows already populated; only fill gaps).
+7. **Reconcile sub-category content**: copy per-sub-category sections/faqs/treatments from `packages/web/src/content/subcategory-data.ts` into Sub-Categories rows + Procedures rows (verify; gap-fill only).
+8. After verifying everything reads correctly, **propose** (under rule 4 — no unilateral deletes) removing `packages/web/src/content/treatment-content.ts` + `packages/web/src/content/subcategory-data.ts` for user approval.
+
+### R3.7 — Revalidate hooks
+
+Spread `revalidateGlobalAfterChange()` onto all 5 new globals. Standard project pattern.
+
+### R3.8 — Verification
+
+```bash
+pnpm --filter @cosmedic/cms build
+pnpm --filter @cosmedic/web build
+pm2 restart cosmedic-cms cosmedic-web
+
+# Admin sanity — 9 items in b. Treatments Bucket, alphabetical order
+curl -s http://127.0.0.1:4007/admin | grep -E "a\. Main|b\. Hero|c\. Index|d\. Stats|e\. Disciplines|f\. Sub-Categories|g\. Procedures|h\. Discipline-Template|i\. Sub-Category-Template"
+
+# Visual invariance — /treatments + sample discipline + sample sub-category
+curl -s https://cosmedic.gaiada.online/treatments > /tmp/treatments-before.html
+curl -s https://cosmedic.gaiada.online/treatments/surgical > /tmp/discipline-before.html
+curl -s https://cosmedic.gaiada.online/treatments/surgical-breast > /tmp/subcat-before.html
+# ... apply changes ...
+diff /tmp/treatments-before.html <(curl -s https://cosmedic.gaiada.online/treatments)
+diff /tmp/discipline-before.html <(curl -s https://cosmedic.gaiada.online/treatments/surgical)
+diff /tmp/subcat-before.html <(curl -s https://cosmedic.gaiada.online/treatments/surgical-breast)
+# Spot-check 4 more disciplines + 4 more sub-categories
+
+# Editability proof
+# 1. b. Hero → change lede → revisit /treatments → see → revert
+# 2. c. Index → change heading → revisit /treatments → see → revert
+# 3. d. Stats → edit one tile → revisit /treatments → see → revert
+# 4. h. Discipline-Template → change "Frequently asked" heading → revisit any /treatments/<discipline> → see → revert
+# 5. i. Sub-Category-Template → change book-video-consult CTA label → revisit any /treatments/<sub-cat> → see → revert
+```
+
+### R3.9 Estimate
+
+- **Commits:** ~14–16 (5 new globals + 3 route rewires + seed reconcile + collection renames + verification)
+- **Time:** ~6–8 hours (largest by route count: 29 routes)
+- **Downtime:** none (warm builds, sub-second `pm2 restart`)
+
+---
+
 ## Phase R4 — Bucket "c. Doctors" Detail
 
 > Goal: split `/surgeons` editorial out of the generic-pageFields-only `SurgeonsPage` global into 4 new section globals + 1 new detail-template global, then rewire [SurgeonsIndex.tsx](../packages/web/src/routes/surgeons/SurgeonsIndex.tsx) and [SurgeonDetail.tsx](../packages/web/src/routes/detail/SurgeonDetail.tsx) to read from them so every visible atom on `/surgeons` + the 8 `/surgeons/<slug>` pages becomes editable. Surgeons Collection (existing) stays as-is — already provides per-doctor data, just gets a label rename. Closes ~40 orphan atoms across the 9 routes.
@@ -345,15 +482,15 @@ diff /tmp/home-before.html <(curl -s https://cosmedic.gaiada.online/)
 |---|---|---|---|
 | **a. Main** | Rename existing `surgeons-page` Global label. Keep generic `pageFields()`. | `surgeons-page` (unchanged) | title, slug, route, publishStatus, sections, seo group |
 | **b. Hero** | **New** Global | `surgeons-hero` | chapter, titleA, titleB, lede, heroImage, imageLabel, breadcrumbLabel |
-| **c. Lead-View** | **New** Global | `surgeons-lead-view` | sectionEyebrow, blockEyebrow, statLabelTrained, statLabelSpecialty, statLabelDistinction, ctaLabel |
-| **d. Plastic-Surgery-View** | **New** Global | `surgeons-plastic-view` | eyebrow, headingA, headingItalic, headingB, lede |
-| **e. Aesthetic-Medicine-View** | **New** Global | `surgeons-aesthetic-view` | eyebrow, headingA, headingItalic, headingB, lede |
-| **f. Detail-Template** | **New** Global | `surgeon-detail-template` | heroLeadLabel, heroSpecialistLabel, heroCtaConsultLabel, heroCtaTreatmentsLabelTemplate *(view-only mirror ← b. Treatments → Disciplines)*, breadcrumbHomeLabel, breadcrumbSurgeonsLabel, statLabelYears, statLabelDistinction, statLabelSpecialty, biographyEyebrow, sidebarLabelSpecialism, sidebarLabelCredentials, sidebarLabelLanguages, sidebarLabelAvailability, languagesFallback, availabilityFallback, secondaryBioParagraph, specialtyEyebrow, specialtyHeadingTemplate, trainingEyebrow, trainingRowLabels (array of 5), trainingRowRights (array of 4 — rows 1-3+5), trainingRowPracticeMid *(view-only mirror ← a. Homepage → r. Settings)*, facultyEyebrow, facultyHeading |
-| **g. Surgeons** | Rename `surgeons` Collection label only | `surgeons` (unchanged) | (no field changes) |
+| **c. Surgeons** | Rename `surgeons` Collection label only | `surgeons` (unchanged) | (no field changes) |
+| **d. Lead-View** | **New** Global | `surgeons-lead-view` | sectionEyebrow, blockEyebrow, statLabelTrained, statLabelSpecialty, statLabelDistinction, ctaLabel |
+| **e. Plastic-Surgery-View** | **New** Global | `surgeons-plastic-view` | eyebrow, headingA, headingItalic, headingB, lede |
+| **f. Aesthetic-Medicine-View** | **New** Global | `surgeons-aesthetic-view` | eyebrow, headingA, headingItalic, headingB, lede |
+| **g. Detail-Template** | **New** Global | `surgeon-detail-template` | heroLeadLabel, heroSpecialistLabel, heroCtaConsultLabel, heroCtaTreatmentsLabelTemplate *(view-only mirror ← b. Treatments → Disciplines)*, breadcrumbHomeLabel, breadcrumbSurgeonsLabel, statLabelYears, statLabelDistinction, statLabelSpecialty, biographyEyebrow, sidebarLabelSpecialism, sidebarLabelCredentials, sidebarLabelLanguages, sidebarLabelAvailability, languagesFallback, availabilityFallback, secondaryBioParagraph, specialtyEyebrow, specialtyHeadingTemplate, trainingEyebrow, trainingRowLabels (array of 5), trainingRowRights (array of 4 — rows 1-3+5), trainingRowPracticeMid *(view-only mirror ← a. Homepage → l. Settings)*, facultyEyebrow, facultyHeading |
 
 **Important:** slugs do **not** change for renamed items. All existing surgeon data + API URLs + route reads intact.
 
-**View-only mirror fields on `f. Detail-Template`** use Payload's native `admin.readOnly: true` + `hooks.afterRead` pattern — the field declares itself, but its value is computed from the source Global / Collection at read time. No monkey-patching; full Payload capability preserved (Rule 9).
+**View-only mirror fields on `g. Detail-Template`** use Payload's native `admin.readOnly: true` + `hooks.afterRead` pattern — the field declares itself, but its value is computed from the source Global / Collection at read time. No monkey-patching; full Payload capability preserved (Rule 9).
 
 ### R4.2 — `admin.description` notes
 
@@ -361,13 +498,13 @@ diff /tmp/home-before.html <(curl -s https://cosmedic.gaiada.online/)
 
 > Governs /surgeons + the 8 /surgeons/<slug> detail pages. The Surgeons Collection (g.) is the canonical source for every doctor surface on the site — homepage Surgeons-View, Doctors mega-menu, discipline & sub-category Lead Surgeon panels, and blog bylines all read from here.
 
-**On items c / d / e (the 3 view sections):**
+**On items d / e / f (the 3 view sections):**
 
-> The cards / data shown in this section are **not edited here**. Edit the source in **g. Surgeons** (same Bucket). This item controls only the section's eyebrow / heading / lede / CTA labels.
+> The cards / data shown in this section are **not edited here**. Edit the source in **c. Surgeons** (same Bucket). This item controls only the section's eyebrow / heading / lede / CTA labels.
 
-**On `f. Detail-Template`:**
+**On `g. Detail-Template`:**
 
-> Template-level strings that apply to every /surgeons/<slug> detail page. Per-doctor data (name, portrait, bio, credentials, schedule, languages, specialty areas) lives on **g. Surgeons** (the row). This global controls only the labels, eyebrows, fallbacks, and section headings that are identical across all 8 detail pages. Two fields are **view-only** mirrors of cross-bucket sources — Treatments back-link label (← b. Treatments → Disciplines) and "BIMC CosMedic Centre, Bali" Training row (← a. Homepage → r. Settings).
+> Template-level strings that apply to every /surgeons/<slug> detail page. Per-doctor data (name, portrait, bio, credentials, schedule, languages, specialty areas) lives on **c. Surgeons** (the row). This global controls only the labels, eyebrows, fallbacks, and section headings that are identical across all 8 detail pages. Two fields are **view-only** mirrors of cross-bucket sources — Treatments back-link label (← b. Treatments → Disciplines) and "BIMC CosMedic Centre, Bali" Training row (← a. Homepage → l. Settings).
 
 ### R4.3 — Settings field additions
 
@@ -445,7 +582,7 @@ pnpm --filter @cosmedic/web build
 pm2 restart cosmedic-cms cosmedic-web
 
 # Admin sanity — 7 items in c. Doctors Bucket, alphabetical order
-curl -s http://127.0.0.1:4007/admin | grep -E "a\. Main|b\. Hero|c\. Lead-View|d\. Plastic-Surgery-View|e\. Aesthetic-Medicine-View|f\. Detail-Template|g\. Surgeons"
+curl -s http://127.0.0.1:4007/admin | grep -E "a\. Main|b\. Hero|c\. Surgeons|d\. Lead-View|e\. Plastic-Surgery-View|f\. Aesthetic-Medicine-View|g\. Detail-Template"
 
 # Visual invariance — /surgeons + a sample of /surgeons/<slug>
 curl -s https://cosmedic.gaiada.online/surgeons > /tmp/surgeons-before.html
@@ -457,10 +594,10 @@ diff /tmp/surgeon-detail-before.html <(curl -s https://cosmedic.gaiada.online/su
 
 # Editability proof — edit each new global, wait 60s, confirm change appears
 # 1. b. Hero → change lede → revisit /surgeons → see → revert
-# 2. c. Lead-View → change CTA label → revisit /surgeons → see → revert
-# 3. d. Plastic-Surgery-View → change heading → revisit /surgeons → see → revert
-# 4. e. Aesthetic-Medicine-View → change lede → revisit /surgeons → see → revert
-# 5. f. Detail-Template → change "Patients often describe…" → revisit any /surgeons/<slug> → see → revert
+# 2. d. Lead-View → change CTA label → revisit /surgeons → see → revert
+# 3. e. Plastic-Surgery-View → change heading → revisit /surgeons → see → revert
+# 4. f. Aesthetic-Medicine-View → change lede → revisit /surgeons → see → revert
+# 5. g. Detail-Template → change "Patients often describe…" → revisit any /surgeons/<slug> → see → revert
 ```
 
 ### R4.9 Estimate
@@ -479,44 +616,44 @@ diff /tmp/surgeon-detail-before.html <(curl -s https://cosmedic.gaiada.online/su
 
 | Item | Action | Slug (Payload) | Fields |
 |---|---|---|---|
-| **a. Main** | Rename existing `results-page` Global label. Strip hero fields (move to `b. Hero`); strip section editorial (move to c., d., e., f.). | `results-page` (unchanged) | title, slug, route, publishStatus, sections, seo group |
+| **a. Main** | Rename existing `results-page` Global label. Strip hero fields (move to `b. Hero`); strip section editorial (move to i., j., c., d.). | `results-page` (unchanged) | title, slug, route, publishStatus, sections, seo group |
 | **b. Hero** | **New** Global | `results-hero` | chapter, titleA, titleB, lede, heroImage, imageHue, imageLabel, breadcrumbLabel |
-| **c. Featured-Cases-View** | **New** Global | `results-featured-cases-view` | eyebrow, heading, lede, filterBarLabel, countFormat (e.g. `"{n} cases · facial"`) |
-| **d. Stories-View** | **New** Global | `results-stories-view` | eyebrow, heading, lede |
-| **e. Library-Cta** | **New** Global | `library-cta` | eyebrow, heading, body, buttonLabel, buttonHref. **Shared** by `/results` + `/gallery` |
-| **f. Share-Cta** | **New** Global | `share-cta` | eyebrow, heading, body, buttonLabel, buttonHref. **Shared** by `/results` + `/stories` |
-| **g. Gallery** | Rename existing `gallery-page` Global label. Expand fields to cover full editorial (hero + filter chrome). | `gallery-page` (unchanged) | hero (chapter, titleA, titleB, lede, heroImage, imageHue, imageLabel, breadcrumbLabel), filterBarLabel, countFormat |
-| **h. Stories** | Rename existing `stories-page` Global label. Expand fields to cover full editorial (hero + story-rows section chrome). | `stories-page` (unchanged) | hero (chapter, titleA, titleB, lede, heroImage, imageHue, imageLabel, breadcrumbLabel) |
-| **i. Before-After-Cases** | Rename `before-after-cases` Collection label only | `before-after-cases` (unchanged) | (no field changes) |
-| **j. Patient-Stories** | Rename `stories` Collection label only (sidebar shows "j. Patient-Stories") | `stories` (unchanged — keeps DB table + API URLs) | (no field changes) |
+| **c. Library-Cta** | **New** Global | `library-cta` | eyebrow, heading, body, buttonLabel, buttonHref. **Shared** by `/results` + `/gallery` |
+| **d. Share-Cta** | **New** Global | `share-cta` | eyebrow, heading, body, buttonLabel, buttonHref. **Shared** by `/results` + `/stories` |
+| **e. Gallery** | Rename existing `gallery-page` Global label. Expand fields to cover full editorial (hero + filter chrome). | `gallery-page` (unchanged) | hero (chapter, titleA, titleB, lede, heroImage, imageHue, imageLabel, breadcrumbLabel), filterBarLabel, countFormat |
+| **f. Stories** | Rename existing `stories-page` Global label. Expand fields to cover full editorial (hero + story-rows section chrome). | `stories-page` (unchanged) | hero (chapter, titleA, titleB, lede, heroImage, imageHue, imageLabel, breadcrumbLabel) |
+| **g. Before-After-Cases** | Rename `before-after-cases` Collection label only | `before-after-cases` (unchanged) | (no field changes) |
+| **h. Patient-Stories** | Rename `stories` Collection label only (sidebar shows "h. Patient-Stories") | `stories` (unchanged — keeps DB table + API URLs) | (no field changes) |
+| **i. Featured-Cases-View** | **New** Global | `results-featured-cases-view` | eyebrow, heading, lede, filterBarLabel, countFormat (e.g. `"{n} cases · facial"`) |
+| **j. Stories-View** | **New** Global | `results-stories-view` | eyebrow, heading, lede |
 
-**Important:** slugs do **not** change for renamed items. The Stories collection keeps slug `stories` (DB table `stories`) — only the admin sidebar label gains the `j. Patient-Stories` prefix. New globals get new slugs.
+**Important:** slugs do **not** change for renamed items. The Stories collection keeps slug `stories` (DB table `stories`) — only the admin sidebar label gains the `h. Patient-Stories` prefix. New globals get new slugs.
 
 ### R5.2 — `admin.description` notes
 
 **On Bucket `d. Results`:**
 
-> Governs /results + /gallery + /stories — the three routes under the "Results" top-nav link. Fully self-contained; no Settings reads. Two shared CTA blocks (e. Library-Cta + f. Share-Cta) render on two pages each — edit once, applies to both.
+> Governs /results + /gallery + /stories — the three routes under the "Results" top-nav link. Fully self-contained; no Settings reads. Two shared CTA blocks (c. Library-Cta + d. Share-Cta) render on two pages each — edit once, applies to both.
 
-**On `c. Featured-Cases-View`:**
+**On `i. Featured-Cases-View`:**
 
-> The before/after cards shown in this section are **not edited here**. Source: **i. Before-After-Cases** (same Bucket). This item controls only the section eyebrow, heading, lede, filter-bar label, and count format string.
+> The before/after cards shown in this section are **not edited here**. Source: **g. Before-After-Cases** (same Bucket). This item controls only the section eyebrow, heading, lede, filter-bar label, and count format string.
 
-**On `d. Stories-View`:**
+**On `j. Stories-View`:**
 
-> The patient-quote rows shown in this section are **not edited here**. Source: **j. Patient-Stories** (same Bucket). This item controls only the section eyebrow, heading, and lede.
+> The patient-quote rows shown in this section are **not edited here**. Source: **h. Patient-Stories** (same Bucket). This item controls only the section eyebrow, heading, and lede.
 
-**On `e. Library-Cta`:**
+**On `c. Library-Cta`:**
 
 > Used by **both** `/results` (bottom of "Featured cases") and `/gallery` (bottom of grid). Edit once; applies to both pages.
 
-**On `f. Share-Cta`:**
+**On `d. Share-Cta`:**
 
 > Used by **both** `/results` (bottom of "Stories") and `/stories` (bottom of page). Edit once; applies to both pages.
 
-**On `j. Patient-Stories`:**
+**On `h. Patient-Stories`:**
 
-> The patient-quote rows that back the `/stories` page and `/results` Stories-View section. Renamed in the sidebar from "Stories" to "Patient-Stories" to disambiguate from `h. Stories` (the `/stories` page Global). Payload slug `stories` is unchanged.
+> The patient-quote rows that back the `/stories` page and `/results` Stories-View section. Renamed in the sidebar from "Stories" to "Patient-Stories" to disambiguate from `f. Stories` (the `/stories` page Global). Payload slug `stories` is unchanged.
 
 ### R5.3 — Settings field additions
 
@@ -582,7 +719,7 @@ pnpm --filter @cosmedic/web build
 pm2 restart cosmedic-cms cosmedic-web
 
 # Admin sanity — 10 items in d. Results Bucket, alphabetical order
-curl -s http://127.0.0.1:4007/admin | grep -E "a\. Main|b\. Hero|c\. Featured-Cases-View|d\. Stories-View|e\. Library-Cta|f\. Share-Cta|g\. Gallery|h\. Stories|i\. Before-After-Cases|j\. Patient-Stories"
+curl -s http://127.0.0.1:4007/admin | grep -E "a\. Main|b\. Hero|c\. Library-Cta|d\. Share-Cta|e\. Gallery|f\. Stories|g\. Before-After-Cases|h\. Patient-Stories|i\. Featured-Cases-View|j\. Stories-View"
 
 # Visual invariance — all 3 routes must be byte-identical
 for route in /results /gallery /stories; do
@@ -595,13 +732,13 @@ done
 
 # Editability proof — edit each new global + shared CTAs, confirm propagation
 # 1. b. Hero → change lede → revisit /results → see → revert
-# 2. c. Featured-Cases-View → change heading → revisit /results → see → revert
-# 3. d. Stories-View → change heading → revisit /results → see → revert
-# 4. e. Library-Cta → change body → revisit /results AND /gallery → see in BOTH → revert
-# 5. f. Share-Cta → change body → revisit /results AND /stories → see in BOTH → revert
-# 6. g. Gallery → change filterBarLabel → revisit /gallery → see → revert
-# 7. h. Stories → change hero lede → revisit /stories → see → revert
-# 8. j. Patient-Stories → edit one row quote → revisit /stories AND /results Stories-View → see in BOTH → revert
+# 2. i. Featured-Cases-View → change heading → revisit /results → see → revert
+# 3. j. Stories-View → change heading → revisit /results → see → revert
+# 4. c. Library-Cta → change body → revisit /results AND /gallery → see in BOTH → revert
+# 5. d. Share-Cta → change body → revisit /results AND /stories → see in BOTH → revert
+# 6. e. Gallery → change filterBarLabel → revisit /gallery → see → revert
+# 7. f. Stories → change hero lede → revisit /stories → see → revert
+# 8. h. Patient-Stories → edit one row quote → revisit /stories AND /results Stories-View → see in BOTH → revert
 ```
 
 ### R5.9 Estimate
@@ -609,6 +746,127 @@ done
 - **Commits:** ~12–14 (5 new globals + 2 expanded page globals + 2 collection label renames + 3 routes rewired + 1 seed migration)
 - **Time:** ~4–5 hours including verification
 - **Downtime:** none (warm builds, sub-second `pm2 restart`)
+
+---
+
+## Phase R6 — Bucket "e. Pricing" Detail
+
+> Goal: split `PricingPage` global's nested group fields (overviewBlock / footnoteBlock / insurancePaymentBlock) into 5 dedicated section globals, add a Hero global, add 2 cross-bucket view-only globals for the discipline price list + clinic catalogue chrome, then rewire [PricingPage.tsx](../packages/web/src/routes/pricing/PricingPage.tsx) + [ClinicCatalogueTable.tsx](../packages/web/src/routes/pricing/ClinicCatalogueTable.tsx) to read from them. ConsultationPolicy stays as-is, gets label rename. Procedures + Disciplines + Sub-Categories Collections stay in b. Treatments (cross-bucket reads).
+
+### R6.1 — CMS schema: 7 new Globals, 2 label renames
+
+| Item | Action | Slug (Payload) | Fields |
+|---|---|---|---|
+| **a. Main** | Rename existing `pricing-page` Global label. Strip overviewBlock + footnoteBlock + insurancePaymentBlock (moved to c/d/e/f). Keep pageFields() only. | `pricing-page` (unchanged) | title, slug, route, publishStatus, sections, seo group |
+| **b. Hero** | **New** Global | `pricing-hero` | chapter, titleA, titleB, lede, heroImage, imageHue, imageLabel, breadcrumbLabel |
+| **c. Overview** | **New** Global (was `pricing-page.overviewBlock` group) | `pricing-overview` | eyebrow, headingPart1, headingPart2, body |
+| **d. Footnote** | **New** Global (was `pricing-page.footnoteBlock` group) | `pricing-footnote` | text (textarea) |
+| **e. Insurance** | **New** Global (split from `pricing-page.insurancePaymentBlock`) | `pricing-insurance` | eyebrow, headingRoman, headingItalic, body (textarea, paragraphs separated by blank line) |
+| **f. Payment** | **New** Global (split from `pricing-page.insurancePaymentBlock`) | `pricing-payment` | eyebrow, headingRoman, headingItalic, termsText (textarea, one row per line "Label \| Value") |
+| **g. Consultation** | Rename `consultation-policy` Global label only | `consultation-policy` (unchanged) | (no field changes) |
+| **h. Discipline-List-View** | **New** Global | `pricing-discipline-list-view` | sectionEyebrow (optional), onRequestLabel, includedLabel, arrowChar (default "→") *(view-only — cards from b. Treatments → e. + f. + g.)* |
+| **i. Catalogue-View** | **New** Global | `pricing-catalogue-view` | sectionEyebrow, headingRoman, headingItalic, introTemplate (uses `{n}` for total count), sheetSurgicalTitle, sheetSurgicalSubtitle, sheetMachineTitle, sheetMachineSubtitle, sheetInjectionTitle, sheetInjectionSubtitle, sheetBtlTitle, sheetBtlSubtitle, hairZoneLabels group (face, upperBody, lowerBody, package, other), injectableCategoryLabels group (botulinumToxin, filler, skinBooster, collagenStimulator, bioRemodeling, threadLift, mesotherapy, hgh, other) *(view-only — rows from b. Treatments → g. Procedures filtered by catalogueGroup)* |
+
+**Important:** slugs do **not** change for renamed items. Existing pricing-page data fields are preserved during the split.
+
+### R6.2 — `admin.description` notes
+
+**On Bucket `e. Pricing`:**
+
+> Governs `/pricing`. The discipline price list rows + clinic catalogue table rows are sourced cross-bucket from `b. Treatments` (Disciplines + Sub-Categories + Procedures). This Bucket owns the section chrome (a–g) and the 2 cross-bucket view items (h, i). Edit prices in `b. Treatments → g. Procedures`.
+
+**On items h / i (the 2 view items):**
+
+> The cards / rows shown in this section are **not edited here**. Edit the source in `b. Treatments → g. Procedures` (catalogue line items) and `b. Treatments → e. Disciplines + f. Sub-Categories` (discipline list grouping). This item controls only the section chrome strings.
+
+### R6.3 — Settings field additions
+
+None.
+
+### R6.4 — Web data layer
+
+Extend [`packages/web/src/lib/cms.ts`](../packages/web/src/lib/cms.ts) parallel cache load:
+
+- `fetchGlobal('pricing-hero')`
+- `fetchGlobal('pricing-overview')`
+- `fetchGlobal('pricing-footnote')`
+- `fetchGlobal('pricing-insurance')`
+- `fetchGlobal('pricing-payment')`
+- `fetchGlobal('pricing-discipline-list-view')`
+- `fetchGlobal('pricing-catalogue-view')`
+
+Extend `CmsCache` interface accordingly. Procedures + Disciplines + Sub-Categories Collections + ConsultationPolicy global already fetched.
+
+### R6.5 — Route rewire
+
+Replace hardcoded strings in [PricingPage.tsx](../packages/web/src/routes/pricing/PricingPage.tsx):
+
+| Hardcoded today | Becomes |
+|---|---|
+| `DEFAULT_PAYMENT_TERMS` (L13-20) | reads from `cms.pricingPayment.termsText` (parsed) |
+| ChapterOpener literals (L65-73) | reads from `cms.pricingHero.*` |
+| Overview block reads from `pricing-page.overviewBlock` (L39-42, L75-97) | reads from `cms.pricingOverview.*` |
+| Discipline list section H2/H3 + "On request" / "Included" / arrow labels (L101-251) | reads from `cms.pricingDisciplineListView.*` |
+| Footnote fallback (L44-46) | reads from `cms.pricingFootnote.text` |
+| Insurance section (L52-57, L284-301) | reads from `cms.pricingInsurance.*` |
+| Payment section (L58-61, L304-340) | reads from `cms.pricingPayment.*` |
+
+Replace hardcoded strings in [ClinicCatalogueTable.tsx](../packages/web/src/routes/pricing/ClinicCatalogueTable.tsx):
+
+| Hardcoded today | Becomes |
+|---|---|
+| `SHEET_LABEL` (L31-36) | reads from `cms.pricingCatalogueView.sheet{Surgical,Machine,Injection,Btl}{Title,Subtitle}` |
+| `HAIR_ZONE_LABEL` (L38-44) | reads from `cms.pricingCatalogueView.hairZoneLabels.*` |
+| `labelInjectableCategory` (L46-58) | reads from `cms.pricingCatalogueView.injectableCategoryLabels.*` |
+| Section eyebrow "Clinic catalogue · CMS-managed" + heading + intro (L334-353) | reads from `cms.pricingCatalogueView.sectionEyebrow / headingRoman / headingItalic / introTemplate` (`{n}` replaced with `totalCatalogueRows`) |
+
+### R6.6 — Seed migration (visual invariance gate)
+
+Write `packages/cms/src/seed/seed-pricing-section-globals.ts` (run once, idempotent):
+
+1. Upsert `pricing-hero` with 8 atoms from PricingPage.tsx L65-73 verbatim.
+2. Read existing `pricing-page` Global → copy `overviewBlock` group into new `pricing-overview` global → set `pricing-overview` fields.
+3. Read existing `pricing-page` Global → copy `footnoteBlock.text` into new `pricing-footnote.text`.
+4. Read existing `pricing-page` Global → copy `insurancePaymentBlock.insurance*` into new `pricing-insurance` global; copy `insurancePaymentBlock.payment*` into new `pricing-payment` global.
+5. Upsert `pricing-discipline-list-view` with default labels ("On request", "Included", "→").
+6. Upsert `pricing-catalogue-view` with all chrome strings from ClinicCatalogueTable.tsx (SHEET_LABEL × 4, HAIR_ZONE_LABEL × 5, labelInjectableCategory × 9, section eyebrow + heading + intro template).
+7. After verifying everything reads correctly, **propose** (under rule 4 — no unilateral deletes) removing the moved-out group fields from `pricing-page` for user approval.
+
+### R6.7 — Revalidate hooks
+
+Spread `revalidateGlobalAfterChange()` onto all 7 new globals. Standard project pattern.
+
+### R6.8 — Verification
+
+```bash
+pnpm --filter @cosmedic/cms build
+pnpm --filter @cosmedic/web build
+pm2 restart cosmedic-cms cosmedic-web
+
+# Admin sanity — 9 items in e. Pricing Bucket
+curl -s http://127.0.0.1:4007/admin | grep -E "a\. Main|b\. Hero|c\. Overview|d\. Footnote|e\. Insurance|f\. Payment|g\. Consultation|h\. Discipline-List-View|i\. Catalogue-View"
+
+# Visual invariance — /pricing must be byte-identical
+curl -s https://cosmedic.gaiada.online/pricing > /tmp/pricing-before.html
+# ... apply changes ...
+diff /tmp/pricing-before.html <(curl -s https://cosmedic.gaiada.online/pricing)
+
+# Editability proof
+# 1. b. Hero → change lede → revisit /pricing → see → revert
+# 2. c. Overview → change heading → revisit /pricing → see → revert
+# 3. d. Footnote → change text → revisit /pricing → see → revert
+# 4. e. Insurance → change body → revisit /pricing → see → revert
+# 5. f. Payment → add a term → revisit /pricing → see → revert
+# 6. h. Discipline-List-View → change "On request" label → revisit /pricing → see → revert
+# 7. i. Catalogue-View → change "Surgical Procedures" title → revisit /pricing → see → revert
+# 8. Cross-bucket: edit a Procedure in b. Treatments → g. Procedures → revisit /pricing → see new price → revert
+```
+
+### R6.9 Estimate
+
+- **Commits:** ~10–12 (7 new globals + 2 route rewires + seed migration + verification)
+- **Time:** ~3–4 hours (1 route; well-scoped split from existing global)
+- **Downtime:** none
 
 ---
 
@@ -706,16 +964,16 @@ diff /tmp/rs-before.html <(curl -s https://cosmedic.gaiada.online/recovery-stays
 
 | Item | Action | Slug (Payload) | Fields |
 |---|---|---|---|
-| **a. Blog** | Rename existing `blog-page` Global label. Strip per-post template fields (move to b. Blog-Post-Template). | `blog-page` (unchanged) | hero (chapter, titleA, titleB, lede, heroImage), thisIssueEyebrow, readTheEssayCtaLabel, archiveEyebrow, archiveHeading, archiveLede, archiveFilterLabel, archiveEmptyStateCopy |
-| **b. Blog-Post-Template** | **New** Global | `blog-post-template` | aboutTheAuthorHeading, moreFromTheJournalHeading, bylineFormatTemplate (optional) |
-| **c. Blog-Posts** | Rename `blog-posts` Collection label only | `blog-posts` (unchanged) | (no field changes) |
-| **d. Blog-Tags** | Rename `blog-tags` Collection label only | `blog-tags` (unchanged) | (no field changes) |
-| **e. Authors** | Rename `authors` Collection label only | `authors` (unchanged) | (no field changes) |
-| **f. Press** | Rename `press-page` Global label only | `press-page` (unchanged) | hero (existing) + accreditationsEyebrow, accreditationsHeading, accreditationsLede, pressEyebrow, pressHeading, pressLede |
-| **g. Press-Mentions** | Rename `press-mentions` Collection label only | `press-mentions` (unchanged) | (no field changes — already has headline, date, outlet, url) |
-| **h. Awards** | Rename `awards` Collection label only | `awards` (unchanged) | (per-row already has: name, fullName, notes, image) |
-| **i. Privacy** | Rename `privacy-page` Global label. Strip the hardcoded section fields (move to j. Privacy-Sections). | `privacy-page` (unchanged) | hero (chapter, titleA, titleB, lede, heroImage), lastUpdatedDate, introParagraph |
-| **j. Privacy-Sections** | **New** Collection | `privacy-sections` | sortOrder, heading, body (richText) |
+| **a. Blog** | Rename existing `blog-page` Global label. Strip per-post template fields (move to j. Blog-Post-Template). | `blog-page` (unchanged) | hero (chapter, titleA, titleB, lede, heroImage), thisIssueEyebrow, readTheEssayCtaLabel, archiveEyebrow, archiveHeading, archiveLede, archiveFilterLabel, archiveEmptyStateCopy |
+| **b. Blog-Posts** | Rename `blog-posts` Collection label only | `blog-posts` (unchanged) | (no field changes) |
+| **c. Blog-Tags** | Rename `blog-tags` Collection label only | `blog-tags` (unchanged) | (no field changes) |
+| **d. Authors** | Rename `authors` Collection label only | `authors` (unchanged) | (no field changes) |
+| **e. Press** | Rename `press-page` Global label only | `press-page` (unchanged) | hero (existing) + accreditationsEyebrow, accreditationsHeading, accreditationsLede, pressEyebrow, pressHeading, pressLede |
+| **f. Press-Mentions** | Rename `press-mentions` Collection label only | `press-mentions` (unchanged) | (no field changes — already has headline, date, outlet, url) |
+| **g. Awards** | Rename `awards` Collection label only | `awards` (unchanged) | (per-row already has: name, fullName, notes, image) |
+| **h. Privacy** | Rename `privacy-page` Global label. Strip the hardcoded section fields (move to i. Privacy-Sections). | `privacy-page` (unchanged) | hero (chapter, titleA, titleB, lede, heroImage), lastUpdatedDate, introParagraph |
+| **i. Privacy-Sections** | **New** Collection | `privacy-sections` | sortOrder, heading, body (richText) |
+| **j. Blog-Post-Template** | **New** Global | `blog-post-template` | aboutTheAuthorHeading, moreFromTheJournalHeading, bylineFormatTemplate (optional) |
 
 ### R8.2 — `admin.description` notes
 
@@ -723,11 +981,11 @@ diff /tmp/rs-before.html <(curl -s https://cosmedic.gaiada.online/recovery-stays
 
 > Editorial pages reached from the footer "About" column — Press, Blog (+ posts), Privacy & Terms. There is no `/about` page itself. Fully self-contained — no Settings or cross-bucket reads needed.
 
-**On `b. Blog-Post-Template`:**
+**On `j. Blog-Post-Template`:**
 
-> Template-level strings that apply to every `/blog/<slug>` post page. Per-post hero / body / byline lives on c. Blog-Posts (the row); this global controls only the "About the author" and "More from the journal" section headings shared across all posts.
+> Template-level strings that apply to every `/blog/<slug>` post page. Per-post hero / body / byline lives on b. Blog-Posts (the row); this global controls only the "About the author" and "More from the journal" section headings shared across all posts.
 
-**On `j. Privacy-Sections`:**
+**On `i. Privacy-Sections`:**
 
 > The 10 legal sections shown on `/privacy`. One row per section. Use `sortOrder` to control rendering order. Each row's `body` field is rich text (supports paragraphs + lists + emphasis).
 
@@ -763,7 +1021,7 @@ Replace hardcoded strings in:
 
 Write `packages/cms/src/seed/seed-about-section-content.ts` (run once, idempotent):
 
-1. Read the existing `blog-page` Global, split fields between `a. Blog` (index chrome) and new `b. Blog-Post-Template` global (which gets seeded with hardcoded "About the author" + "More from the journal" headings from current BlogPost.tsx).
+1. Read the existing `blog-page` Global, split fields between `a. Blog` (index chrome) and new `j. Blog-Post-Template` global (which gets seeded with hardcoded "About the author" + "More from the journal" headings from current BlogPost.tsx).
 2. Update `press-page` Global with the 6 new section-chrome fields seeded from hardcoded section heads.
 3. Update `privacy-page` Global with `lastUpdatedDate = "12 May 2026"` + introParagraph (if any).
 4. Upsert `privacy-sections` collection with 10 rows from hardcoded SECTIONS array (sortOrder 1-10).
@@ -783,7 +1041,7 @@ pnpm --filter @cosmedic/web build
 pm2 restart cosmedic-cms cosmedic-web
 
 # Admin sanity — 10 items in h. About Bucket
-curl -s http://127.0.0.1:4007/admin | grep -E "a\. Blog|b\. Blog-Post-Template|c\. Blog-Posts|d\. Blog-Tags|e\. Authors|f\. Press|g\. Press-Mentions|h\. Awards|i\. Privacy|j\. Privacy-Sections"
+curl -s http://127.0.0.1:4007/admin | grep -E "a\. Blog|b\. Blog-Posts|c\. Blog-Tags|d\. Authors|e\. Press|f\. Press-Mentions|g\. Awards|h\. Privacy|i\. Privacy-Sections|j\. Blog-Post-Template"
 
 # Visual invariance — all 4 routes must be byte-identical
 for route in /blog /press /privacy; do
@@ -797,9 +1055,9 @@ done
 
 # Editability proof
 # 1. a. Blog → change archiveLede → revisit /blog → see → revert
-# 2. b. Blog-Post-Template → change moreFromTheJournalHeading → revisit /blog/<slug> → see → revert
-# 3. f. Press → change accreditationsLede → revisit /press → see → revert
-# 4. j. Privacy-Sections → edit row 1 body → revisit /privacy → see → revert
+# 2. j. Blog-Post-Template → change moreFromTheJournalHeading → revisit /blog/<slug> → see → revert
+# 3. e. Press → change accreditationsLede → revisit /press → see → revert
+# 4. i. Privacy-Sections → edit row 1 body → revisit /privacy → see → revert
 ```
 
 ### R8.9 Estimate
@@ -810,23 +1068,16 @@ done
 
 ---
 
-## Phases R3, R6 — Other Bucket Details (pending)
+## All per-Bucket phases planned
 
-Each remaining Bucket gets its own phase, following the same R1/R4/R5/R7/R8 shape:
+All 8 detailed phases (R1 / R2 / R3 / R4 / R5 / R6 / R7 / R8) are mapped above following the same shape:
 
-1. Add detail to [remap.md](./remap.md) §2 (the per-Bucket item map).
-2. Get user sign-off on the map.
-3. CMS schema work (new globals as needed, label renames, `admin.description` notes).
-4. Web data-layer extension.
-5. Route rewire (replace hardcoded strings).
-6. Seed migration to preserve visual invariance.
-7. Revalidate hooks.
-8. Verify (curl smoke + visual diff + editability proof).
-
-| Phase | Bucket | Notes / known scope |
-|---|---|---|
-| **R3** | b. Treatments | Treatment index + discipline + sub-category pages. Largest by route count (28 routes). Lots of editorial chrome on detail templates currently hardcoded. |
-| **R6** | e. Pricing | `/pricing`. Already partially CMS-driven via PriceListItems. Hero + insurance section chrome hardcoded. |
+1. Per-Bucket detail in [remap.md](./remap.md) §2.
+2. CMS schema work (new globals as needed, label renames, `admin.description` notes).
+4. Route rewire (replace hardcoded strings).
+5. Seed migration to preserve visual invariance.
+6. Revalidate hooks.
+7. Verify (curl smoke + visual diff + editability proof).
 
 Each phase ships independently. User signs off on the per-Bucket map (in [remap.md](./remap.md)) before that phase's code work starts.
 
@@ -847,10 +1098,10 @@ Each phase ships independently. User signs off on the per-Bucket map (in [remap.
 | R0 — Bucket realignment | 30–45 min |
 | R1 — g. Contact detail | 3–4 hours |
 | R2 — a. Homepage detail | 5–7 hours |
-| R3 — b. Treatments | 6–8 hours (28 routes) |
-| R4 — c. Doctors | 3–4 hours (9 routes) |
+| R3 — b. Treatments | 6–8 hours (29 routes; 5 new globals + 4 collection renames) |
+| R4 — c. Doctors | 3–4 hours (9 routes; 5 new globals) |
 | R5 — d. Results detail | 4–5 hours (3 routes, 5 new globals, 2 shared CTAs) |
-| R6 — e. Pricing | 2 hours |
+| R6 — e. Pricing | 3–4 hours (1 route; 7 new globals split from existing PricingPage) |
 | R7 — f. Journey detail | 4–5 hours |
 | R8 — h. About detail | 4–5 hours (4 routes, lots of hardcoded prose) |
 | **Total** | **~30–35 hours** spread across 9+ phased commits |
@@ -878,11 +1129,11 @@ Where data sourced in one Bucket is **displayed read-only** in another. Editor e
 | `whatsappNumber` | a. Homepage → i. Floating-CTA (WhatsApp button) + a. Homepage → d. Footer (WhatsApp link in Connect column) |
 | `socialLinks[]` | a. Homepage → d. Footer (Connect column) |
 | `audToIdrRate`, `roundIdrTo`, `currencyDisplayMode` | b. Treatments + e. Pricing (every price render) |
-| clinic name + city | c. Doctors → f. Detail-Template (Practice row) |
+| clinic name + city | c. Doctors → g. Detail-Template (Practice row) |
 
-### A.2 — c. Doctors → g. Surgeons (the canonical Collection for every surgeon surface)
+### A.2 — c. Doctors → c. Surgeons (the canonical Collection for every surgeon surface)
 
-| Source on g. Surgeons | Read-only display location |
+| Source on c. Surgeons | Read-only display location |
 |---|---|
 | All fields | a. Homepage → o. Surgeons-View (homepage teaser) |
 | lead=true row + selected specialists | a. Homepage → c. Header (Doctors mega-menu) |
@@ -897,21 +1148,21 @@ Where data sourced in one Bucket is **displayed read-only** in another. Editor e
 | All rows (title + sortOrder) | a. Homepage → d. Footer (Treatments column — auto-built) |
 | All rows | a. Homepage → m. Treatments-View (homepage teaser cards) |
 | All rows | a. Homepage → c. Header (Treatments mega-menu) |
-| Parent discipline `title` | c. Doctors → f. Detail-Template (hero Treatments back-link CTA) |
+| Parent discipline `title` | c. Doctors → g. Detail-Template (hero Treatments back-link CTA) |
 
-### A.4 — d. Results → i. Before-After-Cases + j. Patient-Stories
-
-| Source | Read-only display location |
-|---|---|
-| i. Before-After-Cases (all rows) | d. Results → c. Featured-Cases-View (`/results` grid) + d. Results → g. Gallery (`/gallery` grid) + a. Homepage → p. Gallery-View |
-| j. Patient-Stories (all rows) | d. Results → d. Stories-View (`/results` story rows) + d. Results → h. Stories (`/stories` rows) + a. Homepage → r. Stories-View |
-
-### A.5 — d. Results → e. Library-Cta + f. Share-Cta (shared CTA blocks)
+### A.4 — d. Results → g. Before-After-Cases + h. Patient-Stories
 
 | Source | Read-only display location |
 |---|---|
-| e. Library-Cta | `/results` "Want to see more?" + `/gallery` "Want to see more?" |
-| f. Share-Cta | `/results` "Have a story to share?" + `/stories` "Have a story to share?" |
+| g. Before-After-Cases (all rows) | d. Results → i. Featured-Cases-View (`/results` grid) + d. Results → e. Gallery (`/gallery` grid) + a. Homepage → p. Gallery-View |
+| h. Patient-Stories (all rows) | d. Results → j. Stories-View (`/results` story rows) + d. Results → f. Stories (`/stories` rows) + a. Homepage → r. Stories-View |
+
+### A.5 — d. Results → c. Library-Cta + d. Share-Cta (shared CTA blocks)
+
+| Source | Read-only display location |
+|---|---|
+| c. Library-Cta | `/results` "Want to see more?" + `/gallery` "Want to see more?" |
+| d. Share-Cta | `/results` "Have a story to share?" + `/stories` "Have a story to share?" |
 
 ### A.6 — f. Journey → c. Steps (the canonical step Collection)
 
@@ -926,10 +1177,11 @@ Where data sourced in one Bucket is **displayed read-only** in another. Editor e
 | Item type | Convention | Examples |
 |---|---|---|
 | Global (page-section editorial) | Singular descriptive | a. Main · b. Hero · c. Enquiry-Section · d. Visit-Section · e. Form · f. Email · d. Stats |
-| Collection (data rows) | Plural noun | c. Steps · e. Authors · f. Villas · g. Inbox · g. Surgeons · h. Awards · i. Before-After-Cases · j. Patient-Stories |
+| Collection (data rows) | Plural noun | c. Steps · c. Surgeons · d. Authors · e. Disciplines · f. Sub-Categories · f. Villas · g. Awards · g. Inbox · g. Procedures · g. Before-After-Cases · h. Patient-Stories |
 | Sibling page collapsed to one Item | Page name with hyphen | e. Recovery-Stays (in f. Journey) · h. Video-Consult (in g. Contact) · g. Gallery + h. Stories (in d. Results) |
-| View-only mirror Item (cards from another Item) | Suffix `-View` | m. Treatments-View · n. Pricing-View · o. Surgeons-View · p. Gallery-View · q. Journey-View · r. Stories-View (all in a. Homepage) · c. Featured-Cases-View · d. Stories-View (in d. Results) · c. Lead-View · d. Plastic-Surgery-View · e. Aesthetic-Medicine-View (in c. Doctors) |
-| Shared CTA Global serving 2+ pages | `*-Cta` | e. Library-Cta · f. Share-Cta (both in d. Results) |
+| View-only mirror Item (cards from another Item) | Suffix `-View` (placed last in Bucket) | m. Treatments-View · n. Pricing-View · o. Surgeons-View · p. Gallery-View · q. Journey-View · r. Stories-View (all in a. Homepage) · i. Featured-Cases-View · j. Stories-View (in d. Results) · d. Lead-View · e. Plastic-Surgery-View · f. Aesthetic-Medicine-View (in c. Doctors) · h. Discipline-List-View · i. Catalogue-View (in e. Pricing) |
+| Shared template Item (chrome shared across N detail routes) | Suffix `-Template` (placed last in Bucket) | g. Detail-Template (in c. Doctors) · h. Discipline-Template · i. Sub-Category-Template (in b. Treatments) · j. Blog-Post-Template (in h. About) |
+| Shared CTA Global serving 2+ pages | `*-Cta` | c. Library-Cta · d. Share-Cta (both in d. Results) |
 | Bucket label | `a. Name` … `i. Name` prefix matching site IA reading order | a. Homepage · b. Treatments · c. Doctors · d. Results · e. Pricing · f. Journey · g. Contact · h. About · i. Media Library |
 
 ---
