@@ -293,6 +293,17 @@ export type Author = {
   surgeonProfile?: number | { id: number; slug: string; name?: string; commonName?: string }
 }
 
+/* ─── R8 — h. About Bucket types ────────────────────────────────────────── */
+
+export type PrivacySection = {
+  id: number
+  slug: string
+  title: string
+  paragraphs?: Array<{ text: string }>
+  listItems?: Array<{ text: string }>
+  sortOrder?: number
+}
+
 /* ─── Global types ─────────────────────────────────────────────────────── */
 
 export type Settings = {
@@ -316,6 +327,47 @@ export type Settings = {
   socialLinks?: Array<{ platform: string; url: string }>
   defaultLocale?: string
   currencyDisplayMode?: 'idr-only' | 'idr-with-aud'
+}
+
+export type ContactHeroGlobal = {
+  chapter?: string
+  titleA?: string
+  titleB?: string
+  lede?: string
+  heroImage?: CmsMedia | number | null
+  imageHue?: number
+  imageLabel?: string
+  breadcrumbLabel?: string
+}
+
+export type ContactEnquirySectionGlobal = {
+  eyebrow?: string
+  headingPre?: string
+  headingItalic?: string
+  intro?: string
+  directLines?: {
+    sectionLabel?: string
+    conciergeLabel?: string
+    whatsappLabel?: string
+    emailLabel?: string
+    pressLabel?: string
+  }
+  trustLine?: string
+}
+
+export type ContactVisitSectionGlobal = {
+  eyebrow?: string
+  headingPre?: string
+  headingItalic?: string
+  body?: string
+  mapImage?: CmsMedia | number | null
+  mapImageLabel?: string
+  mapImageHue?: number
+  openInMapsLabel?: string
+  getDirectionsLabel?: string
+  clinicHoursLabel?: string
+  conciergeHoursLabel?: string
+  conciergeHoursValue?: string
 }
 
 export type HeaderGlobal = {
@@ -397,6 +449,26 @@ export type JourneyStatsGlobal = {
   stats?: Array<{ number: string; label: string; italic?: boolean }>
 }
 
+export type BlogPostTemplateGlobal = {
+  byline?: {
+    writtenByLabel?: string
+    publishedLabel?: string
+    lengthLabel?: string
+    filedUnderLabel?: string
+  }
+  aboutTheAuthor?: {
+    eyebrowLabel?: string
+    readFullProfileCta?: string
+    bookConsultationCta?: string
+  }
+  moreFromTheJournal?: {
+    eyebrow?: string
+    headingPre?: string
+    headingItalic?: string
+    backToJournalCta?: string
+  }
+}
+
 export type RecoveryStaysPageGlobal = {
   hero?: {
     chapter?: string
@@ -425,47 +497,6 @@ export type RecoveryStaysPageGlobal = {
   inclusions?: Array<{ letter: string; title: string; body: string }>
 }
 
-export type ContactHeroGlobal = {
-  chapter?: string
-  titleA?: string
-  titleB?: string
-  lede?: string
-  heroImage?: CmsMedia | number | null
-  imageHue?: number
-  imageLabel?: string
-  breadcrumbLabel?: string
-}
-
-export type ContactEnquirySectionGlobal = {
-  eyebrow?: string
-  headingPre?: string
-  headingItalic?: string
-  intro?: string
-  directLines?: {
-    sectionLabel?: string
-    conciergeLabel?: string
-    whatsappLabel?: string
-    emailLabel?: string
-    pressLabel?: string
-  }
-  trustLine?: string
-}
-
-export type ContactVisitSectionGlobal = {
-  eyebrow?: string
-  headingPre?: string
-  headingItalic?: string
-  body?: string
-  mapImage?: CmsMedia | number | null
-  mapImageLabel?: string
-  mapImageHue?: number
-  openInMapsLabel?: string
-  getDirectionsLabel?: string
-  clinicHoursLabel?: string
-  conciergeHoursLabel?: string
-  conciergeHoursValue?: string
-}
-
 /* ─── Cache shape ──────────────────────────────────────────────────────── */
 
 export type CmsCache = {
@@ -484,6 +515,7 @@ export type CmsCache = {
   blogPosts: BlogPost[]
   authors: Author[]
   journeySteps: JourneyStep[]
+  privacySections: PrivacySection[]
   pages: CmsPage[]
   // Globals
   settings: Settings
@@ -501,4 +533,6 @@ export type CmsCache = {
   journeyHero: JourneyHeroGlobal
   journeyStats: JourneyStatsGlobal
   recoveryStaysPage: RecoveryStaysPageGlobal
+  // R8 — h. About Bucket
+  blogPostTemplate: BlogPostTemplateGlobal
 }

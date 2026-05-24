@@ -40,9 +40,6 @@ export const BlogIndex: React.FC = () => {
   const [filter, setFilter] = useState<string>('All')
   const shown = filter === 'All' ? rest : rest.filter((p) => p.category === filter)
 
-  // Phase C5: /blog index hero reads from the blog-page Global. Fallbacks
-  // mirror the exact previously-hardcoded copy so R5 byte-identical holds
-  // when the CMS field is empty.
   const cms = useCms()
   const page = cms ? findPageBySlug(cms, 'blog') : undefined
   const chapter = page?.tagline || 'Chapter X — Journal'
@@ -52,6 +49,21 @@ export const BlogIndex: React.FC = () => {
     page?.lede ||
     "Quarterly dispatches from our surgeons, aestheticians, and concierge — on technique, recovery, restraint, and the small decisions that add up to a good result."
   const heroImage = mediaUrl(page?.heroImage, '') || IMG.texture
+
+  // R8.C — archive section + featured-post chrome from blog-page global.
+  const thisIssueEyebrow = page?.thisIssueEyebrow || 'This issue'
+  const readTheEssayCta = page?.readTheEssayCtaLabel || 'Read the essay →'
+  const archive = page?.archiveSection || {}
+  const archiveEyebrow = archive.eyebrow || 'The archive'
+  const archiveHeadingPre = archive.headingPre || 'Recent '
+  const archiveHeadingItalic = archive.headingItalic || 'writing.'
+  const archiveLede =
+    archive.lede ||
+    'Filter by discipline, or read down. New essays go out with the quarterly journal — subscribe at the foot of any page.'
+  // Editor can rename the "All" filter button via CMS; the internal sentinel
+  // stays as 'All' so the filter-state comparison keeps working.
+  const filterAllLabel = archive.filterAllLabel || 'All'
+  const emptyStateCopy = archive.emptyStateCopy || 'No posts in this category yet.'
 
   return (
     <PageShell activePage="blog">
@@ -67,7 +79,7 @@ export const BlogIndex: React.FC = () => {
 
       <section className="page-section">
         <Reveal>
-          <Eyebrow>This issue</Eyebrow>
+          <Eyebrow>{thisIssueEyebrow}</Eyebrow>
         </Reveal>
         <Reveal delay={120}>
           <a href={`/blog/${featured.slug}`} className="blog-feature">
@@ -98,7 +110,7 @@ export const BlogIndex: React.FC = () => {
                 <span className="blog-feature-author-name">{featured.author}</span>
                 <span className="blog-feature-author-role">{featured.role}</span>
               </div>
-              <span className="blog-feature-read">Read the essay →</span>
+              <span className="blog-feature-read">{readTheEssayCta}</span>
             </div>
           </a>
         </Reveal>
@@ -107,15 +119,13 @@ export const BlogIndex: React.FC = () => {
       <section className="page-section tinted">
         <Reveal>
           <div className="section-head">
-            <Eyebrow>The archive</Eyebrow>
+            <Eyebrow>{archiveEyebrow}</Eyebrow>
             <div>
               <h2 className="section-title">
-                Recent <span className="italic">writing.</span>
+                {archiveHeadingPre}
+                <span className="italic">{archiveHeadingItalic}</span>
               </h2>
-              <p className="section-lede">
-                Filter by discipline, or read down. New essays go out with the quarterly journal —
-                subscribe at the foot of any page.
-              </p>
+              <p className="section-lede">{archiveLede}</p>
             </div>
           </div>
         </Reveal>
@@ -129,7 +139,7 @@ export const BlogIndex: React.FC = () => {
                 className={`blog-filter ${filter === c ? 'active' : ''}`}
                 onClick={() => setFilter(c)}
               >
-                {c}
+                {c === 'All' ? filterAllLabel : c}
               </button>
             ))}
           </div>
@@ -153,7 +163,7 @@ export const BlogIndex: React.FC = () => {
                 fontSize: 22,
               }}
             >
-              No posts in this category yet.
+              {emptyStateCopy}
             </p>
           </Reveal>
         )}

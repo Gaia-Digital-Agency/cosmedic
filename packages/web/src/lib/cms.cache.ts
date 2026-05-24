@@ -37,6 +37,8 @@ import type {
   JourneyHeroGlobal,
   JourneyStatsGlobal,
   RecoveryStaysPageGlobal,
+  PrivacySection,
+  BlogPostTemplateGlobal,
 } from './cms.types'
 import { fetchAll, fetchGlobal, fetchAllPageGlobals } from './cms.fetch'
 
@@ -55,6 +57,7 @@ export const EMPTY_CACHE: CmsCache = {
   blogPosts: [],
   authors: [],
   journeySteps: [],
+  privacySections: [],
   pages: [],
   settings: {},
   header: {},
@@ -71,6 +74,7 @@ export const EMPTY_CACHE: CmsCache = {
   journeyHero: {},
   journeyStats: {},
   recoveryStaysPage: {},
+  blogPostTemplate: {},
 }
 
 let cache: CmsCache = EMPTY_CACHE
@@ -81,11 +85,12 @@ async function doLoad(): Promise<CmsCache> {
     const [
       surgeons, disciplines, subCategories, procedures,
       beforeAfterCases, stories, pressMentions, awards, recoveryStays,
-      blogPosts, authors, journeySteps, pages,
+      blogPosts, authors, journeySteps, privacySections, pages,
       settings, header, footer, floatingChrome, brandStats, endorsementMark,
       consultationPolicy, formDefaults, seoDefaults,
       contactHero, contactEnquirySection, contactVisitSection,
       journeyHero, journeyStats, recoveryStaysPage,
+      blogPostTemplate,
     ] = await Promise.all([
       fetchAll<Surgeon>('surgeons', 100, 1),
       fetchAll<Discipline>('disciplines'),
@@ -99,6 +104,7 @@ async function doLoad(): Promise<CmsCache> {
       fetchAll<BlogPost>('blog-posts', 100, 2),
       fetchAll<Author>('authors', 100, 1),
       fetchAll<JourneyStep>('journey-steps'),
+      fetchAll<PrivacySection>('privacy-sections').catch(() => []),
       fetchAllPageGlobals(),
       fetchGlobal<Settings>('settings'),
       fetchGlobal<HeaderGlobal>('header'),
@@ -115,17 +121,19 @@ async function doLoad(): Promise<CmsCache> {
       fetchGlobal<JourneyHeroGlobal>('journey-hero').catch(() => ({})),
       fetchGlobal<JourneyStatsGlobal>('journey-stats').catch(() => ({})),
       fetchGlobal<RecoveryStaysPageGlobal>('recovery-stays-page').catch(() => ({})),
+      fetchGlobal<BlogPostTemplateGlobal>('blog-post-template').catch(() => ({})),
     ])
     return {
       loaded: true,
       loadedAt: Date.now(),
       surgeons, disciplines, subCategories, procedures,
       beforeAfterCases, stories, pressMentions, awards, recoveryStays,
-      blogPosts, authors, journeySteps, pages,
+      blogPosts, authors, journeySteps, privacySections, pages,
       settings, header, footer, floatingChrome, brandStats, endorsementMark,
       consultationPolicy, formDefaults, seoDefaults,
       contactHero, contactEnquirySection, contactVisitSection,
       journeyHero, journeyStats, recoveryStaysPage,
+      blogPostTemplate,
     }
   } catch (err) {
     console.warn('[cms] load failed, using empty cache:', err)

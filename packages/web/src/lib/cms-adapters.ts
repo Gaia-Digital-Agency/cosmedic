@@ -19,6 +19,7 @@ import type {
   BlogPost,
   BeforeAfterCase,
   CmsMedia,
+  PrivacySection,
 } from './cms'
 import { lexicalToText, mediaUrl } from './cms'
 
@@ -337,6 +338,9 @@ export const blogPostsSorted = (cms: CmsCache): BlogPost[] =>
     (a, b) =>
       new Date(b.publishedAt || 0).getTime() - new Date(a.publishedAt || 0).getTime(),
   )
+
+export const privacySectionsSorted = (cms: CmsCache): PrivacySection[] =>
+  [...cms.privacySections].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
 
 export const proceduresForSubCategory = (cms: CmsCache, subId: number): Procedure[] =>
   cms.procedures

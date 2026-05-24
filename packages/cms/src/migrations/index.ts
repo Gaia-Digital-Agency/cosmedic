@@ -7,8 +7,11 @@ import * as migration_20260524_031454_q4_team_group_photo from './20260524_03145
 import * as migration_20260524_042248_q5_drop_pricing_tiers from './20260524_042248_q5_drop_pricing_tiers';
 import * as migration_20260524_043557_q14_ba_patient_age_recovery_duration from './20260524_043557_q14_ba_patient_age_recovery_duration';
 import * as migration_20260524_044634_q19_drop_inclusion_exclusion from './20260524_044634_q19_drop_inclusion_exclusion';
+import * as migration_20260524_125500_r8a_privacy_sections from './20260524_125500_r8a_privacy_sections';
 import * as migration_20260524_055500_r1_contact_globals from './20260524_055500_r1_contact_globals';
 import * as migration_20260524_140000_r7_journey_globals from './20260524_140000_r7_journey_globals';
+import * as migration_20260524_133000_r8b_blog_post_template from './20260524_133000_r8b_blog_post_template';
+import * as migration_20260524_140000_r8c_about_chrome_fields from './20260524_140000_r8c_about_chrome_fields';
 
 export const migrations = [
   {
@@ -61,6 +64,11 @@ export const migrations = [
     name: '20260524_044634_q19_drop_inclusion_exclusion',
   },
   {
+    up: migration_20260524_125500_r8a_privacy_sections.up,
+    down: migration_20260524_125500_r8a_privacy_sections.down,
+    name: '20260524_125500_r8a_privacy_sections',
+  },
+  {
     up: migration_20260524_055500_r1_contact_globals.up,
     down: migration_20260524_055500_r1_contact_globals.down,
     name: '20260524_055500_r1_contact_globals',
@@ -69,5 +77,15 @@ export const migrations = [
     up: migration_20260524_140000_r7_journey_globals.up,
     down: migration_20260524_140000_r7_journey_globals.down,
     name: '20260524_140000_r7_journey_globals',
+  },
+  {
+    up: migration_20260524_133000_r8b_blog_post_template.up,
+    down: migration_20260524_133000_r8b_blog_post_template.down,
+    name: '20260524_133000_r8b_blog_post_template',
+  },
+  {
+    up: migration_20260524_140000_r8c_about_chrome_fields.up,
+    down: migration_20260524_140000_r8c_about_chrome_fields.down,
+    name: '20260524_140000_r8c_about_chrome_fields',
   },
 ];

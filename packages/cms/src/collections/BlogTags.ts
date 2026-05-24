@@ -6,6 +6,7 @@ import { apiWarningField } from '../lib/api-warning'
 
 export const BlogTags: CollectionConfig = {
   slug: 'blog-tags',
+  labels: { singular: 'c. Blog-Tag', plural: 'c. Blog-Tags' },
   admin: {
     useAsTitle: 'name',
     group: 'h. About',

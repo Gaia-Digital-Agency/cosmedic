@@ -145,4 +145,33 @@ export type CmsPage = {
     paymentHeadingItalic?: string
     paymentTermsText?: string
   }
+  // Phase R8.C — blog-page chrome additions (only set on blog-page row).
+  thisIssueEyebrow?: string
+  readTheEssayCtaLabel?: string
+  archiveSection?: {
+    eyebrow?: string
+    headingPre?: string
+    headingItalic?: string
+    lede?: string
+    filterAllLabel?: string
+    emptyStateCopy?: string
+  }
+  // Phase R8.C — press-page chrome additions (only set on press-page row).
+  accreditationsSection?: {
+    eyebrow?: string
+    heading?: string
+    lede?: string
+  }
+  pressSection?: {
+    eyebrow?: string
+    headingPre?: string
+    headingItalic?: string
+    lede?: string
+  }
+  pressEnquiriesCtaLabel?: string
+  // Phase R8.C — privacy-page chrome additions (only set on privacy-page row).
+  lastUpdatedDate?: string
+  versionLine?: string
+  readingTimeLine?: string
+  introParagraph?: string
 }

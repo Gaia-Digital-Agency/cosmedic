@@ -39,6 +39,23 @@ export const BlogPost: React.FC<Props> = ({ slug }) => {
       ? `${surgeonProfile.commonName || surgeonProfile.name || 'Surgeon profile'}`
       : null
 
+  // R8.B — chrome strings shared across every /blog/<slug> page.
+  const tpl = cms?.blogPostTemplate || {}
+  const byline = tpl.byline || {}
+  const aboutSec = tpl.aboutTheAuthor || {}
+  const moreSec = tpl.moreFromTheJournal || {}
+  const writtenByLabel = byline.writtenByLabel || 'Written by'
+  const publishedLabel = byline.publishedLabel || 'Published'
+  const lengthLabel = byline.lengthLabel || 'Length'
+  const filedUnderLabel = byline.filedUnderLabel || 'Filed under'
+  const aboutEyebrow = aboutSec.eyebrowLabel || 'About the author'
+  const readFullProfileCta = aboutSec.readFullProfileCta || 'Read full profile'
+  const bookConsultationCta = aboutSec.bookConsultationCta || 'Book a consultation'
+  const moreEyebrow = moreSec.eyebrow || 'More from the journal'
+  const moreHeadingPre = moreSec.headingPre || 'Read '
+  const moreHeadingItalic = moreSec.headingItalic || 'on.'
+  const backToJournalCta = moreSec.backToJournalCta || 'Back to the journal'
+
   return (
     <PageShell activePage="blog">
       <ChapterOpener
@@ -72,7 +89,7 @@ export const BlogPost: React.FC<Props> = ({ slug }) => {
                 />
               </a>
               <div>
-                <Mono>Written by</Mono>
+                <Mono>{writtenByLabel}</Mono>
                 <div className="blog-byline-name">
                   {author.title} {author.name}
                 </div>
@@ -100,15 +117,15 @@ export const BlogPost: React.FC<Props> = ({ slug }) => {
             </div>
             <div className="blog-byline-meta">
               <div>
-                <Mono>Published</Mono>
+                <Mono>{publishedLabel}</Mono>
                 <span>{post.date}</span>
               </div>
               <div>
-                <Mono>Length</Mono>
+                <Mono>{lengthLabel}</Mono>
                 <span>{post.read}</span>
               </div>
               <div>
-                <Mono>Filed under</Mono>
+                <Mono>{filedUnderLabel}</Mono>
                 <span>{post.category}</span>
               </div>
             </div>
@@ -168,7 +185,7 @@ export const BlogPost: React.FC<Props> = ({ slug }) => {
               />
             </a>
             <div className="blog-author-body">
-              <Mono>About the author</Mono>
+              <Mono>{aboutEyebrow}</Mono>
               <h3 className="blog-author-name">
                 <span>
                   {author.title} {author.name.split(' ').slice(0, -1).join(' ')}
@@ -179,10 +196,10 @@ export const BlogPost: React.FC<Props> = ({ slug }) => {
               <p className="blog-author-bio">{author.bio}</p>
               <div style={{ display: 'flex', gap: 16, marginTop: 20, flexWrap: 'wrap' }}>
                 <Btn kind="primary" as="a" href={`/surgeons/${author.slug}`}>
-                  Read full profile
+                  {readFullProfileCta}
                 </Btn>
                 <Btn kind="ghost" as="a" href="/contact">
-                  Book a consultation
+                  {bookConsultationCta}
                 </Btn>
               </div>
             </div>
@@ -193,10 +210,11 @@ export const BlogPost: React.FC<Props> = ({ slug }) => {
       <section className="page-section">
         <Reveal>
           <div className="section-head">
-            <Eyebrow>More from the journal</Eyebrow>
+            <Eyebrow>{moreEyebrow}</Eyebrow>
             <div>
               <h2 className="section-title">
-                Read <span className="italic">on.</span>
+                {moreHeadingPre}
+                <span className="italic">{moreHeadingItalic}</span>
               </h2>
             </div>
           </div>
@@ -232,7 +250,7 @@ export const BlogPost: React.FC<Props> = ({ slug }) => {
         <Reveal>
           <div style={{ marginTop: 60, textAlign: 'center' }}>
             <Btn kind="ghost" as="a" href="/blog">
-              Back to the journal
+              {backToJournalCta}
             </Btn>
           </div>
         </Reveal>

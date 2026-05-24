@@ -6,6 +6,7 @@ import { apiWarningField } from '../lib/api-warning'
 
 export const Awards: CollectionConfig = {
   slug: 'awards',
+  labels: { singular: 'g. Award', plural: 'g. Awards' },
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'year', 'issuer'],

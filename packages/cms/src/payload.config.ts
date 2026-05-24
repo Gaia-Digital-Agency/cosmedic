@@ -26,6 +26,7 @@ import { BlogTags } from './collections/BlogTags'
 import { Authors } from './collections/Authors'
 import { JourneySteps } from './collections/JourneySteps'
 import { Enquiries } from './collections/Enquiries'
+import { PrivacySections } from './collections/PrivacySections'
 
 import { Settings } from './globals/Settings'
 import { Header } from './globals/Header'
@@ -57,6 +58,7 @@ import { ContactEnquirySection } from './globals/pages/ContactEnquirySection'
 import { ContactVisitSection } from './globals/pages/ContactVisitSection'
 import { VideoConsultPage } from './globals/pages/VideoConsultPage'
 import { BlogPage } from './globals/pages/BlogPage'
+import { BlogPostTemplate } from './globals/pages/BlogPostTemplate'
 
 import { seedSuperAdmin } from './seed/admin'
 import { emailAdapter } from './lib/email-adapter'
@@ -120,6 +122,7 @@ export default buildConfig({
     Authors,
     JourneySteps,
     Enquiries,
+    PrivacySections,
   ],
   globals: [
     Settings,
@@ -153,6 +156,7 @@ export default buildConfig({
     ContactVisitSection,
     VideoConsultPage,
     BlogPage,
+    BlogPostTemplate,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
