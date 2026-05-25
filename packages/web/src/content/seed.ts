@@ -14,7 +14,7 @@
 
 import { lazyArray, lazyRecord } from '@/lib/cms-proxy'
 import { adaptDisciplines, adaptSubCategoriesByDiscipline, adaptSurgeons } from '@/lib/cms-adapters'
-import { mediaUrl, lexicalToText } from '@/lib/cms'
+import { mediaUrl, lexicalToText, type CmsMedia } from '@/lib/cms'
 
 /* ─── Types — unchanged for backwards-compat with existing imports ────── */
 
@@ -35,6 +35,7 @@ export type Treatment = {
   hue: number
   body: string
   procedures: string[]
+  heroImage?: number | CmsMedia | null
 }
 
 export type SurgeonGroup = 'Plastic Surgery' | 'Aesthetic Medicine'

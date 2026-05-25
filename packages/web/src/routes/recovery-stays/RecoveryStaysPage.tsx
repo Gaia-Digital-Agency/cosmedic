@@ -9,7 +9,7 @@ import { PriceTag } from '@/components/primitives/PriceTag'
 import { IMG } from '@/content/seed'
 import { useCms } from '@/lib/cms-context'
 import { recoveryStaysSorted } from '@/lib/cms-adapters'
-import { mediaUrl } from '@/lib/cms'
+import { mediaUrl, type CmsMedia } from '@/lib/cms'
 
 type Villa = {
   name: string
@@ -22,6 +22,7 @@ type Villa = {
   body: string
   driveTime: string
   nursingNote: string
+  media?: number | CmsMedia | null
 }
 
 const FALLBACK_VILLAS: Villa[] = [
@@ -129,6 +130,7 @@ export const RecoveryStaysPage: React.FC = () => {
             body: v.body || fallback?.body || '',
             driveTime: v.driveTime || computeDriveTime(loc),
             nursingNote: v.nursingNote || fallback?.nursingNote || 'Available daily',
+            media: v.heroImage,
           }
         })
       : FALLBACK_VILLAS
@@ -188,7 +190,7 @@ export const RecoveryStaysPage: React.FC = () => {
             <Reveal key={i} delay={(i % 2) * 100} y={28}>
               <article className="villa-card">
                 <div className="villa-img">
-                  <Img src={v.img} fallbackLabel={v.name.toUpperCase()} fallbackHue={v.hue} alt="" />
+                  <Img media={v.media} src={v.img} fallbackLabel={v.name.toUpperCase()} fallbackHue={v.hue} alt="" />
                 </div>
                 <Mono>0{i + 1}</Mono>
                 <h3 style={{ marginTop: 10 }}>{v.name}</h3>

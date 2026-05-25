@@ -8,7 +8,7 @@ import { Mono } from '@/components/primitives/Mono'
 import { IMG } from '@/content/seed'
 import { useCms } from '@/lib/cms-context'
 import { journeyStepsSorted } from '@/lib/cms-adapters'
-import { lexicalToParagraphs, mediaUrl } from '@/lib/cms'
+import { lexicalToParagraphs, mediaUrl, type CmsMedia } from '@/lib/cms'
 
 type Bullet = readonly [string, string]
 
@@ -19,6 +19,7 @@ type Step = {
   hue: number
   bodyParagraphs: string[]
   list: Bullet[]
+  media?: number | CmsMedia | null
 }
 
 const FALLBACK_STEPS: Step[] = [
@@ -161,6 +162,7 @@ export const JourneyPage: React.FC = () => {
             hue: s.imageHue ?? fallback?.hue ?? 0,
             bodyParagraphs: paragraphs.length > 0 ? paragraphs : fallback?.bodyParagraphs ?? [],
             list: list.length > 0 ? list : fallback?.list ?? [],
+            media: s.image,
           }
         })
       : FALLBACK_STEPS
@@ -217,7 +219,7 @@ export const JourneyPage: React.FC = () => {
                 </ul>
               </div>
               <div className="jfs-img">
-                <Img src={s.img} fallbackLabel={s.t.toUpperCase()} fallbackHue={s.hue} alt="" />
+                <Img media={s.media} src={s.img} fallbackLabel={s.t.toUpperCase()} fallbackHue={s.hue} alt="" />
               </div>
             </div>
           </Reveal>

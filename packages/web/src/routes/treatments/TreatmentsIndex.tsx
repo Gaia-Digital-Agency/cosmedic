@@ -97,7 +97,7 @@ export const TreatmentsIndex: React.FC = () => {
             <Reveal key={t.slug} delay={i * 60} y={20}>
               <a href={`/treatments/${t.slug}`} className="treatment-row" style={{ color: 'inherit' }}>
                 <div className="ti-image">
-                  <Img src={TREATMENT_IMG(t.slug)} fallbackLabel={t.t.toUpperCase()} fallbackHue={t.hue} alt="" />
+                  <Img media={t.heroImage} src={TREATMENT_IMG(t.slug)} fallbackLabel={t.t.toUpperCase()} fallbackHue={t.hue} alt="" />
                 </div>
                 <div className="ti-body">
                   <div>

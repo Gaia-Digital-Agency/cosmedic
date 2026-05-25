@@ -135,7 +135,7 @@ const ImageGridBlock: React.FC<{ block: Extract<PageBlock, { blockType: 'imageGr
         {block.images.map((it, i) => (
           <Reveal key={i} delay={i * 40}>
             <figure style={{ margin: 0 }}>
-              <Img src={mediaUrl(it.image) || ''} alt={it.caption || ''} fallbackLabel={it.caption || 'IMAGE'} />
+              <Img media={it.image} src={mediaUrl(it.image) || ''} alt={it.caption || ''} fallbackLabel={it.caption || 'IMAGE'} />
               {it.caption ? (
                 <figcaption style={{ marginTop: 10, fontFamily: 'var(--font-serif)', fontStyle: 'italic', color: 'var(--ink-60)', fontSize: 14 }}>
                   {it.caption}
@@ -273,7 +273,7 @@ const SurgeonListBlock: React.FC<{ block: Extract<PageBlock, { blockType: 'surge
           <Reveal key={s.id} delay={i * 30}>
             <a href={`/surgeons/${s.slug}`} style={{ color: 'inherit', textDecoration: 'none', display: 'block' }}>
               <div style={{ aspectRatio: '4 / 5', overflow: 'hidden' }}>
-                <Img src={surgeonPortraitUrl(s)} alt={s.name} fallbackLabel={`DR. ${(s.commonName || s.name).toUpperCase()}`} fallbackHue={s.hue} />
+                <Img media={s.portrait} src={surgeonPortraitUrl(s)} alt={s.name} fallbackLabel={`DR. ${(s.commonName || s.name).toUpperCase()}`} fallbackHue={s.hue} />
               </div>
               <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: 18, margin: '12px 0 4px' }}>{s.title || 'dr.'} {s.name}</h4>
               <Mono style={{ fontSize: 11 }}>{s.spec || ''}</Mono>
@@ -302,7 +302,7 @@ const BaGridBlock: React.FC<{ block: Extract<PageBlock, { blockType: 'baGrid' }>
         {cases.map((c, i) => (
           <Reveal key={c.id} delay={i * 40}>
             <figure style={{ margin: 0 }}>
-              <Img src={baCompositeUrl(c, '') || ''} alt={c.beforeAlt || c.caseLabel} fallbackLabel={c.caseLabel} />
+              <Img media={c.composite} src={baCompositeUrl(c, '') || ''} alt={c.beforeAlt || c.caseLabel} fallbackLabel={c.caseLabel} />
               <figcaption style={{ marginTop: 8, fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: 14 }}>
                 {c.caseLabel}
               </figcaption>
@@ -350,7 +350,7 @@ const RecoveryStayListBlock: React.FC<{ block: Extract<PageBlock, { blockType: '
         {villas.map((v, i) => (
           <Reveal key={v.id} delay={i * 40}>
             <article>
-              <Img src={recoveryHeroUrl(v, '') || ''} alt={v.name} fallbackLabel={v.name.toUpperCase()} />
+              <Img media={v.heroImage} src={recoveryHeroUrl(v, '') || ''} alt={v.name} fallbackLabel={v.name.toUpperCase()} />
               <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: 22, margin: '12px 0 4px' }}>{v.name}</h4>
               <Mono>{v.location || ''}</Mono>
               {v.priceFromIdrPerNight != null ? (

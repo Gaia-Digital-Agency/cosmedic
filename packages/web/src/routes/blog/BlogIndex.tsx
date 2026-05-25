@@ -11,11 +11,14 @@ import { useCms } from '@/lib/cms-context'
 import { findPageBySlug } from '@/lib/cms-adapters'
 import { mediaUrl } from '@/lib/cms'
 
-const PostCard: React.FC<{ p: BlogPostMeta; i: number }> = ({ p, i }) => (
+const PostCard: React.FC<{ p: BlogPostMeta; i: number }> = ({ p, i }) => {
+  const cms = useCms()
+  const cmsPost = cms?.blogPosts.find((bp) => bp.slug === p.slug)
+  return (
   <Reveal delay={i * 60}>
     <a href={`/blog/${p.slug}`} className="blog-card">
       <div className="blog-card-img">
-        <Img src={p.img} fallbackLabel={p.category.toUpperCase()} fallbackHue={p.hue} alt="" />
+        <Img media={cmsPost?.heroImage} src={p.img} fallbackLabel={p.category.toUpperCase()} fallbackHue={p.hue} alt="" />
       </div>
       <div className="blog-card-meta">
         <div className="blog-card-mono">
@@ -32,7 +35,8 @@ const PostCard: React.FC<{ p: BlogPostMeta; i: number }> = ({ p, i }) => (
       </div>
     </a>
   </Reveal>
-)
+  )
+}
 
 export const BlogIndex: React.FC = () => {
   const featured = BLOG_POSTS.find((p) => p.featured) || BLOG_POSTS[0]
@@ -41,6 +45,7 @@ export const BlogIndex: React.FC = () => {
   const shown = filter === 'All' ? rest : rest.filter((p) => p.category === filter)
 
   const cms = useCms()
+  const cmsFeatured = cms?.blogPosts.find((bp) => bp.slug === featured.slug)
   const page = cms ? findPageBySlug(cms, 'blog') : undefined
   const chapter = page?.tagline || 'Chapter X — Journal'
   const titleA = page?.chapterTitle?.a || 'Notes from'
@@ -85,6 +90,7 @@ export const BlogIndex: React.FC = () => {
           <a href={`/blog/${featured.slug}`} className="blog-feature">
             <div className="blog-feature-img">
               <Img
+                media={cmsFeatured?.heroImage}
                 src={featured.img}
                 fallbackLabel={featured.category.toUpperCase()}
                 fallbackHue={featured.hue}
