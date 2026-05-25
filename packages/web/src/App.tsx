@@ -39,7 +39,7 @@ export const App: React.FC<Props> = ({ route: initialRoute, cms }) => {
       case 'discipline':
         return <DisciplineDetail slug={route.slug} />
       case 'subcategory':
-        return <SubCategoryDetail slug={route.slug} />
+        return <SubCategoryDetail disciplineSlug={route.disciplineSlug} slug={route.slug} />
       case 'surgeon':
         return <SurgeonDetail slug={route.slug} />
       case 'treatments-index':
@@ -70,6 +70,10 @@ export const App: React.FC<Props> = ({ route: initialRoute, cms }) => {
         return <BlogPost slug={route.slug} />
       case 'privacy':
         return <PrivacyPage />
+      case 'redirect':
+        // Server short-circuits to 301 before render; client SPA never sees
+        // this kind. Render NotFound defensively if it leaks through.
+        return <NotFound />
       case 'notfound':
       default:
         return <NotFound />

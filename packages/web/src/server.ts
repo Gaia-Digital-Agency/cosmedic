@@ -6,6 +6,7 @@ import { loadCmsCache } from './lib/cms'
 import { enquirySchema, type EnquiryResponse } from './lib/enquiry-schema'
 import { checkRateLimit } from './lib/enquiry-rate-limit'
 import { seoFor, renderSeoTags, renderAnalytics } from './lib/seo'
+import { resolveRoute } from './router'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -167,7 +168,11 @@ async function createServer() {
       dynamic.push(`/treatments/${d.slug}`)
     }
     for (const sc of cms.subCategories || []) {
-      dynamic.push(`/treatments/${sc.slug}`)
+      const parent = sc.parent
+      const parentSlug =
+        parent && typeof parent === 'object' ? parent.slug : undefined
+      if (!parentSlug) continue
+      dynamic.push(`/treatments/${parentSlug}/${sc.slug}`)
     }
     for (const s of cms.surgeons || []) {
       dynamic.push(`/surgeons/${s.slug}`)
@@ -190,6 +195,15 @@ async function createServer() {
 
   app.use('*', async (req, res, next) => {
     try {
+      const pathname = (req.originalUrl || '/').split('?')[0]
+
+      // 301-redirect legacy slug URLs before paying the SSR cost.
+      const preroute = resolveRoute(pathname)
+      if (preroute.kind === 'redirect') {
+        res.redirect(preroute.status, preroute.to)
+        return
+      }
+
       // Refresh CMS cache (TTL'd in lib/cms; effectively no-op when warm).
       const cms = await loadCmsCache()
 
@@ -206,7 +220,6 @@ async function createServer() {
         render = serverEntry.render
       }
 
-      const pathname = (req.originalUrl || '/').split('?')[0]
       const { html: appHtml, status } = render(pathname, cms)
       const seo = seoFor(pathname, cms)
       const seoHtml = renderSeoTags(seo)

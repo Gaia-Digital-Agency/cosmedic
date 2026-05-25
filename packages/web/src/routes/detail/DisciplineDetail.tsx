@@ -240,7 +240,7 @@ export const DisciplineDetail: React.FC<Props> = ({ slug }) => {
                     <Reveal key={sc.slug} delay={i * 60} y={20}>
                       {sc.available ? (
                         <a
-                          href={`/treatments/${sc.slug}`}
+                          href={`/treatments/${slug}/${sc.slug}`}
                           style={{ color: 'inherit', textDecoration: 'none', display: 'block' }}
                         >
                           {inner}

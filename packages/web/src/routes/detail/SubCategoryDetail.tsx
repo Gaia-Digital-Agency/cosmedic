@@ -11,7 +11,7 @@ import { TREATMENT_LIST, SURGEON_LIST, TREATMENT_IMG, IMG } from '@/content/seed
 import { SUBCATEGORY_DATA } from '@/content/subcategory-data'
 import { useCms } from '@/lib/cms-context'
 
-type Props = { slug: string }
+type Props = { disciplineSlug: string; slug: string }
 
 /* ─── R3 defensive fallbacks ───────────────────────────────────────────── */
 /* Verbatim copies of the template strings that lived in this file pre-R3.*/
@@ -42,8 +42,8 @@ const FB = {
   faqs: { heading: 'Frequently asked' },
 }
 
-export const SubCategoryDetail: React.FC<Props> = ({ slug }) => {
-  const s = SUBCATEGORY_DATA[slug]
+export const SubCategoryDetail: React.FC<Props> = ({ disciplineSlug, slug }) => {
+  const s = SUBCATEGORY_DATA[`${disciplineSlug}/${slug}`]
   if (!s) return null
 
   const parent = TREATMENT_LIST.find((t) => t.slug === s.parent)

@@ -5,14 +5,14 @@ import { Btn } from '@/components/primitives/Btn'
 import { useCms } from '@/lib/cms-context'
 
 const PRICE_TEASER = [
-  { name: 'Rhinoplasty', aud: 4200, slug: 'surgical-face' },
-  { name: 'Breast Augmentation', aud: 5800, slug: 'breast' },
-  { name: 'Facelift & Necklift', aud: 8500, slug: 'surgical-face' },
-  { name: 'Sapphire FUE Hair', aud: 3400, slug: 'hair-fue' },
-  { name: 'Liposculpture', aud: 4800, slug: 'surgical-body' },
-  { name: 'Blepharoplasty', aud: 2200, slug: 'surgical-face' },
-  { name: 'Botulinum Toxin', aud: 320, slug: 'injectables' },
-  { name: 'Dermal Fillers', aud: 480, slug: 'injectables' },
+  { name: 'Rhinoplasty', aud: 4200, parent: 'surgical', slug: 'face' },
+  { name: 'Breast Augmentation', aud: 5800, parent: 'surgical', slug: 'breast' },
+  { name: 'Facelift & Necklift', aud: 8500, parent: 'surgical', slug: 'face' },
+  { name: 'Sapphire FUE Hair', aud: 3400, parent: 'hair', slug: 'fue' },
+  { name: 'Liposculpture', aud: 4800, parent: 'surgical', slug: 'body' },
+  { name: 'Blepharoplasty', aud: 2200, parent: 'surgical', slug: 'face' },
+  { name: 'Botulinum Toxin', aud: 320, parent: 'non-surgical', slug: 'injectables' },
+  { name: 'Dermal Fillers', aud: 480, parent: 'non-surgical', slug: 'injectables' },
 ]
 
 const fmtIDR = (aud: number) =>
@@ -56,7 +56,7 @@ export const PricingTeaser: React.FC = () => {
         {PRICE_TEASER.map((p, i) => (
           <Reveal key={p.name + i} delay={i * 50} y={20}>
             <a
-              href={`/treatments/${p.slug}`}
+              href={`/treatments/${p.parent}/${p.slug}`}
               className="price-row"
               style={{
                 color: 'inherit',

@@ -125,7 +125,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
                         {subs.map(([slug, title]) => (
                           <li key={slug}>
                             <a
-                              href={`/treatments/${slug}`}
+                              href={`/treatments/${t.slug}/${slug}`}
                               className={activePage === `treatment-${slug}` ? 'active' : ''}
                             >
                               {title}
@@ -284,7 +284,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
                           {subs.map(([slug, title]) => (
                             <li key={slug}>
                               <a
-                                href={`/treatments/${slug}`}
+                                href={`/treatments/${t.slug}/${slug}`}
                                 className={activePage === `treatment-${slug}` ? 'active' : ''}
                               >
                                 {title}

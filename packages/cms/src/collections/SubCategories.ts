@@ -22,8 +22,8 @@ export const SubCategories: CollectionConfig = {
   hooks: revalidationHooks(),
   fields: [
     apiWarningField,
-    { name: 'slug', type: 'text', required: true, unique: true, index: true,
-      admin: { description: 'URL fragment for the sub-category page. "surgical-breast" → https://cosmedic.gaiada.online/treatments/surgical-breast.' } },
+    { name: 'slug', type: 'text', required: true, index: true,
+      admin: { description: 'URL fragment scoped to the parent discipline. Two sub-categories may share a slug (e.g. "breast" under Surgical and Reconstructive) — uniqueness is enforced per (parent, slug). Renders at /treatments/{discipline-slug}/{slug}.' } },
     { name: 'parent', type: 'relationship', relationTo: 'disciplines', required: true,
       admin: { description: 'Parent discipline (Surgical / Reconstructive / etc.). Determines where in the mega-menu this sub-category appears.' } },
     { name: 'title', type: 'text', required: true,
