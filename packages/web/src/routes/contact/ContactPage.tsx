@@ -28,7 +28,7 @@ const REQUIRED_LABEL = (
     style={{
       fontFamily: 'var(--font-serif)',
       fontStyle: 'italic',
-      color: '#B45A3C',
+      color: 'var(--accent)',
       fontSize: 12,
       marginLeft: 6,
     }}
@@ -359,7 +359,7 @@ export const ContactPage: React.FC = () => {
                 </div>
               ) : null}
               {status === 'error' || status === 'rate-limit' ? (
-                <div className="field-full" role="alert" style={{ padding: 16, background: '#FBE9D9', borderLeft: '3px solid #C28E66', marginTop: 16 }}>
+                <div className="field-full" role="alert" style={{ padding: 16, background: 'var(--paper)', borderLeft: '3px solid var(--accent)', marginTop: 16 }}>
                   <p style={{ margin: 0, fontFamily: 'var(--font-serif)', fontSize: 16, lineHeight: 1.55 }}>
                     {errorMessage}
                   </p>

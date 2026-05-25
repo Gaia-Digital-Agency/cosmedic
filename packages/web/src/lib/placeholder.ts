@@ -4,13 +4,17 @@
  * the `<Img>` primitive swaps its src for this generated SVG.
  */
 
+// 25.19 palette enforcement: gradient pairs use ONLY the 5 sanctioned
+// brand hexes — #1F1B16 (ink), #533E27 (dark-brown), #A67C52 (bronze),
+// #E6DCC8 (cream), #F4EFE6 (paper). Six pair combos give variety without
+// introducing any non-conforming shade.
 const HUES: [string, string][] = [
-  ['#E6DCC8', '#C9B89A'],
-  ['#EFE8DA', '#A67C52'],
-  ['#DCD0B8', '#533E27'],
-  ['#F4EFE6', '#B58963'],
-  ['#C9B89A', '#423B30'],
-  ['#E6DCC8', '#6B6354'],
+  ['#E6DCC8', '#A67C52'], // cream → bronze
+  ['#F4EFE6', '#533E27'], // paper → dark-brown
+  ['#E6DCC8', '#533E27'], // cream → dark-brown
+  ['#F4EFE6', '#A67C52'], // paper → bronze
+  ['#E6DCC8', '#1F1B16'], // cream → ink
+  ['#F4EFE6', '#1F1B16'], // paper → ink
 ]
 
 export function placeholder(label = 'BIMC', hueShift = 0, w = 1200, h = 1500): string {

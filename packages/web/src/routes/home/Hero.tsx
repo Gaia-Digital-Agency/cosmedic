@@ -222,7 +222,7 @@ export const Hero: React.FC = () => {
                   {qeSuccessFine}
                 </p>
               ) : heroStatus === 'error' ? (
-                <p className="form-fine" style={{ color: '#C28E66' }}>
+                <p className="form-fine" style={{ color: 'var(--accent)' }}>
                   {qeErrorFine}
                 </p>
               ) : (

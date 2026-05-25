@@ -27,7 +27,8 @@
 | 15 | URL structure — `/treatments/surgical/face` (face under surgical) — verify + clarify if required | ❌ Open | No |
 | 16 | CMS slug bug — first parent category is gone in admin slug | ❌ Open | No |
 | 17 | Site-wide price-conversion plumbing — auto-link to global pricing rate (AUD↔IDR) so currency flip is one-source | ❌ Open | No |
-| 18 | Restructure Payload Bucket + Items naming (user to explain scope later) | ❌ Open — awaiting brief | No |
+| 18 | Restructure Payload Bucket + Items naming — alpha-sort → position-sort + 2-zone field layout (most-used vs maintainer) | ❌ Open — scope captured | No |
+| 19 | Brand logo SVG swap + palette enforcement (5 sanctioned browns only) | ✅ Shipped | No |
 
 **Launch-blocking 6** (top of list, contiguous): #1 · #2 · #3 · #4 · #5 · #6.
 
@@ -378,7 +379,63 @@ Confirm:
 
 ## 18 — Restructure Payload Bucket + Items naming
 
-**Status:** ❌ Open — **awaiting user brief**
+**Status:** ❌ Open — scope captured 2026-05-25
 **Added:** 2026-05-25 mid-session
 
-User flagged this as a "big one" but scope to be explained later. Holding for the spec / brief from user before planning.
+**Two-part change in Payload admin:**
+
+1. **Sort by position, not alphabetical** — admin nav + per-collection list views currently order by alphabet (label). Switch to a positional sort that mirrors the on-site reading order (matches the user-facing IA). Editor's mental model is "what comes first on the site" — alpha order fights that.
+2. **Per-Bucket two-zone field layout** — for each collection inside every Bucket, split the field set into two visual areas in the admin edit form:
+   - **Most-used (editor-facing)** — the fields editors touch when making site changes. Top of form.
+   - **Least-used (maintainer-facing)** — schema housekeeping, slug, sort indices, SEO defaults, etc. Bottom of form, possibly under a collapsible.
+
+Affects every collection + global. Likely shipped as a config sweep + admin component override, no DB migration.
+
+---
+
+## 19 — Brand logo SVG swap + palette enforcement
+
+**Status:** ✅ Shipped 2026-05-25
+**Added:** 2026-05-25 (user uploaded `brown.svg` at repo root)
+
+### Logo swap
+
+- `brown.svg` (root upload, 15.5KB, single-color `#533E27` wordmark) deployed as **`packages/web/public/assets/logo.svg`** — the new canonical site wordmark.
+- Generated **`packages/web/public/assets/logo-light.svg`** by inverting the fill to `#F4EFE6` (paper, from the sanctioned palette) for use on the dark footer surface.
+- Updated 2 consumers:
+  - [Header.tsx:22-23](packages/web/src/components/shell/Header.tsx#L22-L23) — `logoLightSrc` / `logoDarkSrc` fallbacks `.png` → `.svg`
+  - [Footer.tsx:75](packages/web/src/components/shell/Footer.tsx#L75) — hardcoded brand-column `<img>` `.png` → `.svg`
+- Other PNG logo refs intentionally **kept** (different asset — the cross+silhouette mark, not the wordmark): `cosmedic-mark-on-light.png` (SEO/OG/structured-data + CMS admin login). Social platforms historically have inconsistent SVG support in OG images.
+
+### Palette enforcement
+
+User-mandated sanctioned palette — the **only** allowed brown/cream shades anywhere on the site:
+
+| Hex | Token | Role |
+|---|---|---|
+| `#1F1B16` | `--ink-100` | Black text, dark surfaces |
+| `#533E27` | `--accent-deep` | Dark-brown primary, eyebrow rules |
+| `#A67C52` | `--accent` | Bronze accent, italic emphasis, hover |
+| `#E6DCC8` | `--cream` | Dark-beige section dividers |
+| `#F4EFE6` | `--paper` | Light-beige page background |
+
+**13 non-conforming brown shades found** in the source pre-fix; all replaced:
+
+| File | Before | After | Rationale |
+|---|---|---|---|
+| `partials/01-tokens-typography-buttons.css:23-26` | `#6B6354`, `#A8A192`, `#D4CDBE`, `#E8E2D5` | `rgba(31, 27, 22, .60/.40/.20/.10)` | `--ink-XX` derived greys → alpha-blended ink-100 |
+| `partials/03-home.css:54` | `#E8C9A1` | `var(--accent)` | Hero accent → bronze |
+| `partials/10-conversion-trust.css:57` | `#E8C9A1` | `var(--accent)` | Hero-v2 accent → bronze |
+| `components/PageBlocks.tsx:436,438` | `#FBE9D9` / `#C28E66`, `#F5F2EB` | `var(--paper)` / `var(--accent)`, `var(--paper)` | Warning + disclaimer tones onto palette |
+| `lib/placeholder.ts:7-14` | 6 pairs with `#C9B89A`, `#EFE8DA`, `#DCD0B8`, `#B58963`, `#423B30`, `#6B6354` | 6 pairs from `{#E6DCC8, #F4EFE6, #A67C52, #533E27, #1F1B16}` | Painted-SVG fallback gradients |
+| `routes/contact/ContactPage.tsx:31` | `#B45A3C` | `var(--accent)` | "Required" italic label → bronze |
+| `routes/contact/ContactPage.tsx:362` | `#FBE9D9` / `#C28E66` | `var(--paper)` / `var(--accent)` | Form error block |
+| `routes/home/Hero.tsx:225` | `#C28E66` | `var(--accent)` | Hero error fine-print |
+
+**Preserved (not browns, not in scope):** `#a04040` (error-red in 2 places — `LeadMagnet.tsx:115`, `VideoConsultPage.tsx:124`) — distinct red, kept for error-state semantics. WhatsApp greens `#1da851` / `#25D366` also preserved (brand-of-WhatsApp, not site palette).
+
+### Verification
+
+- All 51 routes still return 200 (smoke-tested home, surgeons, contact, pricing, press).
+- Rendered HTML confirms `logo.svg` / `logo-light.svg` are now the only logo refs in header + footer.
+- Audit grep across `packages/web/src/**` for the 14 non-conforming hexes returns zero hits in code (only a comment in `01-tokens-typography-buttons.css` historicising the old values).

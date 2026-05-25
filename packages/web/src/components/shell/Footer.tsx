@@ -72,7 +72,7 @@ export const Footer: React.FC = () => {
       <div className="footer-top">
         <div className="footer-brand">
           <a href="/" className="logo logo-dark" aria-label="BIMC CosMedic — home">
-            <img src="/assets/logo-light.png" alt="BIMC CosMedic" />
+            <img src="/assets/logo-light.svg" alt="BIMC CosMedic" />
           </a>
           <p className="footer-brand-tagline">{brandTagline}</p>
           <p>

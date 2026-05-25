@@ -19,8 +19,8 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
   // CMS-driven logos with static fallback. logoDark is rendered when the
   // header has scrolled past the hero (`.scrolled`) via CSS swap; we emit
   // both <img>s and let the stylesheet show/hide based on header state.
-  const logoLightSrc = mediaUrl(cms?.header?.logoLight, '/assets/logo.png') || '/assets/logo.png'
-  const logoDarkSrc = mediaUrl(cms?.header?.logoDark, '/assets/logo-light.png') || '/assets/logo-light.png'
+  const logoLightSrc = mediaUrl(cms?.header?.logoLight, '/assets/logo.svg') || '/assets/logo.svg'
+  const logoDarkSrc = mediaUrl(cms?.header?.logoDark, '/assets/logo-light.svg') || '/assets/logo-light.svg'
   const logoAlt = mediaAlt(cms?.header?.logoLight, `${siteName} — Managed by BIMC Hospital`)
   // EndorsementMark: the global is preserved in CMS (admin-editable) but is no
   // longer rendered alongside the logo. Phase N1 (2026-05-23): the production

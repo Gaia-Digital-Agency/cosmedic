@@ -51,7 +51,7 @@
     color: white;
     margin-top: 24px;
   }
-  .hero-headline .display .accent { color: #E8C9A1; }
+  .hero-headline .display .accent { color: var(--accent); }
   .hero-headline .eyebrow { color: rgba(255,255,255,0.85); }
   .hero-headline .eyebrow-rule { background: rgba(255,255,255,0.6); }
   .hero-lede {

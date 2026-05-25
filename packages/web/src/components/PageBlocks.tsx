@@ -431,11 +431,15 @@ const ExternalEmbedBlock: React.FC<{ block: Extract<PageBlock, { blockType: 'ext
 )
 
 const NotesBlock: React.FC<{ block: Extract<PageBlock, { blockType: 'notes' }> }> = ({ block }) => {
+  // 25.19 palette enforcement: warning/disclaimer no longer use one-off
+  // tan/peach hexes; they map onto the brand 5-color set. Warning gets the
+  // bronze accent border on paper bg so it still reads as "attention" while
+  // staying on-palette.
   const tones: Record<string, { bg: string; border: string }> = {
     info: { bg: 'var(--cream)', border: 'var(--ink-20)' },
-    warning: { bg: '#FBE9D9', border: '#C28E66' },
+    warning: { bg: 'var(--paper)', border: 'var(--accent)' },
     tip: { bg: 'var(--accent-tint)', border: 'var(--accent)' },
-    disclaimer: { bg: '#F5F2EB', border: 'var(--ink-40)' },
+    disclaimer: { bg: 'var(--paper)', border: 'var(--ink-40)' },
   }
   const tone = tones[block.kind || 'info']
   return (

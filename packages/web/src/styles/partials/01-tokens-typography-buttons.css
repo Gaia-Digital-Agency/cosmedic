@@ -20,10 +20,15 @@
     --ink-100: #1F1B16;        /* black */
     --ink-90: #1F1B16;         /* collapsed → black */
     --ink-80: #1F1B16;         /* collapsed → black */
-    --ink-60: #6B6354;         /* muted (derived) */
-    --ink-40: #A8A192;         /* muted (derived) */
-    --ink-20: #D4CDBE;         /* rule (derived) */
-    --ink-10: #E8E2D5;         /* rule subtle (derived) */
+    /* 25.19 palette enforcement: ink-derived greys (--ink-60/40/20/10) replaced
+     * with rgba(ink-100, alpha) so the only literal browns in tokens are the
+     * five sanctioned hexes (#1F1B16, #533E27, #A67C52, #E6DCC8, #F4EFE6).
+     * Visual output is approximate; the alpha-blend over --paper gives a near
+     * match to the prior #6B6354 / #A8A192 / #D4CDBE / #E8E2D5 values. */
+    --ink-60: rgba(31, 27, 22, 0.60); /* muted text */
+    --ink-40: rgba(31, 27, 22, 0.40); /* secondary text / faint borders */
+    --ink-20: rgba(31, 27, 22, 0.20); /* rule */
+    --ink-10: rgba(31, 27, 22, 0.10); /* rule subtle */
 
     /* Bronze accent */
     --accent: #A67C52;
