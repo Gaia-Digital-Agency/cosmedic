@@ -467,7 +467,7 @@
   text-align: center;
 }
 
-/* Dark footer wrapper — combines CTA band + footer with one shared starburst */
+/* Dark footer wrapper — radial-gradient bronze glow ("starburst" in the design source comment) shared behind CTA band + footer */
 .dark-foot {
   position: relative;
   background: var(--accent-deep);

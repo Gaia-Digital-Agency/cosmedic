@@ -38,7 +38,8 @@ Every change must respect:
 | [docs/planning/plan.md](docs/planning/plan.md) | Before starting any phase — the 14-phase execution plan + locked decisions |
 | [docs/planning/all_todo.md](docs/planning/all_todo.md) | **Single TODO file** — covers DO FIRST/SECOND/THIRD plus Phases C (CMS → CMS_structure.md alignment), M (Mobile), N (Header/Chrome/Pricing polish), P (favicon), Q (changes01.docx batch). Replaces former `cms_todo.md` and absorbs `todo.md` (since 2026-05-23). |
 | [docs/remap.md](docs/remap.md) | **Phase R — Admin↔Site IA Remap.** Target Bucket structure (9 prefixed + Users) + per-Bucket item maps. Planning ✅ User · Media · Journey · Contact · Homepage · About; ⏳ Treatments · Doctors · Results · Pricing. |
-| [docs/remap_plan.md](docs/remap_plan.md) | **Phase R implementation plan.** R0 = top-level Bucket realignment (24-file admin.group sweep). R1 = Contact detail. R2 = Homepage detail. R7 = Journey detail. R8 = About detail. R3/R4/R5/R6 = per-Bucket detail, pending map sign-off. Rules 8 (universal coverage, no duplication) + 9 (full Payload capability preserved) added. |
+| [docs/remap_plan.md](docs/remap_plan.md) | **Phase R implementation plan.** R0/R1/R2/R4/R6/R7/R8 ✅ shipped · R3/R5 pending. Rules 8 (universal coverage, no duplication) + 9 (full Payload capability preserved). |
+| [docs/changes/change_request_may25.md](docs/changes/change_request_may25.md) | **Active change request (CR25May).** 70-item TODO + Details. Section 1 = Rules (8 CMS + 3 Standing + 4 Operating + 8-step workflow). Read before every change. |
 | [docs/assets/brand-guidelines.pdf](docs/assets/brand-guidelines.pdf) | Canonical brand source — palette, typography, mark, usage rules |
 | [docs/assets/pricelist.xlsx](docs/assets/pricelist.xlsx) | Canonical clinic price + procedure catalogue — seed source for Phase 6 |
 | [design/](design/) | Original Claude Design source — never modified, only mirrored |
@@ -66,8 +67,10 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
 - Treat `docs/assets/brand-guidelines.pdf` and `docs/assets/pricelist.xlsx` as **source-of-truth inputs** — quote from them when justifying decisions.
 - Pixel-Fidelity Gate + Lighthouse Green Gate are launch-blocking. Don't bypass them.
 - This server is the dev environment (user chose server-first). Edits happen here; commits + pushes happen here.
+- **Be supercritical + reality-grounded + 99.9999999999999% accurate.** Never overreport. Every claim of "done", every checkbox ticked, every count must reflect literal truth on disk / live site / DB. **If unsure: verify TWICE, not once** (two independent checks — e.g. grep the file AND curl the URL; query the DB AND read the page HTML). No partial-credit framing, no aspirational status, no "✅" for items where any part is blocked.
+- **Never overwrite existing CMS/DB data.** If a field/row already has a non-empty value, do NOT overwrite. Seed/migration only inserts when destination is empty (`WHERE col IS NULL OR col = ''`). Wire-up reads before write. If existing non-empty data needs to change, **ASK first** — editor content is authoritative, seed defaults are placeholders.
 
-## Current state (Phase R0/R1/R4/R6/R7/R8 shipped · R5 next · Phase Q 18/19 · Phase 8 live · q17 deferred)
+## Current state (Phase R0/R1/R2/R4/R6/R7/R8 shipped · R3/R5 pending · Phase 8 live · CR25May active)
 
 - `packages/cms` — Payload 3.84.1 on Next.js 15.4.11 + Postgres adapter, port **4007**. Admin white-labelled as **Cosmedic CMS** (Cormorant Garamond + JetBrains Mono, brand-beige palette from `docs/assets/brand-guidelines.pdf`). Light theme default (q19, 2026-05-24).
   - **18 collections** in `src/collections/` (as of 2026-05-24 — `PricingTiers` removed in q5 `a1601e5`; `InclusionItems` + `ExclusionItems` removed in q19 `1b35bfb`; orphan `Pages` collection removed (Rule 4 gate resolved 2026-05-24 — DB table `pages` retained with 8 backup rows); R8 added `PrivacySections`): Users · Media · Surgeons · Disciplines · SubCategories · Procedures · BeforeAfterCases · Stories · PressMentions · Awards · RecoveryStays · BlogPosts · BlogTags · Authors · JourneySteps · Enquiries · PrivacySections.
@@ -94,28 +97,21 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
 - Postgres `cosmedic` role + db provisioned on `127.0.0.1:5432`. Phase 6 catalogue migration applied. Super-admin seeded. Content seed run.
 - pm2 manages both processes (`cosmedic-cms`, `cosmedic-web`); `pm2 save` persisted.
 
-- **Phase 7**: `POST /api/enquiry` on web (Zod schema in `lib/enquiry-schema.ts` + IP rate-limit in `lib/enquiry-rate-limit.ts`: 2 req/IP/60s) creates `Enquiries` records via Payload REST. Honeypot is silent-accept-as-spam. `Enquiries.afterChange` (only on `operation === 'create'`) calls `sendEnquiryEmails` → loads the `email-templates` global + sends clinic-notify to `MAIL_CLINIC_TO` and autoresponder to submitter via the `nodemailerAdapter` in `packages/cms/src/lib/email-adapter.ts`. SMTP is env-driven (`SMTP_HOST/PORT/USER/PASS/SECURE`); when unset, JSON transport logs full message to stdout (no delivery — safe for dev + pre-launch). Hero quick-form on `/` + full form on `/contact` both POST to `/api/enquiry` with inline success/error states.
+- **Phase 7 enquiry pipeline**: `POST /api/enquiry` on web (Zod schema in `lib/enquiry-schema.ts` + IP rate-limit in `lib/enquiry-rate-limit.ts`: 2 req/IP/60s) creates `Enquiries` records via Payload REST. Honeypot is silent-accept-as-spam. `Enquiries.afterChange` (create only) calls `sendEnquiryEmails` → loads the `email-templates` global + resolves destination via `resolveClinicEmail()` (chain: `Settings.clinicEnquiryEmail` → `MAIL_CLINIC_TO` env → fallback) + sends clinic-notify + autoresponder via `nodemailerAdapter` in `packages/cms/src/lib/email-adapter.ts`. SMTP wiring is Path B (commit `b397c5d`, 2026-05-25): `transportOptions: { host, port, secure, auth, skipVerify: true }` — no JSON fallback. Hero quick-form on `/` + full form on `/contact` both POST to `/api/enquiry` with inline success/error states. **Pending creds**: see CR25May 25.3.
 
-- **Phase 8**: Live at **https://cosmedic.gaiada.online** with green padlock. DNS A record points to `34.124.244.233`; Let's Encrypt cert at `/etc/letsencrypt/live/cosmedic.gaiada.online/` (issued 2026-05-20, expires 2026-08-18). nginx block in `/etc/nginx/sites-enabled/subdomains.gaiada.online` mirrors the christos VRTPN pattern — HTTP→HTTPS 301, web-owned `/api/{page-data,preview,exit-preview,revalidate,enquiry}` → `:3007`, Payload `/admin` + `/_next` + `/api` → `:4007` (25M client_max_body_size for media uploads), `/` → `:3007` (Vite SSR). Backup of pre-Phase-8 nginx config stashed at `/etc/nginx/backups/subdomains.gaiada.online.bak-phase8-*`. Smoke-tested: homepage 200, `/admin` 200, `/api/revalidate` `{ok:true}`, `/api/enquiry` returns Zod validation errors, all sibling sites unchanged. **Pending pre-launch**: SMTP provider for enquiry emails (currently JSON transport — no delivery).
+- **Phase 8**: Live at **https://cosmedic.gaiada.online** with green padlock. DNS A → `34.124.244.233`; Let's Encrypt cert at `/etc/letsencrypt/live/cosmedic.gaiada.online/` (issued 2026-05-20, expires 2026-08-18). nginx block in `/etc/nginx/sites-enabled/subdomains.gaiada.online` mirrors the VRTPN pattern — HTTP→HTTPS 301, web-owned `/api/{page-data,preview,exit-preview,revalidate,enquiry}` → `:3007`, Payload `/admin` + `/_next` + `/api` → `:4007` (25M client_max_body_size for media uploads), `/` → `:3007` (Vite SSR). Nginx backups under `/etc/nginx/backups/`. SMTP creds outstanding: see CR25May 25.3.
 
-~~**Known issue surfaced during Phase 8 smoke**: SSR router uses `/surgeon-<slug>` but sitemap + header links use `/surgeons/<slug>` — surgeon detail pages 404. Fix during Phase 11.~~ **Resolved** (verified 2026-05-24 via `/tmp/cosmedic-smoke/smoke.sh`): SSR router matches `/surgeons/<slug>` at `packages/web/src/router.ts:71`; all 8 surgeon routes return 200.
+- **Recent CR25May commits (2026-05-25)**:
+  - `467ad4f` — 25.1 cleanup audit verified (footer brand-col + surgeon portraits all 8 real). Footer logo now CMS-driven.
+  - `f22220f` — 25.2 closed 9 hardcoded footer atoms (brandTagline, treatmentsHeading, newsletter group, footerBottomLines, social enum on linkColumns). Added Step 0 structural-diff gate to workflow.
+  - `b397c5d` — 25.2 SMTP Path B refactor (transportOptions API + skipVerify, no JSON fallback). Adds `Settings.clinicEnquiryEmail` with env fallback.
+  - `c9a1efe` — 25.19 brown.svg logo swap + 5-color palette enforcement (`#1F1B16`, `#533E27`, `#A67C52`, `#E6DCC8`, `#F4EFE6`). Derived `--ink-*` greys swapped to `rgba(31,27,22,a)`.
+  - `3a87d4c` — R2 Homepage Bucket detail: 10 section globals under `globals/home/` (home-hero / home-intro / home-lead-magnet / home-place + 6 view-mirrors).
 
-## 2026-05-22 — Item 1 + Item 2 shipped
+### Historical infra changes (kept for context)
 
-### Item 1 — CMS image upload nginx fix (commit `6c5299b`)
-- `location ^~ /api/media/` → `location ^~ /api/media/file/` in `/etc/nginx/sites-enabled/subdomains.gaiada.online` line 513. Breaks the nginx 301 → Payload 308 redirect loop that ate POST bodies.
-- Phase-10 30d file cache preserved on `/api/media/file/*`; collection API `/api/media` freed for POST.
-- Backup: `/etc/nginx/backups/subdomains.gaiada.online.bak-cmsfix-20260522-065211`.
-
-### Item 2 — Pages → 14 Globals refactor (commit `3bc02e5`, Steps 1-9)
-- The single `Pages` collection became 14 individual Payload Globals (one per static route). Each Global's `admin.group` matches its bucket in the new 9-bucket taxonomy → admin nav is one-to-one with the site IA.
-- 28 collection + global `admin.group` strings re-grouped. Notable: PriceListItems moved from Treatments to **Pricing** (where editors expect to find prices); Stories + JourneySteps + RecoveryStays moved to **Journey**; PressMentions + Awards moved to **Homepage** (trust marks); all shell globals (Header / Footer / Settings / SeoDefaults / BrandStats / EndorsementMark / FloatingChrome) moved to **Homepage**.
-- Media: added `folders: true` + a `category` select field (homepage / treatments / doctors / results / pricing / journey / contact / blog / uncategorised) so the asset library can be browsed by bucket.
-- Postgres schema migration `20260522_072509_pages_to_globals` applied — adds 266 new tables/sequences/enums for the 14 globals + media folders. Marked applied in `payload_migrations` table as batch 4.
-- Data migration: 8 existing Pages rows copied to corresponding Globals via `migrate-pages-to-globals.ts` (idempotent — skips already-populated globals). 6 new globals (treatments/surgeons/results/recovery-stays/video-consult/blog) seeded fresh via `seed-new-page-globals.ts`.
-- Web data layer (`packages/web/src/lib/cms.ts`): the `CmsCache.pages: CmsPage[]` interface is preserved. Internally `fetchAll<CmsPage>('pages')` was replaced with `fetchAllPageGlobals()` (14 parallel `fetchGlobal` calls). `cms-adapters.ts` and route components untouched.
-- `packages/cms/src/seed/runtime.ts`: pages array loop replaced with 14 `upsertGlobal()` calls. Fresh installs now seed Globals, not the Pages collection.
-- All 14 globals respond 200, all 14 static routes serve 200, editorial copy rendering live from globals (Rule 3 preserved — site bytewise identical to pre-refactor).
+- **nginx CMS upload fix** (`6c5299b`, 2026-05-22): `location ^~ /api/media/` → `/api/media/file/` to break a 301→308 loop that ate POST bodies. Phase-10 30d cache preserved on `/file/*`.
+- **Pages → 14 Globals refactor** (`3bc02e5`, 2026-05-22): single `Pages` collection split into 14 per-route Globals, then later expanded to 18 Section Globals via R1/R4/R6/R7/R8. Original `Pages` collection unregistered 2026-05-24; DB table retained as one-shot rollback backup.
 
 ### Gotchas to remember next session
 
@@ -124,60 +120,13 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
 - **Direct psql DDL leaves objects owned by `postgres`** — the Payload runtime connects as `cosmedic` and gets `permission denied` on `ALTER`. After applying schema directly, run `ALTER TABLE/SEQUENCE/TYPE OWNER TO cosmedic` for every new public-schema object. One-shot pattern: `psql -tAc "SELECT 'ALTER TABLE \"' || tablename || '\" OWNER TO cosmedic;' FROM pg_tables WHERE schemaname='public'" | psql`. Also set default privileges: `ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO cosmedic`.
 - **`tsx` scripts that call `getPayload()` trigger `pushDevSchema`** unless `NODE_ENV=production` is set. The drizzle push tries `ALTER TABLE ... DROP CONSTRAINT` and fails on non-owner. Always invoke one-off migration scripts as `NODE_ENV=production pnpm --filter @cosmedic/cms exec tsx <script>`.
 - **`git stash -u` will sweep untracked top-level directories** — `changes/` got vacuumed into the stash during rollback. Recoverable via `git checkout stash@{0}^3 -- <path>`. `/changes/` is now in `.gitignore` for scratch uploads.
+- **CMS `next build` chokes on cross-package seed imports** of `@/lib/cms-proxy`. Fix: add seed scripts to `packages/cms/tsconfig.json` `exclude` (precedent: `a18c700`). They run via `tsx` CLI; Next doesn't need to bundle them.
 
-### Item 2 Step 10 — Rule 4 gate, ✅ resolved 2026-05-24
+## Completed phases (full detail in docs)
 
-`Pages` collection unregistered from `payload.config.ts` and `src/collections/Pages.ts` removed (verified: `/api/pages` → 404). DB table `public.pages` retained with its 8 rows as a one-shot rollback backup — drop manually if/when sign-off is final.
-
-## Phase M (Mobile-Responsive Sweep) — ✅ COMPLETE 2026-05-23
-
-User criterion **met**: zero horizontal scroll on all 46 live routes × 5 widths (320 / 375 / 414 / 640 / 768). Sign-off doc at [docs/planning/phase-m-signoff.md](docs/planning/phase-m-signoff.md).
-
-Final audit (`run15`): 260 scans, 0 layout overflows. Only remaining issues are 6 blog routes returning HTTP 404 — those are missing `BLOG_POST_BODIES` entries in `packages/web/src/content/blog-data.ts` (content gap, not a layout defect; tracked separately).
-
-Highlights of what shipped:
-- Header / burger: stays-in-bar at ≤1100px; endorsement line + lang switcher hidden ≤700px; CTA label collapses to arrow-only ≤420px.
-- Global safety net: `html, body { overflow-x: hidden }` + `html { overflow-x: clip }` (clip preserves position:sticky); `img { max-width: 100% }`.
-- Route-specific: `/video-consult` was +97px @768 → 0; `/recovery-stays` +47px @320 → 0 (villa-grid → 1fr ≤700px); `/contact` +13px → 0 (form grid → 1fr ≤700px); surgeon details cleared via `min-width: 0` on bio-layout columns.
-- Audit harness lives in `/tmp/cosmedic-audit/` — re-run with `cd /tmp/cosmedic-audit && stdbuf -oL node audit.mjs > runXX.log 2>&1`.
-
-## Phase N (Header + Chrome + Pricing polish) — ✅ COMPLETE 2026-05-23
-
-N1 (`f053733`), N2 (`e6f8c8b`), N3 (`e90302f`) all shipped. Detail in [docs/planning/all_todo.md](docs/planning/all_todo.md).
-
-## Phase Q (changes01.docx + change2a.pdf addendum batch) — ✅ 18/19 SHIPPED, q17 deferred
-
-Final tally as of 2026-05-24:
-
-| q | Item | Status | Commit |
-|---|---|---|---|
-| q1 | `.detail-body` max-width → `clamp(640px, 70vw, 920px)` | ✅ | `dc9278d` |
-| q2 | Homepage mobile hero top padding 140px (≤700px) | ✅ | `bb69bdb` |
-| q3 | Unified `--hero-top-pad` token across 3 hero patterns | ✅ | `85e1412` |
-| q4 | Home: single team photo replaces 6-card associates | ✅ | `19c5600` |
-| q5 | Remove `PricingTiers` collection (CMS + adapters + DB) | ✅ | `a1601e5` |
-| q6 | CMS light theme default + Inclusion/Exclusion audit | ✅ | (audit-only → q19) |
-| q7 | Dark-brown 3-column footer reskin | ✅ | `d2a1ce4` |
-| q8 | Footer Treatments list CMS-driven (verification) | ✅ | N/A — verify only |
-| q9 | `.page-breadcrumb` tracks `--page-x` at ≤700px | ✅ | `9afd1f4` |
-| q10 | Shared `<StatsRow>` primitive (home + /treatments) | ✅ | `2c6414e` |
-| q11 | Flat slug rewrite `/treatment-*` → `/treatments/*` | ✅ | `8de7eb5` |
-| q12 | Breadcrumbs match new URLs + visual align | ✅ | `39d21e6` |
-| q13 | Sitewide buttons + links sweep | ✅ | `507622e` |
-| q14 | Before/After: patient age + recovery duration | ✅ | `9b99753` |
-| q15 | Procedure sortOrder scoped per parentSubCategory | ✅ | `8cc80ae` |
-| q16 | Pricing: IDR primary, AUD auto-calculated | ✅ | `f114156` |
-| q17 | Image set refresh per Figma | ⏸ deferred | — |
-| q18 | Dark-brown brand token `#6B4A2B` → `#533E27` | ✅ | `a5e5e9e` |
-| q19 | Drop unused InclusionItems + ExclusionItems pipeline | ✅ | `1b35bfb` |
-
-**Tracker:** [docs/changes/changerequest_21May.md](docs/changes/changerequest_21May.md) holds the per-q Notes + Commit columns (changes made, issues found, fixes applied, verify steps). The pre-q workflow (7 steps; Step 6 = "propose for approval — MUST not act before approval") is locked at the top of that file.
-
-**Companion docs:** [docs/changes/change01.md](docs/changes/change01.md) (cluster tracker), [docs/changes/change2a.pdf](docs/changes/change2a.pdf) (visual reference).
-
-**Infrastructure unblock during Phase Q:** CMS `next build` was failing on `@/lib/cms-proxy` resolution from cross-package web seed imports. Fixed in `a18c700` by adding 3 seed scripts (`seed-globals.ts`, `seed-taxonomy.ts`, `seed-content.ts`) to `packages/cms/tsconfig.json` `exclude`. These scripts only run via `tsx` CLI; Next.js doesn't need to bundle them. Removing from type-check pass unblocked the build.
-
-**q17 stays deferred** until the Figma image set is delivered + inventoried (see [changerequest_21May.md](docs/changes/changerequest_21May.md) q17 row).
+- **Phase M — Mobile-Responsive Sweep** ✅ 2026-05-23. Zero horizontal scroll across 46 routes × 5 widths (320/375/414/640/768). Sign-off: [docs/planning/phase-m-signoff.md](docs/planning/phase-m-signoff.md). Audit harness at `/tmp/cosmedic-audit/`.
+- **Phase N — Header / Chrome / Pricing polish** ✅ 2026-05-23. N1 `f053733`, N2 `e6f8c8b`, N3 `e90302f`.
+- **Phase Q — change-request batch** ✅ 18/19 shipped 2026-05-24 (q17 image-set deferred pending Figma access). Per-q tracker: [docs/changes/changerequest_21May.md](docs/changes/changerequest_21May.md). Companion: [docs/changes/change01.md](docs/changes/change01.md), [docs/changes/change2a.pdf](docs/changes/change2a.pdf).
 
 ## Common ops
 
