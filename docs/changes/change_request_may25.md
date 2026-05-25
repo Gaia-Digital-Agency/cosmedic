@@ -24,10 +24,11 @@
 | 8 | Back-to-Top ↔ WhatsApp FAB vertical gap | ❌ Open | No |
 | 9 | Starburst texture — clarify scope + ship | ❌ Open (planning) | No |
 | 10 | N0 — Golden-path mobile UX pass | ❌ Open | No |
-| 11 | R2 — Homepage Bucket admin detail (+ footer regression precedent) | ✅ Shipped (`3a87d4c`); precedent logged | — |
-| 12 | q17 — Refresh image set per Figma | ⏸ Deferred (folds into #5) | No |
-| 13 | Phase 9 — i18n EN ⇄ ID | ❌ Open | No (post-launch) |
-| 14 | Phase C6–C10 — CMS structural alignment | ❌ Open (largely superseded by Phase R) | No |
+| 11 | R2 — Homepage Bucket admin detail (+ footer regression precedent + recurrence safeguards ✅) | ✅ Shipped + safeguarded | — |
+| 12 | Phase 9 — i18n EN ⇄ ID | ❌ Open | No (post-launch) |
+| 13 | Phase C6–C10 — CMS structural alignment | ❌ Open (largely superseded by Phase R) | No |
+
+> **Note (2026-05-25 mid-session merge):** former item 12 ("q17 — Refresh image set per Figma") was a duplicate framing of item 5 (Figma MCP). Both targeted the same Figma file (`KjPZnGnbpa994mf7byvcW7`) and the same upload path. Merged into #5; row count went 14 → 13. The q17 tracker row in `changerequest_21May.md` stays as the historical Phase Q ledger entry — execution lives at #5 here.
 
 ---
 
@@ -237,25 +238,16 @@ Tracing the rule violation that surfaced this morning:
 
 **Root cause:** q7 implementer trusted `docs/changes/change2a.pdf` Item 5 reference image without structural-diffing against `design/shared.jsx` (the canonical mirror). The reference likely showed a cropped or mobile-stacked view; the implementer's commit body explicitly acknowledges the deletion, meaning the rule was bypassed knowingly based on the mis-read reference.
 
-**Action items:**
-- Add a "structural-diff against `design/shared.jsx`" step to the `changerequest_21May.md` 7-step pre-implementation workflow.
-- Append this q7 → 8a7007e incident as a worked example to `feedback_no_frontend_data_loss.md` so the memory carries an authoritative case study, not just the rule statement.
-- Visual-regression snapshot of the desktop footer should be on the Phase 11 (#3) Playwright gate so any future column-count regression fails CI before merge.
+**Recurrence safeguards (closed 2026-05-25 mid-session):**
+- ✅ **Workflow gate added** — `changerequest_21May.md` per-q workflow now has **Step 0: Structural-diff gate** (any layout-touching item must structural-diff against `design/shared.jsx` first; design mirror wins over PDF reference if they disagree). Skipping Step 0 is what caused d2a1ce4.
+- ✅ **Memory updated** — `feedback_no_frontend_data_loss.md` now carries the q7 → 8a7007e footer regression as a worked example, plus step 4 "Reskin / redesign tasks also count" extending the rule from "CMS refactors" to "any layout edit."
+- ⏳ **Visual-regression snapshot** — desktop footer column-count assertion sits in Phase 11 (#3) Playwright gate scope.
+
+Two of three safeguards live now; the third is a CI fixture that ships under #3.
 
 ---
 
-## 12 — q17: Refresh image set per Figma
-
-**Status:** ⏸ Deferred since Phase Q close-out (2026-05-24); folds into #5
-**Tracker row:** `docs/changes/changerequest_21May.md` — q17
-
-Block: Figma image set not yet delivered + inventoried by the design team. When delivered, this becomes a routine swap into `packages/web/public/assets/` plus Payload Media uploads, replacing placeholders flagged `isPlaceholder=true`.
-
-**Resume condition:** Figma drop received → inventory against the q17 row's image list → batch upload + relink. Now folded into #5 (Figma MCP) — same file, same upload-to-Payload-Media path.
-
----
-
-## 13 — Phase 9: i18n EN ⇄ ID
+## 12 — Phase 9: i18n EN ⇄ ID
 
 **Status:** ❌ Open (entire phase)
 **Launch-blocking:** No (post-launch acceptable)
@@ -270,7 +262,7 @@ Scope from `all_todo.md`:
 
 ---
 
-## 14 — Phase C6–C10: CMS structural alignment
+## 13 — Phase C6–C10: CMS structural alignment
 
 **Status:** ❌ Open (mostly superseded by Phase R, but still listed)
 **Tracker:** `docs/planning/all_todo.md` Phase C section

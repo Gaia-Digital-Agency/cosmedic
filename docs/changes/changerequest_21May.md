@@ -2,8 +2,9 @@
 
 ## Per-q workflow (applies to every item below)
 
-For each q-item, execute these 7 steps in order:
+For each q-item, execute these 8 steps in order:
 
+0. **Structural-diff gate** (added 2026-05-25 after q7 footer regression): if the item touches any layout file (`Footer.tsx`, `Header.tsx`, `PageShell.tsx`, any `src/routes/*` shell), structural-diff the target render against `design/shared.jsx` BEFORE designing the change. The design mirror is the canonical structural contract; if the change-request PDF and the design mirror disagree, the design mirror wins until the user explicitly overrides in writing. Skipping this gate is what caused `d2a1ce4` to silently drop the footer brand column — see [feedback_no_frontend_data_loss.md](../../.claude/memory/feedback_no_frontend_data_loss.md) worked example.
 1. Audit situation: site, relating to the item
 2. Audit situation: CMS, relating to the item
 3. Decide change to CMS required, relating to the item
