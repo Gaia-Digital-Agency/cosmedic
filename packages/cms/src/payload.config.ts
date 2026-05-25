@@ -123,11 +123,12 @@ export default buildConfig({
       // automatically; the older [{rel, url}] array form is silently ignored.
       icons: {
         icon: [
-          { url: '/cosmedic-mark-32.png', type: 'image/png', sizes: '32x32' },
-          { url: '/cosmedic-mark-192.png', type: 'image/png', sizes: '192x192' },
+          { url: '/favicon-16x16.png', type: 'image/png', sizes: '16x16' },
+          { url: '/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
+          { url: '/android-chrome-192x192.png', type: 'image/png', sizes: '192x192' },
         ],
         shortcut: { url: '/favicon.ico' },
-        apple: { url: '/cosmedic-apple-180.png', sizes: '180x180' },
+        apple: { url: '/apple-touch-icon.png', sizes: '180x180' },
       },
       openGraph: {
         siteName: 'Cosmedic CMS',

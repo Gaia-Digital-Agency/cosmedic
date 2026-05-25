@@ -10,7 +10,7 @@ import React from 'react'
  */
 const CosmedicIcon: React.FC = () => (
   <img
-    src="/cosmedic-mark-32.png"
+    src="/android-chrome-192x192.png"
     alt="BIMC CosMedic"
     width={36}
     height={36}
