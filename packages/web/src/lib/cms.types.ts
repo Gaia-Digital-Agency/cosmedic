@@ -770,6 +770,136 @@ export type RecoveryStaysPageGlobal = {
   inclusions?: Array<{ letter: string; title: string; body: string }>
 }
 
+/* ─── R2 — a. Homepage Bucket section globals ──────────────────────────── */
+
+export type HomeHeroGlobal = {
+  eyebrow?: string
+  titleA?: string
+  titleB?: string
+  lede?: string
+  heroImage?: CmsMedia | number | null
+  breadcrumbLabel?: string
+  primaryCtaLabel?: string
+  secondaryCtaLabel?: string
+  secondaryCtaHref?: string
+  quickEnquiry?: {
+    eyebrow?: string
+    heading?: string
+    intro?: string
+    nameLabel?: string
+    namePlaceholder?: string
+    emailLabel?: string
+    emailPlaceholder?: string
+    interestLabel?: string
+    interestOptionalLabel?: string
+    interestPlaceholder?: string
+    revealInterestLabel?: string
+    submitLabel?: string
+    submittingLabel?: string
+    successLabel?: string
+    successFine?: string
+    errorFine?: string
+    fineprint?: string
+  }
+}
+
+export type HomeIntroGlobal = {
+  eyebrow?: string
+  pullQuoteBefore?: string
+  pullQuoteAccent?: string
+  pullQuoteAfter?: string
+  col1?: string
+  col2?: string
+}
+
+export type HomeLeadMagnetGlobal = {
+  coverEyebrow?: string
+  coverLine1?: string
+  coverLine2?: string
+  coverLine3?: string
+  coverFoot1?: string
+  coverFoot2?: string
+  bodyEyebrow?: string
+  headingPart1?: string
+  headingAccent?: string
+  lede?: string
+  formPlaceholder?: string
+  submitLabel?: string
+  successHeading?: string
+  successBody?: string
+  fineprint?: string
+}
+
+export type HomePlaceGlobal = {
+  eyebrow?: string
+  headingPart1?: string
+  headingAccent?: string
+  body?: string
+  rows?: Array<{ letter: string; text: string }>
+  ctaLabel?: string
+  ctaHref?: string
+}
+
+export type HomeTreatmentsViewGlobal = {
+  eyebrow?: string
+  headingPart1?: string
+  headingPart2?: string
+  lede?: string
+}
+
+export type HomePricingViewGlobal = {
+  eyebrow?: string
+  headingPart1?: string
+  headingPart2?: string
+  lede?: string
+  footnote?: string
+  viewAllLabel?: string
+  viewAllHref?: string
+}
+
+export type HomeSurgeonsViewGlobal = {
+  eyebrow?: string
+  leadSurgeonEyebrow?: string
+  leadBody?: string
+  leadStat1Label?: string
+  leadStat1Value?: string
+  leadStat2Label?: string
+  leadStat2Value?: string
+  leadStat3Label?: string
+  leadStat3Value?: string
+  leadCtaLabel?: string
+  associatesEyebrow?: string
+  teamCaption?: string
+  groupPhoto?: CmsMedia | number | null
+  groupPhotoAlt?: string
+}
+
+export type HomeGalleryViewGlobal = {
+  eyebrow?: string
+  headingItalic?: string
+  headingPart2?: string
+  lede?: string
+  ctaLabel?: string
+  ctaHref?: string
+}
+
+export type HomeJourneyViewGlobal = {
+  eyebrow?: string
+  headingPart1?: string
+  headingAccent?: string
+  ctaLabel?: string
+  ctaHref?: string
+}
+
+export type HomeStoriesViewGlobal = {
+  eyebrow?: string
+  headingItalic?: string
+  headingPart2?: string
+  lede?: string
+  ctaLabel?: string
+  ctaHref?: string
+}
+
 /* ─── Cache shape ──────────────────────────────────────────────────────── */
 
 export type CmsCache = {
@@ -834,4 +964,15 @@ export type CmsCache = {
   resultsStoriesView: ResultsStoriesViewGlobal
   libraryCta: LibraryCtaGlobal
   shareCta: ShareCtaGlobal
+  // R2 — a. Homepage Bucket section globals
+  homeHero: HomeHeroGlobal
+  homeIntro: HomeIntroGlobal
+  homeLeadMagnet: HomeLeadMagnetGlobal
+  homePlace: HomePlaceGlobal
+  homeTreatmentsView: HomeTreatmentsViewGlobal
+  homePricingView: HomePricingViewGlobal
+  homeSurgeonsView: HomeSurgeonsViewGlobal
+  homeGalleryView: HomeGalleryViewGlobal
+  homeJourneyView: HomeJourneyViewGlobal
+  homeStoriesView: HomeStoriesViewGlobal
 }

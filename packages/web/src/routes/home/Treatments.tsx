@@ -4,16 +4,15 @@ import { Img } from '@/components/primitives/Img'
 import { Mono, Eyebrow } from '@/components/primitives/Mono'
 import { TREATMENT_LIST, TREATMENT_IMG } from '@/content/seed'
 import { useCms } from '@/lib/cms-context'
-import { findPageBySlug } from '@/lib/cms-adapters'
 
 export const Treatments: React.FC = () => {
   const cms = useCms()
-  const block = (cms ? findPageBySlug(cms, 'home') : undefined)?.treatmentsBlock
-  const eyebrow = block?.eyebrow || 'Treatments'
-  const headingPart1 = block?.headingPart1 || 'Six disciplines,'
-  const headingPart2 = block?.headingPart2 || 'one sanctuary.'
+  const g = cms?.homeTreatmentsView
+  const eyebrow = g?.eyebrow || 'Treatments'
+  const headingPart1 = g?.headingPart1 || 'Six disciplines,'
+  const headingPart2 = g?.headingPart2 || 'one sanctuary.'
   const lede =
-    block?.lede ||
+    g?.lede ||
     'A complete repertoire under one roof, sequenced into a single journey. Treatments may be combined; recovery is always private.'
 
   return (

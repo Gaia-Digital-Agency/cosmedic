@@ -60,6 +60,16 @@ import type {
   ResultsStoriesViewGlobal,
   LibraryCtaGlobal,
   ShareCtaGlobal,
+  HomeHeroGlobal,
+  HomeIntroGlobal,
+  HomeLeadMagnetGlobal,
+  HomePlaceGlobal,
+  HomeTreatmentsViewGlobal,
+  HomePricingViewGlobal,
+  HomeSurgeonsViewGlobal,
+  HomeGalleryViewGlobal,
+  HomeJourneyViewGlobal,
+  HomeStoriesViewGlobal,
 } from './cms.types'
 import { fetchAll, fetchGlobal, fetchAllPageGlobals } from './cms.fetch'
 
@@ -118,6 +128,16 @@ export const EMPTY_CACHE: CmsCache = {
   resultsStoriesView: {},
   libraryCta: {},
   shareCta: {},
+  homeHero: {},
+  homeIntro: {},
+  homeLeadMagnet: {},
+  homePlace: {},
+  homeTreatmentsView: {},
+  homePricingView: {},
+  homeSurgeonsView: {},
+  homeGalleryView: {},
+  homeJourneyView: {},
+  homeStoriesView: {},
 }
 
 let cache: CmsCache = EMPTY_CACHE
@@ -143,6 +163,9 @@ async function doLoad(): Promise<CmsCache> {
       pricingDisciplineListView, pricingCatalogueView,
       resultsHero, resultsFeaturedCasesView, resultsStoriesView,
       libraryCta, shareCta,
+      homeHero, homeIntro, homeLeadMagnet, homePlace,
+      homeTreatmentsView, homePricingView, homeSurgeonsView,
+      homeGalleryView, homeJourneyView, homeStoriesView,
     ] = await Promise.all([
       fetchAll<Surgeon>('surgeons', 100, 1),
       fetchAll<Discipline>('disciplines'),
@@ -196,6 +219,16 @@ async function doLoad(): Promise<CmsCache> {
       fetchGlobal<ResultsStoriesViewGlobal>('results-stories-view').catch(() => ({})),
       fetchGlobal<LibraryCtaGlobal>('library-cta').catch(() => ({})),
       fetchGlobal<ShareCtaGlobal>('share-cta').catch(() => ({})),
+      fetchGlobal<HomeHeroGlobal>('home-hero').catch(() => ({})),
+      fetchGlobal<HomeIntroGlobal>('home-intro').catch(() => ({})),
+      fetchGlobal<HomeLeadMagnetGlobal>('home-lead-magnet').catch(() => ({})),
+      fetchGlobal<HomePlaceGlobal>('home-place').catch(() => ({})),
+      fetchGlobal<HomeTreatmentsViewGlobal>('home-treatments-view').catch(() => ({})),
+      fetchGlobal<HomePricingViewGlobal>('home-pricing-view').catch(() => ({})),
+      fetchGlobal<HomeSurgeonsViewGlobal>('home-surgeons-view').catch(() => ({})),
+      fetchGlobal<HomeGalleryViewGlobal>('home-gallery-view').catch(() => ({})),
+      fetchGlobal<HomeJourneyViewGlobal>('home-journey-view').catch(() => ({})),
+      fetchGlobal<HomeStoriesViewGlobal>('home-stories-view').catch(() => ({})),
     ])
     // R6 — pricing-page lost its hero fields (split into pricing-hero global).
     // Mirror pricing-hero.lede + heroImage onto the pricing-page row inside
@@ -251,6 +284,9 @@ async function doLoad(): Promise<CmsCache> {
       pricingDisciplineListView, pricingCatalogueView,
       resultsHero, resultsFeaturedCasesView, resultsStoriesView,
       libraryCta, shareCta,
+      homeHero, homeIntro, homeLeadMagnet, homePlace,
+      homeTreatmentsView, homePricingView, homeSurgeonsView,
+      homeGalleryView, homeJourneyView, homeStoriesView,
     }
   } catch (err) {
     console.warn('[cms] load failed, using empty cache:', err)

@@ -102,6 +102,24 @@ import { ResultsStoriesView } from './globals/results/ResultsStoriesView'
 import { LibraryCta } from './globals/results/LibraryCta'
 import { ShareCta } from './globals/results/ShareCta'
 
+// Phase R2 — a. Homepage Bucket section globals.
+// 10 globals that split / editorial out of HomePage (the part-orphan
+// page global with 9 block fields) into purpose-named globals. The first
+// 4 are directly-editable (Hero, Intro, Lead-Magnet, Place); the last 6
+// are view-only mirrors that own only the section chrome — their cards /
+// data come from the source Bucket (b. Treatments, e. Pricing, c. Doctors,
+// d. Results, f. Journey, d. Results).
+import { HomeHero } from './globals/home/HomeHero'
+import { HomeIntro } from './globals/home/HomeIntro'
+import { HomeLeadMagnet } from './globals/home/HomeLeadMagnet'
+import { HomePlace } from './globals/home/HomePlace'
+import { HomeTreatmentsView } from './globals/home/HomeTreatmentsView'
+import { HomePricingView } from './globals/home/HomePricingView'
+import { HomeSurgeonsView } from './globals/home/HomeSurgeonsView'
+import { HomeGalleryView } from './globals/home/HomeGalleryView'
+import { HomeJourneyView } from './globals/home/HomeJourneyView'
+import { HomeStoriesView } from './globals/home/HomeStoriesView'
+
 import { seedSuperAdmin } from './seed/admin'
 import { emailAdapter } from './lib/email-adapter'
 
@@ -181,6 +199,16 @@ export default buildConfig({
     // 14 per-page Globals (replaces the Pages collection's per-row records).
     // Each lives in its bucket's admin.group for site-mirror navigation.
     HomePage,
+    HomeHero,
+    HomeIntro,
+    HomeLeadMagnet,
+    HomePlace,
+    HomeTreatmentsView,
+    HomePricingView,
+    HomeSurgeonsView,
+    HomeGalleryView,
+    HomeJourneyView,
+    HomeStoriesView,
     PressPage,
     PrivacyPage,
     TreatmentsPage,

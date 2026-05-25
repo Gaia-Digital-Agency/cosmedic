@@ -16,6 +16,7 @@ import * as migration_20260524_141500_r4_doctors_globals from './20260524_141500
 import * as migration_20260524_150000_r6_pricing_globals from './20260524_150000_r6_pricing_globals';
 import * as migration_20260524_153000_r3_treatments_globals from './20260524_153000_r3_treatments_globals';
 import * as migration_20260524_160000_r5_results_globals from './20260524_160000_r5_results_globals';
+import * as migration_20260525_080000_r2_home_globals from './20260525_080000_r2_home_globals';
 
 export const migrations = [
   {
@@ -111,5 +112,10 @@ export const migrations = [
     up: migration_20260524_160000_r5_results_globals.up,
     down: migration_20260524_160000_r5_results_globals.down,
     name: '20260524_160000_r5_results_globals',
+  },
+  {
+    up: migration_20260525_080000_r2_home_globals.up,
+    down: migration_20260525_080000_r2_home_globals.down,
+    name: '20260525_080000_r2_home_globals',
   },
 ];

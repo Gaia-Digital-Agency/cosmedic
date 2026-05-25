@@ -3,7 +3,6 @@ import { Reveal } from '@/components/primitives/Reveal'
 import { Eyebrow } from '@/components/primitives/Mono'
 import { Btn } from '@/components/primitives/Btn'
 import { useCms } from '@/lib/cms-context'
-import { findPageBySlug } from '@/lib/cms-adapters'
 
 const PRICE_TEASER = [
   { name: 'Rhinoplasty', aud: 4200, slug: 'surgical-face' },
@@ -21,18 +20,18 @@ const fmtIDR = (aud: number) =>
 
 export const PricingTeaser: React.FC = () => {
   const cms = useCms()
-  const block = (cms ? findPageBySlug(cms, 'home') : undefined)?.pricingTeaserBlock
-  const eyebrow = block?.eyebrow || 'Pricing · Starting From'
-  const headingPart1 = block?.headingPart1 || 'Transparent'
-  const headingPart2 = block?.headingPart2 || 'pricing.'
+  const g = cms?.homePricingView
+  const eyebrow = g?.eyebrow || 'Pricing · Starting From'
+  const headingPart1 = g?.headingPart1 || 'Transparent'
+  const headingPart2 = g?.headingPart2 || 'pricing.'
   const lede =
-    block?.lede ||
+    g?.lede ||
     'Indicative starting prices in IDR (with AUD equivalent). Final quotes are tailored after consultation. Travel, accommodation and concierge can be packaged.'
   const footnote =
-    block?.footnote ||
+    g?.footnote ||
     'Prices indicative for international patients. AUD shown at 1 AUD ≈ Rp 12,500 (May 2026). Recovery stays, transfers and 12-month telehealth follow-up included on most surgical packages.'
-  const viewAllLabel = block?.viewAllLabel || 'View full pricing'
-  const viewAllHref = block?.viewAllHref || '/pricing'
+  const viewAllLabel = g?.viewAllLabel || 'View full pricing'
+  const viewAllHref = g?.viewAllHref || '/pricing'
 
   return (
     <section className="price-teaser" id="pricing">

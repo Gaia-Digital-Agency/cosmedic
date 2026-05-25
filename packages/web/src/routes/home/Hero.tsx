@@ -2,25 +2,48 @@ import React, { useState } from 'react'
 import { Img } from '@/components/primitives/Img'
 import { Mono, Eyebrow } from '@/components/primitives/Mono'
 import { Btn } from '@/components/primitives/Btn'
-import { IMG } from '@/content/seed'
 import { useCms } from '@/lib/cms-context'
-import { findPageBySlug } from '@/lib/cms-adapters'
 import { mediaUrl } from '@/lib/cms'
 
 export const Hero: React.FC = () => {
   const cms = useCms()
-  const page = cms ? findPageBySlug(cms, 'home') : undefined
-  const eyebrow = page?.tagline || 'A sanctuary in Nusa Dua · Est. 1998'
-  const titleA = page?.chapterTitle?.a || 'Plastic surgery'
-  const titleB = page?.chapterTitle?.b || 'in Bali, by ISAPS surgeons.'
-  const lede = page?.lede
+  const g = cms?.homeHero
+  const eyebrow = g?.eyebrow || 'A sanctuary in Nusa Dua · Est. 1998'
+  const titleA = g?.titleA || 'Plastic surgery'
+  const titleB = g?.titleB || 'in Bali, by ISAPS surgeons.'
+  const lede = g?.lede
   // If the linked media is flagged isPlaceholder, render no image at all —
-  // the vignette + dark background carry the section. Stops the "Editorial
-  // Hero / placeholder" seed file from being visible to public visitors.
-  const heroMedia = page?.heroImage
+  // the vignette + dark background carry the section.
+  const heroMedia = g?.heroImage
   const isPlaceholderHero =
     heroMedia && typeof heroMedia === 'object' && (heroMedia as { isPlaceholder?: boolean }).isPlaceholder === true
   const heroImage = !isPlaceholderHero && heroMedia ? mediaUrl(heroMedia, '') : ''
+
+  const primaryCtaLabel = g?.primaryCtaLabel || 'Plan Your Treatment'
+  const secondaryCtaLabel = g?.secondaryCtaLabel || 'View Pricing'
+  const secondaryCtaHref = g?.secondaryCtaHref || '/pricing'
+
+  const qe = g?.quickEnquiry
+  const qeEyebrow = qe?.eyebrow || 'Begin · No commitment'
+  const qeHeading = qe?.heading || 'Get a private price estimate within 24 hours.'
+  const qeIntro =
+    qe?.intro ||
+    "Two fields to start. We'll reply with a tailored estimate and procedure guide — no marketing."
+  const qeNameLabel = qe?.nameLabel || 'Your name'
+  const qeNamePlaceholder = qe?.namePlaceholder || 'First name'
+  const qeEmailLabel = qe?.emailLabel || 'Email'
+  const qeEmailPlaceholder = qe?.emailPlaceholder || 'you@email.com'
+  const qeInterestLabel = qe?.interestLabel || 'Area of interest'
+  const qeInterestOptional = qe?.interestOptionalLabel || '(optional)'
+  const qeInterestPlaceholder = qe?.interestPlaceholder || 'e.g. rhinoplasty, mommy makeover…'
+  const qeRevealInterestLabel = qe?.revealInterestLabel || '+ Add a treatment area (optional)'
+  const qeSubmitLabel = qe?.submitLabel || 'Begin enquiry'
+  const qeSubmittingLabel = qe?.submittingLabel || 'Sending…'
+  const qeSuccessLabel = qe?.successLabel || 'Sent — thank you'
+  const qeSuccessFine =
+    qe?.successFine || 'Thank you — your concierge will reply within one business day.'
+  const qeErrorFine = qe?.errorFine || 'Something went wrong. Please try the full form on /contact.'
+  const qeFineprint = qe?.fineprint || 'Held in confidence. Reviewed by a credentialed surgeon.'
 
   const [expanded, setExpanded] = useState(false)
   const [heroName, setHeroName] = useState('')
@@ -72,7 +95,7 @@ export const Hero: React.FC = () => {
         <div className="hero-v2-headline">
           <Eyebrow>{eyebrow}</Eyebrow>
           <h1 className="display">
-            {page?.chapterTitle ? (
+            {g?.titleA || g?.titleB ? (
               <>
                 <span className="line">{titleA}</span>
                 <span className="line italic accent">{titleB}</span>
@@ -120,11 +143,11 @@ export const Hero: React.FC = () => {
                 document.getElementById('enquiry')?.scrollIntoView({ behavior: 'smooth' })
               }}
             >
-              <span>Plan Your Treatment</span>
+              <span>{primaryCtaLabel}</span>
               <span className="btn-arrow">→</span>
             </a>
-            <a href="/pricing" className="btn btn-ghost-light">
-              <span>View Pricing</span>
+            <a href={secondaryCtaHref} className="btn btn-ghost-light">
+              <span>{secondaryCtaLabel}</span>
               <span className="btn-arrow">→</span>
             </a>
           </div>
@@ -132,12 +155,9 @@ export const Hero: React.FC = () => {
 
         <div className="hero-v2-side">
           <div className="hero-v2-card" id="enquiry">
-            <Mono style={{ color: 'var(--accent-deep)' }}>Begin · No commitment</Mono>
-            <h4>Get a private price estimate within 24 hours.</h4>
-            <p>
-              Two fields to start. We'll reply with a tailored estimate and procedure guide — no
-              marketing.
-            </p>
+            <Mono style={{ color: 'var(--accent-deep)' }}>{qeEyebrow}</Mono>
+            <h4>{qeHeading}</h4>
+            <p>{qeIntro}</p>
             <form className={`quick-enquiry ${expanded ? 'expanded' : ''}`} onSubmit={heroSubmit}>
               <input
                 type="text"
@@ -150,10 +170,10 @@ export const Hero: React.FC = () => {
                 aria-hidden="true"
               />
               <label className="field">
-                <span className="field-label">Your name</span>
+                <span className="field-label">{qeNameLabel}</span>
                 <input
                   type="text"
-                  placeholder="First name"
+                  placeholder={qeNamePlaceholder}
                   required
                   value={heroName}
                   onChange={(e) => setHeroName(e.target.value)}
@@ -161,10 +181,10 @@ export const Hero: React.FC = () => {
                 />
               </label>
               <label className="field">
-                <span className="field-label">Email</span>
+                <span className="field-label">{qeEmailLabel}</span>
                 <input
                   type="email"
-                  placeholder="you@email.com"
+                  placeholder={qeEmailPlaceholder}
                   required
                   value={heroEmail}
                   onChange={(e) => setHeroEmail(e.target.value)}
@@ -174,12 +194,12 @@ export const Hero: React.FC = () => {
               <div className="progressive">
                 <label className="field">
                   <span className="field-label">
-                    Area of interest{' '}
-                    <em style={{ fontStyle: 'italic', color: 'var(--ink-40)' }}>(optional)</em>
+                    {qeInterestLabel}{' '}
+                    <em style={{ fontStyle: 'italic', color: 'var(--ink-40)' }}>{qeInterestOptional}</em>
                   </span>
                   <input
                     type="text"
-                    placeholder="e.g. rhinoplasty, mommy makeover…"
+                    placeholder={qeInterestPlaceholder}
                     value={heroProc}
                     onChange={(e) => setHeroProc(e.target.value)}
                   />
@@ -191,22 +211,22 @@ export const Hero: React.FC = () => {
                   className="reveal-link"
                   onClick={() => setExpanded(true)}
                 >
-                  + Add a treatment area (optional)
+                  {qeRevealInterestLabel}
                 </button>
               )}
               <Btn kind="primary" full>
-                {heroSubmitting ? 'Sending…' : heroStatus === 'success' ? 'Sent — thank you' : 'Begin enquiry'}
+                {heroSubmitting ? qeSubmittingLabel : heroStatus === 'success' ? qeSuccessLabel : qeSubmitLabel}
               </Btn>
               {heroStatus === 'success' ? (
                 <p className="form-fine" style={{ color: 'var(--accent-deep)' }}>
-                  Thank you — your concierge will reply within one business day.
+                  {qeSuccessFine}
                 </p>
               ) : heroStatus === 'error' ? (
                 <p className="form-fine" style={{ color: '#C28E66' }}>
-                  Something went wrong. Please try the full form on /contact.
+                  {qeErrorFine}
                 </p>
               ) : (
-                <p className="form-fine">Held in confidence. Reviewed by a credentialed surgeon.</p>
+                <p className="form-fine">{qeFineprint}</p>
               )}
             </form>
           </div>

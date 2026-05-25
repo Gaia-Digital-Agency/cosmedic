@@ -5,16 +5,15 @@ import { Mono, Eyebrow } from '@/components/primitives/Mono'
 import { Btn } from '@/components/primitives/Btn'
 import { SURGEON_LIST, SURGEON_IMG } from '@/content/seed'
 import { useCms } from '@/lib/cms-context'
-import { findPageBySlug } from '@/lib/cms-adapters'
 import { mediaUrl } from '@/lib/cms.media'
 
 const TEAM_PLACEHOLDER = '/assets/surgeons/team-placeholder.webp'
 
 export const Surgeons: React.FC = () => {
   const cms = useCms()
-  const block = (cms ? findPageBySlug(cms, 'home') : undefined)?.surgeonsBlock
-  const eyebrow = block?.eyebrow || 'Meet the Surgeons'
-  const leadSurgeonEyebrow = block?.leadSurgeonEyebrow || 'Lead Surgeon'
+  const g = cms?.homeSurgeonsView
+  const eyebrow = g?.eyebrow || 'Meet the Surgeons'
+  const leadSurgeonEyebrow = g?.leadSurgeonEyebrow || 'Lead Surgeon'
   const leadBodyDefault = (
     <>
       ISAPS-member plastic surgeon with seven years of practice in Bali, fellowship-trained in
@@ -23,20 +22,20 @@ export const Surgeons: React.FC = () => {
       conservative, natural-result approach.
     </>
   )
-  const leadStat1Label = block?.leadStat1Label || 'Trained'
-  const leadStat1Value = block?.leadStat1Value || 'Indonesia · Japan'
-  const leadStat2Label = block?.leadStat2Label || 'Specialty'
-  const leadStat2Value = block?.leadStat2Value || 'Facial Aesthetics'
-  const leadStat3Label = block?.leadStat3Label || 'Society'
-  const leadStat3Value = block?.leadStat3Value || 'ISAPS Member'
-  const leadCtaLabel = block?.leadCtaLabel || 'Read the full profile'
-  const associatesEyebrow = block?.associatesEyebrow || 'Associate Surgeons & Aestheticians'
-  const teamCaption = block?.teamCaption || 'The Cosmedic Team'
+  const leadStat1Label = g?.leadStat1Label || 'Trained'
+  const leadStat1Value = g?.leadStat1Value || 'Indonesia · Japan'
+  const leadStat2Label = g?.leadStat2Label || 'Specialty'
+  const leadStat2Value = g?.leadStat2Value || 'Facial Aesthetics'
+  const leadStat3Label = g?.leadStat3Label || 'Society'
+  const leadStat3Value = g?.leadStat3Value || 'ISAPS Member'
+  const leadCtaLabel = g?.leadCtaLabel || 'Read the full profile'
+  const associatesEyebrow = g?.associatesEyebrow || 'Associate Surgeons & Aestheticians'
+  const teamCaption = g?.teamCaption || 'The Cosmedic Team'
 
-  const groupPhotoSrc = mediaUrl(block?.groupPhoto, TEAM_PLACEHOLDER) || TEAM_PLACEHOLDER
+  const groupPhotoSrc = mediaUrl(g?.groupPhoto, TEAM_PLACEHOLDER) || TEAM_PLACEHOLDER
   const groupPhotoAlt =
-    block?.groupPhotoAlt ||
-    (block?.groupPhoto && typeof block.groupPhoto === 'object' ? block.groupPhoto.alt : undefined) ||
+    g?.groupPhotoAlt ||
+    (g?.groupPhoto && typeof g.groupPhoto === 'object' ? g.groupPhoto.alt : undefined) ||
     associatesEyebrow
 
   const lead = SURGEON_LIST[0]
@@ -72,7 +71,7 @@ export const Surgeons: React.FC = () => {
           </h2>
           <p className="surgeon-credentials">{lead.cred}</p>
           <p className="surgeon-body">
-            {block?.leadBody ?? leadBodyDefault}
+            {g?.leadBody ?? leadBodyDefault}
           </p>
           <div className="surgeon-stats">
             <div>

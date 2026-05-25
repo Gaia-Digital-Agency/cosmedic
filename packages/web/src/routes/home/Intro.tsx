@@ -2,20 +2,19 @@ import React from 'react'
 import { Reveal } from '@/components/primitives/Reveal'
 import { Eyebrow } from '@/components/primitives/Mono'
 import { useCms } from '@/lib/cms-context'
-import { findPageBySlug } from '@/lib/cms-adapters'
 
 export const Intro: React.FC = () => {
   const cms = useCms()
-  const block = (cms ? findPageBySlug(cms, 'home') : undefined)?.introBlock
-  const eyebrow = block?.eyebrow || 'Our Approach'
-  const pqBefore = block?.pullQuoteBefore || 'Aesthetic medicine, considered with the same '
-  const pqAccent = block?.pullQuoteAccent || 'care '
-  const pqAfter = block?.pullQuoteAfter || 'as the island that surrounds it.'
+  const g = cms?.homeIntro
+  const eyebrow = g?.eyebrow || 'Our Approach'
+  const pqBefore = g?.pullQuoteBefore || 'Aesthetic medicine, considered with the same '
+  const pqAccent = g?.pullQuoteAccent || 'care '
+  const pqAfter = g?.pullQuoteAfter || 'as the island that surrounds it.'
   const col1 =
-    block?.col1 ||
+    g?.col1 ||
     "For almost three decades, BIMC CosMedic has practiced cosmetic surgery the way Bali has practiced hospitality — quietly, with patience, and with deep respect for the person in the chair. We don't promise transformation. We promise consideration: of your face, your body, your time, and the life you intend to return to."
   const col2 =
-    block?.col2 ||
+    g?.col2 ||
     "Our centre sits within Indonesia's most accredited international hospital. Eight ISAPS- and FICS-credentialed specialists — fellowship-trained in Korea, Japan, Singapore and across Indonesia — work alongside a concierge team that handles everything from your arrival at Ngurah Rai to your final follow-up by video."
 
   return (

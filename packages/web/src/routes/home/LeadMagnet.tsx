@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Reveal } from '@/components/primitives/Reveal'
 import { Mono, Eyebrow } from '@/components/primitives/Mono'
 import { useCms } from '@/lib/cms-context'
-import { findPageBySlug } from '@/lib/cms-adapters'
 
 export const LeadMagnet: React.FC = () => {
   const [submitted, setSubmitted] = useState(false)
@@ -10,25 +9,25 @@ export const LeadMagnet: React.FC = () => {
   const [submitting, setSubmitting] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
   const cms = useCms()
-  const block = (cms ? findPageBySlug(cms, 'home') : undefined)?.leadMagnetBlock
+  const g = cms?.homeLeadMagnet
 
-  const coverEyebrow = block?.coverEyebrow || 'A guide · 24 pages · PDF'
-  const coverLine1 = block?.coverLine1 || 'The Bali'
-  const coverLine2 = block?.coverLine2 || 'Recovery'
-  const coverLine3 = block?.coverLine3 || 'Guide.'
-  const coverFoot1 = block?.coverFoot1 || 'BIMC CosMedic'
-  const coverFoot2 = block?.coverFoot2 || 'MMXXVI'
-  const bodyEyebrow = block?.bodyEyebrow || 'Free Guide'
-  const headingPart1 = block?.headingPart1 || 'What to expect from'
-  const headingAccent = block?.headingAccent || 'recovery in Bali.'
+  const coverEyebrow = g?.coverEyebrow || 'A guide · 24 pages · PDF'
+  const coverLine1 = g?.coverLine1 || 'The Bali'
+  const coverLine2 = g?.coverLine2 || 'Recovery'
+  const coverLine3 = g?.coverLine3 || 'Guide.'
+  const coverFoot1 = g?.coverFoot1 || 'BIMC CosMedic'
+  const coverFoot2 = g?.coverFoot2 || 'MMXXVI'
+  const bodyEyebrow = g?.bodyEyebrow || 'Free Guide'
+  const headingPart1 = g?.headingPart1 || 'What to expect from'
+  const headingAccent = g?.headingAccent || 'recovery in Bali.'
   const lede =
-    block?.lede ||
+    g?.lede ||
     'A 24-page editorial guide written by our concierge team — covering recovery timelines for the ten most-requested procedures, what to pack, what villas suit which surgeries, and the pace of a typical fortnight in Nusa Dua.'
-  const formPlaceholder = block?.formPlaceholder || 'Your email address'
-  const submitLabel = block?.submitLabel || 'Send Guide →'
-  const successHeading = block?.successHeading || '✓ Sent'
-  const successBody = block?.successBody || 'Check your inbox — the guide is on its way.'
-  const fineprint = block?.fineprint || 'One email. No marketing list. Unsubscribe anytime.'
+  const formPlaceholder = g?.formPlaceholder || 'Your email address'
+  const submitLabel = g?.submitLabel || 'Send Guide →'
+  const successHeading = g?.successHeading || '✓ Sent'
+  const successBody = g?.successBody || 'Check your inbox — the guide is on its way.'
+  const fineprint = g?.fineprint || 'One email. No marketing list. Unsubscribe anytime.'
 
   return (
     <section className="lead-magnet">

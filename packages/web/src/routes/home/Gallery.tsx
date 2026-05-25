@@ -5,17 +5,16 @@ import { Mono, Eyebrow } from '@/components/primitives/Mono'
 import { Btn } from '@/components/primitives/Btn'
 import { BA_PAIRS } from '@/content/seed'
 import { useCms } from '@/lib/cms-context'
-import { findPageBySlug } from '@/lib/cms-adapters'
 
 export const Gallery: React.FC = () => {
   const cms = useCms()
-  const block = (cms ? findPageBySlug(cms, 'home') : undefined)?.galleryBlock
-  const eyebrow = block?.eyebrow || 'Before & After Results'
-  const headingPart1 = block?.headingPart1 || 'Quietly'
-  const headingPart2 = block?.headingPart2 || 'transformative.'
-  const lede = block?.lede || 'Three signature results from our facial repertoire.'
-  const ctaLabel = block?.ctaLabel || 'View the full gallery'
-  const ctaHref = block?.ctaHref || '/results#results'
+  const g = cms?.homeGalleryView
+  const eyebrow = g?.eyebrow || 'Before & After Results'
+  const headingItalic = g?.headingItalic || 'Quietly'
+  const headingPart2 = g?.headingPart2 || 'transformative.'
+  const lede = g?.lede || 'Three signature results from our facial repertoire.'
+  const ctaLabel = g?.ctaLabel || 'View the full gallery'
+  const ctaHref = g?.ctaHref || '/results#results'
 
   return (
     <section className="gallery" id="gallery">
@@ -25,7 +24,7 @@ export const Gallery: React.FC = () => {
         </Reveal>
         <Reveal delay={120}>
           <h2 className="section-title">
-            <span className="italic">{headingPart1}</span> {headingPart2}
+            <span className="italic">{headingItalic}</span> {headingPart2}
           </h2>
         </Reveal>
         <Reveal delay={220}>

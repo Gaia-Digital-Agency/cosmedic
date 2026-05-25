@@ -3,7 +3,6 @@ import { Reveal } from '@/components/primitives/Reveal'
 import { Eyebrow } from '@/components/primitives/Mono'
 import { Btn } from '@/components/primitives/Btn'
 import { useCms } from '@/lib/cms-context'
-import { findPageBySlug } from '@/lib/cms-adapters'
 
 const STEPS: [string, string, string][] = [
   ['01', 'Consult', 'A private video call with a surgeon, anywhere in the world.'],
@@ -15,12 +14,12 @@ const STEPS: [string, string, string][] = [
 
 export const Journey: React.FC = () => {
   const cms = useCms()
-  const block = (cms ? findPageBySlug(cms, 'home') : undefined)?.journeyBlock
-  const eyebrow = block?.eyebrow || 'Your Journey'
-  const headingPart1 = block?.headingPart1 || 'From enquiry to'
-  const headingAccent = block?.headingAccent || 'homecoming.'
-  const ctaLabel = block?.ctaLabel || 'Read the full journey'
-  const ctaHref = block?.ctaHref || '/journey'
+  const g = cms?.homeJourneyView
+  const eyebrow = g?.eyebrow || 'Your Journey'
+  const headingPart1 = g?.headingPart1 || 'From enquiry to'
+  const headingAccent = g?.headingAccent || 'homecoming.'
+  const ctaLabel = g?.ctaLabel || 'Read the full journey'
+  const ctaHref = g?.ctaHref || '/journey'
 
   return (
     <section className="journey" id="journey">

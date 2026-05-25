@@ -5,7 +5,6 @@ import { Mono, Eyebrow } from '@/components/primitives/Mono'
 import { Btn } from '@/components/primitives/Btn'
 import { STORY_PORTRAITS } from '@/content/seed'
 import { useCms } from '@/lib/cms-context'
-import { findPageBySlug } from '@/lib/cms-adapters'
 
 const STORIES = [
   {
@@ -39,10 +38,10 @@ const STORIES = [
 
 export const Stories: React.FC = () => {
   const cms = useCms()
-  const block = (cms ? findPageBySlug(cms, 'home') : undefined)?.storiesBlock
-  const eyebrow = block?.eyebrow || 'Verified Patient Stories'
-  const headingAccent = block?.headingAccent || 'Stories,'
-  const headingPart2 = block?.headingPart2 || 'not slogans.'
+  const g = cms?.homeStoriesView
+  const eyebrow = g?.eyebrow || 'Verified Patient Stories'
+  const headingItalic = g?.headingItalic || 'Stories,'
+  const headingPart2 = g?.headingPart2 || 'not slogans.'
   const ledeDefault = (
     <>
       Verified reviews from international patients. Video testimonials and Google reviews on our{' '}
@@ -55,8 +54,8 @@ export const Stories: React.FC = () => {
       .
     </>
   )
-  const ctaLabel = block?.ctaLabel || 'Read more stories'
-  const ctaHref = block?.ctaHref || '/results#stories'
+  const ctaLabel = g?.ctaLabel || 'Read more stories'
+  const ctaHref = g?.ctaHref || '/results#stories'
 
   return (
   <section className="stories" id="stories">
@@ -65,12 +64,12 @@ export const Stories: React.FC = () => {
     </Reveal>
     <Reveal delay={120}>
       <h2 className="section-title section-title-center">
-        <span className="italic">{headingAccent}</span> {headingPart2}
+        <span className="italic">{headingItalic}</span> {headingPart2}
       </h2>
     </Reveal>
     <Reveal delay={200}>
       <p className="section-lede" style={{ margin: '22px auto 0', textAlign: 'center' }}>
-        {block?.lede ?? ledeDefault}
+        {g?.lede ?? ledeDefault}
       </p>
     </Reveal>
     <div className="stories-grid">

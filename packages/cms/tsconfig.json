@@ -50,6 +50,7 @@
     "src/seed/seed-content.ts",
     "src/seed/migrate-pricing-to-procedures.ts",
     "src/seed/seed-r7-journey.ts",
-    "src/seed/seed-results-section-globals.ts"
+    "src/seed/seed-results-section-globals.ts",
+    "src/seed/seed-home-section-globals.ts"
   ]
 }
