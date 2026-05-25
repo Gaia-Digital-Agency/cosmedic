@@ -9,7 +9,7 @@
 | # | Item | Status | Launch-blocking |
 |---|---|---|---|
 | 1 | q17 — Refresh image set per Figma | ⏸ Deferred | No |
-| 2 | R2 — Homepage Bucket admin detail | ❌ Not started | No |
+| 2 | R2 — Homepage Bucket admin detail | ✅ Shipped (`3a87d4c`) | — |
 | 3 | 6 surgeon portraits flagged `isPlaceholder=true` | ⏳ Awaiting uploads | No |
 | 4 | SMTP provider + `.env` config | ❌ Not configured | **Yes** |
 | 5 | Phase 9 — i18n EN ⇄ ID | ❌ Open | No (post-launch) |
@@ -34,12 +34,12 @@ Block: Figma image set not yet delivered + inventoried by the design team. When 
 
 ## 2 — R2: Homepage Bucket admin detail
 
-**Status:** ❌ Not started; previous WIP cleared from working tree on 2026-05-25
+**Status:** ✅ Shipped 2026-05-25 (commit `3a87d4c` — landed between this session's `8a7007e` and `20979ef`)
 **Tracker:** `docs/remap.md` + `docs/remap_plan.md` — Phase R2
 
-Last R-phase remaining after R0/R1/R3/R4/R5/R6/R7/R8 shipped. Scope: split `HomePage` (9 block fields) into 10 purpose-named section globals (HomeHero · HomeIntro · HomeLeadMagnet · HomePlace + 6 view mirrors), rewire `packages/web/src/routes/home/*.tsx`, migrate data from `home_page` row into the new globals so live page renders identically.
+Scope shipped: split `HomePage` (9 block fields) into 10 purpose-named section globals (HomeHero · HomeIntro · HomeLeadMagnet · HomePlace + 6 view mirrors), rewired `packages/web/src/routes/home/*.tsx`, migrated data so live page renders identically.
 
-**Risk:** without the data migration step, uploads that target the new globals (HomeHero.heroImage etc.) won't surface if old code paths read from HomePage — this is exactly the symptom we hit on 2026-05-25 with hero + team photo. Sequence matters: migrate data → rewire reads → ship.
+**Note for future R-style refactors:** uploads that target new globals (e.g. `HomeHero.heroImage`) won't surface if old code paths still read from the prior global — that's the symptom we hit on 2026-05-25 with hero + team photo before R2 fully landed. Sequence matters: migrate data → rewire reads → ship.
 
 ---
 
