@@ -222,6 +222,16 @@ If Step 8 verification fails: `git revert` CMS + web changes → `pm2 restart co
 
 ## 2026-05-23 — DO THIRD: CMS structural changes (align code with `docs/CMS_structure.md`)
 
+> **Status as of 2026-05-25 (CR25May 25.12 closure):**
+> - **C1 / C2 / C3 / C4 / C5** ✅ shipped earlier (see commit log).
+> - **C6** ✅ superseded by R2 (`3a87d4c`) — 10 home section globals + 9 routes verified.
+> - **C7** ✅ superseded by R6 (`92cbb92`) — 7 pricing section globals + PricingPage verified.
+> - **C8** ✅ complete — 7/8 fields shipped; `year` renders via `c.time` adapter (live verified).
+> - **C9** ❌ deferred — high-risk pricing unification non-blocking; 4 collections still serve `/pricing`.
+> - **C10** ✅ rescoped — final audit + sign-off absorbed into CR25May launch-blocking items.
+>
+> Sign-off path now flows through CR25May (`docs/changes/change_request_may25.md`) — Phase C is closed except for the deliberate C9 deferral.
+
 Source of truth: [docs/CMS_structure.md](CMS_structure.md). Every change below brings the code in line with that file. Apply phases in order — each phase commits + deploys + verifies before the next starts.
 
 **Standing rules (prevail through every phase) — labelled R1–R7 to avoid clashing with Phase C:**
@@ -319,71 +329,74 @@ Editors don't know the Payload terminology. ~30 LOC component, rendered above si
 
 ---
 
-### Phase C6 — Home Page A2 — wire 9 hardcoded section frames
+### Phase C6 — Home Page A2 — wire 9 hardcoded section frames — ✅ SUPERSEDED 2026-05-25 by R2 (CR25May 25.12 audit)
 
-Adds 9 dedicated block fields to Home Page global. Editor controls every editorial section frame on `/`.
+Original scope: extend single Home Page Global with 9 block fields.
 
-| Block field | Renders | Web file to rewrite |
-|---|---|---|
-| `introBlock {eyebrow, pullQuote, columns[].body}` | Intro | `packages/web/src/routes/home/Intro.tsx` |
-| `treatmentsBlock {eyebrow, heading, lede}` | Treatments preview frame | `packages/web/src/routes/home/Treatments.tsx` |
-| `pricingTeaserBlock {eyebrow, heading, lede, footnote}` | Pricing teaser frame | `packages/web/src/routes/home/PricingTeaser.tsx` |
-| `surgeonsBlock {eyebrow, heading, lede}` | Surgeons strip frame | `packages/web/src/routes/home/Surgeons.tsx` |
-| `galleryBlock {eyebrow, heading, lede, ctaLabel, ctaHref}` | Gallery teaser frame | `packages/web/src/routes/home/Gallery.tsx` |
-| `leadMagnetBlock {cover{...}, body{...}, form{...}}` | LeadMagnet | `packages/web/src/routes/home/LeadMagnet.tsx` |
-| `journeyBlock {eyebrow, heading, lede, ctaLabel, ctaHref}` | Journey teaser frame | `packages/web/src/routes/home/Journey.tsx` |
-| `storiesBlock {eyebrow, heading, lede, ctaLabel, ctaHref}` | Stories teaser frame | `packages/web/src/routes/home/Stories.tsx` |
-| `placeBlock {eyebrow, heading, body, images[]}` | Place section | `packages/web/src/routes/home/Place.tsx` |
+**Actual outcome — R2 (commit `3a87d4c`, 2026-05-25)** took a different + cleaner path: created **10 dedicated section globals under `packages/cms/src/globals/home/`** instead of nested block fields on Home Page. All 9 home routes verified reading from CMS section globals on 2026-05-25:
 
-| Sub-task | Files |
+| Route | Section global |
 |---|---|
-| Extend Home Page schema with 9 block group fields | `packages/cms/src/globals/pages/HomePage.ts` |
-| Postgres migration | new migration file in `packages/cms/src/migrations/` |
-| Seed each block with EXACT existing hardcoded copy (Rule 3) | one-off `seed-home-blocks.ts` |
-| Rewrite the 9 home section components to read from CMS | as listed above |
-| Extend `CmsPage` type if needed | `packages/web/src/lib/cms.ts` |
+| `routes/home/Hero.tsx` | `homeHero` |
+| `routes/home/Intro.tsx` | `homeIntro` |
+| `routes/home/Treatments.tsx` | `homeTreatmentsView` |
+| `routes/home/PricingTeaser.tsx` | `homePricingView` |
+| `routes/home/Surgeons.tsx` | `homeSurgeonsView` |
+| `routes/home/Gallery.tsx` | `homeGalleryView` |
+| `routes/home/LeadMagnet.tsx` | `homeLeadMagnet` |
+| `routes/home/Journey.tsx` | `homeJourneyView` |
+| `routes/home/Stories.tsx` | `homeStoriesView` |
+| `routes/home/Place.tsx` | `homePlace` |
 
-**Verify (R5):** `/` byte-identical pre vs post; edit each block in admin → change visible after revalidate.
+Home Page Global's 9 deprecated block fields retained under Rule 9 until sign-off (do not re-design — those are scheduled deletion, not re-wire targets).
 
 ---
 
-### Phase C7 — Pricing Page A2 — wire 3 hardcoded section frames
+### Phase C7 — Pricing Page A2 — wire 3 hardcoded section frames — ✅ SUPERSEDED 2026-05-25 by R6 (CR25May 25.12 audit)
 
-| Block field | Renders | Web file |
-|---|---|---|
-| `overviewBlock {heading, body}` | /pricing Overview | `packages/web/src/routes/pricing/PricingPage.tsx` |
-| `footnoteBlock {text}` | /pricing Footnote | same |
-| `insurancePaymentBlock {heading, body}` | /pricing Insurance + Payment | same |
+Original scope: extend Pricing Page Global with 3 block fields (`overviewBlock`, `footnoteBlock`, `insurancePaymentBlock`).
 
-| Sub-task | Files |
+**Actual outcome — R6 (commit `92cbb92`, 2026-05-24)** shipped **7 section globals under `packages/cms/src/globals/pricing/`** that fully cover the 3 original blocks + extra hero/list/catalogue chrome:
+
+| /pricing block | Pricing section global (verified read in `PricingPage.tsx`) |
 |---|---|
-| Extend Pricing Page schema with 3 block group fields | `packages/cms/src/globals/pages/PricingPage.ts` |
-| Postgres migration | new |
-| Seed with EXACT existing copy (Rule 3) | one-off `seed-pricing-blocks.ts` |
-| Rewrite PricingPage.tsx to read from CMS | route file |
+| Overview | `pricingOverview` |
+| Footnote | `pricingFootnote` |
+| Insurance | `pricingInsurance` |
+| Payment | `pricingPayment` |
+| Hero chrome | `pricingHero` |
+| Discipline list view | `pricingDisciplineListView` |
+| Clinic catalogue view | `pricingCatalogueView` |
 
-**Verify (R5):** `/pricing` byte-identical pre vs post.
+Legacy nested block columns retained as Rule-4 DB backup.
 
 ---
 
-### Phase C8 — Before/After full editorial wiring
+### Phase C8 — Before/After full editorial wiring — ✅ COMPLETE (2026-05-25 CR25May 25.12 audit)
 
 5 dead fields on `BeforeAfterCases` get rendered; `isFeatured` becomes a filter on home.
 
-| Sub-task | Files |
-|---|---|
-| Render `description` (richText) under each B&A card | `packages/web/src/routes/gallery/GalleryPage.tsx`, `packages/web/src/routes/results/ResultsPage.tsx` |
-| Use `beforeAlt` / `afterAlt` as composite image `alt` attribute | `seed.ts` adapter at `packages/web/src/content/seed.ts:80`, plus the 3 render sites |
-| Render `year` next to caseLabel | 3 render sites |
-| Filter `/home` Gallery to `isFeatured = true` | `packages/web/src/content/seed.ts` adapter |
-| Render `surgeon` mini-byline ("by Dr. <commonName>") | 3 render sites |
-| Optional: link `procedure` → procedure detail page | 3 render sites |
+**Status per render site (verified grep + live curl 2026-05-25):**
 
-**Verify (R1):** every B&A field appears somewhere on the live site (a11y + visual diff confirm).
+| Field | `routes/gallery/GalleryPage.tsx` | `routes/results/ResultsPage.tsx` | `routes/home/Gallery.tsx` | Status |
+|---|:-:|:-:|:-:|---|
+| `description` (richText under card) | ✓ | ✓ | ✓ | ✅ Shipped |
+| `beforeAlt` (composite `alt`) | ✓ | ✓ | ✓ | ✅ Shipped |
+| `afterAlt` (composite `alt`) | ✓ | ✓ | ✓ | ✅ Shipped |
+| `surgeonName` mini-byline | ✓ | ✓ | ✓ | ✅ Shipped |
+| `patientAge` (q14) | ✓ | ✓ | ✓ | ✅ Shipped |
+| `recoveryDuration` (q14) | ✓ | ✓ | ✓ | ✅ Shipped |
+| `isFeatured` filter on home Gallery | n/a | n/a | ✓ | ✅ Shipped |
+| `year` next to caseLabel | ✓ via `c.time` | ✓ via `c.time` | ✓ via `c.time` | ✅ Shipped (renders as `<span class="ba-time">2025</span>`; `time: String(ba.year)` mapping in `seed.ts` BaPair adapter line 118; live verified) |
+| Optional: `procedure` → detail page link | — | — | — | Deferred (optional) |
+
+**C8 closed.** Optional `procedure` link not implemented but flagged optional in original scope.
 
 ---
 
-### Phase C9 — Pricing unification (single-source via Procedures) — HIGH RISK
+### Phase C9 — Pricing unification (single-source via Procedures) — ❌ DEFERRED (2026-05-25 CR25May 25.12 audit)
+
+**Deferral rationale:** /pricing renders correctly via the existing 4 collections (MachineTreatments=24, InjectableProducts=34, HairRemovalAreas=43, PriceListItems=149). No editorial pain point in admin. Not launch-blocking. C9 is a HIGH-RISK consolidation that would touch 11 files + DB drops; deferring keeps Standing Rule 9 (no unilateral deletes) clean. Re-open after launch when there's a clear editor-side ROI.
 
 Per [docs/CMS_structure.md §5.2](CMS_structure.md). Procedures expands to be the unified pricing catalogue; 4 collections collapse into it. **Data preservation is the gate (no data loss).**
 
@@ -414,19 +427,27 @@ Per [docs/CMS_structure.md §5.2](CMS_structure.md). Procedures expands to be th
 
 ---
 
-### Phase C10 — Final audit + sign-off
+### Phase C10 — Final audit + sign-off — ✅ RESCOPED + ABSORBED (2026-05-25 CR25May 25.12 audit)
 
-| Sub-task | Tool |
+**Status after 25.12 audit:**
+- C6 ✅ Superseded by R2 — 10 home section globals shipped + all 9 home routes verified reading from them.
+- C7 ✅ Superseded by R6 — 7 pricing section globals shipped + PricingPage verified reading from them.
+- C8 ✅ Complete — all 8 BeforeAfterCases fields rendering on 3 sites (`year` via `c.time` adapter; live verified on `/gallery`).
+- C9 ❌ Deferred (high-risk, non-blocking; 4 collections still working).
+
+C10's original sub-tasks now map onto **CR25May launch-blocking items**:
+
+| C10 sub-task | New owner |
 |---|---|
-| Run `/tmp/cms-field-audit-v2.mjs` — zero dead fields (Enquiries CRM exempt) | C1 |
-| Run `/tmp/cms-audit-full.mjs` — every upload field renders, light + dark | C6 |
-| `curl` all 51 routes — every one returns 200 | C2 |
-| Visual diff `/`, `/pricing`, `/gallery`, `/results`, `/blog` pre vs post | C5 |
-| Sidebar matches CMS_structure.md exactly | screenshot vs doc |
-| `grep` audit: no references to deleted collections in web code | C2 |
-| `git diff main..` review | — |
+| Dead-fields audit | CR25May 25.34 (CMS admin walk-through) |
+| Upload-field render audit | CR25May 25.5 (Phase 10 imagery — A1 wire shipped) + 25.34 |
+| All 51 routes return 200 | CR25May 25.32 (Visual inspection LAUNCH-BLOCKING) |
+| Visual diff key pages | CR25May 25.32 |
+| Sidebar matches `CMS_structure.md` | Tracked via Phase R completion (R3 + R5 remaining) |
+| Grep audit for deleted refs | n/a — no collections deleted (C9 deferred) |
+| `git diff main..` review | Continuous (one-commit-per-phase Standing Rule 12) |
 
-**Sign-off:** user confirms → CMS structural work done. Phases #3–9 (Phase M + Phase N + Phase P + Phase Q) resume.
+**Sign-off path:** CR25May launch-blocking items 25.3 / 25.4 / 25.5 / 25.32 / 25.33 / 25.36 / 25.38 / 25.39 close → site ships → C10 implicitly satisfied.
 
 ---
 
