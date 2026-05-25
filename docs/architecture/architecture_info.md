@@ -127,7 +127,7 @@ Brand palette (5 tokens + 1 accent from `docs/brand-guidelines.pdf` §II):
 --paper:       #F4EFE6   /* light-beige — page background */
 --cream:       #E6DCC8   /* dark-beige — section dividers */
 --ink-100:     #1F1B16   /* black — text, dark surfaces */
---accent-deep: #6B4A2B   /* dark-brown — primary buttons */
+--accent-deep: #533E27   /* dark-brown — primary buttons (swapped from #6B4A2B in q18 a5e5e9e) */
 --accent:      #A67C52   /* bronze — links, italic accents */
 ```
 

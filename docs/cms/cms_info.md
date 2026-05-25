@@ -31,7 +31,7 @@ This document captures the full spec for the admin-UI customization. Implementat
 | `--cs-paper` | `#F4EFE6` | Light-beige — admin background, light mode |
 | `--cs-cream` | `#E6DCC8` | Dark-beige — section dividers, light mode |
 | `--cs-ink` | `#1F1B16` | Black — body text, headings |
-| `--cs-brown` | `#6B4A2B` | Dark-brown — primary buttons, eyebrow rules |
+| `--cs-brown` | `#533E27` | Dark-brown — primary buttons, eyebrow rules (swapped from `#6B4A2B` in q18 `a5e5e9e`) |
 | `--cs-accent` | `#A67C52` | Bronze — links, italic accents, single highlight |
 
 **Distribution rule** (brand.pdf §II): _beige first, ink second, one bronze gesture per surface. Treat the accent as a condiment, not a colour-block._
@@ -204,7 +204,7 @@ export default CosmedicIcon
   --cs-paper:  #F4EFE6;
   --cs-cream:  #E6DCC8;
   --cs-ink:    #1F1B16;
-  --cs-brown:  #6B4A2B;
+  --cs-brown:  #533E27;
   --cs-accent: #A67C52;
 
   /* Map onto Payload admin variables (light mode = default) */
