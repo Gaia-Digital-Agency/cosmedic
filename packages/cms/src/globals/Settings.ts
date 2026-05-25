@@ -28,6 +28,8 @@ export const Settings: GlobalConfig = {
       admin: { description: 'Round computed IDR to nearest N when converting from AUD. Default 50,000.' } },
     { name: 'contactEmail', type: 'text', defaultValue: 'cosmedic@bimcbali.com',
       admin: { description: 'General clinic email. Shown on /contact under "Direct lines · Email" AND in the footer "Connect" column.' } },
+    { name: 'clinicEnquiryEmail', type: 'text',
+      admin: { description: 'Inbox that receives enquiry-form submissions (the clinic-notify email fired on every new Enquiries record). Edit here to redirect enquiries without dev intervention. Falls back to MAIL_CLINIC_TO env, then to cosmedic@bimcbali.com.' } },
     { name: 'pressEmail', type: 'text', defaultValue: 'press@bimccosmedic.com',
       admin: { description: 'Press / media email. Shown on /contact under "Direct lines · Press". Edit once here.' } },
     { name: 'contactPhone', type: 'text',

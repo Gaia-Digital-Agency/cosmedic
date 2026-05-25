@@ -17,6 +17,7 @@
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "seed": "cross-env NODE_OPTIONS=--no-deprecation tsx src/seed/run.ts",
     "seed:media": "cross-env NODE_OPTIONS=--no-deprecation tsx src/seed/run-media.ts",
+    "test-email": "cross-env NODE_OPTIONS=--no-deprecation tsx scripts/test-email.ts",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start -p 4007"
   },
   "dependencies": {

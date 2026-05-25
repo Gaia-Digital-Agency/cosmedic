@@ -13,7 +13,26 @@
  */
 
 import type { Payload } from 'payload'
-import { CLINIC_TO } from './email-adapter'
+import { CLINIC_TO_FALLBACK } from './email-adapter'
+
+/**
+ * Resolve where clinic-notify emails should land:
+ *   1. Settings.clinicEnquiryEmail (clinic-editable in admin) — preferred
+ *   2. MAIL_CLINIC_TO env (dev-set) — fallback
+ *   3. Hardcoded default in CLINIC_TO_FALLBACK
+ */
+async function resolveClinicEmail(payload: Payload): Promise<string> {
+  try {
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    const settings = await (payload as any).findGlobal({ slug: 'settings', depth: 0 })
+    const fromSettings = (settings?.clinicEnquiryEmail as string | undefined)?.trim()
+    if (fromSettings) return fromSettings
+    /* eslint-enable @typescript-eslint/no-explicit-any */
+  } catch (err) {
+    payload.logger.warn(`[enquiry-emails] could not load Settings.clinicEnquiryEmail: ${(err as Error).message}`)
+  }
+  return CLINIC_TO_FALLBACK
+}
 
 type EnquiryDoc = {
   id: string | number
@@ -72,16 +91,17 @@ export async function sendEnquiryEmails(doc: EnquiryDoc, payload: Payload): Prom
 
   const clinic = await loadTemplate(payload, 'enquiry-clinic-notify')
   const auto = await loadTemplate(payload, 'enquiry-autoresponder')
+  const clinicTo = await resolveClinicEmail(payload)
 
   // Clinic notify
   if (clinic && doc.email) {
     try {
       await payload.sendEmail({
-        to: CLINIC_TO,
+        to: clinicTo,
         subject: substitute(clinic.subject, vars),
         text: substitute(clinic.bodyMjml, vars),
       })
-      payload.logger.info(`[enquiry-emails] clinic notify sent to ${CLINIC_TO} for enquiry ${doc.id}`)
+      payload.logger.info(`[enquiry-emails] clinic notify sent to ${clinicTo} for enquiry ${doc.id}`)
     } catch (err) {
       payload.logger.warn(`[enquiry-emails] clinic-notify failed: ${(err as Error).message}`)
     }

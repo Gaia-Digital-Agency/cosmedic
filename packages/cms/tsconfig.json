@@ -52,6 +52,7 @@
     "src/seed/seed-r7-journey.ts",
     "src/seed/seed-results-section-globals.ts",
     "src/seed/seed-home-section-globals.ts",
-    "src/seed/seed-footer-atoms.ts"
+    "src/seed/seed-footer-atoms.ts",
+    "scripts/test-email.ts"
   ]
 }
