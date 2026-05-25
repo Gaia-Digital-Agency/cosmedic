@@ -128,7 +128,14 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
     <PageShell activePage={`surgeon-${slug}`}>
       <section className="surgeon-hero">
         <div className="surgeon-hero-img" data-surgeon={s.slug}>
-          <Img src={SURGEON_IMG(slug)} fallbackLabel={imgLabel} fallbackHue={s.hue} alt="" />
+          <Img
+            media={s.portrait}
+            src={SURGEON_IMG(slug)}
+            fallbackLabel={imgLabel}
+            fallbackHue={s.hue}
+            alt=""
+            sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 700px"
+          />
         </div>
         <div className="surgeon-hero-body">
           <Reveal>
@@ -339,10 +346,12 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
                   <div className="surgeon-card" data-surgeon={other.slug}>
                     <div className="surgeon-card-img">
                       <Img
+                        media={other.portrait}
                         src={SURGEON_IMG(other.slug)}
                         fallbackLabel={`DR. ${other.common.toUpperCase()}`}
                         fallbackHue={other.hue}
                         alt=""
+                        sizes="(max-width: 700px) 50vw, 25vw"
                       />
                     </div>
                     <div className="surgeon-card-meta">

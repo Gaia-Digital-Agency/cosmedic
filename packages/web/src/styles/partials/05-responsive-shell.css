@@ -17,6 +17,7 @@
     .journey-steps { grid-template-columns: 1fr 1fr; row-gap: 56px; }
     .journey-arrow { display: none; }
     .footer-top { grid-template-columns: 1fr 1fr; }
+    .footer-brand { grid-column: 1 / -1; }
 
     /* Surgeon feature — tighten typography & give stats more breathing room */
     .surgeon-name { font-size: clamp(36px, 6vw, 56px) !important; }

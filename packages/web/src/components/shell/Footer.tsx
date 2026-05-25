@@ -3,11 +3,20 @@ import { Mono } from '@/components/primitives/Mono'
 import { TREATMENT_LIST, WHATSAPP_HREF } from '@/content/seed'
 import { useCms } from '@/lib/cms-context'
 
-/**
- * Site footer. Three CMS-driven columns (Treatments / About / Connect) on a
- * dark-brown ground. Treatments comes from cms.disciplines (q8). About +
- * Connect come from Footer.linkColumns when set, hardcoded fallbacks else.
- */
+function toRomanYear(n: number): string {
+  if (n <= 0 || n >= 4000) return String(n)
+  const M = ['', 'M', 'MM', 'MMM']
+  const C = ['', 'C', 'CC', 'CCC', 'CD', 'D', 'DC', 'DCC', 'DCCC', 'CM']
+  const X = ['', 'X', 'XX', 'XXX', 'XL', 'L', 'LX', 'LXX', 'LXXX', 'XC']
+  const I = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX']
+  return (
+    M[Math.floor(n / 1000)] +
+    C[Math.floor((n % 1000) / 100)] +
+    X[Math.floor((n % 100) / 10)] +
+    I[n % 10]
+  )
+}
+
 export const Footer: React.FC = () => {
   const cms = useCms()
   const fg = cms?.footer
@@ -26,14 +35,33 @@ export const Footer: React.FC = () => {
     : WHATSAPP_HREF
 
   const year = new Date().getFullYear()
-  const copyright = (fg?.copyrightTemplate || '© {year} BIMC CosMedic. All rights reserved.').replace('{year}', String(year))
+  const yearRoman = toRomanYear(year)
+  const copyright = (fg?.copyrightTemplate || '© {year} BIMC CosMedic Centre').replace('{year}', yearRoman)
+
+  const addr1 = settings?.addressLine1 || 'BIMC Hospital Nusa Dua'
+  const addr2 = settings?.addressLine2 || 'Kawasan ITDC Blok D'
+  const cityLine = `${settings?.city || 'Nusa Dua'} ${settings?.postalCode || '80363'}, ${settings?.country || 'Bali, Indonesia'}`
 
   return (
     <footer className="site-footer">
       <div className="footer-top">
-        {/* Treatments column — ALWAYS derived from cms.disciplines so the
-            list auto-updates from a single source. Editor manages this list
-            via Treatments & Pricing → Disciplines (NOT via Footer link columns). */}
+        <div className="footer-brand">
+          <a href="/" className="logo logo-dark" aria-label="BIMC CosMedic — home">
+            <img src="/assets/logo-light.png" alt="BIMC CosMedic" />
+          </a>
+          <p className="footer-brand-tagline">Managed by BIMC Hospital</p>
+          <p>
+            {addr1}<br />
+            {addr2}<br />
+            {cityLine}
+          </p>
+          <p className="footer-newsletter-label">Receive our quarterly journal</p>
+          <form className="footer-newsletter" onSubmit={(e) => e.preventDefault()}>
+            <input type="email" placeholder="Your email address" aria-label="Email address" />
+            <button type="submit" aria-label="Subscribe">→</button>
+          </form>
+        </div>
+
         <div className="footer-col">
           <Mono>Treatments</Mono>
           <ul>
@@ -45,10 +73,6 @@ export const Footer: React.FC = () => {
           </ul>
         </div>
 
-        {/* About + Connect columns — driven by Footer.linkColumns when the
-            editor has populated them. Falls back to the hardcoded structure
-            below otherwise. The Treatments column above is excluded here so
-            the editor doesn't have two competing sources of Treatments. */}
         {useCmsCols ? (
           cmsCols
             .filter((col) => col.heading.toLowerCase() !== 'treatments')

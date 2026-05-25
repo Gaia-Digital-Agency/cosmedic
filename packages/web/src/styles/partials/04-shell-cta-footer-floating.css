@@ -80,7 +80,7 @@
   }
   .footer-top {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
     gap: 56px;
     padding-bottom: 60px;
     border-bottom: 1px solid rgba(255,255,255,0.12);
@@ -91,6 +91,16 @@
     margin: 18px 0;
     color: rgba(255,255,255,0.65);
   }
+  .footer-brand-tagline {
+    font-family: var(--font-mono) !important;
+    font-size: 10px !important;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55) !important;
+    margin: 10px 0 0 !important;
+  }
+  .footer-brand .logo.logo-dark { display: inline-block; }
+  .footer-brand .logo.logo-dark img { height: 40px; width: auto; display: block; }
   .logo-dark .logo-mark { color: white; }
   .logo-dark .logo-sub { color: rgba(255,255,255,0.6); }
   .logo-dark img { height: 48px; }

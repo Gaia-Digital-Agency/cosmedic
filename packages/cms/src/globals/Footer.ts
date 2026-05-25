@@ -35,7 +35,7 @@ export const Footer: GlobalConfig = {
     { name: 'addressBlock', type: 'richText',
       admin: { description: 'Rich-text variant of the footer address block. Currently uses Settings.addressLine1/2/city/postalCode/country directly; this field is a free-form override.' } },
     { name: 'copyrightTemplate', type: 'text',
-      defaultValue: '© {year} BIMC CosMedic. All rights reserved.',
-      admin: { description: 'Bottom-left of every footer. `{year}` auto-replaces to the current year at render time.' } },
+      defaultValue: '© {year} BIMC CosMedic Centre',
+      admin: { description: 'Bottom-left of every footer. `{year}` auto-replaces to the current year as a Roman numeral (e.g. 2026 → MMXXVI) at render time.' } },
   ],
 }

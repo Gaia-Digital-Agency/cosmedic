@@ -54,10 +54,12 @@ const SurgeonCard: React.FC<{ s: Surgeon; idx: number }> = ({ s, idx }) => (
       <div className="surgeon-card" data-surgeon={s.slug}>
         <div className="surgeon-card-img" style={{ aspectRatio: '4 / 5' }}>
           <Img
+            media={s.portrait}
             src={SURGEON_IMG(s.slug)}
             fallbackLabel={`DR. ${s.common.toUpperCase()}`}
             fallbackHue={s.hue}
             alt=""
+            sizes="(max-width: 700px) 50vw, (max-width: 1100px) 33vw, 280px"
           />
         </div>
         <div className="surgeon-card-meta" style={{ paddingTop: 20 }}>
@@ -150,10 +152,12 @@ export const SurgeonsIndex: React.FC = () => {
         <Reveal delay={120}>
           <div className="surgeons-feature-img" data-surgeon={lead.slug}>
             <Img
+              media={lead.portrait}
               src={SURGEON_IMG(lead.slug)}
               fallbackLabel={`DR. ${lead.common.toUpperCase()}`}
               fallbackHue={lead.hue}
               alt=""
+              sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 600px"
             />
           </div>
         </Reveal>
