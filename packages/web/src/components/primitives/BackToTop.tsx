@@ -31,8 +31,13 @@ export const BackToTop: React.FC = () => {
       onClick={scrollUp}
       style={{
         position: 'fixed',
-        right: 'clamp(16px, 3vw, 32px)',
-        bottom: 'clamp(96px, 12vh, 140px)',
+        // 25.8 / 25.8a (2026-05-25): pin to right:28px to match .chat-fab so
+        // vertical center-axes align at every viewport (was clamp(16,3vw,32) →
+        // drifted 4-12px off the WA FAB on mobile). bottom: 94 = 28 (WA bottom)
+        // + 54 (WA height) + 12 (defined gap) so the two FABs read as a paired
+        // chrome cluster with a consistent 12px gap regardless of viewport.
+        right: 28,
+        bottom: 94,
         width: 54,
         height: 54,
         borderRadius: '50%',
