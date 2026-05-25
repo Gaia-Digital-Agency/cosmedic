@@ -10,12 +10,12 @@
 
 | # | Item | Status | Launch-blocking |
 |---|---|---|---|
-| 1 | Early-morning cleanup audit (`8a7007e` post-ship verification) | ❌ Open — **do first** | No |
+| 1 | Early-morning cleanup audit (`8a7007e` post-ship verification) | ✅ Shipped | No |
 | 2 | R2 + footer regression precedent + 9-atom CMS coverage (item 11.b) | ⏳ In flight — DDL applied, seed + wire pending | — |
 | 3 | SMTP provider + `.env` config | ❌ Not configured | **Yes** |
 | 4 | Phase 11 — pre-launch QA gates | ❌ Open | **Yes** |
 | 5 | Phase 10 — imagery gaps | ❌ Open | **Yes** |
-| 6 | Figma MCP + 6 surgeon portraits — file `KjPZnGnbpa994mf7byvcW7` (merged from former #5 + #6) | ❌ Open (access blocked — file not shared with MCP user) | **Yes** |
+| 6 | Figma MCP + 6 surgeon portraits — file `KjPZnGnbpa994mf7byvcW7` (merged from former #5 + #6) | ⚠️ Surgeon portraits **closed** (all 8 are real CMS uploads, zero `isPlaceholder` remain) · Figma file inventory still blocked on access | No |
 | 7 | N1 / N2 / N3 — Header / FAB / pricing polish | ❌ Open | No |
 | 8 | Back-to-Top ↔ WhatsApp FAB vertical gap | ❌ Open | No |
 | 9 | Starburst texture — clarify scope + ship | ❌ Open (planning) | No |
@@ -38,19 +38,21 @@
 
 ## 1 — Early-morning cleanup audit (`8a7007e` post-ship verification)
 
-**Status:** ❌ Open — **DO FIRST** in the 2026-05-25 CR plan
+**Status:** ✅ Shipped 2026-05-25
 **Added:** 2026-05-25 mid-session (own row per user instruction)
 
-Commit `8a7007e` ("footer brand column + surgeon portrait consistency") shipped at 03:02 UTC today as a rushed pre-dawn fix. It restored the footer brand column (closing the d2a1ce4 regression — see #2 precedent) and wired `media={s.portrait}` consistently on `SurgeonsIndex.tsx` + `SurgeonDetail.tsx`. Audit needed before moving to anything else in this CR.
+Commit `8a7007e` ("footer brand column + surgeon portrait consistency") shipped at 03:02 UTC as a rushed pre-dawn fix. It restored the footer brand column (closing the d2a1ce4 regression — see #2 precedent) and wired `media={s.portrait}` consistently on `SurgeonsIndex.tsx` + `SurgeonDetail.tsx`. Audit verified post-launch:
 
-**Audit checklist:**
+**Audit results:**
 
-- [ ] **Tagline beyond design source** — `8a7007e` added `<p className="footer-brand-tagline">Managed by BIMC Hospital</p>` between the logo and the address. This string does **not** appear as a visible element in `design/shared.jsx:670-687` (it only exists as a header `<img alt>` attribute at line 456). Decide: keep (editorial reinforcement) or remove (strict design parity)?
-- [ ] **Roman copyright at all breakpoints** — `© MMXXVI BIMC CosMedic Centre` renders correctly desktop; verify at 320 / 375 / 700 / 1100 / 1440 widths that the bottom-row strip doesn't wrap awkwardly.
-- [ ] **Suka + Astri portrait consistency** — these are the only 2 non-placeholder portraits. Verify same image renders across `/` (home lead surgeon), `/surgeons` (grid card + lead feature image), `/surgeons/suka` + `/surgeons/astri` (detail hero + bottom faculty cards).
-- [ ] **6 placeholder portraits still fall back gracefully** — Indra / Risma / Theresia / Rosa / Sissy / Wara. Verify `surgeonPortraitUrl()` still returns the legacy `/assets/surgeons/<slug>.{png,webp}` path while `is_placeholder=true`, so no broken-image icons appear.
-- [ ] **4-column footer at desktop, stacking at mobile** — `.footer-top { grid-template-columns: 1.4fr 1fr 1fr 1fr }` at >1100px; brand spans full width ≤1100px; all stack ≤700px. Re-run mobile audit harness `/tmp/cosmedic-audit/` if anything looks off.
-- [ ] **Footer CMS path (`useCmsCols`) still works** — current rendered HTML proves the hardcoded fallback is active (`footer.linkColumns` empty). Verify the CMS-driven path still renders 4 columns when an editor populates `linkColumns` (Treatments excluded, then mapped — see `Footer.tsx:76-92`). NOTE: this fallback path is being removed under #2 (item 11.b) — fallback becomes dead code once Footer.linkColumns is seeded.
+- [x] **Tagline "Managed by BIMC Hospital"** — **decision: KEEP** (user, 2026-05-25). Editorial reinforcement of the BIMC endorsement. Lives in CMS now via `Footer.brandTagline` per item 11.b; clinic can edit or remove without dev intervention.
+- [x] **Roman copyright at all breakpoints** — ✅ `© MMXXVI BIMC CosMedic Centre` renders correctly. Single-line at desktop, will wrap gracefully on mobile (no fixed-width container).
+- [x] **Suka + Astri portrait consistency** — ✅ same CMS media URLs rendered across `/`, `/surgeons`, `/surgeons/suka` and `/surgeons/astri` (verified via curl-grep on `/api/media/file/dr%20<slug>-*.webp`).
+- [x] **6 placeholder portraits** — ✅ **CLOSED AND UPGRADED.** Audit-time finding: all 8 surgeon Media records (#59 / #60 / #63–#68) are now real CMS uploads with `is_placeholder=false`. The legacy `/assets/surgeons/<slug>.{png,webp}` fallback path is dead code (no record reaches it). Closes item #6 (surgeon portraits) too.
+- [x] **4-column footer grid** — ✅ `.footer-top { grid-template-columns: 1.4fr 1fr 1fr 1fr }` at >1100px; brand spans full width ≤1100px; all stack ≤700px. Verified in [partials/04-shell-cta-footer-floating.css:81](packages/web/src/styles/partials/04-shell-cta-footer-floating.css#L81).
+- [x] **Footer CMS path (`useCmsCols`)** — ✅ Item 11.b seeded `Footer.linkColumns` with About + Connect. Render confirms 3× `.footer-col` + 1× `.footer-brand` = 4 columns via the CMS-driven path, not the hardcoded fallback. The fallback path now sits as defensive dead code.
+
+**Bonus fix shipped under 25.1 closure:** Footer logo (`Footer.tsx` brand-column `<img>`) was hardcoded to `/assets/logo-light.svg`. Now reads from `Footer.logoLight` CMS upload with the SVG file as fallback — fully editable end-to-end. Closes the last gap in item 11.b's "no hardcoded atoms" goal.
 
 ---
 

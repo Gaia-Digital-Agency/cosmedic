@@ -2,6 +2,7 @@ import React from 'react'
 import { Mono } from '@/components/primitives/Mono'
 import { TREATMENT_LIST, WHATSAPP_HREF } from '@/content/seed'
 import { useCms } from '@/lib/cms-context'
+import { mediaUrl } from '@/lib/cms.media'
 
 function toRomanYear(n: number): string {
   if (n <= 0 || n >= 4000) return String(n)
@@ -62,6 +63,7 @@ export const Footer: React.FC = () => {
   const cityLine = `${settings?.city || 'Nusa Dua'} ${settings?.postalCode || '80363'}, ${settings?.country || 'Bali, Indonesia'}`
 
   const brandTagline = fg?.brandTagline ?? 'Managed by BIMC Hospital'
+  const footerLogoSrc = mediaUrl(fg?.logoLight, '/assets/logo-light.svg') || '/assets/logo-light.svg'
   const treatmentsHeading = fg?.treatmentsHeading ?? 'Treatments'
   const newsletterLabel = fg?.newsletter?.label ?? 'Receive our quarterly journal'
   const newsletterPlaceholder = fg?.newsletter?.placeholder ?? 'Your email address'
@@ -72,7 +74,7 @@ export const Footer: React.FC = () => {
       <div className="footer-top">
         <div className="footer-brand">
           <a href="/" className="logo logo-dark" aria-label="BIMC CosMedic — home">
-            <img src="/assets/logo-light.svg" alt="BIMC CosMedic" />
+            <img src={footerLogoSrc} alt="BIMC CosMedic" />
           </a>
           <p className="footer-brand-tagline">{brandTagline}</p>
           <p>
