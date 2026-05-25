@@ -171,13 +171,13 @@ Final tally as of 2026-05-24:
 | q18 | Dark-brown brand token `#6B4A2B` → `#533E27` | ✅ | `a5e5e9e` |
 | q19 | Drop unused InclusionItems + ExclusionItems pipeline | ✅ | `1b35bfb` |
 
-**Tracker:** [docs/planning/changerequest_21May.md](docs/planning/changerequest_21May.md) holds the per-q Notes + Commit columns (changes made, issues found, fixes applied, verify steps). The pre-q workflow (7 steps; Step 6 = "propose for approval — MUST not act before approval") is locked at the top of that file.
+**Tracker:** [docs/changes/changerequest_21May.md](docs/changes/changerequest_21May.md) holds the per-q Notes + Commit columns (changes made, issues found, fixes applied, verify steps). The pre-q workflow (7 steps; Step 6 = "propose for approval — MUST not act before approval") is locked at the top of that file.
 
-**Companion docs:** [docs/planning/change01.md](docs/planning/change01.md) (cluster tracker), [docs/planning/change2a.pdf](docs/planning/change2a.pdf) (visual reference).
+**Companion docs:** [docs/changes/change01.md](docs/changes/change01.md) (cluster tracker), [docs/changes/change2a.pdf](docs/changes/change2a.pdf) (visual reference).
 
 **Infrastructure unblock during Phase Q:** CMS `next build` was failing on `@/lib/cms-proxy` resolution from cross-package web seed imports. Fixed in `a18c700` by adding 3 seed scripts (`seed-globals.ts`, `seed-taxonomy.ts`, `seed-content.ts`) to `packages/cms/tsconfig.json` `exclude`. These scripts only run via `tsx` CLI; Next.js doesn't need to bundle them. Removing from type-check pass unblocked the build.
 
-**q17 stays deferred** until the Figma image set is delivered + inventoried (see [changerequest_21May.md](docs/planning/changerequest_21May.md) q17 row).
+**q17 stays deferred** until the Figma image set is delivered + inventoried (see [changerequest_21May.md](docs/changes/changerequest_21May.md) q17 row).
 
 ## Common ops
 

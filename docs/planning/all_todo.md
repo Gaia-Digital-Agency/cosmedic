@@ -58,9 +58,9 @@
 - `tsx` scripts that use `getPayload()` trigger `pushDevSchema` unless `NODE_ENV=production` is set. Pass it explicitly for any one-off migration script.
 - Direct psql DDL leaves tables owned by `postgres`; the Payload runtime connects as `cosmedic` and gets `permission denied` on ALTER. After applying schema directly, must `ALTER TABLE/SEQUENCE/TYPE OWNER TO cosmedic` for all public-schema objects.
 
-### Step 10 — RULE 4 GATE — still pending
+### Step 10 — RULE 4 GATE — ✅ RESOLVED 2026-05-24 (commit `a17f6d9`)
 
-Old `Pages` collection still registered in `payload.config.ts` and still has 8 rows in DB. Removing it requires user's explicit yes. Until then it sits in the admin sidebar under "Homepage" group (the temp re-group from Step 4), accessible but redundant. After approval: one-line removal from `payload.config.ts`; DB table `pages` stays for safety (orphaned data preserved).
+`Pages` collection unregistered from `payload.config.ts` and `src/collections/Pages.ts` removed. `/api/pages` confirmed 404. DB table `public.pages` retained with its 8 rows as a one-shot rollback backup — safe to drop manually if/when sign-off is final.
 
 ### Original plan below (kept for reference)
 
@@ -718,7 +718,7 @@ This section is the verbatim contents of the now-deleted `docs/todo.md`. Preserv
   - [x] Smoke: `/` 200 (Express), `/admin` 200 (Next.js/Payload), `/treatments` 200, `/pricing` 200, `POST /api/revalidate` `{ok:true}`, `POST /api/enquiry` returns Zod 400 with validation errors, HTTP→HTTPS 301
   - [x] Sibling sites verified unchanged (christos / templatebase / templategen / flowstep all 200)
   - [ ] **Open**: SMTP provider chosen + configured (carries over from Phase 7 — Postmark / SES / clinic relay) — enquiry emails currently land in CMS stdout logs, not delivered
-  - [ ] **Open** (uncovered during Phase 8 smoke): SSR router uses `/surgeon-<slug>` but `/surgeons/<slug>` returns 404; Header + sitemap.md use the latter pattern. Slug-pattern mismatch — fix during Phase 11
+  - [x] **Resolved 2026-05-24** (verified via `/tmp/cosmedic-smoke/smoke.sh`): SSR router now matches `/surgeons/<slug>` at `packages/web/src/router.ts:71` (shipped in q11 `8de7eb5`). All 8 surgeon routes return 200.
 
 - [~] **Post-Phase-8 admin polish** *(in progress)*
   - [x] Web favicon: copied `cosmedic-favicon.png` + lockup variants to `packages/web/public/`; added `<link rel="icon">` + apple-touch-icon to `packages/web/index.html`

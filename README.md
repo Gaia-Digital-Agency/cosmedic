@@ -25,9 +25,10 @@ Marketing site for **BIMC CosMedic** — Bali International Medical Centre's pla
 | [docs/cms/editor_cheatsheet.md](./docs/cms/editor_cheatsheet.md) | Clinic-editor quick reference for the CMS |
 | [docs/planning/plan.md](./docs/planning/plan.md) | Full 14-phase execution plan + locked architecture decisions + Appendix A |
 | [docs/planning/all_todo.md](./docs/planning/all_todo.md) | **Single TODO file** — DO FIRST/SECOND/THIRD shipped, Phases C/M(✅)/N(✅)/P(✅)/Q(18/19✅) tracked here |
-| [docs/planning/changerequest_21May.md](./docs/planning/changerequest_21May.md) | **Phase Q ordered tracker** — 19 q-items with per-q Notes + Commit columns (Step-6 propose-for-approval workflow) |
-| [docs/planning/change01.md](./docs/planning/change01.md) | Phase Q cluster tracker — original `changes01.docx` 27-item batch + Q-7 addendum |
-| [docs/planning/change2a.pdf](./docs/planning/change2a.pdf) | Phase Q visual addendum (28 text+image items) — uploaded 2026-05-24 |
+| [docs/changes/changerequest_21May.md](./docs/changes/changerequest_21May.md) | **Phase Q ordered tracker** — 19 q-items with per-q Notes + Commit columns (Step-6 propose-for-approval workflow) |
+| [docs/changes/change01.md](./docs/changes/change01.md) | Phase Q cluster tracker — original `changes01.docx` 27-item batch + Q-7 addendum |
+| [docs/changes/change2a.pdf](./docs/changes/change2a.pdf) | Phase Q visual addendum (28 text+image items) — uploaded 2026-05-24 |
+| [docs/changes/change_request_may25.md](./docs/changes/change_request_may25.md) | Outstanding-items capture from 2026-05-25 audit (10 items, sequencing notes) |
 | [docs/planning/phase-m-signoff.md](./docs/planning/phase-m-signoff.md) | Phase M mobile-responsive audit · sign-off (2026-05-23) |
 | [docs/planning/commit_list.md](./docs/planning/commit_list.md) | Commit-level tracker for the Phases D/C/P/N/Q/M work plan |
 | [docs/assets/brand-guidelines.pdf](./docs/assets/brand-guidelines.pdf) | BIMC CosMedic Brand Guidelines v1.0 (canonical brand source) |
