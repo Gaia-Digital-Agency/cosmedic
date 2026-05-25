@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Reveal } from '@/components/primitives/Reveal'
 import { Mono, Eyebrow } from '@/components/primitives/Mono'
 import { useCms } from '@/lib/cms-context'
@@ -253,8 +253,14 @@ const SheetSection: React.FC<{
   </div>
 )
 
+const hasPrice = (p: Procedure): boolean =>
+  p.pricing?.priceIdr2026 != null ||
+  p.pricing?.priceIdr2025 != null ||
+  (p.pricing?.priceIdrRangeLow != null && p.pricing?.priceIdrRangeHigh != null)
+
 export const ClinicCatalogueTable: React.FC = () => {
   const cms = useCms()
+  const [hideUnpriced, setHideUnpriced] = useState(true)
   if (!cms || !cms.loaded) return null
 
   const view = cms.pricingCatalogueView ?? {}
@@ -302,7 +308,9 @@ export const ClinicCatalogueTable: React.FC = () => {
   const procs = [...cms.procedures].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
 
   // ── Surgical: group by mainCategory (xlsx legacy) or parentSubCategory name
-  const surgical = procs.filter((p) => p.catalogueGroup === 'surgical')
+  const surgical = procs.filter(
+    (p) => p.catalogueGroup === 'surgical' && (!hideUnpriced || hasPrice(p)),
+  )
   const surgicalByCategory = groupBy(surgical, (p) => {
     if (p.mainCategory) return p.mainCategory
     const ps = p.parentSubCategory
@@ -348,19 +356,29 @@ export const ClinicCatalogueTable: React.FC = () => {
     }
     collapsedMachine.push(out)
   }
-  const machineByMachine = groupBy(collapsedMachine, (m) => m.mainCategory || 'Other')
+  const collapsedMachineVisible = collapsedMachine.filter(
+    (m) => !hideUnpriced || m.standardIdr != null || m.kitasKtpIdr != null || m.packageIdr != null,
+  )
+  const machineByMachine = groupBy(collapsedMachineVisible, (m) => m.mainCategory || 'Other')
 
   // ── Injection
-  const injection = procs.filter((p) => p.catalogueGroup === 'injection')
+  const injection = procs.filter(
+    (p) => p.catalogueGroup === 'injection' && (!hideUnpriced || hasPrice(p)),
+  )
   const injectionByCategory = groupBy(injection, (p) => labelInjectableCategory(p.mainCategory))
 
   // ── BTL
-  const btl = procs.filter((p) => p.catalogueGroup === 'btl')
+  const btl = procs.filter(
+    (p) => p.catalogueGroup === 'btl' && (!hideUnpriced || hasPrice(p)),
+  )
   const btlByZone = groupBy(btl, (p) =>
     p.bodyZone ? hairZoneLabels[p.bodyZone] : (hairZoneLabels.other || 'Other BTL'),
   )
 
-  const totalCatalogueRows = surgical.length + collapsedMachine.length + injection.length + btl.length
+  const totalCatalogueRows =
+    surgical.length + collapsedMachineVisible.length + injection.length + btl.length
+  const totalProcs = cms.procedures.length
+  const totalUnpriced = cms.procedures.filter((p) => !hasPrice(p)).length
 
   // ── Section chrome (eyebrow / heading / intro)
   const sectionEyebrow = view.sectionEyebrow || 'Clinic catalogue · CMS-managed'
@@ -403,6 +421,32 @@ export const ClinicCatalogueTable: React.FC = () => {
             >
               {introText}
             </p>
+            {totalUnpriced > 0 ? (
+              <div style={{ marginTop: 24, display: 'flex', justifyContent: 'center' }}>
+                <button
+                  type="button"
+                  onClick={() => setHideUnpriced((v) => !v)}
+                  aria-pressed={hideUnpriced}
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: 11,
+                    letterSpacing: '0.18em',
+                    textTransform: 'uppercase',
+                    color: hideUnpriced ? 'var(--bg-cream, #F4EFE6)' : 'var(--accent-deep)',
+                    background: hideUnpriced ? 'var(--accent-deep)' : 'transparent',
+                    border: '1px solid var(--accent-deep)',
+                    padding: '10px 20px',
+                    borderRadius: 999,
+                    cursor: 'pointer',
+                    transition: 'background 160ms ease, color 160ms ease',
+                  }}
+                >
+                  {hideUnpriced
+                    ? `Show all (${totalUnpriced} on request)`
+                    : `Hide ${totalUnpriced} on-request`}
+                </button>
+              </div>
+            ) : null}
           </div>
         </Reveal>
 

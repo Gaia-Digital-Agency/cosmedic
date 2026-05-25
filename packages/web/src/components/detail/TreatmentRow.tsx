@@ -15,12 +15,15 @@ function formatPrice(val: Treatment['priceFromIdr']): {
   aud: string | null
   label: string | null
 } {
+  if (val == null) {
+    return { idr: null, aud: null, label: 'On request' }
+  }
   if (val === 'included' || val === 'complimentary') {
     return { idr: null, aud: null, label: val.charAt(0).toUpperCase() + val.slice(1) }
   }
   const idrNum = typeof val === 'number' ? val : parseInt(val, 10)
   const parts = priceParts(idrNum)
-  if (!parts) return { idr: null, aud: null, label: null }
+  if (!parts) return { idr: null, aud: null, label: 'On request' }
   return { idr: parts.idr, aud: parts.aud, label: null }
 }
 

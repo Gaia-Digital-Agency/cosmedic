@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { PageShell } from '@/components/shell/PageShell'
 import { ChapterOpener } from '@/components/primitives/ChapterOpener'
 import { Reveal } from '@/components/primitives/Reveal'
@@ -33,6 +33,7 @@ function parsePaymentTerms(input?: string): [string, string][] {
 
 export const PricingPage: React.FC = () => {
   const cms = useCms()
+  const [hideUnpricedWellbeing, setHideUnpricedWellbeing] = useState(true)
 
   const hero = cms?.pricingHero ?? {}
   const overview = cms?.pricingOverview ?? {}
@@ -114,9 +115,84 @@ export const PricingPage: React.FC = () => {
 
     <section className="page-section">
       <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+        {(() => {
+          let totalUnpricedWellbeing = 0
+          for (const d of TREATMENT_LIST) {
+            for (const [subSlug] of SUBCATEGORIES_BY_DISCIPLINE[d.slug] || []) {
+              const sub = SUBCATEGORY_DATA[`${d.slug}/${subSlug}`]
+              if (!sub?.treatments) continue
+              for (const t of sub.treatments) {
+                if (typeof t.priceFromIdr !== 'number' && t.priceFromIdr !== 'included' && t.priceFromIdr !== 'complimentary') {
+                  totalUnpricedWellbeing++
+                }
+              }
+            }
+          }
+          return (
+            <Reveal>
+              <div
+                style={{
+                  paddingBottom: 24,
+                  borderBottom: '1px solid var(--ink-20)',
+                  marginBottom: 48,
+                  textAlign: 'center',
+                }}
+              >
+                <h2 className="section-title" style={{ margin: 0 }}>
+                  The full <span className="italic">well-being catalogue.</span>
+                </h2>
+                {totalUnpricedWellbeing > 0 ? (
+                  <div style={{ marginTop: 20, display: 'flex', justifyContent: 'center' }}>
+                    <button
+                      type="button"
+                      onClick={() => setHideUnpricedWellbeing((v) => !v)}
+                      aria-pressed={hideUnpricedWellbeing}
+                      style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: 11,
+                        letterSpacing: '0.18em',
+                        textTransform: 'uppercase',
+                        color: hideUnpricedWellbeing ? 'var(--bg-cream, #F4EFE6)' : 'var(--accent-deep)',
+                        background: hideUnpricedWellbeing ? 'var(--accent-deep)' : 'transparent',
+                        border: '1px solid var(--accent-deep)',
+                        padding: '10px 20px',
+                        borderRadius: 999,
+                        cursor: 'pointer',
+                        transition: 'background 160ms ease, color 160ms ease',
+                      }}
+                    >
+                      {hideUnpricedWellbeing
+                        ? `Show all (${totalUnpricedWellbeing} on request)`
+                        : `Hide ${totalUnpricedWellbeing} on-request`}
+                    </button>
+                  </div>
+                ) : null}
+              </div>
+            </Reveal>
+          )
+        })()}
         {TREATMENT_LIST.map((discipline, dIdx) => {
           const subs = SUBCATEGORIES_BY_DISCIPLINE[discipline.slug] || []
           if (subs.length === 0) return null
+
+          const subsWithVisibleRows = subs
+            .map(([subSlug, subTitle]) => {
+              const sub = SUBCATEGORY_DATA[`${discipline.slug}/${subSlug}`]
+              if (!sub || !sub.treatments || sub.treatments.length === 0) return null
+              const visibleTreatments = sub.treatments.filter((t) => {
+                if (!hideUnpricedWellbeing) return true
+                return (
+                  typeof t.priceFromIdr === 'number' ||
+                  t.priceFromIdr === 'included' ||
+                  t.priceFromIdr === 'complimentary'
+                )
+              })
+              if (visibleTreatments.length === 0) return null
+              return { subSlug, subTitle, sub, visibleTreatments }
+            })
+            .filter(<T,>(x: T | null): x is T => x !== null)
+
+          if (subsWithVisibleRows.length === 0) return null
 
           return (
             <div
@@ -146,10 +222,7 @@ export const PricingPage: React.FC = () => {
                 </div>
               </Reveal>
 
-              {subs.map(([subSlug, subTitle]) => {
-                const sub = SUBCATEGORY_DATA[subSlug]
-                if (!sub || !sub.treatments || sub.treatments.length === 0) return null
-
+              {subsWithVisibleRows.map(({ subSlug, subTitle, visibleTreatments }) => {
                 return (
                   <div key={subSlug} style={{ marginBottom: 48 }}>
                     <Reveal delay={60}>
@@ -174,14 +247,14 @@ export const PricingPage: React.FC = () => {
                       </div>
                     </Reveal>
                     <div>
-                      {sub.treatments.map((t, tIdx) => {
+                      {visibleTreatments.map((t, tIdx) => {
                         const isNumber = typeof t.priceFromIdr === 'number'
                         const isIncluded =
                           t.priceFromIdr === 'included' || t.priceFromIdr === 'complimentary'
                         return (
                           <Reveal key={tIdx} delay={tIdx * 20}>
                             <a
-                              href={`/treatments/${subSlug}`}
+                              href={`/treatments/${discipline.slug}/${subSlug}`}
                               className="pricing-overview-row"
                             >
                               <h4

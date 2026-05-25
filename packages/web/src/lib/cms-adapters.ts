@@ -140,7 +140,7 @@ export function adaptSubCategoriesByDiscipline(cms: CmsCache): Record<string, Le
 export type LegacyTreatmentRow = {
   name: string
   short: string
-  priceFromIdr: number | 'included' | 'complimentary'
+  priceFromIdr: number | 'included' | 'complimentary' | null
   detail: {
     description: string
     duration: string
@@ -184,7 +184,7 @@ export function adaptSubCategoryEntry(s: SubCategory, cms: CmsCache): LegacySubC
     .map<LegacyTreatmentRow>((p) => ({
       name: p.name,
       short: p.shortName || '',
-      priceFromIdr: p.pricing?.priceIdr2026 ?? p.pricing?.priceIdr2025 ?? 0,
+      priceFromIdr: p.pricing?.priceIdr2026 ?? p.pricing?.priceIdr2025 ?? null,
       detail: {
         description: lexicalToText(p.description) || '',
         duration: p.detail?.duration || '',
@@ -217,7 +217,11 @@ export function adaptSubCategoryData(cms: CmsCache): Record<string, LegacySubCat
   const out: Record<string, LegacySubCategoryEntry> = {}
   for (const s of cms.subCategories) {
     const entry = adaptSubCategoryEntry(s, cms)
-    if (entry) out[s.slug] = entry
+    if (!entry) continue
+    // Keyed by `${parent-slug}/${sub-slug}` — supports nested URLs in 25.15
+    // and allows same-slug-different-parent (e.g. surgical/breast vs
+    // reconstructive/breast).
+    out[`${entry.parent}/${s.slug}`] = entry
   }
   return out
 }

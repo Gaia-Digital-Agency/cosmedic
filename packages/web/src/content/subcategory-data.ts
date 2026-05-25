@@ -25,7 +25,7 @@ export type SubCategoryEntry = {
   treatments: Array<{
     name: string
     short: string
-    priceFromIdr: number | 'included' | 'complimentary'
+    priceFromIdr: number | 'included' | 'complimentary' | null
     detail: {
       description: string
       duration: string
