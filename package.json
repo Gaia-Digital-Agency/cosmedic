@@ -22,12 +22,22 @@
     "lint": "eslint . --config config/tooling/eslint.config.mjs",
     "lint:fix": "eslint . --config config/tooling/eslint.config.mjs --fix",
     "format": "prettier --write \"**/*.{ts,tsx,js,mjs,cjs,json,md}\"",
-    "test": "pnpm --filter @cosmedic/cms test && pnpm --filter @cosmedic/web test"
+    "test": "pnpm --filter @cosmedic/cms test && pnpm --filter @cosmedic/web test",
+    "qa:lighthouse": "lhci autorun --config=lighthouserc.json",
+    "qa:visual": "playwright test tests/visual",
+    "qa:visual:update": "playwright test tests/visual --update-snapshots",
+    "qa:a11y": "playwright test tests/a11y",
+    "qa:links": "linkinator https://cosmedic.gaiada.online --config linkinator.config.json",
+    "qa": "pnpm qa:links && pnpm qa:a11y && pnpm qa:visual && pnpm qa:lighthouse"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.3",
     "@eslint/js": "^9.16.0",
+    "@lhci/cli": "^0.15.1",
+    "@playwright/test": "^1.60.0",
     "concurrently": "^9.1.0",
     "eslint": "^9.16.0",
+    "linkinator": "^7.6.1",
     "prettier": "^3.4.2",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.18.0"

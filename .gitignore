@@ -32,6 +32,8 @@ public/sitemap*.xml
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+/.lighthouseci/
+/qa-reports/
 
 # Local infra
 /database_backup/
