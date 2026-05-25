@@ -24,7 +24,7 @@ export type TreatmentSlug =
   | 'non-surgical'
   | 'hair'
   | 'dental'
-  | 'recovery'
+  | 'weight-loss'
 
 export type Treatment = {
   slug: TreatmentSlug
@@ -214,7 +214,7 @@ const TREATMENT_IMAGES: Record<string, string> = {
   'non-surgical': '/assets/treatments/non-surgical.webp',
   hair: '/assets/treatments/hair.webp',
   dental: '/assets/treatments/dental.webp',
-  recovery: '/assets/treatments/recovery.webp',
+  'weight-loss': '/assets/treatments/recovery.webp',
   concierge: '/assets/treatments/concierge.webp',
 }
 

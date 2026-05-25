@@ -6,13 +6,13 @@ import { useCms } from '@/lib/cms-context'
 
 const PRICE_TEASER = [
   { name: 'Rhinoplasty', aud: 4200, slug: 'surgical-face' },
-  { name: 'Breast Augmentation', aud: 5800, slug: 'surgical-breast' },
+  { name: 'Breast Augmentation', aud: 5800, slug: 'breast' },
   { name: 'Facelift & Necklift', aud: 8500, slug: 'surgical-face' },
   { name: 'Sapphire FUE Hair', aud: 3400, slug: 'hair-fue' },
   { name: 'Liposculpture', aud: 4800, slug: 'surgical-body' },
   { name: 'Blepharoplasty', aud: 2200, slug: 'surgical-face' },
-  { name: 'Botulinum Toxin', aud: 320, slug: 'non-surgical-injectables' },
-  { name: 'Dermal Fillers', aud: 480, slug: 'non-surgical-injectables' },
+  { name: 'Botulinum Toxin', aud: 320, slug: 'injectables' },
+  { name: 'Dermal Fillers', aud: 480, slug: 'injectables' },
 ]
 
 const fmtIDR = (aud: number) =>
