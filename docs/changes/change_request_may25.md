@@ -2,33 +2,36 @@
 
 > Outstanding items captured at end of 2026-05-25 session. Source: live audit against `docs/planning/all_todo.md`, `docs/remap_plan.md`, `docs/planning/phase-10-imagery-gaps.md`, and CLAUDE.md.
 >
-> Items 11 (doc cleanup) and 12 (untracked PNG cleanup) from the original audit are not listed here — both were executed in the same session that produced this file.
+> **2026-05-25 mid-session reorg (Option B variant):** Item 2 promoted to **R2 + footer regression precedent + atom-coverage closure** (was item 11) — the safeguard work is launch-critical for design integrity, sits at #2. All other items shift down by one slot from #3 onward, except merges: former #5 (Figma MCP) + #6 (surgeon portraits) collapse into a single new #6. Net row count: 13 → 12. Launch-blocking items now sit in slots #1–#6 contiguous.
 >
-> **2026-05-25 update:** R2 (now item 11) shipped mid-session in `3a87d4c`. Items for Figma MCP integration, FAB vertical gap, and starburst texture added post-audit as planning items.
->
-> **2026-05-25 mid-session addendum (post-R2 ship):** Early-morning cleanup audit added as item 1 + sequenced first. Item 11 (R2) appended with footer brand-column regression precedent (d2a1ce4 → 8a7007e) + `feedback_no_frontend_data_loss.md` update note. Item 6 (surgeon portraits) appended with Doctors/Surgeons single-source verification (CMS Surgeons is sole source — no duplication). Item 5 (Figma MCP) file key locked: `KjPZnGnbpa994mf7byvcW7` ("Comesic-Image-generation"), scope = inventory + upload to Payload Media.
->
-> **Ordering:** rows below are in execution order — #1 first, #14 last. Numbers were re-keyed 2026-05-25 mid-session; the previous sequencing section was removed (summary + details now self-describe the sequence).
+> **Ordering:** rows below are in execution order — #1 first, #12 last. Numbers are stable IDs for this session; future-session reorgs may re-key.
 
 ## Summary
 
 | # | Item | Status | Launch-blocking |
 |---|---|---|---|
 | 1 | Early-morning cleanup audit (`8a7007e` post-ship verification) | ❌ Open — **do first** | No |
-| 2 | SMTP provider + `.env` config | ❌ Not configured | **Yes** |
-| 3 | Phase 11 — pre-launch QA gates | ❌ Open | **Yes** |
-| 4 | Phase 10 — imagery gaps | ❌ Open | **Yes** |
-| 5 | Figma MCP integration — file `KjPZnGnbpa994mf7byvcW7`, scope locked | ❌ Open (scope locked) | No |
-| 6 | 6 surgeon portraits flagged `isPlaceholder=true` (+ single-source verified ✅) | ⏳ Awaiting uploads | No |
+| 2 | R2 + footer regression precedent + 9-atom CMS coverage (item 11.b) | ⏳ In flight — DDL applied, seed + wire pending | — |
+| 3 | SMTP provider + `.env` config | ❌ Not configured | **Yes** |
+| 4 | Phase 11 — pre-launch QA gates | ❌ Open | **Yes** |
+| 5 | Phase 10 — imagery gaps | ❌ Open | **Yes** |
+| 6 | Figma MCP + 6 surgeon portraits — file `KjPZnGnbpa994mf7byvcW7` (merged from former #5 + #6) | ❌ Open (access blocked — file not shared with MCP user) | **Yes** |
 | 7 | N1 / N2 / N3 — Header / FAB / pricing polish | ❌ Open | No |
 | 8 | Back-to-Top ↔ WhatsApp FAB vertical gap | ❌ Open | No |
 | 9 | Starburst texture — clarify scope + ship | ❌ Open (planning) | No |
 | 10 | N0 — Golden-path mobile UX pass | ❌ Open | No |
-| 11 | R2 — Homepage Bucket admin detail (+ footer regression precedent + recurrence safeguards ✅) | ✅ Shipped + safeguarded | — |
-| 12 | Phase 9 — i18n EN ⇄ ID | ❌ Open | No (post-launch) |
-| 13 | Phase C6–C10 — CMS structural alignment | ❌ Open (largely superseded by Phase R) | No |
+| 11 | Phase 9 — i18n EN ⇄ ID | ❌ Open | No (post-launch) |
+| 12 | Phase C6–C10 — CMS structural alignment | ❌ Open (largely superseded by Phase R) | No |
+| 13 | Pricing bucket check — per-procedure pricing not grouped in Pricing Bucket? (Rp/AUD conversion may be the exception) | ❌ Open — needs audit | No |
+| 14 | Slugs sweep (web + CMS) — single-word or minimal `x-y`, never lengthy; must match on-site URL | ❌ Open | No |
+| 15 | URL structure — `/treatments/surgical/face` (face under surgical) — verify + clarify if required | ❌ Open | No |
+| 16 | CMS slug bug — first parent category is gone in admin slug | ❌ Open | No |
+| 17 | Site-wide price-conversion plumbing — auto-link to global pricing rate (AUD↔IDR) so currency flip is one-source | ❌ Open | No |
+| 18 | Restructure Payload Bucket + Items naming (user to explain scope later) | ❌ Open — awaiting brief | No |
 
-> **Note (2026-05-25 mid-session merge):** former item 12 ("q17 — Refresh image set per Figma") was a duplicate framing of item 5 (Figma MCP). Both targeted the same Figma file (`KjPZnGnbpa994mf7byvcW7`) and the same upload path. Merged into #5; row count went 14 → 13. The q17 tracker row in `changerequest_21May.md` stays as the historical Phase Q ledger entry — execution lives at #5 here.
+**Launch-blocking 6** (top of list, contiguous): #1 · #2 · #3 · #4 · #5 · #6.
+
+**Items 13–18 added 2026-05-25 mid-session.** Scoped after the launch-blocking 6 close.
 
 ---
 
@@ -37,7 +40,7 @@
 **Status:** ❌ Open — **DO FIRST** in the 2026-05-25 CR plan
 **Added:** 2026-05-25 mid-session (own row per user instruction)
 
-Commit `8a7007e` ("footer brand column + surgeon portrait consistency") shipped at 03:02 UTC today as a rushed pre-dawn fix. It restored the footer brand column (closing the d2a1ce4 regression — see #11 precedent) and wired `media={s.portrait}` consistently on `SurgeonsIndex.tsx` + `SurgeonDetail.tsx`. Audit needed before moving to anything else in this CR.
+Commit `8a7007e` ("footer brand column + surgeon portrait consistency") shipped at 03:02 UTC today as a rushed pre-dawn fix. It restored the footer brand column (closing the d2a1ce4 regression — see #2 precedent) and wired `media={s.portrait}` consistently on `SurgeonsIndex.tsx` + `SurgeonDetail.tsx`. Audit needed before moving to anything else in this CR.
 
 **Audit checklist:**
 
@@ -46,34 +49,107 @@ Commit `8a7007e` ("footer brand column + surgeon portrait consistency") shipped 
 - [ ] **Suka + Astri portrait consistency** — these are the only 2 non-placeholder portraits. Verify same image renders across `/` (home lead surgeon), `/surgeons` (grid card + lead feature image), `/surgeons/suka` + `/surgeons/astri` (detail hero + bottom faculty cards).
 - [ ] **6 placeholder portraits still fall back gracefully** — Indra / Risma / Theresia / Rosa / Sissy / Wara. Verify `surgeonPortraitUrl()` still returns the legacy `/assets/surgeons/<slug>.{png,webp}` path while `is_placeholder=true`, so no broken-image icons appear.
 - [ ] **4-column footer at desktop, stacking at mobile** — `.footer-top { grid-template-columns: 1.4fr 1fr 1fr 1fr }` at >1100px; brand spans full width ≤1100px; all stack ≤700px. Re-run mobile audit harness `/tmp/cosmedic-audit/` if anything looks off.
-- [ ] **Footer CMS path (`useCmsCols`) still works** — current rendered HTML proves the hardcoded fallback is active (`footer.linkColumns` empty). Verify the CMS-driven path still renders 4 columns when an editor populates `linkColumns` (Treatments excluded, then mapped — see `Footer.tsx:76-92`).
+- [ ] **Footer CMS path (`useCmsCols`) still works** — current rendered HTML proves the hardcoded fallback is active (`footer.linkColumns` empty). Verify the CMS-driven path still renders 4 columns when an editor populates `linkColumns` (Treatments excluded, then mapped — see `Footer.tsx:76-92`). NOTE: this fallback path is being removed under #2 (item 11.b) — fallback becomes dead code once Footer.linkColumns is seeded.
 
 ---
 
-## 2 — SMTP provider
+## 2 — R2: Homepage Bucket admin detail + footer regression precedent + 9-atom CMS coverage
+
+**Status:**
+- **R2 itself:** ✅ Shipped 2026-05-25 (commit `3a87d4c`)
+- **Footer regression precedent + memory + workflow safeguards:** ✅ Closed 2026-05-25 mid-session (commit `9e5a062`)
+- **9-atom CMS coverage (item 11.b):** ⏳ **In flight** — DDL applied, schema in Footer.ts, seed script written; seed + Footer.tsx wire + byte-diff + fallback removal still pending
+- **Visual-regression footer snapshot:** ⏳ Carry over to #4 (Phase 11 Playwright gate)
+
+**Tracker:** `docs/remap.md` + `docs/remap_plan.md` — Phase R2
+
+### R2 ship summary
+
+Scope shipped: split `HomePage` (9 block fields) into 10 purpose-named section globals (HomeHero · HomeIntro · HomeLeadMagnet · HomePlace + 6 view mirrors), rewired `packages/web/src/routes/home/*.tsx`, migrated data so live page renders identically.
+
+**Note for future R-style refactors:** uploads that target new globals (e.g. `HomeHero.heroImage`) won't surface if old code paths still read from the prior global — that's the symptom we hit on 2026-05-25 with hero + team photo before R2 fully landed. Sequence matters: migrate data → rewire reads → ship.
+
+### Footer brand-column regression precedent (2026-05-25 addendum)
+
+Tracing the rule violation that surfaced this morning:
+
+| Commit | Date | Footer state |
+|---|---|---|
+| `60a5ad1` Phase 2 chrome port | initial | 4 columns: **brand** (logo + address + newsletter) + Treatments + About + Connect — matched `design/shared.jsx:670` |
+| `3bc02e5` Pages → 14 Globals refactor | 2026-05-22 | 4 columns preserved ✅ |
+| **`d2a1ce4`** Phase Q q7 "dark-brown 3-column footer reskin" | 2026-05-24 | ❌ **brand block deliberately dropped** — commit body: _"3 stacked link columns (TREATMENTS / ABOUT / CONNECT) on a dark-brown surface, no logo/address/newsletter block"_ |
+| `8a7007e` footer brand column + surgeon portrait consistency | 2026-05-25 03:02 UTC | ✅ brand column restored, 4 columns again |
+
+**Root cause:** q7 implementer trusted `docs/changes/change2a.pdf` Item 5 reference image without structural-diffing against `design/shared.jsx` (the canonical mirror). The reference likely showed a cropped or mobile-stacked view; the implementer's commit body explicitly acknowledges the deletion, meaning the rule was bypassed knowingly based on the mis-read reference.
+
+**Recurrence safeguards (closed 2026-05-25 mid-session, commit `9e5a062`):**
+- ✅ **Workflow gate added** — `changerequest_21May.md` per-q workflow now has **Step 0: Structural-diff gate** (any layout-touching item must structural-diff against `design/shared.jsx` first; design mirror wins over PDF reference if they disagree). Skipping Step 0 is what caused d2a1ce4.
+- ✅ **Memory updated** — `feedback_no_frontend_data_loss.md` now carries the q7 → 8a7007e footer regression as a worked example, plus step 4 "Reskin / redesign tasks also count" extending the rule from "CMS refactors" to "any layout edit."
+- ⏳ **Visual-regression snapshot** — desktop footer column-count assertion sits in Phase 11 (#4) Playwright gate scope.
+
+### Item 11.b — 9-atom CMS coverage (in flight)
+
+Audit established 9 hardcoded atoms in current Footer.tsx that were vulnerable to silent loss in a future reskin:
+
+| Atom | New CMS source |
+|---|---|
+| Brand tagline "Managed by BIMC Hospital" | `Footer.brandTagline` |
+| Newsletter label / placeholder / button arrow | `Footer.newsletter.{label,placeholder,buttonLabel}` |
+| Treatments column heading | `Footer.treatmentsHeading` |
+| About / Connect column headings + items (fallback) | `Footer.linkColumns[]` (existing, now seeded) |
+| Instagram + Facebook hrefs (`#` placeholders) | `Settings.socialLinks[]` (existing, now seeded) via new `linkColumns[].items[].social` enum |
+| "PT Trisaka Reksa Waluya" + "Designed in Bali" + copyright | `Footer.footerBottomLines[]` array |
+
+**Pipeline:**
+1. ✅ Baseline footer HTML captured (md5 `b156659f3c1143d0aed53262f96cbc00`, 87 lines, `/tmp/cosmedic-11b/footer-baseline.html`)
+2. ✅ Footer.ts schema updated (4 new field groups, 1 new enum on linkColumns items)
+3. ✅ DDL migration applied via psql (5 footer columns + 1 enum + 1 social col + 1 new array table + payload_migrations row)
+4. ✅ Seed script written (`packages/cms/src/seed/seed-footer-atoms.ts`) — copies hardcoded values byte-verbatim per [feedback_no_frontend_data_loss.md] step 1
+5. ⏳ Rebuild CMS + run seed
+6. ⏳ Wire Footer.tsx to consume new fields + Settings.socialLinks resolution for social hrefs
+7. ⏳ Restart web, curl-diff against baseline — byte-identical is the gate
+8. ⏳ Delete hardcoded fallback path in Footer.tsx (only after byte-diff passes)
+9. ⏳ Commit + push
+
+---
+
+## 3 — SMTP provider
 
 **Status:** ❌ Not configured; carries from Phase 7 → Phase 8 → today
 **Launch-blocking:** Yes
 
 Enquiry emails currently transit `nodemailerAdapter`'s **JSON transport** — full message body logged to CMS stdout, not delivered. `packages/cms/src/lib/email-adapter.ts` reads `SMTP_HOST / SMTP_PORT / SMTP_USER / SMTP_PASS / SMTP_SECURE` from env; populate any of those and delivery switches on automatically. Recommended providers: Postmark (best deliverability, $10/mo flat), AWS SES (cheapest, slower DKIM setup), or relay through the clinic's existing mail server.
 
+**Needed from user (table form):**
+
+| # | Item | Source | Status |
+|---|---|---|---|
+| 1 | Provider | You decide (Postmark / SES / BIMC relay / other) | ❌ |
+| 2 | `SMTP_HOST` | Provider dashboard | ❌ |
+| 3 | `SMTP_PORT` | Provider dashboard (587 TLS / 465 SSL) | ❌ |
+| 4 | `SMTP_USER` | Provider dashboard | ❌ |
+| 5 | `SMTP_PASS` | Provider dashboard | ❌ |
+| 6 | `SMTP_SECURE` | Implied from port | I set |
+| 7 | `MAIL_FROM` | Default `BIMC CosMedic <no-reply@cosmedic.gaiada.online>` + SPF/DKIM/DMARC at gaiada.online DNS | I draft, you DNS |
+| 8 | `MAIL_CLINIC_TO` | Confirm `cosmedic@bimcbali.com` or change | ⏳ confirm |
+
 ---
 
-## 3 — Phase 11: pre-launch QA gates
+## 4 — Phase 11: pre-launch QA gates
 
 **Status:** ❌ Open (all sub-items)
 **Launch-blocking:** Yes — Lighthouse Green ≥ 90 is non-negotiable per CLAUDE.md
 
 - Lighthouse-CI + budget config — workstream pending
 - axe-core via `@axe-core/playwright` — workstream pending
-- Playwright visual-regression suite (Pixel-Fidelity Gate) — workstream pending; **must include footer column-count snapshot per #11 precedent**
+- Playwright visual-regression suite (Pixel-Fidelity Gate) — workstream pending; **must include footer column-count snapshot per #2 precedent**
 - linkinator broken-link + broken-image sweep across all 51 routes — workstream pending
 - CMS-Sufficiency Gate manual walk per `docs/cms_schema.md` §5
 - Multi-breakpoint visual check at 1920 / 1440 / 1100 / 900 / 700 / 540 / 390
 
 ---
 
-## 4 — Phase 10 imagery gaps
+## 5 — Phase 10 imagery gaps
 
 **Status:** ❌ Open
 **Launch-blocking:** Yes (placeholders visible to visitors)
@@ -85,15 +161,16 @@ Enquiry emails currently transit `nodemailerAdapter`'s **JSON transport** — fu
 
 ---
 
-## 5 — Figma MCP integration
+## 6 — Figma MCP integration + 6 surgeon portraits (merged)
 
-**Status:** ❌ Open — scope locked 2026-05-25; execution pending
-**Added:** 2026-05-25 (post-audit) · **Updated:** 2026-05-25 mid-session
+**Status:** ❌ Open — scope locked 2026-05-25; **access blocked** (file not shared with MCP user)
+**Added:** 2026-05-25 (post-audit) · **Merged with former #6 surgeon-portraits row:** 2026-05-25 mid-session
+**Launch-blocking:** Yes (the 6 placeholder portraits ride this pipeline)
 
 **File locked:**
 - URL: https://www.figma.com/design/KjPZnGnbpa994mf7byvcW7/Comesic-Image-generation?node-id=0-1
 - File key: `KjPZnGnbpa994mf7byvcW7`
-- Name: "Comesic-Image-generation" (the q17 deferred image set — see #12)
+- Name: "Comesic-Image-generation"
 
 **Scope locked: Inventory + upload to Payload Media**
 1. `mcp__claude_ai_Figma__get_metadata` → enumerate every top-level frame in the file
@@ -103,24 +180,9 @@ Enquiry emails currently transit `nodemailerAdapter`'s **JSON transport** — fu
 5. Identify the 6 surgeon-portrait replacements within the Figma file → upload to existing Media records #2 / #3 / #7 / #21 / #22 / #24 → untick `isPlaceholder=true` in admin
 6. `POST /api/revalidate` → flush web cache; verify all 8 surgeon routes render new portraits
 
-**Closes (partial or full):**
-- #12 (q17 image refresh) — fully closes once inventory + upload done
-- #6 (surgeon portraits) — fully closes (single-source verified, just needs the real photos)
-- #4 (Phase 10 imagery gaps) — partial close depending on what Figma actually contains for the 23 lifestyle/hero slots
-- #9 (starburst) — if "starburst" exists as a Figma frame, the inventory pass catches it
+**Access blocker (2026-05-25):** First MCP call (`get_metadata` on file `KjPZnGnbpa994mf7byvcW7`) returned access denied (Figma Debug UUID `dd290885-3c02-43fb-9e28-4c48daa44bed`). The file isn't shared with the Figma account behind the MCP integration. **Unblock action (yours):** share the Figma file with view-access to the MCP-connected Figma user. Once that lands, the 6-step pipeline above executes.
 
-**Code Connect (`add_code_connect_map`)** — explicitly **out of scope** for this pass. Deferred to a separate item if/when value is established.
-
-**Related items:**
-
-- #7 (N1 / N2 / N3 polish) — Figma is the authoritative source for the header endorsement alignment, FAB sizing, and pricing-table column spec; the inventory may surface spec frames that close N1/N2/N3 in passing.
-
----
-
-## 6 — Six surgeon portraits still placeholder
-
-**Status:** ⏳ Awaiting real photo uploads
-**Surfaced:** 2026-05-25 (commit `8a7007e` investigation)
+**6 surgeon portraits awaiting upload (merged from former item #6):**
 
 | Surgeon | CMS media ID | Filename | `is_placeholder` |
 |---|---|---|---|
@@ -131,9 +193,9 @@ Enquiry emails currently transit `nodemailerAdapter`'s **JSON transport** — fu
 | Sissy | 22 | `sissy-1.webp` | `true` |
 | Wara | 24 | `wara-1.webp` | `true` |
 
-The page logic intentionally falls back to `/assets/surgeons/<slug>.png` legacy files while `is_placeholder=true`. To switch over: upload real portraits to those Media records (or new ones) and untick **Is placeholder** in admin — no code change needed.
+Page logic falls back to `/assets/surgeons/<slug>.png` legacy files while `is_placeholder=true`. To switch over: upload real portraits + untick the flag in admin — no code change needed. Pipeline step 5 above does this in bulk.
 
-### Doctors / Surgeons single-source verification (2026-05-25 addendum)
+### Doctors / Surgeons single-source verification (2026-05-25)
 
 Confirmed: the CMS `Surgeons` collection is the **sole source** for every surgeon attribute used anywhere on the site. No duplication exists in CMS.
 
@@ -151,13 +213,13 @@ Confirmed: the CMS `Surgeons` collection is the **sole source** for every surgeo
 
 All 3 surgeon routes read through one lazy proxy: `SURGEON_LIST = lazyArray<Surgeon>((cms) => adaptSurgeons(cms))` at `packages/web/src/content/seed.ts:89`.
 
-- [packages/web/src/routes/home/Surgeons.tsx](packages/web/src/routes/home/Surgeons.tsx) — lead surgeon block
-- [packages/web/src/routes/surgeons/SurgeonsIndex.tsx](packages/web/src/routes/surgeons/SurgeonsIndex.tsx) — full team grid
-- [packages/web/src/routes/detail/SurgeonDetail.tsx](packages/web/src/routes/detail/SurgeonDetail.tsx) — per-surgeon page + faculty cards at bottom
+**Legacy fallback files:** `packages/web/public/assets/surgeons/{slug}.{png,webp}` are fallback-only, used by `surgeonPortraitUrl()` when `Surgeons.portrait` is null or its Media is flagged `isPlaceholder=true`. They become deletable the moment all 6 placeholder Media records have real portraits uploaded + flag unticked.
 
-**Legacy fallback files:** `packages/web/public/assets/surgeons/{slug}.{png,webp}` are fallback-only, used by `surgeonPortraitUrl()` when `Surgeons.portrait` is null or its Media is flagged `isPlaceholder=true`. They become deletable the moment all 6 placeholder Media records have real portraits uploaded + the flag unticked — i.e. once #5 (Figma sync) closes this item.
+**Closes (partial or full):**
+- #5 (Phase 10 imagery gaps) — partial close depending on what Figma actually contains for the 23 lifestyle/hero slots
+- #9 (starburst) — if "starburst" exists as a Figma frame, the inventory pass catches it
 
-**No duplication confirmed:** there is no parallel `Doctors` collection, no per-route hardcoded surgeon data, no `SURGEON_LIST` static-array override. The `SURGEON_PORTRAITS` map at `seed.ts:223-230` is the fallback-URL map only, not a content source.
+**Code Connect (`add_code_connect_map`)** — explicitly **out of scope** for this pass. Deferred to a separate item if/when value is established.
 
 ---
 
@@ -203,8 +265,8 @@ The codebase contains exactly one mention of "starburst" — a CSS comment at `p
 - Whether the CSS comment at `partials/08:470` describes something that **was** built and got removed, or something **planned but never built**.
 
 **Related items:**
-- #5 (Figma MCP) — if "starburst" is a Figma frame, an MCP fetch is the cheapest way to inventory + ship in one motion.
-- #4 (Phase 10 imagery) — if it's an SVG asset, it could be uploaded as part of the imagery sweep.
+- #6 (Figma MCP) — if "starburst" is a Figma frame, the inventory pass catches it in one motion.
+- #5 (Phase 10 imagery) — if it's an SVG asset, it could be uploaded as part of the imagery sweep.
 
 ---
 
@@ -216,38 +278,7 @@ Visual-quality pass across 320 / 375 / 414 / 640 / 768 — clipped headlines, br
 
 ---
 
-## 11 — R2: Homepage Bucket admin detail
-
-**Status:** ✅ Shipped 2026-05-25 (commit `3a87d4c` — landed between this session's `8a7007e` and `20979ef`)
-**Tracker:** `docs/remap.md` + `docs/remap_plan.md` — Phase R2
-
-Scope shipped: split `HomePage` (9 block fields) into 10 purpose-named section globals (HomeHero · HomeIntro · HomeLeadMagnet · HomePlace + 6 view mirrors), rewired `packages/web/src/routes/home/*.tsx`, migrated data so live page renders identically.
-
-**Note for future R-style refactors:** uploads that target new globals (e.g. `HomeHero.heroImage`) won't surface if old code paths still read from the prior global — that's the symptom we hit on 2026-05-25 with hero + team photo before R2 fully landed. Sequence matters: migrate data → rewire reads → ship.
-
-### Footer brand-column regression precedent (2026-05-25 addendum)
-
-Tracing the rule violation that surfaced this morning:
-
-| Commit | Date | Footer state |
-|---|---|---|
-| `60a5ad1` Phase 2 chrome port | initial | 4 columns: **brand** (logo + address + newsletter) + Treatments + About + Connect — matched `design/shared.jsx:670` |
-| `3bc02e5` Pages → 14 Globals refactor | 2026-05-22 | 4 columns preserved ✅ |
-| **`d2a1ce4`** Phase Q q7 "dark-brown 3-column footer reskin" | 2026-05-24 | ❌ **brand block deliberately dropped** — commit body: _"3 stacked link columns (TREATMENTS / ABOUT / CONNECT) on a dark-brown surface, no logo/address/newsletter block"_ |
-| `8a7007e` footer brand column + surgeon portrait consistency | 2026-05-25 03:02 UTC | ✅ brand column restored, 4 columns again |
-
-**Root cause:** q7 implementer trusted `docs/changes/change2a.pdf` Item 5 reference image without structural-diffing against `design/shared.jsx` (the canonical mirror). The reference likely showed a cropped or mobile-stacked view; the implementer's commit body explicitly acknowledges the deletion, meaning the rule was bypassed knowingly based on the mis-read reference.
-
-**Recurrence safeguards (closed 2026-05-25 mid-session):**
-- ✅ **Workflow gate added** — `changerequest_21May.md` per-q workflow now has **Step 0: Structural-diff gate** (any layout-touching item must structural-diff against `design/shared.jsx` first; design mirror wins over PDF reference if they disagree). Skipping Step 0 is what caused d2a1ce4.
-- ✅ **Memory updated** — `feedback_no_frontend_data_loss.md` now carries the q7 → 8a7007e footer regression as a worked example, plus step 4 "Reskin / redesign tasks also count" extending the rule from "CMS refactors" to "any layout edit."
-- ⏳ **Visual-regression snapshot** — desktop footer column-count assertion sits in Phase 11 (#3) Playwright gate scope.
-
-Two of three safeguards live now; the third is a CI fixture that ships under #3.
-
----
-
-## 12 — Phase 9: i18n EN ⇄ ID
+## 11 — Phase 9: i18n EN ⇄ ID
 
 **Status:** ❌ Open (entire phase)
 **Launch-blocking:** No (post-launch acceptable)
@@ -262,7 +293,7 @@ Scope from `all_todo.md`:
 
 ---
 
-## 13 — Phase C6–C10: CMS structural alignment
+## 12 — Phase C6–C10: CMS structural alignment
 
 **Status:** ❌ Open (mostly superseded by Phase R, but still listed)
 **Tracker:** `docs/planning/all_todo.md` Phase C section
@@ -274,3 +305,80 @@ Scope from `all_todo.md`:
 - C10 — Final audit + sign-off
 
 **Action:** audit which items genuinely remain after R-phase closures; remove or merge the obsolete ones.
+
+---
+
+## 13 — Pricing Bucket check: per-procedure pricing grouping
+
+**Status:** ❌ Open — needs audit
+**Added:** 2026-05-25 mid-session
+
+Question from user: in CMS, the per-procedure pricing is no longer grouped in the Pricing Bucket — the Rp/AUD conversion rate may be the only thing left there. Audit:
+- Walk through every collection currently in Bucket **e. Pricing** (per `cms_info.md`).
+- For each, confirm whether the per-procedure prices live in `Procedures` collection (under Treatments) vs. `PriceListItems` collection (under Pricing) vs. somewhere else.
+- Identify what's actually left in the Pricing Bucket if the per-procedure prices moved (likely just the IDR/AUD conversion rate + footnote + insurance globals).
+- Decide whether the Pricing Bucket structure still makes sense or should be consolidated.
+
+---
+
+## 14 — Slug sweep across web + CMS
+
+**Status:** ❌ Open
+**Added:** 2026-05-25 mid-session
+
+Slug-quality audit:
+- Every URL slug on the live site + every collection-item slug in CMS.
+- Target: single-word OR minimal `x-y` (two-word hyphen-joined) — never lengthy multi-word slugs.
+- Must match exactly what's rendered on the live site (CMS slug == URL slug).
+- Output: table of `(collection, current_slug, proposed_slug, reason)` for review before any rewrite.
+
+---
+
+## 15 — URL structure: face under surgical
+
+**Status:** ❌ Open — verify + clarify if needed
+**Added:** 2026-05-25 mid-session
+
+User expectation: `https://cosmedic.gaiada.online/treatments/surgical/face` (3-level path — discipline / sub-category) since "face" sits under "surgical".
+
+Currently SSR router likely renders this as `/treatments/surgical-face` (2-level path with combined slug). Verify which is live, then confirm with user whether 3-level nested route is the target.
+
+Related to #14 (slug sweep) — the nested-vs-flat URL decision determines the slug shape.
+
+---
+
+## 16 — CMS slug bug: first parent category disappears
+
+**Status:** ❌ Open
+**Added:** 2026-05-25 mid-session
+
+User reports: in CMS admin, the first parent category is missing from the slug field display. Audit:
+- Confirm which collection (likely `SubCategories` or `Procedures`).
+- Identify whether the slug field auto-fills from parent + name and is dropping the parent portion.
+- Decide fix: slug-field formula change vs. admin display field change vs. seed correction.
+
+Related to #14 + #15.
+
+---
+
+## 17 — Site-wide price-conversion plumbing
+
+**Status:** ❌ Open
+**Added:** 2026-05-25 mid-session
+
+User intent: currency flip (IDR ↔ AUD) anywhere on the site should auto-resolve via the global `Settings.audToIdrRate` so the clinic edits **one value** in CMS to re-peg all displayed AUD.
+
+Confirm:
+- Today `Settings.audToIdrRate` already exists (default 10500) and `Settings.currencyDisplayMode` toggles `idr-only` vs `idr-with-aud`.
+- `Settings.roundIdrTo` rounds derived IDR to 50,000 by default.
+- Verify EVERY price-rendering component on the site reads from these settings, not from per-procedure hardcoded AUD values.
+- The user's mention of "in Footer" may refer to a currency-toggle widget that doesn't exist yet — confirm scope: is this a new footer toggle, or just a verification of existing plumbing?
+
+---
+
+## 18 — Restructure Payload Bucket + Items naming
+
+**Status:** ❌ Open — **awaiting user brief**
+**Added:** 2026-05-25 mid-session
+
+User flagged this as a "big one" but scope to be explained later. Holding for the spec / brief from user before planning.

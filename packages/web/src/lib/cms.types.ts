@@ -388,7 +388,22 @@ export type HeaderGlobal = {
 
 export type FooterGlobal = {
   logoLight?: CmsMedia | number | null
-  linkColumns?: Array<{ heading: string; items: Array<{ label: string; href: string }> }>
+  brandTagline?: string
+  treatmentsHeading?: string
+  linkColumns?: Array<{
+    heading: string
+    items: Array<{
+      label: string
+      href: string
+      social?: 'none' | 'instagram' | 'facebook' | 'whatsapp' | 'tiktok' | 'youtube' | 'linkedin' | 'x'
+    }>
+  }>
+  newsletter?: {
+    label?: string
+    placeholder?: string
+    buttonLabel?: string
+  }
+  footerBottomLines?: Array<{ text: string }>
   enquirySummary?: Lexical
   addressBlock?: Lexical
   copyrightTemplate?: string

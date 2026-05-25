@@ -22,6 +22,15 @@ export const Footer: React.FC = () => {
   const fg = cms?.footer
   const settings = cms?.settings
 
+  // Resolve a social-platform key (instagram / facebook / whatsapp / …) to
+  // its URL via Settings.socialLinks. Returns undefined if not found, so
+  // the caller can fall back to the manual href in linkColumns.items[].href.
+  const resolveSocialUrl = (platform: string | undefined): string | undefined => {
+    if (!platform || platform === 'none') return undefined
+    const entry = (settings?.socialLinks || []).find((s) => s.platform === platform)
+    return entry?.url
+  }
+
   const treatmentLinks = (cms?.disciplines || [])
     .slice()
     .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
@@ -36,11 +45,27 @@ export const Footer: React.FC = () => {
 
   const year = new Date().getFullYear()
   const yearRoman = toRomanYear(year)
-  const copyright = (fg?.copyrightTemplate || '© {year} BIMC CosMedic Centre').replace('{year}', yearRoman)
+
+  // Footer-bottom: prefer footerBottomLines array (post-11b CMS coverage);
+  // fall back to legacy copyrightTemplate + hardcoded sibling lines.
+  const bottomLines: string[] = (() => {
+    const arr = fg?.footerBottomLines
+    if (Array.isArray(arr) && arr.length > 0) {
+      return arr.map((row) => (row.text || '').replace('{year}', yearRoman))
+    }
+    const copyright = (fg?.copyrightTemplate || '© {year} BIMC CosMedic Centre').replace('{year}', yearRoman)
+    return [copyright, 'PT Trisaka Reksa Waluya', 'Designed in Bali']
+  })()
 
   const addr1 = settings?.addressLine1 || 'BIMC Hospital Nusa Dua'
   const addr2 = settings?.addressLine2 || 'Kawasan ITDC Blok D'
   const cityLine = `${settings?.city || 'Nusa Dua'} ${settings?.postalCode || '80363'}, ${settings?.country || 'Bali, Indonesia'}`
+
+  const brandTagline = fg?.brandTagline ?? 'Managed by BIMC Hospital'
+  const treatmentsHeading = fg?.treatmentsHeading ?? 'Treatments'
+  const newsletterLabel = fg?.newsletter?.label ?? 'Receive our quarterly journal'
+  const newsletterPlaceholder = fg?.newsletter?.placeholder ?? 'Your email address'
+  const newsletterButtonLabel = fg?.newsletter?.buttonLabel ?? '→'
 
   return (
     <footer className="site-footer">
@@ -49,21 +74,21 @@ export const Footer: React.FC = () => {
           <a href="/" className="logo logo-dark" aria-label="BIMC CosMedic — home">
             <img src="/assets/logo-light.png" alt="BIMC CosMedic" />
           </a>
-          <p className="footer-brand-tagline">Managed by BIMC Hospital</p>
+          <p className="footer-brand-tagline">{brandTagline}</p>
           <p>
             {addr1}<br />
             {addr2}<br />
             {cityLine}
           </p>
-          <p className="footer-newsletter-label">Receive our quarterly journal</p>
+          <p className="footer-newsletter-label">{newsletterLabel}</p>
           <form className="footer-newsletter" onSubmit={(e) => e.preventDefault()}>
-            <input type="email" placeholder="Your email address" aria-label="Email address" />
-            <button type="submit" aria-label="Subscribe">→</button>
+            <input type="email" placeholder={newsletterPlaceholder} aria-label="Email address" />
+            <button type="submit" aria-label="Subscribe">{newsletterButtonLabel}</button>
           </form>
         </div>
 
         <div className="footer-col">
-          <Mono>Treatments</Mono>
+          <Mono>{treatmentsHeading}</Mono>
           <ul>
             {(treatmentLinks.length > 0 ? treatmentLinks : TREATMENT_LIST.map((t) => ({ label: t.t, href: `/treatments/${t.slug}` }))).map((link) => (
               <li key={link.href}>
@@ -80,17 +105,30 @@ export const Footer: React.FC = () => {
               <div key={col.heading} className="footer-col">
                 <Mono>{col.heading}</Mono>
                 <ul>
-                  {col.items.map((item) => (
-                    <li key={item.href}>
-                      <a href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel={item.href.startsWith('http') ? 'noopener' : undefined}>
-                        {item.label}
-                      </a>
-                    </li>
-                  ))}
+                  {col.items.map((item) => {
+                    // Resolve URL: prefer Settings.socialLinks via item.social
+                    // flag (so the clinic edits one place); fall back to manual
+                    // href on the item; WhatsApp also has the legacy
+                    // wa.me-from-whatsappNumber path.
+                    const socialUrl = resolveSocialUrl(item.social)
+                    const isWa = item.social === 'whatsapp'
+                    const href = socialUrl || (isWa ? waHref : item.href)
+                    const external = href.startsWith('http')
+                    return (
+                      <li key={`${col.heading}-${item.label}`}>
+                        <a href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined}>
+                          {item.label}
+                        </a>
+                      </li>
+                    )
+                  })}
                 </ul>
               </div>
             ))
         ) : (
+          // Fallback path — preserved for resilience if linkColumns is ever
+          // emptied in admin. Mirrors the design/shared.jsx canonical structure.
+          // Will be removed in a future commit once linkColumns is locked in.
           <>
             <div className="footer-col">
               <Mono>About</Mono>
@@ -117,9 +155,9 @@ export const Footer: React.FC = () => {
         )}
       </div>
       <div className="footer-bottom">
-        <Mono>{copyright}</Mono>
-        <Mono>PT Trisaka Reksa Waluya</Mono>
-        <Mono>Designed in Bali</Mono>
+        {bottomLines.map((line, i) => (
+          <Mono key={i}>{line}</Mono>
+        ))}
       </div>
     </footer>
   )
