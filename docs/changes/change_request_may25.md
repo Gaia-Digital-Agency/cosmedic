@@ -84,8 +84,8 @@ Each item has 6 verification checkboxes:
 | 25.11 | Phase 9 i18n EN ⇄ ID (incl. multi-locale verification — Phase 9 open) | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
 | 25.12 | Phase C6–C10 CMS structural alignment cleanup | [x] | [x] | [x] | [x] | [x] | [x] |
 | 25.13 | Pricing bucket grouping audit | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
-| 25.13a | /pricing — clinic catalogue data fix (42 pli rows → Procedures) + hide-unpriced toggle | [x] | [x] | [x] | [x] | [ ] | [x] |
-| 25.13b | /pricing — Well-Being catalogue heading + toggle + on-request label (null-safe adapter) | [x] | [x] | [x] | [x] | [ ] | [x] |
+| 25.13a | /pricing — clinic catalogue data fix (42 pli rows → Procedures) + hide-unpriced toggle | [x] | [x] | [x] | [x] | [x] | [x] |
+| 25.13b | /pricing — Well-Being catalogue heading + toggle + on-request label (null-safe adapter) | [x] | [x] | [x] | [x] | [x] | [x] |
 | 25.14 | Slug sweep (web + CMS) | [x] | [x] | [x] | [x] | [x] | [x] |
 | 25.15 | URL structure `/treatments/surgical/face` | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
 | 25.16 | CMS slug bug (first parent missing) | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
