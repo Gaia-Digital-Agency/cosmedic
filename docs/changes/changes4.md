@@ -12,21 +12,7 @@ Restructure the CMS admin sidebar so the Treatments and Pricing buckets map clea
 
 ---
 
-## Target Structure
-
-| Bucket | Collection | Records | Content |
-|---|---|---|---|
-| **Treatments** | Category | 6 | surgical · non-surgical · hair · dental · reconstructive · weight-loss |
-| **Treatments** | Sub-Category | 17 | alignment · bariatric · body · breast ×2 · craniofacial · endoscopic · face · fue · glp-1 · injectables · laser · skin · therapy · trauma · veneers · whitening |
-| **Treatments** | Procedure | 84 | surgical editorial procedures |
-| **Pricing** | Surgical | 51 | operations · reconstructions |
-| **Pricing** | Machine | 63 | laser · RF · IPL treatments |
-| **Pricing** | Injection | 34 | fillers · toxins · skin boosters |
-| **Pricing** | BTL | 43 | hair removal by body zone |
-
----
-
-## Full Structure — Four Column Depth
+## Target Structure — Four Column Depth
 
 | Bucket | Collection | Category | Items |
 |---|---|---|---|
@@ -38,24 +24,27 @@ Restructure the CMS admin sidebar so the Treatments and Pricing buckets map clea
 | **Treatments** | Procedure | reconstructive | Burn reconstruction · Cleft ×3 · DIEP flap · Implant reconstruction ×2 · Keloid · Maxillofacial · Microtia · Nipple-areola · Orbital · Scar revision ×2 · Skin grafts · Symmetrising · TRAM flap (13) |
 | **Treatments** | Procedure | surgical | Abdominoplasty · Body contouring · Brachioplasty · Breast lift · Breast reduction · Brow lift · Blepharoplasty · Facelift · Implant revision · Lift with implants · Lip lift · Liposculpture · Neck lift · Nipple · Rhinoplasty · Saline implants · Silicone implants · Thigh lift (18) |
 | **Treatments** | Procedure | weight-loss | Dietitian · ESG · Endoscopic revision · GLP-1 · Intragastric balloon ×2 · Maintenance · Mini bypass · Revision bariatric · Roux-en-Y · Semaglutide · Sleeve gastrectomy · Tirzepatide (13) |
-| **Pricing** | Surgical | Arm | 2 rows |
-| **Pricing** | Surgical | Body | 11 rows |
-| **Pricing** | Surgical | Breast | 9 rows |
-| **Pricing** | Surgical | Eyelid | 4 rows |
-| **Pricing** | Surgical | Face & Neck | 5 rows |
-| **Pricing** | Surgical | Rhinoplasty | 2 rows |
-| **Pricing** | Surgical | Others | 9 rows |
-| **Pricing** | Surgical | *(uncategorised)* | 9 rows |
-| **Pricing** | Machine | Laser AFT Rejuvenation | 27 rows |
-| **Pricing** | Machine | Laser Erbium Resurfacing | 12 rows |
-| **Pricing** | Machine | Pixel Q-Switch Nd-Yag | 12 rows |
-| **Pricing** | Machine | Pigmentation Removal | 4 rows |
-| **Pricing** | Machine | Laser 360 | 3 rows |
-| **Pricing** | Machine | Tattoo Removal | 3 rows |
-| **Pricing** | Machine | Vascular Laser | 2 rows |
-| **Pricing** | Injection | Filler | 31 rows |
-| **Pricing** | Injection | Skin Booster | 3 rows |
-| **Pricing** | BTL | *(hair removal zones)* | 43 rows |
+| **Pricing** | Surgical | Arm | Armlifting · Extended Armlifting |
+| **Pricing** | Surgical | Body | Abdominoplasty · Mini Abdominoplasty · Lipo Abdominoplasty · Extended Tummy Tuck · Body Lift · Small Liposuction · Medium Liposuction · Large Liposuction · Extra Large Liposuction · Fat Injection/Graft · Lower Body Lift |
+| **Pricing** | Surgical | Breast | Breast Augmentation with Implant · with Nipple Reduction · replace existing · Implant removal · Breast Lifting · Uplifting with Implant · Implant removal + lifting · Implant Exchange + lifting · Nipple Reduction |
+| **Pricing** | Surgical | Eyelid | Blepharoplasty Upper only · Lower only · Upper or lower · Double Eyelid |
+| **Pricing** | Surgical | Face & Neck | Necklifting · Mini Facelifting · Facelifting + Necklifting · Foreheadlifting · Neck Liposuction |
+| **Pricing** | Surgical | Rhinoplasty | Rhinoplasty with Cartilage · Nose Tips/Dorsum with Cartilage |
+| **Pricing** | Surgical | Others | Otoplasty · Labiaplasty · Vaginoplasty · Small Scar Revision · Medium Scar Revision · Big Scar Revision · Minor Surgery · Gynecomastia · Lobuloplasty |
+| **Pricing** | Surgical | *(uncategorised)* | Standard recovery villa · Premium recovery villa · Family-friendly villa · Extended recovery · Daily in-villa nursing · Manual lymphatic drainage · Gentle physiotherapy · Post-op nutrition consult · Three-session drainage course |
+| **Pricing** | Machine | Laser AFT Rejuvenation | Face · Neck/Lip · Face and Neck · Chest · Hands · Half Arm · Full Arm · Half Leg · Full Leg (×3 tiers each) |
+| **Pricing** | Machine | Laser Erbium Resurfacing | Face · Neck · Chest · Eyes (×3 tiers each) |
+| **Pricing** | Machine | Pixel Q-Switch Nd-Yag | Face · Neck · Face and Neck · Eyes · Chest · Spot (×2 tiers each) |
+| **Pricing** | Machine | Pigmentation Removal | 2×2cm · Spot (×2 tiers each) |
+| **Pricing** | Machine | Laser 360 | Combination AFT+Pixel+Erbium (×3 tiers) |
+| **Pricing** | Machine | Tattoo Removal | per cm2 (×3 tiers) |
+| **Pricing** | Machine | Vascular Laser | 2×2cm (×2 tiers) |
+| **Pricing** | Injection | Filler | BOTOX · Frown Lines · Eyes · Forehead · Restylane Lyft · Restylane OBT · Teosyal ×3 · Juvederm ×5 · Radiesse · Profhilo · Nebido · Saizen · Aptos · Double fix · PRP · Chemical Peel · Acne Peel ×2 · Microdermabrasion · Flamicort · Hyaluronidase · Mesotherapy ×4 |
+| **Pricing** | Injection | Skin Booster | Restylane Vital · Teosyal Redensity I · Juvederm Volite |
+| **Pricing** | BTL | Face | Upper Lip · Chin · Chin and Upper Lip · Whisker · Ears · Cheek · Full Face · Full Face and Neck · Lower Face · Upper Face · Eyelift/Eyebrow Lift · Double Chin · Lower Face and Submental |
+| **Pricing** | BTL | Body | Under Arm · Full Back · Half Back · Full Chest · Chest and Stomach · Tummy · Full Arm · Half Arm · Hands · Full Leg · Half Leg · Buttock · Bikini Brazilian · Bikini Line · Fingers/Toes/Spot |
+| **Pricing** | BTL | Packages | Chest+Stomach+Full Back · Armpit+Full Leg+Brazilian · Bikini+Under Arm |
+| **Pricing** | BTL | Skin Treatments | Pigmentation ×2 · Vascular ×2 · Acne ×2 · Rejuvenation ×2 · Spot/per area · Neck and Submental |
 
 ---
 
