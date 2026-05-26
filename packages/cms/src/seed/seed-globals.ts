@@ -33,7 +33,6 @@ export async function seedGlobals(payload: Payload): Promise<void> {
       { platform: 'whatsapp', url: WHATSAPP_HREF },
     ],
     defaultLocale: 'en',
-    currencyDisplayMode: 'idr-with-aud',
   })
 
   await upsertGlobal(payload, 'brand-stats', {
@@ -54,7 +53,6 @@ export async function seedGlobals(payload: Payload): Promise<void> {
 
   await upsertGlobal(payload, 'consultation-policy', {
     feeIdr: 150000,
-    feeAud: 15,
     waiverConditionText: 'Consultation fee is waived if your treatment is performed the same day.',
     displayOn: ['contact', 'procedure-detail', 'pricing'],
   })
