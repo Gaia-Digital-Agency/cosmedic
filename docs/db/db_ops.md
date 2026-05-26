@@ -120,44 +120,35 @@ pnpm --filter @cosmedic/cms exec payload migrate:down
 
 ## 5. Backup + restore
 
-### Automated daily backup (Phase 14 cron)
+### Automated daily backup (live — 2026-05-26)
 
-```cron
-# /etc/cron.d/cosmedic-backup
-30 02 * * * azlan /var/www/cosmedic/scripts/backup-db.sh >> /var/log/cosmedic-backup.log 2>&1
-```
+**Script**: `/usr/local/bin/cosmedic-db-backup.sh` (root-owned, chmod +x)
+**Cron**: root crontab `0 2 * * *` → daily 02:00 UTC
+**Destination**: `/var/backups/cosmedic/cosmedic-<YYYYMMDD-HHmmss>.dump`
+**Retention**: last 14 dumps (older removed automatically)
+**Log**: `/var/log/cosmedic-backup.log`
+**First dump**: `cosmedic-20260526-053120.dump` (1.5 MB) — verified clean
 
-`scripts/backup-db.sh`:
+The script reads the DB password directly from `packages/cms/.env` (no separate `~/.pgpass` needed):
 
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
 BACKUP_DIR=/var/backups/cosmedic
-mkdir -p "$BACKUP_DIR"
-STAMP=$(date +%Y%m%d_%H%M%S)
-OUT="$BACKUP_DIR/cosmedic_${STAMP}.dump"
-
-# Format: custom (compressed, supports parallel restore, drops + recreates objects)
-pg_dump --host=127.0.0.1 --username=cosmedic --format=custom --no-owner --no-privileges --file="$OUT" cosmedic
-
-# Verify the dump is parseable
-pg_restore --list "$OUT" >/dev/null
-
-# Retention: 14 daily + 8 weekly + 6 monthly
-find "$BACKUP_DIR" -name "cosmedic_*.dump" -mtime +14 -delete  # keep last 14 days
-# (Weekly + monthly handled by separate cron — see Phase 14 plan)
-
-# Optional: rsync to off-server location (GCS / S3)
-# gsutil rsync "$BACKUP_DIR" gs://gaiada-backups/cosmedic/
+STAMP=$(date +%Y%m%d-%H%M%S)
+FILE="$BACKUP_DIR/cosmedic-$STAMP.dump"
+PGPASSWORD="$(grep DATABASE_URI /var/www/cosmedic/packages/cms/.env | sed 's/.*cosmedic:\([^@]*\)@.*/\1/')" \
+  pg_dump -h 127.0.0.1 -U cosmedic -d cosmedic -Fc -f "$FILE"
+ls -t "$BACKUP_DIR"/cosmedic-*.dump 2>/dev/null | tail -n +15 | xargs -r rm --
+echo "$(date -u +%FT%TZ) backup OK: $FILE ($(du -sh "$FILE" | cut -f1))"
 ```
 
-Required `~/.pgpass` for unattended runs:
+To run a manual backup now:
 
+```bash
+sudo /usr/local/bin/cosmedic-db-backup.sh
+ls -lh /var/backups/cosmedic/
 ```
-127.0.0.1:5432:cosmedic:cosmedic:<password>
-```
-
-Permissions: `chmod 600 ~/.pgpass`.
 
 ### Restore (full database)
 

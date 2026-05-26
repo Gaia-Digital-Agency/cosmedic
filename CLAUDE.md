@@ -70,12 +70,12 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
 - **Be supercritical + reality-grounded + 99.9999999999999% accurate.** Never overreport. Every claim of "done", every checkbox ticked, every count must reflect literal truth on disk / live site / DB. **If unsure: verify TWICE, not once** (two independent checks — e.g. grep the file AND curl the URL; query the DB AND read the page HTML). No partial-credit framing, no aspirational status, no "✅" for items where any part is blocked.
 - **Never overwrite existing CMS/DB data.** If a field/row already has a non-empty value, do NOT overwrite. Seed/migration only inserts when destination is empty (`WHERE col IS NULL OR col = ''`). Wire-up reads before write. If existing non-empty data needs to change, **ASK first** — editor content is authoritative, seed defaults are placeholders.
 
-## Current state (Phase R0/R1/R2/R4/R6/R7/R8 shipped · R3/R5 pending · Phase 8 live · CR25May active)
+## Current state (Phase R0/R1/R2/R4/R6/R7/R8 shipped · R3/R5 pending · Phase 8 live · CR25May 31/41 closed · 3 launch-blocking open)
 
 - `packages/cms` — Payload 3.84.1 on Next.js 15.4.11 + Postgres adapter, port **4007**. Admin white-labelled as **Cosmedic CMS** (Cormorant Garamond + JetBrains Mono, brand-beige palette from `docs/assets/brand-guidelines.pdf`). Light theme default (q19, 2026-05-24).
   - **18 collections** in `src/collections/` (as of 2026-05-24 — `PricingTiers` removed in q5 `a1601e5`; `InclusionItems` + `ExclusionItems` removed in q19 `1b35bfb`; orphan `Pages` collection removed (Rule 4 gate resolved 2026-05-24 — DB table `pages` retained with 8 backup rows); R8 added `PrivacySections`): Users · Media · Surgeons · Disciplines · SubCategories · Procedures · BeforeAfterCases · Stories · PressMentions · Awards · RecoveryStays · BlogPosts · BlogTags · Authors · JourneySteps · Enquiries · PrivacySections.
   - **42 globals**: 10 in `src/globals/` (Settings · Header · Footer · FloatingChrome · BrandStats · EndorsementMark · ConsultationPolicy · FormDefaults · EmailTemplates · SeoDefaults) + **14 Page Globals** in `src/globals/pages/` (HomePage · PressPage · PrivacyPage · TreatmentsPage · SurgeonsPage · ResultsPage · GalleryPage · PricingPage · JourneyPage · StoriesPage · RecoveryStaysPage · ContactPage · VideoConsultPage · BlogPage) + **18 Section Globals** added by per-Bucket detail phases: R1 ContactHero / ContactEnquirySection / ContactVisitSection (`pages/`); R7 JourneyHero / JourneyStats (`pages/`); R8 BlogPostTemplate (`pages/`); R4 SurgeonsHero / SurgeonsLeadView / SurgeonsPlasticView / SurgeonsAestheticView / SurgeonDetailTemplate (`doctors/`); R6 PricingHero / PricingOverview / PricingFootnote / PricingInsurance / PricingPayment / PricingDisciplineListView / PricingCatalogueView (`pricing/`).
-  - **Admin taxonomy (R0 shipped 2026-05-24 `97c1e23`):** 9 prefixed Buckets matching site IA reading order. Counts post per-Bucket detail phases — **a. Homepage** (8) · **b. Treatments** (4) · **c. Doctors** (7, R4 added 5 section globals `92cbb92`) · **d. Results** (5, absorbed `/stories`) · **e. Pricing** (9, R6 added 7 section globals `92cbb92`) · **f. Journey** (6, R7 added 2 section globals `622c0eb`) · **g. Contact** (8, R1 added 3 section globals `0e8e317`) · **h. About** (10, R8 added 2 — BlogPostTemplate + PrivacySections — `47393b0`/`3766e77`) · **i. Media Library** (1) · + Users ungrouped. Per-Bucket detail phases planned in [docs/remap.md](docs/remap.md) + [docs/remap_plan.md](docs/remap_plan.md), gated on user sign-off per phase. **Execution order**: R0 ✅ → R8 ✅ → R7 ✅ → R1 ✅ → R4 ✅ → R6 ✅ → **R5 next** → R3 → R2 (lowest-risk-first).
+  - **Admin taxonomy (R0 shipped 2026-05-24 `97c1e23`):** 9 Buckets matching site IA reading order. **Letter prefixes stripped in 25.18 (`59d7f36`)** — groups now read: Homepage · Treatments · Doctors · Results · Pricing · Journey · Contact · About · Media Library · + Users ungrouped. Counts post per-Bucket detail phases — Homepage (8) · Treatments (4) · Doctors (7) · Results (5) · Pricing (9) · Journey (6) · Contact (8) · About (10) · Media Library (1). Per-Bucket detail phases planned in [docs/remap.md](docs/remap.md) + [docs/remap_plan.md](docs/remap_plan.md). **Execution order**: R0 ✅ → R8 ✅ → R7 ✅ → R1 ✅ → R4 ✅ → R6 ✅ → **R5 next** → R3 → R2 (lowest-risk-first).
   - Phase-6 seed (`src/seed/runtime.ts` + `src/seed/parse-pricelist.ts`) parses all 7 sheets of `docs/assets/pricelist.xlsx` and idempotently upserts into Payload via Local API. Run with `pnpm --filter @cosmedic/cms seed`. Seed source files are imported from `packages/web/src/content/*` via relative path (will be deleted after Phase 6c rewires every web page).
   - Counts seeded: **149 PriceListItems**, 233 Procedures, 8 Surgeons, 6 Disciplines, 17 SubCategories, 24 MachineTreatments, 43 HairRemovalAreas, 34 InjectableProducts, 6 JourneySteps, 5 Awards, 3 PressMentions, 6 RecoveryStays, 7 BlogPosts, 10 globals. (PricingTiers / InclusionItems / ExclusionItems / Pages no longer seeded — q5, q19, Rule-4 close-out.)
 - `packages/web` — Vite 6 SSR + React 19 + Express, port **3007**. Renders the full homepage matching the Claude Design source.
@@ -84,10 +84,11 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
   - Primitives: `Btn`, `Mono`/`Eyebrow`, `Img` (painted-SVG fallback), `Reveal` (IntersectionObserver), `PriceTag` (IDR + AUD), `ChapterOpener`, `TrustBar`, `CTABandSlim`.
   - Shell: `Header` (mega-menu hover bridge, EN|ID, scroll-state, mobile drawer) + `Footer` (3 columns + newsletter) + `FloatingChrome` (CTA pill + WhatsApp fab) + `PageShell`.
   - Homepage (`src/routes/home/`): Hero · TrustStrip · Intro · Treatments · PricingTeaser · Surgeons · Gallery · LeadMagnet · Journey · Stories · Place.
-  - Detail templates (`src/routes/detail/`): `DisciplineDetail` (6 routes) · `SubCategoryDetail` (22 routes) · `SurgeonDetail` (8 routes).
-  - Index + content pages (`src/routes/*/`): `treatments` · `surgeons` · `results` · `gallery` · `stories` · `journey` · `pricing` · `recovery-stays` · `press` · `contact` · `video-consult` · `blog` (index + post) · `privacy` (14 routes).
-  - Total **51 live routes** + 404 for unknown paths.
-  - SSR router (`src/router.ts`) parses `pathname` → `{kind, slug}` via static-routes map + treatment/surgeon/blog matchers. Status 404 on unknown slugs. `entry-server.tsx` / `entry-client.tsx` both resolve before render so hydration matches SSR.
+  - Detail templates (`src/routes/detail/`): `DisciplineDetail` (6 routes) · `SubCategoryDetail` (17 routes) · `SurgeonDetail` (8 routes).
+  - Index + content pages (`src/routes/*/`): `treatments` · `surgeons` · `results` · `gallery` · `stories` · `journey` · `pricing` · `recovery-stays` · `press` · `contact` · `video-consult` · `blog` (index + 7 posts) · `privacy` (14 routes).
+  - Total **52 live routes** + 404 for unknown paths.
+  - **URL structure (post-25.15)**: sub-categories nested at `/treatments/{discipline-slug}/{sub-slug}` (e.g. `/treatments/surgical/face`). 28 legacy flat URLs redirect via 301 (`LEGACY_SUB_REDIRECTS` in `router.ts`). Discipline slugs: `weight-loss` · `dental` · `hair` · `non-surgical` · `reconstructive` · `surgical` (note: `recovery` renamed to `weight-loss` in 25.14).
+  - SSR router (`src/router.ts`) parses `pathname` → `{kind, slug}` via static-routes map + nested treatment/surgeon/blog matchers + 301 redirect handler. Status 404 on unknown slugs. `entry-server.tsx` / `entry-client.tsx` both resolve before render so hydration matches SSR.
   - Seed data in `src/content/seed.ts` — `TREATMENT_LIST`, `SUBCATEGORIES_BY_DISCIPLINE`, `SURGEON_LIST`, `BA_PAIRS`, `STORY_PORTRAITS`, `IMG`, `TREATMENT_IMG()`, `SURGEON_IMG()`, `WHATSAPP_HREF`.
   - Editorial content for detail pages: `src/content/treatment-content.ts` (per-discipline) + `src/content/subcategory-data.ts` (per-sub-category, 22 entries, with `treatments[]` accordion data). Phase 6 replaces all four `src/content/*` files with Payload-backed fetch.
   - Brand + treatment + surgeon + B&A imagery at `packages/web/public/assets/{logo*.png,treatments/,surgeons/,results/}`.
@@ -101,12 +102,19 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
 
 - **Phase 8**: Live at **https://cosmedic.gaiada.online** with green padlock. DNS A → `34.124.244.233`; Let's Encrypt cert at `/etc/letsencrypt/live/cosmedic.gaiada.online/` (issued 2026-05-20, expires 2026-08-18). nginx block in `/etc/nginx/sites-enabled/subdomains.gaiada.online` mirrors the VRTPN pattern — HTTP→HTTPS 301, web-owned `/api/{page-data,preview,exit-preview,revalidate,enquiry}` → `:3007`, Payload `/admin` + `/_next` + `/api` → `:4007` (25M client_max_body_size for media uploads), `/` → `:3007` (Vite SSR). Nginx backups under `/etc/nginx/backups/`. SMTP creds outstanding: see CR25May 25.3.
 
-- **Recent CR25May commits (2026-05-25)**:
-  - `467ad4f` — 25.1 cleanup audit verified (footer brand-col + surgeon portraits all 8 real). Footer logo now CMS-driven.
-  - `f22220f` — 25.2 closed 9 hardcoded footer atoms (brandTagline, treatmentsHeading, newsletter group, footerBottomLines, social enum on linkColumns). Added Step 0 structural-diff gate to workflow.
-  - `b397c5d` — 25.2 SMTP Path B refactor (transportOptions API + skipVerify, no JSON fallback). Adds `Settings.clinicEnquiryEmail` with env fallback.
-  - `c9a1efe` — 25.19 brown.svg logo swap + 5-color palette enforcement (`#1F1B16`, `#533E27`, `#A67C52`, `#E6DCC8`, `#F4EFE6`). Derived `--ink-*` greys swapped to `rgba(31,27,22,a)`.
-  - `3a87d4c` — R2 Homepage Bucket detail: 10 section globals under `globals/home/` (home-hero / home-intro / home-lead-magnet / home-place + 6 view-mirrors).
+- **CR25May status (2026-05-26): 31/41 closed · 3 launch-blocking open (25.3 SMTP, 25.32 visual QA, 25.38 form E2E)**. See [docs/changes/change_request_may25.md](docs/changes/change_request_may25.md) + [temp.md](temp.md) for full Completed/Pending breakdown.
+
+- **Key CR25May commits (2026-05-25 → 2026-05-26)**:
+  - `c9a1efe` — 25.19 brown.svg logo swap + 5-color palette enforcement.
+  - `3a87d4c` — R2 Homepage Bucket detail: 10 section globals under `globals/home/`.
+  - `2ed10ec` — 25.13c IDR/AUD toggle on treatment detail pages.
+  - `881c136` — 25.30+25.31 WhatsApp number + hospital name single-sourced from CMS Settings.
+  - `14a292f` — 25.17 PricingTeaser + PricingPage flipped to IDR-source; AUD fields removed from Procedures CMS.
+  - `a27f5b4` — 25.40+25.41 nav reorder (Treatments > Results > Doctors > Pricing > Journey > Contact) + Clinic Catalogue first on /pricing.
+  - `59d7f36` — 25.18 strip letter prefixes from all admin bucket groups.
+  - `d3178fd` / `035dbba` — 25.27+25.28+25.29 contact/privacy/not-found pages wired to CMS.
+  - `0318d16` — 25.23 Home Place image wired to CMS (HomePlace.image upload field).
+  - `6f73326` — 25.36 DB backup cron setup; fix 25.40/25.41 detail status; refresh temp.md.
 
 ### Historical infra changes (kept for context)
 
@@ -121,6 +129,8 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
 - **`tsx` scripts that call `getPayload()` trigger `pushDevSchema`** unless `NODE_ENV=production` is set. The drizzle push tries `ALTER TABLE ... DROP CONSTRAINT` and fails on non-owner. Always invoke one-off migration scripts as `NODE_ENV=production pnpm --filter @cosmedic/cms exec tsx <script>`.
 - **`git stash -u` will sweep untracked top-level directories** — `changes/` got vacuumed into the stash during rollback. Recoverable via `git checkout stash@{0}^3 -- <path>`. `/changes/` is now in `.gitignore` for scratch uploads.
 - **CMS `next build` chokes on cross-package seed imports** of `@/lib/cms-proxy`. Fix: add seed scripts to `packages/cms/tsconfig.json` `exclude` (precedent: `a18c700`). They run via `tsx` CLI; Next doesn't need to bundle them.
+- **psql peer-auth error** (`FATAL: Peer authentication failed for user "cosmedic"`) — always connect via TCP: `psql -h 127.0.0.1 -U cosmedic -d cosmedic`. Extract password: `PGPASSWORD=$(grep DATABASE_URI packages/cms/.env | sed 's/.*cosmedic:\([^@]*\)@.*/\1/')`.
+- **DB backup** — daily `pg_dump` cron at `0 2 * * *` UTC via `/usr/local/bin/cosmedic-db-backup.sh`. Dumps to `/var/backups/cosmedic/`, retains 14 copies, logs to `/var/log/cosmedic-backup.log`. First dump: `cosmedic-20260526-053120.dump` (1.5 MB). To restore: `PGPASSWORD=... pg_restore -h 127.0.0.1 -U cosmedic -d cosmedic -Fc /var/backups/cosmedic/<file>.dump`.
 
 ## Completed phases (full detail in docs)
 
