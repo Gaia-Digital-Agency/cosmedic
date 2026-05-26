@@ -36,9 +36,28 @@
   --color-accent: var(--cs-accent);
 }
 
+/* ── No horizontal scroll ─────────────────────────────────────────── */
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 body,
 .payload__app {
   font-family: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+}
+
+/* Payload's inner layout wrappers — prevent any child from punching out */
+.payload__app,
+.app-header,
+.template-default,
+.template-default__wrap,
+.collection-list,
+.render-fields,
+.form-submit {
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .payload__app input,
