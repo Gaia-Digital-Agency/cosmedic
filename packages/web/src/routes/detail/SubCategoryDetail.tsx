@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { PageShell } from '@/components/shell/PageShell'
 import { ChapterOpener } from '@/components/primitives/ChapterOpener'
 import { Reveal } from '@/components/primitives/Reveal'
@@ -54,6 +54,8 @@ export const SubCategoryDetail: React.FC<Props> = ({ disciplineSlug, slug }) => 
   const tpl = cms?.subCategoryDetailTemplate
   // 25.30 — single-source WhatsApp number from CMS Settings; strip non-digits for wa.me URL
   const waNumber = (cms?.settings?.whatsappNumber || '').replace(/\D/g, '') || '6281339001911'
+  // 25.13c — IDR/AUD currency toggle
+  const [preferAud, setPreferAud] = useState(false)
   const sep = tpl?.chapterSeparator || FB.chapterSeparator
   const toc = {
     onThisPageLabel: tpl?.toc?.onThisPageLabel || FB.toc.onThisPageLabel,
@@ -219,13 +221,39 @@ export const SubCategoryDetail: React.FC<Props> = ({ disciplineSlug, slug }) => 
 
           <section id="treatments">
             <Reveal>
-              <h2>{treatments.heading}</h2>
+              <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
+                <h2 style={{ margin: 0 }}>{treatments.heading}</h2>
+                {/* 25.13c — currency toggle pill */}
+                <button
+                  type="button"
+                  onClick={() => setPreferAud((v) => !v)}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 0,
+                    border: '1px solid var(--ink-20)',
+                    borderRadius: 2,
+                    padding: 0,
+                    background: 'none',
+                    cursor: 'pointer',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: 10,
+                    letterSpacing: '0.18em',
+                    textTransform: 'uppercase',
+                    overflow: 'hidden',
+                  }}
+                  aria-label="Toggle currency display"
+                >
+                  <span style={{ padding: '6px 10px', background: !preferAud ? 'var(--accent-deep)' : 'transparent', color: !preferAud ? 'var(--paper)' : 'var(--ink-60)', transition: 'background .2s' }}>IDR</span>
+                  <span style={{ padding: '6px 10px', background: preferAud ? 'var(--accent-deep)' : 'transparent', color: preferAud ? 'var(--paper)' : 'var(--ink-60)', transition: 'background .2s' }}>AUD</span>
+                </button>
+              </div>
               <p>{treatments.intro}</p>
             </Reveal>
             <div style={{ marginTop: 32, borderTop: '1px solid var(--ink-20)' }}>
               {s.treatments.map((t, i) => (
                 <Reveal key={i} delay={i * 30}>
-                  <TreatmentRow t={t} subTitle={s.title} waNumber={waNumber} />
+                  <TreatmentRow t={t} subTitle={s.title} waNumber={waNumber} preferAud={preferAud} />
                 </Reveal>
               ))}
             </div>

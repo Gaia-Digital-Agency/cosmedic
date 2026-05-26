@@ -7,14 +7,15 @@ type Props = {
   align?: 'left' | 'right'
   invert?: boolean
   suffix?: string
+  preferAud?: boolean  // 25.13c — when true, show AUD primary + IDR secondary
 }
 
-export const PriceTag: React.FC<Props> = ({ idr, align = 'right', invert = false, suffix }) => {
+export const PriceTag: React.FC<Props> = ({ idr, align = 'right', invert = false, suffix, preferAud = false }) => {
   const p = priceParts(idr, { suffix })
   const locale = useLocale()
   if (!p) return null
-  const showAud = locale === 'en' && Boolean(p.aud)
-  if (!showAud) {
+  const hasBoth = locale === 'en' && Boolean(p.aud)
+  if (!hasBoth) {
     return (
       <span
         style={{
@@ -30,6 +31,8 @@ export const PriceTag: React.FC<Props> = ({ idr, align = 'right', invert = false
       </span>
     )
   }
+  const primary = preferAud ? p.aud : p.idr
+  const secondary = preferAud ? `≈ ${p.idr}` : `≈ ${p.aud}`
   return (
     <span
       style={{
@@ -49,7 +52,7 @@ export const PriceTag: React.FC<Props> = ({ idr, align = 'right', invert = false
           whiteSpace: 'nowrap',
         }}
       >
-        {p.idr}
+        {primary}
       </span>
       <span
         style={{
@@ -60,7 +63,7 @@ export const PriceTag: React.FC<Props> = ({ idr, align = 'right', invert = false
           whiteSpace: 'nowrap',
         }}
       >
-        ≈ {p.aud}
+        {secondary}
       </span>
     </span>
   )

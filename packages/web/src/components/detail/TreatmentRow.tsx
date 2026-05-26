@@ -8,7 +8,8 @@ type Treatment = SubCategoryEntry['treatments'][number]
 type Props = {
   t: Treatment
   subTitle: string
-  waNumber?: string  // 25.30 — caller passes Settings-derived number; fallback to hardcoded
+  waNumber?: string   // 25.30 — caller passes Settings-derived number; fallback to hardcoded
+  preferAud?: boolean // 25.13c — show AUD primary when true
 }
 
 function formatPrice(val: Treatment['priceFromIdr']): {
@@ -28,7 +29,7 @@ function formatPrice(val: Treatment['priceFromIdr']): {
   return { idr: parts.idr, aud: parts.aud, label: null }
 }
 
-export const TreatmentRow: React.FC<Props> = ({ t, subTitle, waNumber = '6281339001911' }) => {
+export const TreatmentRow: React.FC<Props> = ({ t, subTitle, waNumber = '6281339001911', preferAud = false }) => {
   const [open, setOpen] = useState(false)
   const price = formatPrice(t.priceFromIdr)
   const procParam = encodeURIComponent(`${subTitle} — ${t.name}`)
@@ -96,18 +97,20 @@ export const TreatmentRow: React.FC<Props> = ({ t, subTitle, waNumber = '6281339
                   whiteSpace: 'nowrap',
                 }}
               >
-                {price.idr}
+                {preferAud && price.aud ? price.aud : price.idr}
               </span>
-              <span
-                style={{
-                  fontFamily: 'var(--font-serif)',
-                  fontStyle: 'italic',
-                  fontSize: 13,
-                  color: 'var(--ink-60)',
-                }}
-              >
-                ≈ {price.aud}
-              </span>
+              {(preferAud ? price.idr : price.aud) && (
+                <span
+                  style={{
+                    fontFamily: 'var(--font-serif)',
+                    fontStyle: 'italic',
+                    fontSize: 13,
+                    color: 'var(--ink-60)',
+                  }}
+                >
+                  ≈ {preferAud ? price.idr : price.aud}
+                </span>
+              )}
             </>
           )}
         </div>

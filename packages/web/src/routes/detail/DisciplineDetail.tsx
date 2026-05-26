@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { PageShell } from '@/components/shell/PageShell'
 import { ChapterOpener } from '@/components/primitives/ChapterOpener'
 import { Reveal } from '@/components/primitives/Reveal'
@@ -61,6 +61,8 @@ export const DisciplineDetail: React.FC<Props> = ({ slug }) => {
 
   const cms = useCms()
   const tpl = cms?.disciplineDetailTemplate
+  // 25.13c — IDR/AUD currency toggle
+  const [preferAud, setPreferAud] = useState(false)
   const toc = {
     onThisPageLabel: tpl?.toc?.onThisPageLabel || FB.toc.onThisPageLabel,
     overviewLabel: tpl?.toc?.overviewLabel || FB.toc.overviewLabel,
@@ -258,7 +260,33 @@ export const DisciplineDetail: React.FC<Props> = ({ slug }) => {
           {!c.subcategories && c.procedures && (
             <section id="procedures">
               <Reveal>
-                <h2>{procedures.heading}</h2>
+                <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
+                  <h2 style={{ margin: 0 }}>{procedures.heading}</h2>
+                  {/* 25.13c — currency toggle pill */}
+                  <button
+                    type="button"
+                    onClick={() => setPreferAud((v) => !v)}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 0,
+                      border: '1px solid var(--ink-20)',
+                      borderRadius: 2,
+                      padding: 0,
+                      background: 'none',
+                      cursor: 'pointer',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 10,
+                      letterSpacing: '0.18em',
+                      textTransform: 'uppercase',
+                      overflow: 'hidden',
+                    }}
+                    aria-label="Toggle currency display"
+                  >
+                    <span style={{ padding: '6px 10px', background: !preferAud ? 'var(--accent-deep)' : 'transparent', color: !preferAud ? 'var(--paper)' : 'var(--ink-60)', transition: 'background .2s' }}>IDR</span>
+                    <span style={{ padding: '6px 10px', background: preferAud ? 'var(--accent-deep)' : 'transparent', color: preferAud ? 'var(--paper)' : 'var(--ink-60)', transition: 'background .2s' }}>AUD</span>
+                  </button>
+                </div>
                 <p>{procedures.intro}</p>
               </Reveal>
               <div style={{ marginTop: 32, borderTop: '1px solid var(--ink-20)' }}>
@@ -286,7 +314,7 @@ export const DisciplineDetail: React.FC<Props> = ({ slug }) => {
                       >
                         {p.d}
                       </p>
-                      <PriceTag idr={p.priceFromIdr} align="right" />
+                      <PriceTag idr={p.priceFromIdr} align="right" preferAud={preferAud} />
                       <span
                         style={{
                           display: 'flex',
