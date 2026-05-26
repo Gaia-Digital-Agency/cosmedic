@@ -2,60 +2,6 @@
 
 Three sections: **RULES**, **TODO LIST**, **DETAILS** (What / Why / How / Where).
 
----
-
-# SECTION 1 — RULES
-
-> **Mandatory.** Read this entire section before opening any item below. No exceptions.
-
-## 8 Cosmedic locked rules (CMS-side)
-
-1. **Simplify** — every CMS change must reduce complexity, not add it. Audit before designing. See `feedback_cms_optimize_simplify.md`.
-2. **No silent duplication** — every editorial atom has exactly one source-of-truth field in CMS. No parallel collections, no per-route hardcoded duplicates.
-3. **Visual invariance** — refactor never changes what the user sees. Live render is the contract.
-4. **Editor-friendly admin** — every field has an `admin.description`. Group by where it shows on the site (Phase R bucketing). Position-sort, not alphabetical.
-5. **DB integrity** — schema changes apply via SQL migrations registered in `payload_migrations`. Direct psql DDL sets ownership to `cosmedic`. No `pushDevSchema` in production.
-6. **Localization-ready** — every editorial field `localized: true` even pre-Phase-9.
-7. **Rich-text discipline** — Lexical only where rich formatting is needed. Plain text for headings/labels.
-8. **Universal coverage, no duplication** — every site atom maps to exactly one CMS field. Full Payload capability preserved.
-
-## 4 Standing rules
-
-1. **Only do as told** — never filter, curate, omit, or "tidy up". Render reality complete; user decides what's relevant.
-2. **Never guess** — research first. If unknown, say "cannot" — never present a guess as a solution.
-3. **Do as told, not clever** — execute the literal request. Don't expand scope, don't pick locations silently.
-4. **Be supercritical + reality-grounded + 99.9999999999999% accurate** — never overreport. Every claim of "done", every checkbox ticked, every count must reflect what is literally true on disk / on live site / in DB. **If unsure: verify TWICE, not once.** Two independent checks (e.g. grep the file + curl the live URL; query the DB + read the page HTML). Then state the result. No partial-credit framing, no aspirational status, no "✅" for items where part is blocked.
-
-## 5 Operating rules
-
-1. **Verify before telling user to test** — never give "click here" admin steps without confirming the UI renders.
-2. **Before/After always two tables** — remap proposals = TWO tables (BEFORE + AFTER), columns always `Admin Item | Site Page`. Never merged.
-3. **No frontend data loss on CMS refactor** — UI must remain byte-identical through any plumbing change. Seed before rewire; diff-verify before declaring done. **Reskin / redesign tasks also count.**
-4. **Structural-diff gate (Step 0)** — any task touching a layout file (Footer/Header/PageShell/route shells) MUST structural-diff against `design/shared.jsx` BEFORE designing. Design mirror wins over PDF reference.
-5. **Never overwrite existing CMS/DB data** — if a field/row already has a non-empty value, do NOT overwrite. Seed/migration only inserts when destination is empty (`WHERE col IS NULL OR col = ''`). Wire-up reads before write. If you believe existing non-empty data needs to change, **ASK the user first**. Editor-entered content is authoritative; seed defaults are placeholders.
-
-## Project guardrails (CLAUDE.md)
-
-- Scope to `/var/www/cosmedic/`. Never touch sibling sites.
-- Never `pm2 restart all`. Cosmedic processes only.
-- Always `nginx -t` before reload.
-- Pixel-Fidelity Gate — production matches `design/` 100%.
-- Lighthouse Green Gate — A11y / Best-Practices / SEO ≥ 90 on every route × every breakpoint.
-- CMS-Sufficiency Gate — every editorial atom traces to a CMS field.
-
-## 8-step workflow per item
-
-0. Structural-diff gate (Operating rule #4)
-1. Audit site
-2. Audit CMS
-3. Decide CMS change
-4. Decide DB change
-5. Decide if change makes situation worse
-6. **Propose for approval — MUST not act before approval**
-7. Commit + push
-
----
-
 # SECTION 2 — TODO LIST (41 items × 6 checkboxes)
 
 Each item has 6 verification checkboxes:
