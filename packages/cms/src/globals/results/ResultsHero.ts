@@ -7,7 +7,7 @@ export const ResultsHero: GlobalConfig = {
   slug: 'results-hero',
   label: 'b. Hero',
   admin: {
-    group: 'd. Results',
+    group: 'Results',
     description:
       'ChapterOpener at the top of /results — chapter eyebrow, two-line title, lede, hero image, image hue, image label, breadcrumb label. Single source of truth for the /results hero.',
   },

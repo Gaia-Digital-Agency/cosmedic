@@ -7,7 +7,7 @@ export const PricingOverview: GlobalConfig = {
   slug: 'pricing-overview',
   label: 'c. Overview',
   admin: {
-    group: 'e. Pricing',
+    group: 'Pricing',
     description:
       'Optional editorial overview between the chapter opener and the discipline price list. Leave every field blank and the section will not render.',
   },

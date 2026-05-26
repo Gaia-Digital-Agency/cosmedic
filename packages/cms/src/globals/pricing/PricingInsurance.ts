@@ -7,7 +7,7 @@ export const PricingInsurance: GlobalConfig = {
   slug: 'pricing-insurance',
   label: 'e. Insurance',
   admin: {
-    group: 'e. Pricing',
+    group: 'Pricing',
     description:
       'Left column of the two-column section at the bottom of /pricing — insurance copy.',
   },

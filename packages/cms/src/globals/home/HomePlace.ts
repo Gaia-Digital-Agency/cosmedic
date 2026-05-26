@@ -7,7 +7,7 @@ export const HomePlace: GlobalConfig = {
   slug: 'home-place',
   label: 'h. Place',
   admin: {
-    group: 'a. Homepage',
+    group: 'Homepage',
     description:
       '"Recover in paradise" / Place section on /. Eyebrow, two-line heading, body paragraph, the 4 lettered rows (A./B./C./D.), and the bottom CTA.',
   },
@@ -15,6 +15,8 @@ export const HomePlace: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     apiWarningField,
+    { name: 'image', type: 'upload', relationTo: 'media',
+      admin: { description: 'Lead image for the "Recover in paradise" section (left column). 1200×1500 portrait orientation works best. Falls back to a placeholder when empty.' } },
     { name: 'eyebrow', type: 'text', defaultValue: 'Recovery in Bali',
       admin: { description: 'Section eyebrow.' } },
     { name: 'headingPart1', type: 'text', defaultValue: 'Recover',

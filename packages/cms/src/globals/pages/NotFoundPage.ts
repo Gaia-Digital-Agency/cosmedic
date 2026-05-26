@@ -7,7 +7,7 @@ export const NotFoundPage: GlobalConfig = {
   slug: 'not-found-page',
   label: 'h. 404 Not Found',
   admin: {
-    group: 'h. About',
+    group: 'About',
     description: 'Editorial content for the 404 Not Found page (shown whenever a URL doesn\'t match any route).',
   },
   access: { read: readPublic, update: isAuthenticated },

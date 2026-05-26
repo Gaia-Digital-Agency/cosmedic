@@ -10,7 +10,7 @@ export const JourneySteps: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['number', 'title', 'order', 'sortOrder'],
-    group: 'f. Journey',
+    group: 'Journey',
     description:
       'The numbered patient-journey steps shown on /journey. Each row is one card (number, title, body paragraph, four bullets, image). Order via the `order` field (or sortOrder).',
   },

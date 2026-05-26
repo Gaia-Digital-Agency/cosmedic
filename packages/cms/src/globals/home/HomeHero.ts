@@ -7,7 +7,7 @@ export const HomeHero: GlobalConfig = {
   slug: 'home-hero',
   label: 'b. Hero',
   admin: {
-    group: 'a. Homepage',
+    group: 'Homepage',
     description:
       'Hero at the top of / — eyebrow, two-line title, lede, hero image, plus chrome strings for the right-side quick-enquiry card and the two primary CTAs beneath the headline.',
   },

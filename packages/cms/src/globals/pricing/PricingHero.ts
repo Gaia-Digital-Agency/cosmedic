@@ -7,7 +7,7 @@ export const PricingHero: GlobalConfig = {
   slug: 'pricing-hero',
   label: 'b. Hero',
   admin: {
-    group: 'e. Pricing',
+    group: 'Pricing',
     description:
       'ChapterOpener at the top of /pricing — chapter eyebrow, two-line title, lede, hero image, image hue, image label, breadcrumb label. Single source of truth for the /pricing hero.',
   },

@@ -10,7 +10,7 @@ export const Stories: CollectionConfig = {
   admin: {
     useAsTitle: 'patientLabel',
     defaultColumns: ['patientLabel', 'procedure', 'country', 'isFeatured'],
-    group: 'd. Results',
+    group: 'Results',
     description: 'Patient testimonials. Renders on /stories (full set), /results (Stories-View section), and the homepage Stories section. Use anonymous labels (e.g. "Sarah, 42, Sydney") — no full names. Sidebar label is "h. Patient-Stories" to disambiguate from the /stories page Global (f. Stories) in the same Bucket; the underlying Payload slug remains `stories`.',
   },
   access: {

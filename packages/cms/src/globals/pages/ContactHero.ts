@@ -7,7 +7,7 @@ export const ContactHero: GlobalConfig = {
   slug: 'contact-hero',
   label: 'b. Hero',
   admin: {
-    group: 'g. Contact',
+    group: 'Contact',
     description: 'Hero block on /contact: chapter eyebrow, two-line title, lede, hero image, and breadcrumb label. Edit the image and copy here; the address / hours / phone shown lower on the page live on a. Homepage → Settings.',
   },
   access: { read: readPublic, update: isAuthenticated },

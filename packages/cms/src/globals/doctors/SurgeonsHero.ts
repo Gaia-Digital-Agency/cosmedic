@@ -7,7 +7,7 @@ export const SurgeonsHero: GlobalConfig = {
   slug: 'surgeons-hero',
   label: 'b. Hero',
   admin: {
-    group: 'c. Doctors',
+    group: 'Doctors',
     description:
       'Hero (ChapterOpener) for the /surgeons index page. Single source of truth — used nowhere else.',
   },

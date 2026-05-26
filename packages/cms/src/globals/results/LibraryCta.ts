@@ -7,7 +7,7 @@ export const LibraryCta: GlobalConfig = {
   slug: 'library-cta',
   label: 'c. Library-Cta',
   admin: {
-    group: 'd. Results',
+    group: 'Results',
     description:
       '"Private gallery / Want to see more?" CTA shown at the bottom of /results and /gallery. Edit once — applies to BOTH pages.',
   },

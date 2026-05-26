@@ -8,7 +8,7 @@ export const RecoveryStaysPage: GlobalConfig = {
   dbName: 'rec_stays_pg',
   label: 'e. Recovery-Stays',
   admin: {
-    group: 'f. Journey',
+    group: 'Journey',
     description:
       'Whole /recovery-stays editorial: hero, the 4-tile top stats row, "The portfolio" section heading (cards come from f. Villas), and "What\'s included" section heading + inclusions list. The legacy chapterTitle / tagline / lede / sections fields above remain available for the optional CmsExtraBlocks slot — the new groups below are what actually render the page.',
   },

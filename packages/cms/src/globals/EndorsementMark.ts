@@ -7,7 +7,7 @@ export const EndorsementMark: GlobalConfig = {
   slug: 'endorsement-mark',
   label: 'j. Endorsement',
   admin: {
-    group: 'a. Homepage',
+    group: 'Homepage',
     description: '"Managed by BIMC Hospital" co-brand mark rendered next to the logo in BOTH the header and the footer on every page. Sourced from brand.pdf §I.',
   },
   access: { read: readPublic, update: isAuthenticated },

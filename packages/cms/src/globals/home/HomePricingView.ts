@@ -7,7 +7,7 @@ export const HomePricingView: GlobalConfig = {
   slug: 'home-pricing-view',
   label: 'n. Pricing-View',
   admin: {
-    group: 'a. Homepage',
+    group: 'Homepage',
     description:
       'Section chrome for the Pricing teaser on / (the 8 price tiles + footnote + view-all CTA). The prices themselves are NOT edited here — source: **e. Pricing → PriceListItems / Procedures** (catalogueGroup, name, IDR + AUD). This item controls only the eyebrow, heading, lede, footnote, and view-all CTA.',
   },

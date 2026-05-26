@@ -7,7 +7,7 @@ export const BrandStats: GlobalConfig = {
   slug: 'brand-stats',
   label: 'f. Trust-Strip',
   admin: {
-    group: 'a. Homepage',
+    group: 'Homepage',
     description: 'The trust-bar stats strip rendered directly under the homepage hero (default: "28 years · 8 ISAPS-FICS · 3,400+ procedures · #1 hospital 2026"). Sourced from brand.pdf §IV.',
   },
   access: { read: readPublic, update: isAuthenticated },

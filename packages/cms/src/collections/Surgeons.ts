@@ -10,7 +10,7 @@ export const Surgeons: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'group', 'lead', 'sortOrder'],
-    group: 'c. Doctors',
+    group: 'Doctors',
     description: 'The clinic\'s surgeons. Each record renders on: (1) the /surgeons listing card, (2) the /surgeons/{slug} detail page, (3) the Doctors mega-menu, (4) blog bylines when the surgeon is the author, (5) discipline + sub-category pages as Lead Surgeon. Edit ONCE here — every page using this doctor updates.',
   },
   access: {

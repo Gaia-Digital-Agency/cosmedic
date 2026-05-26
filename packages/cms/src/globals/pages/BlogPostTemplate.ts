@@ -15,7 +15,7 @@ export const BlogPostTemplate: GlobalConfig = {
   slug: 'blog-post-template',
   label: 'j. Blog-Post-Template',
   admin: {
-    group: 'h. About',
+    group: 'About',
     description:
       'Template-level chrome shared across every /blog/<slug> post. Per-post data (title, hero, body, author byline) lives on the BlogPosts row; this global holds only the labels + CTAs that are identical across all posts.',
   },

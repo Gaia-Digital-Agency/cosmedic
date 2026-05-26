@@ -7,7 +7,7 @@ export const PricingFootnote: GlobalConfig = {
   slug: 'pricing-footnote',
   label: 'd. Footnote',
   admin: {
-    group: 'e. Pricing',
+    group: 'Pricing',
     description:
       'Centred italic footnote rendered between the discipline price list and the full clinic catalogue table.',
   },

@@ -17,7 +17,7 @@ export const ClinicCatalogueItems: CollectionConfig = {
       'audienceTier',
       'sortOrder',
     ],
-    group: 'e4. Pricing — Clinic',
+    group: 'Pricing',
     description:
       'The flat clinic price catalogue rendered as "The full clinic catalogue." on /pricing. Grouped by catalogueGroup → mainCategory. Editors edit a row here to update the price on the public site. Shares its full editorial field set with Procedures (description / detail / images / SEO) so every atom is preserved and CRUD-able; well-being-style relations (parentSubCategory) are intentionally absent — those items live in the Procedures collection under b. Treatments.',
   },

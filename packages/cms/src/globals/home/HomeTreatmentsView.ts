@@ -7,7 +7,7 @@ export const HomeTreatmentsView: GlobalConfig = {
   slug: 'home-treatments-view',
   label: 'm. Treatments-View',
   admin: {
-    group: 'a. Homepage',
+    group: 'Homepage',
     description:
       'Section chrome for the Treatments preview on / (the 6 discipline cards row). The cards themselves are NOT edited here — source: **b. Treatments → e. Disciplines** (rank, title, image, body). This item controls only the eyebrow, heading and lede.',
   },

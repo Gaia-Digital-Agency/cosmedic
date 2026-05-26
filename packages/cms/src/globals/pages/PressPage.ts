@@ -7,7 +7,7 @@ export const PressPage: GlobalConfig = {
   slug: 'press-page',
   label: 'e. Press',
   admin: {
-    group: 'h. About',
+    group: 'About',
     description:
       'Editorial content for /press: hero + the two section headings (Accreditations + In the press). Each accreditation card comes from the Awards collection; each press row from PressMentions. Edit those collections to add/remove items.',
   },

@@ -7,7 +7,7 @@ export const JourneyHero: GlobalConfig = {
   slug: 'journey-hero',
   label: 'b. Hero',
   admin: {
-    group: 'f. Journey',
+    group: 'Journey',
     description:
       'Hero (ChapterOpener) at the top of /journey. Chapter eyebrow, two-line title, lede, hero image, and breadcrumb label.',
   },

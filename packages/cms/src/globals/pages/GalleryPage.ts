@@ -7,7 +7,7 @@ export const GalleryPage: GlobalConfig = {
   slug: 'gallery-page',
   label: 'e. Gallery',
   admin: {
-    group: 'd. Results',
+    group: 'Results',
     description:
       'Whole /gallery editorial: hero + filter-bar chrome + the shared Library-Cta block at the bottom (edited in c. Library-Cta — same Bucket — single source of truth across /results + /gallery). The before/after card grid is rendered from **g. Before-After-Cases**. Use the chapterTitle / tagline / lede / heroImage fields for the ChapterOpener; the imageHue / imageLabel / breadcrumbLabel / filterBarLabel / countFormat fields below complete the hero + filter chrome.',
   },

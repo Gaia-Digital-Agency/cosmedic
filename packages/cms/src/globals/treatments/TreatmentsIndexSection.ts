@@ -7,7 +7,7 @@ export const TreatmentsIndexSection: GlobalConfig = {
   slug: 'treatments-index-section',
   label: 'c. Index',
   admin: {
-    group: 'b. Treatments',
+    group: 'Treatments',
     description:
       '"An Index" section on /treatments — section eyebrow, heading, lede, and the "Read more →" link template that appears under every discipline card. The discipline cards themselves are sourced from b. Treatments → e. Disciplines.',
   },

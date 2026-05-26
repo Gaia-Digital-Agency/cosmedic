@@ -158,7 +158,7 @@ export const HomePage: GlobalConfig = {
   slug: 'home-page',
   label: 'a. Main',
   admin: {
-    group: 'a. Homepage',
+    group: 'Homepage',
     description:
       'Page-level shell for / (home): title, slug, route, publishStatus, generic sections array, and the SEO group. Hero + section editorial moved to dedicated globals (b. Hero, e. Intro, g. Lead-Magnet, h. Place + the 6 view sections m–r) in Phase R2. The 9 block fields below are deprecated reads — kept until sign-off so editor data is not lost; the live route reads from the new section globals.',
   },

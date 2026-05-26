@@ -9,7 +9,7 @@ export const BlogTags: CollectionConfig = {
   labels: { singular: 'c. Blog-Tag', plural: 'c. Blog-Tags' },
   admin: {
     useAsTitle: 'name',
-    group: 'h. About',
+    group: 'About',
     description: 'Topic tags applied to blog posts. Rendered as filter chips on /blog and as the "Filed under" label on each post page.',
   },
   access: {

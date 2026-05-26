@@ -8,7 +8,7 @@ export const Authors: CollectionConfig = {
   labels: { singular: 'd. Author', plural: 'd. Authors' },
   admin: {
     useAsTitle: 'name',
-    group: 'h. About',
+    group: 'About',
     description: 'Blog post authors. Each author has a name, role, portrait, bio, and an optional link to a Surgeon record (when the author is one of the clinic\'s clinicians). Powers the byline + "About the author" callout on each /blog/{slug} page.',
   },
   access: {

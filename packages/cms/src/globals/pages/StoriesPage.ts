@@ -7,7 +7,7 @@ export const StoriesPage: GlobalConfig = {
   slug: 'stories-page',
   label: 'f. Stories',
   admin: {
-    group: 'd. Results',
+    group: 'Results',
     description:
       'Whole /stories editorial: hero + the shared Share-Cta block at the bottom (edited in d. Share-Cta — same Bucket — single source of truth across /results + /stories). The patient-quote rows are rendered from **h. Patient-Stories**. Use the chapterTitle / tagline / lede / heroImage fields for the ChapterOpener; the imageHue / imageLabel / breadcrumbLabel fields below complete the hero chrome.',
   },
