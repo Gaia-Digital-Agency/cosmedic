@@ -24,7 +24,7 @@ export const HomeHero: GlobalConfig = {
     { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         "Performed inside Indonesia's first ACHSI-accredited international hospital, with private villa recovery and twelve months of telehealth follow-up included. Procedures from Rp 18,900,000 (≈ AUD 1,800).",
-      admin: { description: 'Lede paragraph beneath the title.' } },
+      admin: { description: 'Intro paragraph beneath the title.' } },
     { name: 'heroImage', type: 'upload', relationTo: 'media',
       admin: { description: 'Hero background image. If unset, the vignette + dark background carry the section.' } },
     { name: 'breadcrumbLabel', type: 'text', defaultValue: 'Home',

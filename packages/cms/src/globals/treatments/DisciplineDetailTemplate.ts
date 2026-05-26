@@ -38,7 +38,7 @@ export const DisciplineDetailTemplate: GlobalConfig = {
       admin: { description: 'In-page Overview section.' },
       fields: [
         { name: 'heading', type: 'text', defaultValue: 'Overview',
-          admin: { description: 'h2 heading above the discipline overview text. The overview body comes from e. Disciplines → overview.' } },
+          admin: { description: 'h2 heading above the discipline overview text. The overview body comes from Disciplines → overview.' } },
       ],
     },
     {
@@ -74,7 +74,7 @@ export const DisciplineDetailTemplate: GlobalConfig = {
     {
       name: 'faqs',
       type: 'group',
-      admin: { description: 'In-page FAQs section. The questions themselves come from e. Disciplines → faqs.' },
+      admin: { description: 'In-page FAQs section. The questions themselves come from Disciplines → faqs.' },
       fields: [
         { name: 'heading', type: 'text', defaultValue: 'Frequently asked',
           admin: { description: 'h2 heading above the FAQ accordion.' } },
@@ -94,7 +94,7 @@ export const DisciplineDetailTemplate: GlobalConfig = {
         { name: 'ledeTemplate', type: 'textarea',
           defaultValue:
             'Many of our patients combine treatments across disciplines. These pair particularly well with {discipline}.',
-          admin: { description: 'Lede paragraph with the literal token {discipline} (replaced at render time with the current discipline title in lowercase).' } },
+          admin: { description: 'Intro paragraph with the literal token {discipline} (replaced at render time with the current discipline title in lowercase).' } },
       ],
     },
   ],

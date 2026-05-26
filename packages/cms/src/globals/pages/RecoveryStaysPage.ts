@@ -51,7 +51,7 @@ export const RecoveryStaysPage: GlobalConfig = {
     {
       name: 'portfolioSection',
       type: 'group',
-      admin: { description: '"The portfolio" section heading. Villa cards are rendered from f. Villas, not here.' },
+      admin: { description: '"The portfolio" section heading. Villa cards are edited in the Villas collection, not here.' },
       fields: [
         { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'The portfolio' },
         { name: 'headingPre', type: 'text', defaultValue: '' },
@@ -63,7 +63,7 @@ export const RecoveryStaysPage: GlobalConfig = {
     {
       name: 'inclusionsSection',
       type: 'group',
-      admin: { description: '"What\'s included" section. Edit heading + lede here; edit each inclusion in the list below.' },
+      admin: { description: '"What\'s included" section. Edit heading + intro paragraph here; edit each inclusion in the Villas list below.' },
       fields: [
         { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: "What's included" },
         { name: 'headingPre', type: 'text', defaultValue: 'Every stay, ' },

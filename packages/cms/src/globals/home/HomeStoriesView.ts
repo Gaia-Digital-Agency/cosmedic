@@ -24,7 +24,7 @@ export const HomeStoriesView: GlobalConfig = {
     { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         'Verified reviews from international patients. Video testimonials and Google reviews on our full stories page.',
-      admin: { description: 'Section lede beneath the heading. (Visible text version of the link-bearing default.)' } },
+      admin: { description: 'Intro paragraph beneath the heading. (Visible text version of the link-bearing default.)' } },
     { name: 'ctaLabel', type: 'text', defaultValue: 'Read more stories',
       admin: { description: 'Bottom CTA label.' } },
     { name: 'ctaHref', type: 'text', defaultValue: '/results#stories',

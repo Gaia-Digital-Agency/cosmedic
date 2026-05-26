@@ -23,7 +23,7 @@ export const HomeGalleryView: GlobalConfig = {
       admin: { description: 'Remainder of the heading (roman).' } },
     { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue: 'Three signature results from our facial repertoire.',
-      admin: { description: 'Section lede.' } },
+      admin: { description: 'Intro paragraph for this section.' } },
     { name: 'ctaLabel', type: 'text', defaultValue: 'View the full gallery',
       admin: { description: 'Bottom CTA label.' } },
     { name: 'ctaHref', type: 'text', defaultValue: '/results#results',

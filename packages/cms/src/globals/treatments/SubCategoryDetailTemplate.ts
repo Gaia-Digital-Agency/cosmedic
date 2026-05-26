@@ -44,7 +44,7 @@ export const SubCategoryDetailTemplate: GlobalConfig = {
         { name: 'estimateLabel', type: 'text', defaultValue: 'Get a written estimate →',
           admin: { description: 'Outline CTA — links to /contact?intent=estimate&procedure=<title>.' } },
         { name: 'whatsappLabel', type: 'text', defaultValue: 'WhatsApp the concierge →',
-          admin: { description: 'Secondary CTA — opens WhatsApp using the clinic number from a. Homepage → l. Settings → whatsappNumber.' } },
+          admin: { description: 'Secondary CTA — opens WhatsApp using the clinic number from Homepage → Settings → whatsappNumber.' } },
         { name: 'replyLine', type: 'text', defaultValue: 'Replies within 24 hours. No obligation.',
           admin: { description: 'Italic line beneath the CTA stack.' } },
       ],
@@ -55,7 +55,7 @@ export const SubCategoryDetailTemplate: GlobalConfig = {
       admin: { description: 'In-page Overview section.' },
       fields: [
         { name: 'heading', type: 'text', defaultValue: 'Overview',
-          admin: { description: 'h2 heading above the overview body. The body itself comes from f. Sub-Categories → overview.' } },
+          admin: { description: 'h2 heading above the overview body. The body itself comes from Sub-Categories → overview.' } },
       ],
     },
     {
@@ -74,7 +74,7 @@ export const SubCategoryDetailTemplate: GlobalConfig = {
     {
       name: 'faqs',
       type: 'group',
-      admin: { description: 'In-page FAQs section. The questions themselves come from f. Sub-Categories → faqs.' },
+      admin: { description: 'In-page FAQs section. The questions themselves come from Sub-Categories → faqs.' },
       fields: [
         { name: 'heading', type: 'text', defaultValue: 'Frequently asked',
           admin: { description: 'h2 heading above the FAQ accordion.' } },

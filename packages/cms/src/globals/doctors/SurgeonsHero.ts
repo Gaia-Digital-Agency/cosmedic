@@ -22,7 +22,7 @@ export const SurgeonsHero: GlobalConfig = {
     { name: 'titleB', type: 'text', required: true,
       admin: { description: 'Second line of the headline, italic-rendered. e.g. "can trust.".' } },
     { name: 'lede', label: 'Intro paragraph', type: 'textarea', required: true,
-      admin: { description: 'Single paragraph below the headline. Keep ~2 sentences.' } },
+      admin: { description: 'Intro paragraph below the headline. Keep ~2 sentences.' } },
     { name: 'heroImage', type: 'upload', relationTo: 'media',
       admin: { description: 'Right-side image in the ChapterOpener. ~1200×1500 portrait crop preferred.' } },
     { name: 'imageHue', type: 'number', min: 0, max: 5, defaultValue: 2,

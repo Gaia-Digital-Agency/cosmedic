@@ -8,7 +8,7 @@ export const ContactHero: GlobalConfig = {
   label: 'Hero',
   admin: {
     group: 'Contact',
-    description: 'Hero block on /contact: chapter eyebrow, two-line title, lede, hero image, and breadcrumb label. Edit the image and copy here; the address / hours / phone shown lower on the page live on a. Homepage → Settings.',
+    description: 'Hero block on /contact: chapter eyebrow, two-line title, intro paragraph, hero image, and breadcrumb label. Edit the image and copy here; the address / hours / phone shown lower on the page live on Homepage → Settings.',
   },
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
@@ -22,7 +22,7 @@ export const ContactHero: GlobalConfig = {
       admin: { description: 'Second line of the hero title (rendered on its own line, italic-friendly).' } },
     { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue: 'Write to us in your own time, in your own words. A concierge will reply within twenty-four hours, in English or Bahasa Indonesia. There is no obligation — and no pressure — to proceed.',
-      admin: { description: 'Lede paragraph beneath the title.' } },
+      admin: { description: 'Intro paragraph beneath the title.' } },
     { name: 'heroImage', type: 'upload', relationTo: 'media',
       admin: { description: 'Hero image displayed on the right of the title block. Recommended ~1600×1200, JPEG/WebP.' } },
     { name: 'imageHue', type: 'number', defaultValue: 3,

@@ -24,6 +24,6 @@ export const SurgeonsAestheticView: GlobalConfig = {
     { name: 'headingB', type: 'text', required: true,
       admin: { description: 'Roman suffix after the italic word. e.g. " non-surgical.".' } },
     { name: 'lede', label: 'Intro paragraph', type: 'textarea', required: true,
-      admin: { description: 'Single-paragraph section lede.' } },
+      admin: { description: 'Single intro paragraph for this section.' } },
   ],
 }

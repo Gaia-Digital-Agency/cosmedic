@@ -9,7 +9,7 @@ export const HomeSurgeonsView: GlobalConfig = {
   admin: {
     group: 'Homepage',
     description:
-      'Section chrome for the Surgeons strip on /. The lead-surgeon portrait + name + credentials are NOT edited here — source: **c. Doctors → c. Surgeons** (the row flagged lead=true). This item controls only the section eyebrow, the lead-surgeon-block eyebrow + body + 3 stat tiles + CTA label, and the bottom team-photo row (associates eyebrow / caption / group photo / alt).',
+      'Section chrome for the Surgeons strip on /. The lead-surgeon portrait + name + credentials are NOT edited here — source: **Doctors → Surgeons** (the row flagged lead=true). This item controls only the section eyebrow, the lead-surgeon-block eyebrow + body + 3 stat tiles + CTA label, and the bottom team-photo row (associates eyebrow / caption / group photo / alt).',
   },
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),

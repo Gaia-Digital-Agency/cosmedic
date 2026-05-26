@@ -22,7 +22,7 @@ export const TreatmentsIndexSection: GlobalConfig = {
     { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         'Each discipline is led by a specialist surgeon and supported by the full clinical, recovery, and concierge team. Treatments may be combined across disciplines on a single visit.',
-      admin: { description: 'Lede paragraph below the heading.' } },
+      admin: { description: 'Intro paragraph below the heading.' } },
     { name: 'readMoreLabel', type: 'text', defaultValue: 'Read more',
       admin: { description: 'Hover-CTA text that appears under each discipline card. Rendered as "<label> →".' } },
     { name: 'readMoreArrow', type: 'text', defaultValue: '→',

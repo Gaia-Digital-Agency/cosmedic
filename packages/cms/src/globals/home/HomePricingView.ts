@@ -24,7 +24,7 @@ export const HomePricingView: GlobalConfig = {
     { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         'Indicative starting prices in IDR (with AUD equivalent). Final quotes are tailored after consultation. Travel, accommodation and concierge can be packaged.',
-      admin: { description: 'Section lede.' } },
+      admin: { description: 'Intro paragraph for this section.' } },
     { name: 'footnote', type: 'textarea',
       defaultValue:
         'Prices indicative for international patients. AUD shown at 1 AUD ≈ Rp 12,500 (May 2026). Recovery stays, transfers and 12-month telehealth follow-up included on most surgical packages.',

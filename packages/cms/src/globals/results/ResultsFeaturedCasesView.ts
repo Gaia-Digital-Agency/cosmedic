@@ -24,7 +24,7 @@ export const ResultsFeaturedCasesView: GlobalConfig = {
     { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         'Each case represents a typical outcome, photographed at consistent angles and lighting, three to six months post-procedure.',
-      admin: { description: 'Section lede paragraph under the heading.' } },
+      admin: { description: 'Intro paragraph under the heading.' } },
     { name: 'filterBarLabel', type: 'text', defaultValue: 'Featured cases',
       admin: { description: 'Left-side filter-bar label above the grid.' } },
     { name: 'countFormat', type: 'text', defaultValue: '{n} cases · facial',

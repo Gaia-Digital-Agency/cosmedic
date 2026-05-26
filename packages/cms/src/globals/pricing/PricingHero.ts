@@ -24,7 +24,7 @@ export const PricingHero: GlobalConfig = {
     { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         'The complete pricing index, organised by discipline. Prices are starting figures in IDR with an Australian-dollar equivalent. Every plan is quoted precisely after a private consultation; what we quote is what you pay.',
-      admin: { description: 'Lede paragraph beneath the title (≈2 sentences).' } },
+      admin: { description: 'Intro paragraph beneath the title (≈2 sentences).' } },
     { name: 'heroImage', type: 'upload', relationTo: 'media',
       admin: { description: 'Hero image displayed on the right of the title block. Recommended ~1600×1200, JPEG/WebP.' } },
     { name: 'imageHue', type: 'number', min: 0, max: 6, defaultValue: 2,

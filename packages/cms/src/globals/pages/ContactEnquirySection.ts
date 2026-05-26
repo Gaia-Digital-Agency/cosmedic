@@ -8,7 +8,7 @@ export const ContactEnquirySection: GlobalConfig = {
   label: 'Enquiry Section',
   admin: {
     group: 'Contact',
-    description: 'Left column of the /contact "Enquiry" section: section eyebrow, two-line heading, intro paragraph, Direct-Lines block labels, and trust line. The phone / WhatsApp / email / press values rendered under "Direct lines" are NOT edited here — source: a. Homepage → Settings → contactPhone, whatsappNumber, contactEmail, pressEmail. Edit them once in Settings and they update on /contact, in the footer, and on the floating WhatsApp button.',
+    description: 'Left column of the /contact "Enquiry" section: section eyebrow, two-line heading, intro paragraph, Direct-Lines block labels, and trust line. The phone / WhatsApp / email / press values rendered under "Direct lines" are NOT edited here — source: Homepage → Settings → contactPhone, whatsappNumber, contactEmail, pressEmail. Edit them once in Settings and they update on /contact, in the footer, and on the floating WhatsApp button.',
   },
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
@@ -56,7 +56,7 @@ export const ContactEnquirySection: GlobalConfig = {
         { name: 'slug', type: 'text', localized: true, required: true, admin: { description: 'URL param value: estimate or video-consult.' } },
         { name: 'eyebrow', label: 'Label above heading', type: 'text', localized: true, admin: { description: 'Hero eyebrow when this intent is active.' } },
         { name: 'title', type: 'text', localized: true, admin: { description: 'Hero heading (replaces page default title).' } },
-        { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true, admin: { description: 'Hero lede when this intent is active.' } },
+        { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true, admin: { description: 'Intro paragraph when this intent is active.' } },
       ],
     },
     {

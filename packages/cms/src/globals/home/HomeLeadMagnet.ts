@@ -36,7 +36,7 @@ export const HomeLeadMagnet: GlobalConfig = {
     { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         'A 24-page editorial guide written by our concierge team — covering recovery timelines for the ten most-requested procedures, what to pack, what villas suit which surgeries, and the pace of a typical fortnight in Nusa Dua.',
-      admin: { description: 'Body lede beneath the heading.' } },
+      admin: { description: 'Body paragraph beneath the heading.' } },
     { name: 'formPlaceholder', type: 'text', defaultValue: 'Your email address',
       admin: { description: 'Email input placeholder.' } },
     { name: 'submitLabel', type: 'text', defaultValue: 'Send Guide →',

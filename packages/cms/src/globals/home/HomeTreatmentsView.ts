@@ -24,6 +24,6 @@ export const HomeTreatmentsView: GlobalConfig = {
     { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         'A complete repertoire under one roof, sequenced into a single journey. Treatments may be combined; recovery is always private.',
-      admin: { description: 'Section lede beneath the heading.' } },
+      admin: { description: 'Intro paragraph beneath the heading.' } },
   ],
 }
