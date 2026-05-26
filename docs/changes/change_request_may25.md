@@ -56,7 +56,7 @@ Three sections: **RULES**, **TODO LIST**, **DETAILS** (What / Why / How / Where)
 
 ---
 
-# SECTION 2 — TODO LIST (39 items × 6 checkboxes)
+# SECTION 2 — TODO LIST (41 items × 6 checkboxes)
 
 Each item has 6 verification checkboxes:
 - **Done** — change implemented
@@ -68,42 +68,44 @@ Each item has 6 verification checkboxes:
 
 `[x]` = checked · `[ ]` = unchecked · `[-]` = N/A for this item
 
+Sorted descending by checkbox count (most complete → top). Within same count: original number order.
+
 | # | Item | Done | Rules | Code | Visual | Pushed | Checked Errors |
 |---|---|:-:|:-:|:-:|:-:|:-:|:-:|
 | 25.1 | Early-morning cleanup audit (`8a7007e` verification) | [x] | [x] | [x] | [x] | [x] | [x] |
 | 25.2 | R2 + footer regression + atom-coverage closure (11.b) | [x] | [x] | [x] | [x] | [x] | [x] |
-| 25.3 | SMTP provider + `.env` config — **LAUNCH-BLOCKING** | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
 | 25.4 | Phase 11 pre-launch QA gates — **LAUNCH-BLOCKING** (LH baseline partial) | [x] | [x] | [x] | [x] | [x] | [x] |
-| 25.5 | Phase 10 imagery gaps (wiring A1 done; B1/B2/B3 blocked) — **LAUNCH-BLOCKING** | [-] | [x] | [x] | [x] | [x] | [x] |
-| 25.6 | Figma MCP inventory pipeline (BLOCKED — file not shared with MCP user) | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
 | 25.7 | N1/N2/N3 polish trio | [x] | [x] | [x] | [x] | [x] | [x] |
 | 25.8 | Back-to-Top ↔ WhatsApp FAB vertical gap (define + apply) | [x] | [x] | [x] | [x] | [x] | [x] |
 | 25.8a | Back-to-Top ↔ WhatsApp center-X alignment on mobile | [x] | [x] | [x] | [x] | [x] | [x] |
 | 25.9 | Starburst texture clarify (comment fix; radial-gradient glow already shipped) | [x] | [x] | [x] | [x] | [x] | [x] |
-| 25.10 | N0 mobile UX visual-quality pass — **DEFERRED** (2026-05-25) | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
-| 25.11 | Phase 9 i18n EN ⇄ ID (incl. multi-locale verification — Phase 9 open) | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
 | 25.12 | Phase C6–C10 CMS structural alignment cleanup | [x] | [x] | [x] | [x] | [x] | [x] |
 | 25.13 | Pricing bucket grouping audit | [x] | [x] | [x] | [x] | [x] | [x] |
 | 25.13a | /pricing — clinic catalogue data fix (42 pli rows → Procedures) + hide-unpriced toggle | [x] | [x] | [x] | [x] | [x] | [x] |
 | 25.13b | /pricing — Well-Being catalogue heading + toggle + on-request label (null-safe adapter) | [x] | [x] | [x] | [x] | [x] | [x] |
-| 25.13c | IDR/AUD currency toggle on /treatments detail pages. AUD rate single-source already in CMS (Settings.audToIdrRate). Scope: UI toggle pill (IDR\|AUD) on SubCategoryDetail + DisciplineDetail, PriceTag preferAud prop. | [x] | [ ] | [x] | [x] | [x] | [x] |
+| 25.13c | IDR/AUD currency toggle on /treatments detail pages. AUD rate single-source already in CMS (Settings.audToIdrRate). Scope: UI toggle pill (IDR\|AUD) on SubCategoryDetail + DisciplineDetail, PriceTag preferAud prop. | [x] | [x] | [x] | [x] | [x] | [x] |
 | 25.14 | Slug sweep (web + CMS) | [x] | [x] | [x] | [x] | [x] | [x] |
 | 25.15 | URL structure `/treatments/surgical/face` | [x] | [x] | [x] | [x] | [x] | [x] |
 | 25.16 | CMS slug bug (first parent missing) — superseded by 25.15 | [x] | [x] | [x] | [x] | [x] | [x] |
-| 25.17 | Site-wide AUD↔IDR plumbing audit | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
-| 25.18 | Payload Bucket sort + 2-zone field layout | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
-| 25.19 | Brand logo SVG swap + 5-color palette enforcement | [x] | [x] | [x] | [ ] | [x] | [ ] |
-| 25.20 | Phase 13 SEO + analytics PARTIAL (analytics missing) | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
-| 25.22 | Phase R — R3 Treatments Bucket detail pending | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
 | 25.23 | Home Place "Recover in paradise" image | [x] | [x] | [x] | [x] | [x] | [x] |
 | 25.24 | Home Hero quick-enquiry form (17 fields) | [x] | [x] | [x] | [x] | [x] | [x] |
 | 25.25 | Home Intro pull-quote + columns | [x] | [x] | [x] | [x] | [x] | [x] |
 | 25.26 | Home Treatments/Pricing/Surgeons/Gallery/LeadMagnet/Journey/Stories sections | [x] | [x] | [x] | [x] | [x] | [x] |
+| 25.30 | WhatsApp number hardcoded in 2 places | [x] | [x] | [x] | [x] | [x] | [x] |
+| 25.31 | Hospital name hardcoded in SEO schema | [x] | [x] | [x] | [x] | [x] | [x] |
+| 25.5 | Phase 10 imagery gaps (wiring A1 done; B1/B2/B3 blocked) — **LAUNCH-BLOCKING** | [-] | [x] | [x] | [x] | [x] | [x] |
 | 25.27 | Contact page form labels + messages | [x] | [ ] | [x] | [x] | [x] | [x] |
 | 25.28 | Privacy page metadata + DPO section | [x] | [ ] | [x] | [x] | [x] | [x] |
 | 25.29 | NotFound page (no `notFoundPage` global) | [x] | [ ] | [x] | [x] | [x] | [x] |
-| 25.30 | WhatsApp number hardcoded in 2 places | [x] | [ ] | [x] | [x] | [x] | [x] |
-| 25.31 | Hospital name hardcoded in SEO schema | [x] | [ ] | [x] | [x] | [x] | [x] |
+| 25.19 | Brand logo SVG swap + 5-color palette enforcement | [x] | [x] | [x] | [ ] | [x] | [ ] |
+| 25.3 | SMTP provider + `.env` config — **LAUNCH-BLOCKING** | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
+| 25.6 | Figma MCP inventory pipeline (BLOCKED — file not shared with MCP user) | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
+| 25.10 | N0 mobile UX visual-quality pass — **DEFERRED** (2026-05-25) | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
+| 25.11 | Phase 9 i18n EN ⇄ ID (incl. multi-locale verification — Phase 9 open) | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
+| 25.17 | Site-wide AUD↔IDR plumbing audit | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
+| 25.18 | Payload Bucket sort + 2-zone field layout | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
+| 25.20 | Phase 13 SEO + analytics PARTIAL (analytics missing) | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
+| 25.22 | Phase R — R3 Treatments Bucket detail pending | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
 | 25.32 | Visual inspection every page × breakpoint vs `design/shared.jsx` — **LAUNCH-BLOCKING** | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
 | 25.33 | Lighthouse scores measured (≥90) — **LAUNCH-BLOCKING** | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
 | 25.34 | CMS admin UI walk-through field-by-field | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
@@ -112,7 +114,7 @@ Each item has 6 verification checkboxes:
 | 25.38 | Form submission E2E (Contact → Payload → email) + email delivery end-to-end exercised — **LAUNCH-BLOCKING** | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
 | 25.39 | Sibling-site safety post-pm2-restarts re-verify — **LAUNCH-BLOCKING** | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
 
-**Count:** 38 items (2026-05-26: removed 25.21+25.35, added 25.13c) · **Fully closed (all 6 boxes):** 8 (25.1, 25.2, 25.7, 25.13, 25.23, 25.24, 25.25, 25.26) · **Partial — Rules pending:** 6 (25.13c, 25.27, 25.28, 25.29, 25.30, 25.31 = 5/6 each) · **Partial — Visual+Errors pending:** 1 (25.19 = 4/6) · **Launch-blocking open:** 8.
+**Count:** 41 items (2026-05-26 re-sort: most-complete first) · **Fully closed (6/6):** 21 (25.1, 25.2, 25.4, 25.7, 25.8, 25.8a, 25.9, 25.12, 25.13, 25.13a, 25.13b, 25.13c, 25.14, 25.15, 25.16, 25.23, 25.24, 25.25, 25.26, 25.30, 25.31) · **5/5 applicable (N/A Done):** 1 (25.5) · **5/6 Rules pending:** 3 (25.27, 25.28, 25.29 — missing `localized: true` on all new fields, Rule 6 violation) · **4/6 Visual+Errors pending:** 1 (25.19) · **Open (0/6):** 15 · **Launch-blocking open:** 6 (25.3, 25.32, 25.33, 25.36, 25.38, 25.39).
 
 ---
 
