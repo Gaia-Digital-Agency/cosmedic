@@ -30,6 +30,7 @@ import { BlogTags } from './collections/BlogTags'
 import { Authors } from './collections/Authors'
 import { JourneySteps } from './collections/JourneySteps'
 import { Enquiries } from './collections/Enquiries'
+import { Analytics } from './collections/Analytics'
 import { PrivacySections } from './collections/PrivacySections'
 
 import { Settings } from './globals/Settings'
@@ -197,6 +198,7 @@ export default buildConfig({
     RecoveryStays,
     // g. Contact
     Enquiries,
+    Analytics,
     // h. About
     BlogPosts,
     BlogTags,

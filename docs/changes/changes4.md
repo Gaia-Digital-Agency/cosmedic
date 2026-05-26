@@ -389,18 +389,68 @@ Same pattern as gaiadaweb:
 | CMS data | No writes. Read-only access via CMS cache. |
 | Frontend pages | Zero layout change outside the floating chrome cluster |
 | Other routes | `/api/ask` is additive; no existing endpoints touched |
-| DB | No new tables. No migrations. |
+| DB | `analytics` table + FK column on `payload_locked_documents_rels` |
 
 ### Execution Tasks (Phase 3)
 
 | # | Task | File | Status |
 |---|---|---|---|
-| 17 | Add GCP env vars to web .env | `packages/web/.env` | ⏳ |
-| 18 | Install `google-auth-library` | `package.json` | ⏳ |
-| 19 | Create `ask-rate-limit.ts` | `src/lib/` | ⏳ |
-| 20 | Create `vertex.ts` (buildContext + callVertex) | `src/lib/` | ⏳ |
-| 21 | Add `POST /api/ask` to `server.ts` | `server.ts` | ⏳ |
-| 22 | Create `AskDoctor.tsx` component | `src/components/shell/` | ⏳ |
-| 23 | Add `<AskDoctor />` to `PageShell.tsx` | `PageShell.tsx` | ⏳ |
-| 24 | Add `.ask-fab` + `.ask-panel` CSS | `04-shell-cta-footer-floating.css` | ⏳ |
-| 25 | Build, restart, smoke-check all pages + curl `/api/ask` | server | ⏳ |
+| 17 | Add GCP env vars to web .env | `packages/web/.env` | ✅ Done |
+| 18 | Install `google-auth-library` | `package.json` | ✅ Done |
+| 19 | Create `ask-rate-limit.ts` | `src/lib/` | ✅ Done |
+| 20 | Create `vertex.ts` (buildContext + callVertex) | `src/lib/` | ✅ Done |
+| 21 | Add `POST /api/ask` to `server.ts` | `server.ts` | ✅ Done |
+| 22 | Create `AskDoctor.tsx` component — FAB hides when panel open | `src/components/shell/` | ✅ Done |
+| 23 | Add `<AskDoctor />` to `PageShell.tsx` | `PageShell.tsx` | ✅ Done |
+| 24 | FAB stack: WhatsApp (28) → Ask Doctor (94) → BackToTop (160) | inline styles | ✅ Done |
+| 25 | Build, restart, smoke-check + curl `/api/ask` | server | ✅ Done |
+
+---
+
+## Phase 3b — Analytics Collection
+
+> Status: DONE
+> Scope: New CMS collection `Contact > Analytics`. Every question submitted via Ask The Doctor is captured server-side and visible in the CMS admin.
+
+### Captured per question
+
+| Field | Source |
+|---|---|
+| Question | User's typed message (verbatim) |
+| Asked At | Server timestamp (UTC) |
+| IP Address | `x-forwarded-for` / socket remote address |
+| Country | `geoip-lite` offline IP lookup |
+| City | `geoip-lite` offline IP lookup |
+| Timezone | `geoip-lite` offline IP lookup |
+| Browser / Device | `User-Agent` header (truncated to 500 chars) |
+
+### Access
+
+| Operation | Who |
+|---|---|
+| View | CMS staff (authenticated) |
+| Delete | CMS staff (authenticated) |
+| Create | Web server only (unauthenticated POST, local) |
+| Edit / Update | Nobody — disabled |
+
+### Files
+
+| File | Action |
+|---|---|
+| `packages/cms/src/collections/Analytics.ts` | New collection — slug `analytics`, group `Contact` |
+| `packages/cms/src/payload.config.ts` | Import + register `Analytics` |
+| `packages/web/src/server.ts` | Fire-and-forget POST to `/api/analytics` after each successful answer |
+| `packages/web/package.json` | `geoip-lite` + `@types/geoip-lite` added |
+| DB | `analytics` table created; FK on `payload_locked_documents_rels` |
+
+### Execution Tasks (Phase 3b)
+
+| # | Task | File | Status |
+|---|---|---|---|
+| 26 | Create `Analytics.ts` collection | `cms/src/collections/` | ✅ Done |
+| 27 | Register in `payload.config.ts` | `payload.config.ts` | ✅ Done |
+| 28 | Create `analytics` DB table + FK + migration entry | psql | ✅ Done |
+| 29 | Install `geoip-lite` in web package | `package.json` | ✅ Done |
+| 30 | Fire-and-forget log in `/api/ask` | `server.ts` | ✅ Done |
+| 31 | Fix FAB/panel overlap — FAB hides when panel open | `AskDoctor.tsx` | ✅ Done |
+| 32 | Build, restart, verify row captured in DB | server + psql | ✅ Done |

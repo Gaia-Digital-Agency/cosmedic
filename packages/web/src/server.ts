@@ -7,6 +7,7 @@ import { enquirySchema, type EnquiryResponse } from './lib/enquiry-schema'
 import { checkRateLimit } from './lib/enquiry-rate-limit'
 import { checkAskRateLimit } from './lib/ask-rate-limit'
 import { validateMessage, callVertex } from './lib/vertex'
+import geoip from 'geoip-lite'
 import { seoFor, renderSeoTags, renderAnalytics } from './lib/seo'
 import { resolveRoute } from './router'
 
@@ -153,6 +154,22 @@ async function createServer() {
 
     try {
       const answer = await callVertex(message)
+      // Fire-and-forget: log question to Analytics collection in CMS.
+      const geo = geoip.lookup(ip)
+      const payloadUrl = process.env.PAYLOAD_URL || 'http://127.0.0.1:4007'
+      fetch(`${payloadUrl}/api/analytics`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          question: message,
+          askedAt: new Date().toISOString(),
+          ip,
+          country: geo?.country || undefined,
+          city: geo?.city || undefined,
+          timezone: geo?.timezone || undefined,
+          userAgent: (req.headers['user-agent'] as string | undefined)?.slice(0, 500),
+        }),
+      }).catch((err) => console.warn('[ask] analytics log failed:', err))
       return res.json({ answer })
     } catch (err) {
       console.warn('[ask] vertex error:', err)

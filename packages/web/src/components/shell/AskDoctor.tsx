@@ -77,7 +77,9 @@ export const AskDoctor: React.FC = () => {
           justifyContent: 'center',
           cursor: 'pointer',
           boxShadow: '0 8px 28px rgba(31,27,22,0.18)',
-          transition: 'background 200ms ease, color 200ms ease, transform 200ms ease',
+          opacity: open ? 0 : 1,
+          pointerEvents: open ? 'none' : 'auto',
+          transition: 'background 200ms ease, color 200ms ease, transform 200ms ease, opacity 160ms ease',
           zIndex: 60,
         }}
       >
