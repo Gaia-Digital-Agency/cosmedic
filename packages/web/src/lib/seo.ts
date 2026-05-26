@@ -20,6 +20,7 @@ type SeoFields = {
   description: string
   canonical: string
   ogImage: string
+  siteName: string
   jsonLd?: object
   noindex?: boolean
 }
@@ -50,13 +51,20 @@ export function seoFor(pathname: string, cms: CmsCache): SeoFields {
   // CMS cache during SSR boot.
   const seoDefaults = cms.seoDefaults || {}
   const settings = (cms.settings || {}) as Record<string, unknown>
+  // 25.31 — CMS-sourced identity fields; fall back to hardcoded strings when Settings empty
+  const siteName = (settings.siteName as string) || 'BIMC CosMedic'
+  const cityName = (settings.city as string) || 'Nusa Dua'
+  const addressLine1 = (settings.addressLine1 as string) || 'BIMC Hospital Nusa Dua'
+  const regionName = (settings.country as string) || 'Bali'
+  const postalCode = (settings.postalCode as string) || '80363'
+  const cmsDescription = (settings.defaultMetaDescription as string) || ''
   // titlePattern uses {page} substitution. Anything outside the {page} token
   // is the suffix when we render page-name-prefixed titles below.
-  const titlePattern = seoDefaults.titlePattern || '{page} — BIMC CosMedic'
+  const titlePattern = seoDefaults.titlePattern || `{page} — ${siteName}`
   const fallbackTitleSuffix = titlePattern.includes('{page}')
     ? titlePattern.replace('{page}', '').trim()
-    : ' — BIMC CosMedic'
-  const fallbackDescription = DEFAULT_DESCRIPTION
+    : ` — ${siteName}`
+  const fallbackDescription = cmsDescription || DEFAULT_DESCRIPTION
   const fallbackOgUrl = (settings.defaultOgImage as { url?: string } | undefined)?.url
 
   let title = DEFAULT_TITLE
@@ -98,8 +106,8 @@ export function seoFor(pathname: string, cms: CmsCache): SeoFields {
         medicalSpecialty: s.spec || 'PlasticSurgery',
         affiliation: {
           '@type': 'Hospital',
-          name: 'BIMC Hospital Nusa Dua',
-          address: { '@type': 'PostalAddress', addressLocality: 'Nusa Dua', addressCountry: 'ID' },
+          name: addressLine1,
+          address: { '@type': 'PostalAddress', addressLocality: cityName, addressCountry: 'ID' },
         },
       }
     }
@@ -155,19 +163,20 @@ export function seoFor(pathname: string, cms: CmsCache): SeoFields {
       : {
           '@context': 'https://schema.org',
           '@type': 'MedicalClinic',
-          name: 'BIMC CosMedic',
+          name: siteName,
           url: SITE_ORIGIN,
           logo: `${SITE_ORIGIN}/cosmedic-mark-on-light.png`,
           image: ogImage,
-          description: DEFAULT_DESCRIPTION,
+          description: fallbackDescription,
           parentOrganization: {
             '@type': 'Hospital',
-            name: 'BIMC Hospital Nusa Dua',
+            name: addressLine1,
           },
           address: {
             '@type': 'PostalAddress',
-            addressLocality: 'Nusa Dua',
-            addressRegion: 'Bali',
+            addressLocality: cityName,
+            addressRegion: regionName,
+            postalCode,
             addressCountry: 'ID',
           },
           medicalSpecialty: ['PlasticSurgery', 'CosmeticDentistry', 'Dermatology'],
@@ -175,7 +184,7 @@ export function seoFor(pathname: string, cms: CmsCache): SeoFields {
   }
 
   const canonical = `${SITE_ORIGIN}${pathname === '/' ? '' : pathname}`
-  return { title, description, canonical, ogImage, jsonLd }
+  return { title, description, canonical, ogImage, siteName, jsonLd }
 }
 
 /** Renders the chunk of HTML injected into <head> via <!--seo-outlet-->. */
@@ -189,7 +198,7 @@ export function renderSeoTags(seo: SeoFields): string {
   tags.push(`<meta property="og:description" content="${esc(seo.description)}" />`)
   tags.push(`<meta property="og:url" content="${esc(seo.canonical)}" />`)
   tags.push(`<meta property="og:image" content="${esc(seo.ogImage)}" />`)
-  tags.push(`<meta property="og:site_name" content="BIMC CosMedic" />`)
+  tags.push(`<meta property="og:site_name" content="${esc(seo.siteName)}" />`)
   tags.push(`<meta name="twitter:card" content="summary_large_image" />`)
   tags.push(`<meta name="twitter:title" content="${esc(seo.title)}" />`)
   tags.push(`<meta name="twitter:description" content="${esc(seo.description)}" />`)

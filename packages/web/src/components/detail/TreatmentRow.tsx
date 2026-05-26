@@ -8,6 +8,7 @@ type Treatment = SubCategoryEntry['treatments'][number]
 type Props = {
   t: Treatment
   subTitle: string
+  waNumber?: string  // 25.30 — caller passes Settings-derived number; fallback to hardcoded
 }
 
 function formatPrice(val: Treatment['priceFromIdr']): {
@@ -27,7 +28,7 @@ function formatPrice(val: Treatment['priceFromIdr']): {
   return { idr: parts.idr, aud: parts.aud, label: null }
 }
 
-export const TreatmentRow: React.FC<Props> = ({ t, subTitle }) => {
+export const TreatmentRow: React.FC<Props> = ({ t, subTitle, waNumber = '6281339001911' }) => {
   const [open, setOpen] = useState(false)
   const price = formatPrice(t.priceFromIdr)
   const procParam = encodeURIComponent(`${subTitle} — ${t.name}`)
@@ -238,7 +239,7 @@ export const TreatmentRow: React.FC<Props> = ({ t, subTitle }) => {
               <span className="btn-arrow">→</span>
             </a>
             <a
-              href={`https://wa.me/6281339001911?text=${encodeURIComponent(
+              href={`https://wa.me/${waNumber}?text=${encodeURIComponent(
                 "Hello — I'd like to ask about " + t.name + '.',
               )}`}
               target="_blank"

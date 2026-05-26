@@ -52,6 +52,8 @@ export const SubCategoryDetail: React.FC<Props> = ({ disciplineSlug, slug }) => 
 
   const cms = useCms()
   const tpl = cms?.subCategoryDetailTemplate
+  // 25.30 — single-source WhatsApp number from CMS Settings; strip non-digits for wa.me URL
+  const waNumber = (cms?.settings?.whatsappNumber || '').replace(/\D/g, '') || '6281339001911'
   const sep = tpl?.chapterSeparator || FB.chapterSeparator
   const toc = {
     onThisPageLabel: tpl?.toc?.onThisPageLabel || FB.toc.onThisPageLabel,
@@ -156,7 +158,7 @@ export const SubCategoryDetail: React.FC<Props> = ({ disciplineSlug, slug }) => 
               {takeAStep.estimateLabel}
             </a>
             <a
-              href={`https://wa.me/6281339001911?text=${encodeURIComponent(
+              href={`https://wa.me/${waNumber}?text=${encodeURIComponent(
                 "Hello — I'd like to ask about " + s.title + '.',
               )}`}
               target="_blank"
@@ -223,7 +225,7 @@ export const SubCategoryDetail: React.FC<Props> = ({ disciplineSlug, slug }) => 
             <div style={{ marginTop: 32, borderTop: '1px solid var(--ink-20)' }}>
               {s.treatments.map((t, i) => (
                 <Reveal key={i} delay={i * 30}>
-                  <TreatmentRow t={t} subTitle={s.title} />
+                  <TreatmentRow t={t} subTitle={s.title} waNumber={waNumber} />
                 </Reveal>
               ))}
             </div>

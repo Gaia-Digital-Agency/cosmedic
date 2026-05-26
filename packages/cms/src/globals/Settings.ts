@@ -22,8 +22,8 @@ export const Settings: GlobalConfig = {
       admin: { description: 'Fallback Open Graph image for social-share previews when a page record has no OG image of its own.' } },
     { name: 'defaultMetaDescription', type: 'textarea',
       admin: { description: 'Fallback SEO description used when a page record has no description of its own.' } },
-    { name: 'audToIdrRate', type: 'number', defaultValue: 10500,
-      admin: { description: 'AUD → IDR conversion rate used to derive IDR display values on /pricing and procedure cards when only one currency is entered. Per brand.pdf May 2026 = 10,500.' } },
+    { name: 'audToIdrRate', type: 'number', defaultValue: 12800,
+      admin: { description: 'AUD → IDR conversion rate. SINGLE SOURCE: editing this re-pegs every AUD figure across the entire site (home pricing teaser, /pricing tables, every procedure card, consultation fee). Live default = 12,800 (May 2026). Locale-driven display: EN shows IDR + ≈ AUD; ID shows IDR only.' } },
     { name: 'roundIdrTo', type: 'number', defaultValue: 50000,
       admin: { description: 'Round computed IDR to nearest N when converting from AUD. Default 50,000.' } },
     { name: 'contactEmail', type: 'text', defaultValue: 'cosmedic@bimcbali.com',
@@ -72,11 +72,8 @@ export const Settings: GlobalConfig = {
     { name: 'defaultLocale', type: 'select', defaultValue: 'en',
       admin: { description: 'Default site locale. Currently EN — Phase 9 will add ID and activate the EN|ID switcher.' },
       options: [{ label: 'English', value: 'en' }, { label: 'Bahasa Indonesia', value: 'id' }] },
-    { name: 'currencyDisplayMode', type: 'select', defaultValue: 'idr-with-aud',
-      admin: { description: 'How prices render across the whole site: IDR-only, or IDR primary + AUD italic.' },
-      options: [
-        { label: 'IDR only', value: 'idr-only' },
-        { label: 'IDR primary + AUD italic', value: 'idr-with-aud' },
-      ] },
+    // currencyDisplayMode removed 25.17 — was dead code; PriceTag switches on
+    // locale (EN = IDR + AUD, ID = IDR only). The selector below was never
+    // read by any consumer.
   ],
 }
