@@ -56,26 +56,27 @@ export const AskDoctor: React.FC = () => {
 
   return (
     <>
-      {/* FAB button — bottom: 160 sits above BackToTop (94) and WhatsApp (28) */}
+      {/* FAB button — bottom: 94 sits between WhatsApp (28) and BackToTop (160) */}
       <button
         type="button"
         aria-label="Ask the Doctor"
         onClick={() => setOpen((v) => !v)}
+        className="ask-doctor-fab"
         style={{
           position: 'fixed',
           right: 28,
-          bottom: 160,
+          bottom: 94,
           width: 54,
           height: 54,
           borderRadius: '50%',
           border: '1px solid var(--accent)',
           background: open ? 'var(--accent-deep)' : 'var(--paper)',
-          color: open ? 'var(--bg-cream, #F4EFE6)' : 'var(--accent-deep)',
+          color: open ? 'var(--paper)' : 'var(--accent-deep)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           cursor: 'pointer',
-          boxShadow: '0 8px 28px rgba(31,27,22,0.22)',
+          boxShadow: '0 8px 28px rgba(31,27,22,0.18)',
           transition: 'background 200ms ease, color 200ms ease, transform 200ms ease',
           zIndex: 60,
         }}
@@ -312,11 +313,15 @@ export const AskDoctor: React.FC = () => {
         </div>
       </div>
 
-      {/* Keyframe for loading dots */}
+      {/* Keyframe for loading dots + hover state for FAB */}
       <style>{`
         @keyframes askDotBounce {
           0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
           40% { transform: translateY(-5px); opacity: 1; }
+        }
+        .ask-doctor-fab:hover {
+          background: var(--cream, #E6DCC8) !important;
+          transform: translateY(-2px);
         }
       `}</style>
     </>

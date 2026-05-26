@@ -31,13 +31,10 @@ export const BackToTop: React.FC = () => {
       onClick={scrollUp}
       style={{
         position: 'fixed',
-        // 25.8 / 25.8a (2026-05-25): pin to right:28px to match .chat-fab so
-        // vertical center-axes align at every viewport (was clamp(16,3vw,32) →
-        // drifted 4-12px off the WA FAB on mobile). bottom: 94 = 28 (WA bottom)
-        // + 54 (WA height) + 12 (defined gap) so the two FABs read as a paired
-        // chrome cluster with a consistent 12px gap regardless of viewport.
+        // bottom: 160 = 94 (AskDoctor bottom) + 54 (AskDoctor height) + 12 (gap).
+        // Stack from bottom: WhatsApp (28) → AskDoctor (94) → BackToTop (160).
         right: 28,
-        bottom: 94,
+        bottom: 160,
         width: 54,
         height: 54,
         borderRadius: '50%',
