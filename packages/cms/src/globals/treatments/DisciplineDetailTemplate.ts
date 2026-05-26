@@ -5,7 +5,7 @@ import { apiWarningField } from '../../lib/api-warning'
 
 export const DisciplineDetailTemplate: GlobalConfig = {
   slug: 'discipline-detail-template',
-  label: 'h. Discipline-Template',
+  label: 'Discipline Template',
   admin: {
     group: 'Treatments',
     description:

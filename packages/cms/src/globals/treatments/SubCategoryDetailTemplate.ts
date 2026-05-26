@@ -5,7 +5,7 @@ import { apiWarningField } from '../../lib/api-warning'
 
 export const SubCategoryDetailTemplate: GlobalConfig = {
   slug: 'sub-category-detail-template',
-  label: 'i. Sub-Category-Template',
+  label: 'Sub-Category Template',
   admin: {
     group: 'Treatments',
     description:

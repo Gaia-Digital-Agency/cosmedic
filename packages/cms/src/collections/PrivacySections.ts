@@ -7,8 +7,8 @@ import { apiWarningField } from '../lib/api-warning'
 export const PrivacySections: CollectionConfig = {
   slug: 'privacy-sections',
   labels: {
-    singular: 'i. Privacy-Section',
-    plural: 'i. Privacy-Sections',
+    singular: 'Privacy Section',
+    plural: 'Privacy Sections',
   },
   admin: {
     useAsTitle: 'title',

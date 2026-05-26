@@ -5,7 +5,7 @@ import { pageFields } from './_pageFields'
 
 export const BlogPage: GlobalConfig = {
   slug: 'blog-page',
-  label: 'a. Blog',
+  label: 'Blog',
   admin: {
     group: 'About',
     description:

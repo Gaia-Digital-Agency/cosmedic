@@ -6,7 +6,7 @@ import { apiWarningField } from '../lib/api-warning'
 
 export const BlogPosts: CollectionConfig = {
   slug: 'blog-posts',
-  labels: { singular: 'b. Blog-Post', plural: 'b. Blog-Posts' },
+  labels: { singular: 'Blog Post', plural: 'Blog Posts' },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'author', 'publishedAt', 'publishStatus'],

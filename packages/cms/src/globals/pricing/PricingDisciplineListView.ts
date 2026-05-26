@@ -5,7 +5,7 @@ import { apiWarningField } from '../../lib/api-warning'
 
 export const PricingDisciplineListView: GlobalConfig = {
   slug: 'pricing-discipline-list-view',
-  label: 'h. Discipline-List-View',
+  label: 'Discipline List View',
   admin: {
     group: 'Pricing',
     description:

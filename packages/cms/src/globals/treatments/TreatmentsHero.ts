@@ -5,7 +5,7 @@ import { apiWarningField } from '../../lib/api-warning'
 
 export const TreatmentsHero: GlobalConfig = {
   slug: 'treatments-hero',
-  label: 'b. Hero',
+  label: 'Hero',
   admin: {
     group: 'Treatments',
     description:

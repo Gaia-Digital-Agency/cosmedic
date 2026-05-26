@@ -6,7 +6,7 @@ import { apiWarningField } from '../lib/api-warning'
 
 export const PressMentions: CollectionConfig = {
   slug: 'press-mentions',
-  labels: { singular: 'f. Press-Mention', plural: 'f. Press-Mentions' },
+  labels: { singular: 'Press Mention', plural: 'Press Mentions' },
   admin: {
     useAsTitle: 'publication',
     defaultColumns: ['publication', 'headline', 'publishedDate', 'isFeatured'],

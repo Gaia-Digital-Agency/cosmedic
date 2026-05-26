@@ -5,7 +5,7 @@ import { apiWarningField } from '../../lib/api-warning'
 
 export const ResultsFeaturedCasesView: GlobalConfig = {
   slug: 'results-featured-cases-view',
-  label: 'i. Featured-Cases-View',
+  label: 'Featured Cases View',
   admin: {
     group: 'Results',
     description:

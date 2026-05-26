@@ -5,7 +5,7 @@ import { apiWarningField } from '../../lib/api-warning'
 
 export const HomeGalleryView: GlobalConfig = {
   slug: 'home-gallery-view',
-  label: 'p. Gallery-View',
+  label: 'Gallery View',
   admin: {
     group: 'Homepage',
     description:

@@ -5,7 +5,7 @@ import { apiWarningField } from '../../lib/api-warning'
 
 export const PricingFootnote: GlobalConfig = {
   slug: 'pricing-footnote',
-  label: 'd. Footnote',
+  label: 'Footnote',
   admin: {
     group: 'Pricing',
     description:

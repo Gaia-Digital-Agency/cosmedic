@@ -5,7 +5,7 @@ import { pageFields } from './_pageFields'
 
 export const StoriesPage: GlobalConfig = {
   slug: 'stories-page',
-  label: 'f. Stories',
+  label: 'Stories',
   admin: {
     group: 'Results',
     description:

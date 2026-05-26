@@ -5,7 +5,7 @@ import { pageFields } from './_pageFields'
 
 export const ContactPage: GlobalConfig = {
   slug: 'contact-page',
-  label: 'a. Main',
+  label: 'Main',
   admin: {
     group: 'Contact',
     description: 'Page meta + SEO + extra block sections for /contact. The hero is edited in b. Hero, the enquiry section in c. Enquiry-Section, and the visit section in d. Visit-Section. Use the sections block-array here only for additional editor-defined content blocks.',

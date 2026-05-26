@@ -5,7 +5,7 @@ import { pageFields } from './_pageFields'
 
 export const JourneyPage: GlobalConfig = {
   slug: 'journey-page',
-  label: 'a. Main',
+  label: 'Main',
   admin: {
     group: 'Journey',
     description:

@@ -5,7 +5,7 @@ import { apiWarningField } from '../../lib/api-warning'
 
 export const JourneyStats: GlobalConfig = {
   slug: 'journey-stats',
-  label: 'd. Stats',
+  label: 'Stats',
   admin: {
     group: 'Journey',
     description:

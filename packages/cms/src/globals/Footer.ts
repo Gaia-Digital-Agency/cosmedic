@@ -5,6 +5,7 @@ import { apiWarningField } from '../lib/api-warning'
 
 export const Footer: GlobalConfig = {
   slug: 'footer',
+  label: 'Footer',
   admin: {
     group: 'Homepage',
     description: 'Footer at the bottom of every page: white-on-dark logo, three link columns (Treatments / About / Connect), enquiry summary, address, copyright line.',

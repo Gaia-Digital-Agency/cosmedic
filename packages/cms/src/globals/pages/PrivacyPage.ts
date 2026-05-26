@@ -5,7 +5,7 @@ import { pageFields } from './_pageFields'
 
 export const PrivacyPage: GlobalConfig = {
   slug: 'privacy-page',
-  label: 'h. Privacy',
+  label: 'Privacy',
   admin: {
     group: 'About',
     description:

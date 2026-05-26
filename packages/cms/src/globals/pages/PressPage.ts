@@ -5,7 +5,7 @@ import { pageFields } from './_pageFields'
 
 export const PressPage: GlobalConfig = {
   slug: 'press-page',
-  label: 'e. Press',
+  label: 'Press',
   admin: {
     group: 'About',
     description:

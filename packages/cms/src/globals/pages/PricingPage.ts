@@ -18,7 +18,7 @@ import { pageFields } from './_pageFields'
  */
 export const PricingPage: GlobalConfig = {
   slug: 'pricing-page',
-  label: 'a. Main',
+  label: 'Main',
   admin: {
     group: 'Pricing',
     description:

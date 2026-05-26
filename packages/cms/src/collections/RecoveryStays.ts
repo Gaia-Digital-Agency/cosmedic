@@ -6,7 +6,7 @@ import { apiWarningField } from '../lib/api-warning'
 
 export const RecoveryStays: CollectionConfig = {
   slug: 'recovery-stays',
-  labels: { singular: 'f. Villa', plural: 'f. Villas' },
+  labels: { singular: 'Villa', plural: 'Villas' },
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'location', 'bedrooms', 'priceFromIdrPerNight', 'sortOrder'],

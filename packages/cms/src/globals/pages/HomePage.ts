@@ -156,7 +156,7 @@ const placeBlock: Field = {
 
 export const HomePage: GlobalConfig = {
   slug: 'home-page',
-  label: 'a. Main',
+  label: 'Main',
   admin: {
     group: 'Homepage',
     description:

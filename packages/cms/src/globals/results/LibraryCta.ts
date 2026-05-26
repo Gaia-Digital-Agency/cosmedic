@@ -5,7 +5,7 @@ import { apiWarningField } from '../../lib/api-warning'
 
 export const LibraryCta: GlobalConfig = {
   slug: 'library-cta',
-  label: 'c. Library-Cta',
+  label: 'Library CTA',
   admin: {
     group: 'Results',
     description:

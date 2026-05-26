@@ -6,7 +6,7 @@ import { apiWarningField } from '../lib/api-warning'
 
 export const Stories: CollectionConfig = {
   slug: 'stories',
-  labels: { singular: 'Patient-Story', plural: 'h. Patient-Stories' },
+  labels: { singular: 'Patient Story', plural: 'Patient Stories' },
   admin: {
     useAsTitle: 'patientLabel',
     defaultColumns: ['patientLabel', 'procedure', 'country', 'isFeatured'],

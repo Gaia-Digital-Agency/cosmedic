@@ -6,7 +6,7 @@ import { apiWarningField } from '../lib/api-warning'
 
 export const JourneySteps: CollectionConfig = {
   slug: 'journey-steps',
-  labels: { singular: 'c. Step', plural: 'c. Steps' },
+  labels: { singular: 'Step', plural: 'Steps' },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['number', 'title', 'order', 'sortOrder'],

@@ -5,7 +5,7 @@ import { pageFields } from './_pageFields'
 
 export const GalleryPage: GlobalConfig = {
   slug: 'gallery-page',
-  label: 'e. Gallery',
+  label: 'Gallery',
   admin: {
     group: 'Results',
     description:

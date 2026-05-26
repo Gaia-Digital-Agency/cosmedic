@@ -6,7 +6,7 @@ import { pageFields } from './_pageFields'
 export const RecoveryStaysPage: GlobalConfig = {
   slug: 'recovery-stays-page',
   dbName: 'rec_stays_pg',
-  label: 'e. Recovery-Stays',
+  label: 'Recovery Stays',
   admin: {
     group: 'Journey',
     description:

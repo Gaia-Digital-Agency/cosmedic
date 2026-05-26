@@ -5,7 +5,7 @@ import { apiWarningField } from '../lib/api-warning'
 
 export const Authors: CollectionConfig = {
   slug: 'authors',
-  labels: { singular: 'd. Author', plural: 'd. Authors' },
+  labels: { singular: 'Author', plural: 'Authors' },
   admin: {
     useAsTitle: 'name',
     group: 'About',

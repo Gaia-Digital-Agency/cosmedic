@@ -6,7 +6,7 @@ import { apiWarningField } from '../lib/api-warning'
 
 export const Enquiries: CollectionConfig = {
   slug: 'enquiries',
-  labels: { singular: 'g. Inbox · Enquiry', plural: 'g. Inbox' },
+  labels: { singular: 'Enquiry', plural: 'Inbox' },
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'email', 'treatmentInterest', 'status', 'submittedAt'],

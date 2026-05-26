@@ -5,7 +5,7 @@ import { apiWarningField } from '../lib/api-warning'
 
 export const Settings: GlobalConfig = {
   slug: 'settings',
-  label: 'l. Settings',
+  label: 'Settings',
   admin: {
     group: 'Homepage',
     description: 'Site-wide identity used on every page: name, address, contact details, WhatsApp number, currency rules, social links. Anything that appears in the footer, the contact page, or feeds the floating chrome.',

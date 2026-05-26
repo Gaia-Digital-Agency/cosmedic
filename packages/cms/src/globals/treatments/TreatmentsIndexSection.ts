@@ -5,7 +5,7 @@ import { apiWarningField } from '../../lib/api-warning'
 
 export const TreatmentsIndexSection: GlobalConfig = {
   slug: 'treatments-index-section',
-  label: 'c. Index',
+  label: 'Index',
   admin: {
     group: 'Treatments',
     description:

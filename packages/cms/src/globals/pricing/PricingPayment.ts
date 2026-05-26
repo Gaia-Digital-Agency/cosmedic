@@ -5,7 +5,7 @@ import { apiWarningField } from '../../lib/api-warning'
 
 export const PricingPayment: GlobalConfig = {
   slug: 'pricing-payment',
-  label: 'f. Payment',
+  label: 'Payment',
   admin: {
     group: 'Pricing',
     description:

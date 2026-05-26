@@ -5,7 +5,7 @@ import { pageFields } from './_pageFields'
 
 export const SurgeonsPage: GlobalConfig = {
   slug: 'surgeons-page',
-  label: 'a. Main',
+  label: 'Main',
   admin: {
     group: 'Doctors',
     description:

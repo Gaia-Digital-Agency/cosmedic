@@ -5,7 +5,7 @@ import { apiWarningField } from '../../lib/api-warning'
 
 export const SurgeonsAestheticView: GlobalConfig = {
   slug: 'surgeons-aesthetic-view',
-  label: 'f. Aesthetic-Medicine-View',
+  label: 'Aesthetic Medicine View',
   admin: {
     group: 'Doctors',
     description:

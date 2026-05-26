@@ -5,7 +5,7 @@ import { apiWarningField } from '../../lib/api-warning'
 
 export const HomePricingView: GlobalConfig = {
   slug: 'home-pricing-view',
-  label: 'n. Pricing-View',
+  label: 'Pricing View',
   admin: {
     group: 'Homepage',
     description:

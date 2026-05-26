@@ -5,7 +5,7 @@ import { apiWarningField } from '../../lib/api-warning'
 
 export const NotFoundPage: GlobalConfig = {
   slug: 'not-found-page',
-  label: 'h. 404 Not Found',
+  label: '404 Page',
   admin: {
     group: 'About',
     description: 'Editorial content for the 404 Not Found page (shown whenever a URL doesn\'t match any route).',

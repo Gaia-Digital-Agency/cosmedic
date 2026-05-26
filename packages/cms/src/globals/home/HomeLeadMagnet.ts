@@ -5,7 +5,7 @@ import { apiWarningField } from '../../lib/api-warning'
 
 export const HomeLeadMagnet: GlobalConfig = {
   slug: 'home-lead-magnet',
-  label: 'g. Lead-Magnet',
+  label: 'Lead Magnet',
   admin: {
     group: 'Homepage',
     description:

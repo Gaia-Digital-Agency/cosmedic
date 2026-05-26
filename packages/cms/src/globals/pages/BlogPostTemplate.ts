@@ -13,7 +13,7 @@ import { apiWarningField } from '../../lib/api-warning'
  */
 export const BlogPostTemplate: GlobalConfig = {
   slug: 'blog-post-template',
-  label: 'j. Blog-Post-Template',
+  label: 'Blog Post Template',
   admin: {
     group: 'About',
     description:

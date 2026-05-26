@@ -5,7 +5,7 @@ import { apiWarningField } from '../../lib/api-warning'
 
 export const ContactHero: GlobalConfig = {
   slug: 'contact-hero',
-  label: 'b. Hero',
+  label: 'Hero',
   admin: {
     group: 'Contact',
     description: 'Hero block on /contact: chapter eyebrow, two-line title, lede, hero image, and breadcrumb label. Edit the image and copy here; the address / hours / phone shown lower on the page live on a. Homepage → Settings.',

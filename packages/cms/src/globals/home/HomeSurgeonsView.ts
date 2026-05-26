@@ -5,7 +5,7 @@ import { apiWarningField } from '../../lib/api-warning'
 
 export const HomeSurgeonsView: GlobalConfig = {
   slug: 'home-surgeons-view',
-  label: 'o. Surgeons-View',
+  label: 'Surgeons View',
   admin: {
     group: 'Homepage',
     description:

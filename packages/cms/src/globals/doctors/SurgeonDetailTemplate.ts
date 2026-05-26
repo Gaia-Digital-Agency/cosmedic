@@ -20,7 +20,7 @@ import { apiWarningField } from '../../lib/api-warning'
 
 export const SurgeonDetailTemplate: GlobalConfig = {
   slug: 'surgeon-detail-template',
-  label: 'g. Detail-Template',
+  label: 'Detail Template',
   admin: {
     group: 'Doctors',
     description:

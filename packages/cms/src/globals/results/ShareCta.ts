@@ -5,7 +5,7 @@ import { apiWarningField } from '../../lib/api-warning'
 
 export const ShareCta: GlobalConfig = {
   slug: 'share-cta',
-  label: 'd. Share-Cta',
+  label: 'Share CTA',
   admin: {
     group: 'Results',
     description:

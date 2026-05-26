@@ -5,7 +5,7 @@ import { apiWarningField } from '../../lib/api-warning'
 
 export const HomeJourneyView: GlobalConfig = {
   slug: 'home-journey-view',
-  label: 'q. Journey-View',
+  label: 'Journey View',
   admin: {
     group: 'Homepage',
     description:

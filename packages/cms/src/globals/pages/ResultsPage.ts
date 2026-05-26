@@ -5,7 +5,7 @@ import { pageFields } from './_pageFields'
 
 export const ResultsPage: GlobalConfig = {
   slug: 'results-page',
-  label: 'a. Main',
+  label: 'Main',
   admin: {
     group: 'Results',
     description:
