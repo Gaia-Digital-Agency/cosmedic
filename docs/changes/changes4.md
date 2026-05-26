@@ -133,12 +133,148 @@ Smoke check: curl `/pricing` returns 200, all 191 items render.
 
 ---
 
+## Execution Status
+
+| # | Task | File(s) | Status |
+|---|---|---|---|
+| 1 | Rename Disciplines label → Category | `collections/Disciplines.ts` | ✅ Done |
+| 2 | Create SurgicalItems.ts | `collections/SurgicalItems.ts` | ✅ Done |
+| 3 | Create MachineItems.ts | `collections/MachineItems.ts` | ✅ Done |
+| 4 | Create InjectionItems.ts | `collections/InjectionItems.ts` | ✅ Done |
+| 5 | Create BTLItems.ts | `collections/BTLItems.ts` | ✅ Done |
+| 6 | Register 4 collections in payload.config.ts | `payload.config.ts` | ✅ Done |
+| 7 | DB migration — 4 new tables created | psql | ✅ Done |
+| 8 | Data migration — 191 records moved | psql | ✅ Done |
+| 9 | Verify counts 51+63+34+43=191 | psql | ✅ Done |
+| 10 | Update cms.cache.ts — fetch from 4 endpoints | `web/src/lib/cms.cache.ts` | ✅ Done |
+| 11 | Unregister ClinicCatalogueItems | `payload.config.ts` | ✅ Done |
+| 12 | Restart + smoke check | pm2 + curl | ✅ Done |
+
+---
+
 ## Guarantees
 
 | Requirement | How |
 |---|---|
 | No data loss | Old `clinic_catalogue_items` table kept until Step 6 verified |
 | No duplication | Records move, not copied |
-| Frontend UI unchanged | `ClinicCatalogueTable.tsx` untouched — already groups by `catalogueGroup` |
+| Frontend UI unchanged | `ClinicCatalogueTable.tsx` data shape unchanged — accordion is purely visual |
 | Full CRUD preserved | Each new collection has identical field set to original |
 | Slugs/API unchanged | New slugs are additive; old removed only after frontend rewired |
+
+---
+
+## Phase 2 — Pricing Page Accordion UI
+
+> Status: PLANNED — pending execution approval
+> Scope: `/pricing` page only. No data change. No CMS change. No other page affected.
+
+### Goal
+
+Replace flat price tables and flat wellness rows on `/pricing` with collapsible accordions at the category level. Page loads clean (all closed); editor opens only what they need.
+
+### Page Structure After Change
+
+```
+Hero
+Overview
+──────────────────────────────────
+CLINIC                              ← section heading (new)
+  SURGICAL PROCEDURES               ← sheet header, always visible
+    + Face & Neck                   ← accordion, closed by default
+        Necklifting · Mini Facelifting · Facelifting + Necklifting · ...
+    + Body
+    + Breast
+    + Eyelid
+    + Rhinoplasty
+    + Others
+    + (uncategorised)
+  MACHINE TREATMENTS
+    + Laser AFT Rejuvenation
+    + Laser Erbium Resurfacing
+    + Pixel Q-Switch Nd-Yag
+    + Pigmentation Removal
+    + Laser 360
+    + Tattoo Removal
+    + Vascular Laser
+  INJECTABLE CATALOGUE
+    + Dermal Fillers
+    + Skin Boosters
+  BTL HAIR REMOVAL
+    + Face
+    + Body
+    + Packages
+    + Skin Treatments
+──────────────────────────────────
+WELLNESS                            ← section heading (new)
+  SURGICAL                          ← discipline header, always visible
+    + Face (sub-category)           ← accordion, closed by default
+        Rhinoplasty · Facelift · ...
+    + Body
+    + Breast
+  NON-SURGICAL
+    + Injectables · Laser & Skin · ...
+  HAIR · DENTAL · RECONSTRUCTIVE · WEIGHT-LOSS
+    + (sub-categories per discipline)
+──────────────────────────────────
+Footnote
+Insurance + Payment
+```
+
+### Files Changed
+
+| File | Change |
+|---|---|
+| `packages/web/src/routes/pricing/ClinicCatalogueTable.tsx` | Add `openCategories` state (`Set<string>`). `mainCategory` headers become `<button>` toggles. Rows wrap in collapsible `<div>`. |
+| `packages/web/src/routes/pricing/PricingPage.tsx` | Add `openSubCategories` state (`Set<string>`). Sub-category `h3` headers become `<button>` toggles. Treatment rows wrap in collapsible `<div>`. |
+
+### State Design
+
+**CLINIC (`ClinicCatalogueTable.tsx`)**
+- State: `const [open, setOpen] = useState<Set<string>>(new Set())`
+- Key per accordion: `` `${catalogueGroup}__${mainCategory}` `` (e.g. `surgical__Face & Neck`)
+- Toggle: `setOpen(prev => { const s = new Set(prev); s.has(k) ? s.delete(k) : s.add(k); return s })`
+- Default: empty Set — all closed
+
+**WELLNESS (`PricingPage.tsx`)**
+- State: `const [openSubs, setOpenSubs] = useState<Set<string>>(new Set())`
+- Key per accordion: `` `${disciplineSlug}__${subSlug}` `` (e.g. `surgical__face`)
+- Default: empty Set — all closed
+
+### Accordion Header Design
+
+```
+┌─────────────────────────────────────────┐
+│ Face & Neck                          +  │  ← closed
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ Body                                 −  │  ← open
+│   Abdominoplasty         Rp 45,000,000  │
+│   Mini Abdominoplasty    Rp 32,000,000  │
+│   ...                                   │
+└─────────────────────────────────────────┘
+```
+
+- Header: full-width `<button>`, `cursor: pointer`, bottom border only
+- Label: serif font, existing heading style
+- Toggle icon: `+` (closed) / `−` (open), right-aligned, mono font
+- Rows: wrapped in `<div style={{ overflow: 'hidden', maxHeight: open ? 9999 : 0, transition: 'max-height 220ms ease' }}>`
+
+### No-Change Guarantees
+
+| | |
+|---|---|
+| Price data | All IDR/AUD values, notes, badges unchanged |
+| Row layout | `TableRow` component untouched |
+| CMS wiring | No fetch changes — accordion is pure render state |
+| Other pages | Zero impact outside `/pricing` |
+| Mobile | Accordions improve mobile UX (less scroll) |
+
+### Execution Tasks (Phase 2)
+
+| # | Task | File |
+|---|---|---|
+| 13 | Add accordion to ClinicCatalogueTable.tsx (CLINIC section) | `ClinicCatalogueTable.tsx` |
+| 14 | Add accordion to PricingPage.tsx (WELLNESS section) | `PricingPage.tsx` |
+| 15 | Add CLINIC / WELLNESS section headings | `PricingPage.tsx` |
+| 16 | Smoke check `/pricing` — all rows still render, accordions open/close | browser |

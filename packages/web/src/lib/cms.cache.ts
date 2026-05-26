@@ -176,7 +176,12 @@ async function doLoad(): Promise<CmsCache> {
       fetchAll<Discipline>('disciplines'),
       fetchAll<SubCategory>('sub-categories'),
       fetchAll<Procedure>('procedures', 500, 2),
-      fetchAll<ClinicCatalogueItem>('clinic-catalogue-items', 500, 1).catch(() => []),
+      Promise.all([
+        fetchAll<ClinicCatalogueItem>('surgical-items', 200, 1).catch(() => []),
+        fetchAll<ClinicCatalogueItem>('machine-items', 200, 1).catch(() => []),
+        fetchAll<ClinicCatalogueItem>('injection-items', 200, 1).catch(() => []),
+        fetchAll<ClinicCatalogueItem>('btl-items', 200, 1).catch(() => []),
+      ]).then(([s, m, i, b]) => [...s, ...m, ...i, ...b]),
       fetchAll<BeforeAfterCase>('before-after-cases'),
       fetchAll<Story>('stories'),
       fetchAll<PressMention>('press-mentions'),

@@ -11,7 +11,10 @@ import { Surgeons } from './collections/Surgeons'
 import { Disciplines } from './collections/Disciplines'
 import { SubCategories } from './collections/SubCategories'
 import { Procedures } from './collections/Procedures'
-import { ClinicCatalogueItems } from './collections/ClinicCatalogueItems'
+import { SurgicalItems } from './collections/SurgicalItems'
+import { MachineItems } from './collections/MachineItems'
+import { InjectionItems } from './collections/InjectionItems'
+import { BTLItems } from './collections/BTLItems'
 // Phase C9c — PriceListItems / InjectableProducts / MachineTreatments /
 // HairRemovalAreas collections retired. All catalogue rows now live on
 // Procedures (catalogueGroup: surgical | machine | injection | btl). The
@@ -185,7 +188,10 @@ export default buildConfig({
     BeforeAfterCases,
     Stories,
     // e. Pricing
-    ClinicCatalogueItems,
+    SurgicalItems,
+    MachineItems,
+    InjectionItems,
+    BTLItems,
     // f. Journey
     JourneySteps,
     RecoveryStays,
