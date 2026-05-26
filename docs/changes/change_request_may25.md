@@ -88,12 +88,15 @@ Sorted descending by checkbox count (most complete → top). Within same count: 
 | 25.15 | URL structure `/treatments/surgical/face` | [x] | [x] | [x] | [x] | [x] | [x] |
 | 25.16 | CMS slug bug (first parent missing) — superseded by 25.15 | [x] | [x] | [x] | [x] | [x] | [x] |
 | 25.17 | Site-wide AUD↔IDR plumbing audit | [x] | [x] | [x] | [x] | [x] | [x] |
+| 25.18 | Payload Bucket sort + 2-zone field layout | [x] | [x] | [x] | [x] | [x] | [x] |
 | 25.19 | Brand logo SVG swap + 5-color palette enforcement | [x] | [x] | [x] | [x] | [x] | [x] |
 | 25.24 | Home Hero quick-enquiry form (17 fields) | [x] | [x] | [x] | [x] | [x] | [x] |
 | 25.25 | Home Intro pull-quote + columns | [x] | [x] | [x] | [x] | [x] | [x] |
 | 25.26 | Home Treatments/Pricing/Surgeons/Gallery/LeadMagnet/Journey/Stories sections | [x] | [x] | [x] | [x] | [x] | [x] |
 | 25.30 | WhatsApp number hardcoded in 2 places | [x] | [x] | [x] | [x] | [x] | [x] |
 | 25.31 | Hospital name hardcoded in SEO schema | [x] | [x] | [x] | [x] | [x] | [x] |
+| 25.40 | Nav reorder: Treatments > Results > Doctors > Pricing > Journey > Contact | [x] | [x] | [x] | [x] | [x] | [x] |
+| 25.41 | /pricing page: Clinic Catalogue first, Well-Being Catalogue second | [x] | [x] | [x] | [x] | [x] | [x] |
 | 25.5 | Phase 10 imagery gaps (wiring A1 done; B1/B2/B3 blocked) — **LAUNCH-BLOCKING** | [-] | [x] | [x] | [x] | [x] | [x] |
 | 25.27 | Contact page form labels + messages | [x] | [ ] | [x] | [x] | [x] | [x] |
 | 25.28 | Privacy page metadata + DPO section | [x] | [ ] | [x] | [x] | [x] | [x] |
@@ -104,19 +107,16 @@ Sorted descending by checkbox count (most complete → top). Within same count: 
 | 25.36 | Production DB backup state verification — **LAUNCH-BLOCKING** | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
 | 25.3 | SMTP provider + `.env` config — **LAUNCH-BLOCKING** | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
 | 25.38 | Form submission E2E (Contact → Payload → email) + email delivery end-to-end exercised — **LAUNCH-BLOCKING** | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
-| 25.18 | Payload Bucket sort + 2-zone field layout | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
 | 25.34 | CMS admin UI walk-through field-by-field | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
 | 25.20 | Phase 13 SEO + analytics PARTIAL (analytics missing) | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
 | 25.22 | Phase R — R3 Treatments Bucket detail pending | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
 | 25.33 | Lighthouse scores measured (≥90) — **LAUNCH-BLOCKING** | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
 | 25.32 | Visual inspection every page × breakpoint vs `design/shared.jsx` — **LAUNCH-BLOCKING** | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
-| 25.40 | Nav reorder: Treatments > Results > Doctors > Pricing > Journey > Contact (rename Surgeons → Doctors; swap Surgeons ↔ Results position) | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
-| 25.41 | /pricing page: Clinic Catalogue (ClinicCatalogueTable) first, Well-Being catalogue section second. Current order is reversed. | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
 | 25.10 | N0 mobile UX visual-quality pass — **DEFERRED** (2026-05-25) | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
 | 25.6 | Figma MCP inventory pipeline (BLOCKED — file not shared with MCP user) | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
 | 25.11 | Phase 9 i18n EN ⇄ ID (incl. multi-locale verification — Phase 9 open) | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
 
-**Count:** 43 items (2026-05-26) · **Fully closed (6/6):** 22 (25.1, 25.2, 25.4, 25.7, 25.8, 25.8a, 25.9, 25.12, 25.13, 25.13a, 25.13b, 25.13c, 25.14, 25.15, 25.16, 25.17, 25.19, 25.24, 25.25, 25.26, 25.30, 25.31) · **5/5 applicable (N/A Done):** 1 (25.5) · **5/6 Rules pending:** 3 (25.27, 25.28, 25.29 — missing `localized: true` on all new fields, Rule 6 violation) · **4/6 Pushed+Errors pending:** 1 (25.23 — code in working tree, DB migration for `home_place.image_id` not yet applied) · **Open (0/6):** 16 (14 + 25.40 + 25.41 added), sorted easiest→hardest · **Launch-blocking open:** 6 (25.3, 25.32, 25.33, 25.36, 25.38, 25.39).
+**Count:** 43 items (2026-05-26) · **Fully closed (6/6):** 25 (25.1, 25.2, 25.4, 25.7, 25.8, 25.8a, 25.9, 25.12, 25.13, 25.13a, 25.13b, 25.13c, 25.14, 25.15, 25.16, 25.17, 25.18, 25.19, 25.24, 25.25, 25.26, 25.30, 25.31, 25.40, 25.41) · **5/5 applicable (N/A Done):** 1 (25.5) · **5/6 Rules pending:** 3 (25.27, 25.28, 25.29 — missing `localized: true` on all new fields, Rule 6 violation) · **4/6 Pushed+Errors pending:** 1 (25.23 — code in working tree, DB migration for `home_place.image_id` not yet applied) · **Open (0/6):** 10 · **Launch-blocking open:** 6 (25.3, 25.32, 25.33, 25.36, 25.38, 25.39).
 
 ---
 
