@@ -1,27 +1,18 @@
 import React from 'react'
 
-/**
- * Compact brand mark for Payload's admin breadcrumb / collapsed-nav slot.
- *
- * Uses the canonical BIMC CosMedic mark (medical cross + profile
- * silhouette) cropped from the wide lockup. Sized larger than Payload's
- * default 24-28px slot via explicit height/width so it reads clearly,
- * with maxWidth/maxHeight guards so it never overflows.
- */
+// cosmedic-mark-64.png (64×64) embedded as base64.
+// Solid RGB: mark bg is #F4EFE6 (cream) which matches the admin theme bg exactly,
+// so the dark-brown shape (#281A10) reads as floating on the background — no alpha needed.
+// Previous file (android-chrome-192x192.png) had near-zero-alpha pixels — invisible.
+const MARK = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAIHUExURfTv5uPe1c7Hvs7Iv9LMw+7p4Pfy6aKZkDQnHTcqIDYpH0U3Lsi/uPbx6Pjz6puSiCQWDCcZDyYYDjIiGrywq/by6JuSiSUWDCgaEDMjG72xq/z37p2VizMkG8C0r/r27fPu5WleVC4fFnxvaJ2UipmQh722rSUXDSASCHVqYPXx6CMVC3ZsYvXw5ygZDykaEUg8MmdZUS0eFScaDyYXDlJDO9DJwKGZj1NEPdLJwvr17J6VjEk8Ms3Gvffz6p6WjCocEqOakaiellBDOuLc09fPx0EzKoZ7cvHr43hqYzAiGL62rsS6szcoIDMmHM/Jv4F1bTgpIDksIjAjGdjRyEc5ME9BOZuPiFZJQdrUy7CmnikbEZWKguDa0e7o3390azUnHXltZNLJwfXx597Xz1JEPEEyKZGGfsS9s/Dr4ryzqzUnHmFVTOzm3vHs431yaZiOhcjAuDYoHy4hF52UjPTv59HKwiMUCnZrYvXw6GtgVu/q4aSZki8fF8m/uV1QR+fg2NrSyrywqr2xrEM2LNjRyUg5Md3VzdPMw1tNRPTw52dcUy8hF5GHfuXf1iscE1NFPLOqos7Fvu3o3zwtJFhLQoR3cMvEu/Ls4z8wKMS7s2xfV1RIPuji2TIkGsW+tfby6aKXkGhbUu/p4TgqIc7Gvol+diIUCjcoH762rXRqYJuQiO7o4J6BsdoAAAABYktHRACIBR1IAAAAB3RJTUUH6gUVACwLes8IvwAAAk96VFh0UmF3IHByb2ZpbGUgdHlwZSB4bXAAADiNjVVLluMgDNzrFHMErC8+jhOb3bw3yzn+lETS+bSnu82LMSBUpZIg9Pf3H/qVT/QgucpA33xx8YtbKDdnNw9f/ZCd+RiXy2UwY351zRkLMd2l6R5NBbbdV9IeW2CjSWx6mDp6OBTBJmYZcnCTa3TZojs2+p5gvnDLsV/9CMk1SgSwUR/JQ7a58GFeTB5uMHfJHfqxg5t13a0RJ7kRNSWLND7w28GoZcNcyMoHQmJpAIIxGlb5ijXM4Wc8ZCFhdA3Ge01ucLbgzSLc3hrfwmSwcdmMVdXvIdItxrmYYfZQtCYbwhpRDx8BI/BK5pH4smYrCkmEhYn36QS9BPKUykRHcADA+hsLUEDKkBD2tRRboRQsgmkaQG4GHgROVlPg55yk0J/5FtgxU0Wl/AEFh+8IpYNPS/Il+jh3qTuq6M0tvfr92i0c7ifOJdQQmp2J/HPnWeQBveCIh3FJmBoxNliOIb/csdO9psAGJ5q5swQYfn0UJ92qs+G8jDKS+mpVbki8oFIYtVtncWa1bHh9wKRmBKxclky7ZwCmq1buphGCWuuwgpNyHkWUoeiiIqosrlnAizrhBeQamFhWtKbNgtAX6SiZ9opctTTgz/I8JsMJTE/Ieoqsr8j/A6Zn5PuV8YJuVcUOdAzwnblrM+WV8a2UE/peG0CZdPBI6I4zdsqQvtHmGflUmzswPbR5RYa7H2lzB6ZCvl2oPL4+5e9W80aas5RF/34fz6WTPwWENK//4Hmf0z9WdW8R/C7pTQAAAkpJREFUWMPt1mdXFDEUBuAwwCzFgbmBZRekRBYIDMS2NuyKBbtid+1dUbE3VBAb9t57rz/SEVx2J8k5TjLfPPt+3HPnOUlm5+YiJEmWkS3GyMlFPmOG8vLFFBQOs3wCRcU2iMElpWG/QFkkKgbKKzJABsgA/zlgFvEZXikFqqprhFKLoKxQcRmXyhFYBtTG6vjK+gaEjDw7wkf2vCtQobCxyUHZ+RDVTnML8w8ABAPwyFEQAAA6eszYAEB83PgJE2lcH6CTWidPofpnQKdOC0+foQ/AzFkmMmfrHyJtm8MQmzsPawJA5zP3m2lfEAFNYOEi914n1uIlWAsAvHTZwGDQvhyDBgArOlYafwBirVqNNQC6Zu269WygczgbakEdwImNm8jf3rN5C/dF/RvAka3btjtoUCA7du6iagDevWfvPiu5APcY9ndiJcA+cNBEJK2BHuqioAJA4rBntCPWkaOYA4wCLI50Q8Cx4yc8LZyd7KBpdadOn0E5hSXlXKqG3pZ9tpu7A855Ks93MZR7obSCS3Useda0p9cLsIt9l9Iq+1rd36wwn5q65MWCL19hHoAwbykjSJLU1YavXmNIPSkAOvv9DthygF7vvREIsG92y3fpewu3bt9BpvIu0uYDuHsvdv/BQ2J5/tAKgNsQaeLR4ydPn2muYPBl2vT5C5V9SEYcHAoI0Jcqe5ABr14HA+DN23fBgOj7VGfTAeL2h4+BVhCFT5/9L0EKwBeFLdQ3Ngv5+u2779ZgNTS1iPnx85dfgCCHiXHk39Nv81UPMJ74VogAAAAZdEVYdFNvZnR3YXJlAEFkb2JlIEltYWdlUmVhZHlxyWU8AAAAAElFTkSuQmCC'
+
 const CosmedicIcon: React.FC = () => (
   <img
-    src="/android-chrome-192x192.png"
+    src={MARK}
     alt="BIMC CosMedic"
-    width={36}
-    height={36}
-    style={{
-      width: 36,
-      height: 36,
-      maxWidth: '100%',
-      maxHeight: '100%',
-      display: 'block',
-      objectFit: 'contain',
-    }}
+    width={28}
+    height={28}
+    style={{ width: 28, height: 28, display: 'block', objectFit: 'contain' }}
   />
 )
 
