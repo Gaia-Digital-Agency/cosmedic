@@ -18,6 +18,7 @@ export const PrivacyPage: GlobalConfig = {
     {
       name: 'lastUpdatedDate',
       type: 'text',
+      localized: true,
       defaultValue: 'Last updated · 12 May 2026',
       admin: {
         description:
@@ -27,18 +28,21 @@ export const PrivacyPage: GlobalConfig = {
     {
       name: 'versionLine',
       type: 'text',
+      localized: true,
       defaultValue: 'Version 4.2 · Annual review cycle',
       admin: { description: 'Middle metadata line, e.g. "Version 4.2 · Annual review cycle".' },
     },
     {
       name: 'readingTimeLine',
       type: 'text',
+      localized: true,
       defaultValue: 'Read in 6 minutes',
       admin: { description: 'Right-most metadata line, e.g. "Read in 6 minutes".' },
     },
     {
       name: 'introParagraph',
       type: 'textarea',
+      localized: true,
       admin: {
         description:
           'Optional intro paragraph rendered above the numbered legal sections. Leave blank if not needed.',
@@ -48,12 +52,14 @@ export const PrivacyPage: GlobalConfig = {
     {
       name: 'imageLabel',
       type: 'text',
+      localized: true,
       defaultValue: 'PRIVACY',
       admin: { description: 'All-caps label overlaid on the hero image panel.' },
     },
     {
       name: 'tocHeading',
       type: 'text',
+      localized: true,
       defaultValue: 'Contents',
       admin: { description: 'Eyebrow label above the table-of-contents sidebar.' },
     },
@@ -62,17 +68,17 @@ export const PrivacyPage: GlobalConfig = {
       type: 'group',
       admin: { description: 'Data Protection Officer contact block shown at the bottom of the Privacy page.' },
       fields: [
-        { name: 'eyebrow', type: 'text', defaultValue: 'Data Protection Officer', admin: { description: 'Section eyebrow.' } },
-        { name: 'headingA', type: 'text', defaultValue: 'Questions?', admin: { description: 'First part of the h2 (roman).' } },
-        { name: 'headingB', type: 'text', defaultValue: 'Write to us.', admin: { description: 'Second part of the h2 (italic).' } },
-        { name: 'lede', type: 'textarea', defaultValue: 'We answer within five working days. For urgent medical questions, please use the main contact form — it reaches the on-call concierge in minutes.', admin: { description: 'Short paragraph under the heading.' } },
-        { name: 'emailLabel', type: 'text', defaultValue: 'Email', admin: { description: 'Mono label on the email row.' } },
-        { name: 'email', type: 'text', defaultValue: 'privacy@bimcbali.com', admin: { description: 'DPO email address.' } },
-        { name: 'postLabel', type: 'text', defaultValue: 'Post', admin: { description: 'Mono label on the postal address row.' } },
-        { name: 'addressLine1', type: 'text', defaultValue: 'Data Protection Officer', admin: { description: 'First line of the postal address.' } },
-        { name: 'addressLine2', type: 'text', defaultValue: 'BIMC CosMedic, Jl. Bypass Ngurah Rai 100X', admin: { description: 'Second line of the postal address.' } },
-        { name: 'addressLine3', type: 'text', defaultValue: 'Kuta, Bali 80361, Indonesia', admin: { description: 'Third line of the postal address.' } },
-        { name: 'generalContactLabel', type: 'text', defaultValue: 'General contact', admin: { description: 'Label on the ghost button linking to /contact.' } },
+        { name: 'eyebrow', type: 'text', localized: true, defaultValue: 'Data Protection Officer', admin: { description: 'Section eyebrow.' } },
+        { name: 'headingA', type: 'text', localized: true, defaultValue: 'Questions?', admin: { description: 'First part of the h2 (roman).' } },
+        { name: 'headingB', type: 'text', localized: true, defaultValue: 'Write to us.', admin: { description: 'Second part of the h2 (italic).' } },
+        { name: 'lede', type: 'textarea', localized: true, defaultValue: 'We answer within five working days. For urgent medical questions, please use the main contact form — it reaches the on-call concierge in minutes.', admin: { description: 'Short paragraph under the heading.' } },
+        { name: 'emailLabel', type: 'text', localized: true, defaultValue: 'Email', admin: { description: 'Mono label on the email row.' } },
+        { name: 'email', type: 'text', localized: true, defaultValue: 'privacy@bimcbali.com', admin: { description: 'DPO email address.' } },
+        { name: 'postLabel', type: 'text', localized: true, defaultValue: 'Post', admin: { description: 'Mono label on the postal address row.' } },
+        { name: 'addressLine1', type: 'text', localized: true, defaultValue: 'Data Protection Officer', admin: { description: 'First line of the postal address.' } },
+        { name: 'addressLine2', type: 'text', localized: true, defaultValue: 'BIMC CosMedic, Jl. Bypass Ngurah Rai 100X', admin: { description: 'Second line of the postal address.' } },
+        { name: 'addressLine3', type: 'text', localized: true, defaultValue: 'Kuta, Bali 80361, Indonesia', admin: { description: 'Third line of the postal address.' } },
+        { name: 'generalContactLabel', type: 'text', localized: true, defaultValue: 'General contact', admin: { description: 'Label on the ghost button linking to /contact.' } },
       ],
     },
   ],
