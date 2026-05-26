@@ -162,6 +162,7 @@ export default buildConfig({
         Logo: '@/components/CosmedicLogo',
       },
       beforeLogin: ['@/components/CosmedicBeforeLogin'],
+      beforeNav: ['@/components/CosmedicNavLogo'],
       beforeNavLinks: ['@/components/CmsSidebarExplainer'],
     },
     importMap: {
@@ -169,91 +170,122 @@ export default buildConfig({
     },
   },
   collections: [
+    // Ungrouped
     Users,
+    // i. Media Library
     Media,
-    Surgeons,
+    // b. Treatments — data collections (always render before globals in Payload nav)
     Disciplines,
     SubCategories,
     Procedures,
-    ClinicCatalogueItems,
+    // c. Doctors
+    Surgeons,
+    // d. Results
     BeforeAfterCases,
     Stories,
-    PressMentions,
-    Awards,
+    // e. Pricing
+    ClinicCatalogueItems,
+    // f. Journey
+    JourneySteps,
     RecoveryStays,
+    // g. Contact
+    Enquiries,
+    // h. About
     BlogPosts,
     BlogTags,
     Authors,
-    JourneySteps,
-    Enquiries,
+    PressMentions,
+    Awards,
     PrivacySections,
   ],
   globals: [
-    Settings,
-    Header,
-    Footer,
-    FloatingChrome,
-    BrandStats,
-    EndorsementMark,
-    ConsultationPolicy,
-    FormDefaults,
-    EmailTemplates,
-    SeoDefaults,
-    // 14 per-page Globals (replaces the Pages collection's per-row records).
-    // Each lives in its bucket's admin.group for site-mirror navigation.
-    HomePage,
-    HomeHero,
-    HomeIntro,
-    HomeLeadMagnet,
-    HomePlace,
-    HomeTreatmentsView,
-    HomePricingView,
-    HomeSurgeonsView,
-    HomeGalleryView,
-    HomeJourneyView,
-    HomeStoriesView,
-    PressPage,
-    PrivacyPage,
-    NotFoundPage,
-    TreatmentsPage,
-    TreatmentsHero,
-    TreatmentsIndexSection,
-    TreatmentsStats,
-    DisciplineDetailTemplate,
-    SubCategoryDetailTemplate,
-    SurgeonsPage,
-    SurgeonsHero,
-    SurgeonsLeadView,
-    SurgeonsPlasticView,
-    SurgeonsAestheticView,
-    SurgeonDetailTemplate,
-    ResultsPage,
-    ResultsHero,
-    LibraryCta,
-    ShareCta,
-    ResultsFeaturedCasesView,
-    ResultsStoriesView,
-    GalleryPage,
-    PricingPage,
-    PricingHero,
-    PricingOverview,
-    PricingFootnote,
-    PricingInsurance,
-    PricingPayment,
-    PricingDisciplineListView,
-    PricingCatalogueView,
-    JourneyPage,
-    JourneyHero,
-    JourneyStats,
-    StoriesPage,
-    RecoveryStaysPage,
-    ContactPage,
-    ContactHero,
-    ContactEnquirySection,
-    ContactVisitSection,
-    VideoConsultPage,
-    BlogPage,
-    BlogPostTemplate,
+    // ── a. Homepage ───────────────────────────────────────────────
+    // Collections in this bucket: none. All 18 items are globals.
+    // Registration order controls sidebar order within the group.
+    HomePage,           // Main
+    HomeHero,           // Hero
+    Header,             // Header
+    Footer,             // Footer
+    HomeIntro,          // Intro
+    BrandStats,         // Trust Strip
+    HomeLeadMagnet,     // Lead Magnet
+    HomePlace,          // Place
+    FloatingChrome,     // Floating CTA
+    EndorsementMark,    // Endorsement
+    SeoDefaults,        // SEO Defaults
+    Settings,           // Settings
+    HomeTreatmentsView, // Treatments View
+    HomePricingView,    // Pricing View
+    HomeSurgeonsView,   // Surgeons View
+    HomeGalleryView,    // Gallery View
+    HomeJourneyView,    // Journey View
+    HomeStoriesView,    // Stories View
+
+    // ── b. Treatments ─────────────────────────────────────────────
+    // Collections (Disciplines / SubCategories / Procedures) always first.
+    TreatmentsPage,           // Main
+    TreatmentsHero,           // Hero
+    TreatmentsIndexSection,   // Index
+    TreatmentsStats,          // Stats
+    DisciplineDetailTemplate,    // Discipline Template
+    SubCategoryDetailTemplate,   // Sub-Category Template
+
+    // ── c. Doctors ────────────────────────────────────────────────
+    // Collection (Surgeons) always first.
+    SurgeonsPage,          // Main
+    SurgeonsHero,          // Hero
+    SurgeonsLeadView,      // Lead View
+    SurgeonsPlasticView,   // Plastic Surgery View
+    SurgeonsAestheticView, // Aesthetic Medicine View
+    SurgeonDetailTemplate, // Detail Template
+
+    // ── d. Results ────────────────────────────────────────────────
+    // Collections (BeforeAfterCases / Stories) always first.
+    ResultsPage,              // Main
+    ResultsHero,              // Hero
+    LibraryCta,               // Library CTA
+    ShareCta,                 // Share CTA
+    GalleryPage,              // Gallery
+    StoriesPage,              // Stories
+    ResultsFeaturedCasesView, // Featured Cases View
+    ResultsStoriesView,       // Stories View
+
+    // ── e. Pricing ────────────────────────────────────────────────
+    // Collection (ClinicCatalogueItems) always first.
+    PricingPage,               // Main
+    PricingHero,               // Hero
+    PricingOverview,           // Overview
+    PricingFootnote,           // Footnote
+    PricingInsurance,          // Insurance
+    PricingPayment,            // Payment
+    ConsultationPolicy,        // Consultation
+    PricingDisciplineListView, // Discipline List View
+    PricingCatalogueView,      // Catalogue View
+
+    // ── f. Journey ────────────────────────────────────────────────
+    // Collections (JourneySteps / RecoveryStays) always first.
+    JourneyPage,       // Main
+    JourneyHero,       // Hero
+    JourneyStats,      // Stats
+    RecoveryStaysPage, // Recovery Stays
+
+    // ── g. Contact ────────────────────────────────────────────────
+    // Collection (Enquiries / Inbox) always first.
+    ContactPage,            // Main
+    ContactHero,            // Hero
+    ContactEnquirySection,  // Enquiry Section
+    ContactVisitSection,    // Visit Section
+    FormDefaults,           // Form
+    EmailTemplates,         // Email
+    VideoConsultPage,       // Video Consult
+
+    // ── h. About ──────────────────────────────────────────────────
+    // Collections (BlogPosts / BlogTags / Authors / PressMentions / Awards / PrivacySections) always first.
+    BlogPage,          // Blog
+    PressPage,         // Press
+    PrivacyPage,       // Privacy
+    BlogPostTemplate,  // Blog Post Template
+    NotFoundPage,      // 404 Page
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
