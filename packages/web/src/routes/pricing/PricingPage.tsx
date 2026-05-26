@@ -8,6 +8,7 @@ import { TREATMENT_LIST, SUBCATEGORIES_BY_DISCIPLINE, IMG } from '@/content/seed
 import { SUBCATEGORY_DATA } from '@/content/subcategory-data'
 import { ClinicCatalogueTable } from './ClinicCatalogueTable'
 import { useCms } from '@/lib/cms-context'
+import { DEFAULT_AUD_TO_IDR } from '@/lib/pricing'
 
 const DEFAULT_PAYMENT_TERMS: [string, string][] = [
   ['Deposit', '20% on confirmation'],
@@ -41,9 +42,10 @@ export const PricingPage: React.FC = () => {
     overview.headingPart1 || overview.headingPart2 || overview.body,
   )
 
+  const liveRate = cms?.settings?.audToIdrRate || DEFAULT_AUD_TO_IDR
   const footnote =
     cms?.pricingFootnote?.text ||
-    'Prices indicative for international patients. AUD shown at 1 AUD ≈ Rp 10,500 (May 2026). Final quotes are tailored after consultation. Recovery stays, transfers, and twelve months of telehealth follow-up included on most surgical packages.'
+    `Prices indicative for international patients. AUD shown at 1 AUD ≈ Rp ${liveRate.toLocaleString('de-DE')} (live rate). Final quotes are tailored after consultation. Recovery stays, transfers, and twelve months of telehealth follow-up included on most surgical packages.`
 
   const ins = cms?.pricingInsurance ?? {}
   const insuranceEyebrow = ins.eyebrow || 'Insurance'

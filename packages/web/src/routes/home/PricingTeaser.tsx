@@ -5,15 +5,19 @@ import { Btn } from '@/components/primitives/Btn'
 import { useCms } from '@/lib/cms-context'
 import { formatIDR, DEFAULT_AUD_TO_IDR, DEFAULT_ROUND_IDR_TO } from '@/lib/pricing'
 
+// IDR is the source of truth for all prices (25.17).
+// AUD is derived at render-time from Settings.audToIdrRate so it
+// re-pegs automatically when the clinic edits that single CMS field.
+// These IDR amounts were calibrated at DEFAULT_AUD_TO_IDR (12 800).
 const PRICE_TEASER = [
-  { name: 'Rhinoplasty', aud: 4200, parent: 'surgical', slug: 'face' },
-  { name: 'Breast Augmentation', aud: 5800, parent: 'surgical', slug: 'breast' },
-  { name: 'Facelift & Necklift', aud: 8500, parent: 'surgical', slug: 'face' },
-  { name: 'Sapphire FUE Hair', aud: 3400, parent: 'hair', slug: 'fue' },
-  { name: 'Liposculpture', aud: 4800, parent: 'surgical', slug: 'body' },
-  { name: 'Blepharoplasty', aud: 2200, parent: 'surgical', slug: 'face' },
-  { name: 'Botulinum Toxin', aud: 320, parent: 'non-surgical', slug: 'injectables' },
-  { name: 'Dermal Fillers', aud: 480, parent: 'non-surgical', slug: 'injectables' },
+  { name: 'Rhinoplasty',         idr: 53_760_000, parent: 'surgical',     slug: 'face' },
+  { name: 'Breast Augmentation', idr: 74_240_000, parent: 'surgical',     slug: 'breast' },
+  { name: 'Facelift & Necklift', idr: 108_800_000, parent: 'surgical',    slug: 'face' },
+  { name: 'Sapphire FUE Hair',   idr: 43_520_000, parent: 'hair',         slug: 'fue' },
+  { name: 'Liposculpture',       idr: 61_440_000, parent: 'surgical',     slug: 'body' },
+  { name: 'Blepharoplasty',      idr: 28_160_000, parent: 'surgical',     slug: 'face' },
+  { name: 'Botulinum Toxin',     idr: 4_096_000,  parent: 'non-surgical', slug: 'injectables' },
+  { name: 'Dermal Fillers',      idr: 6_144_000,  parent: 'non-surgical', slug: 'injectables' },
 ]
 
 export const PricingTeaser: React.FC = () => {
@@ -70,9 +74,9 @@ export const PricingTeaser: React.FC = () => {
               <h4 className="pr-name">{p.name}</h4>
               <span className="pr-from">From</span>
               <span className="pr-amount">
-                {formatIDR(p.aud * rate, roundTo)}{' '}
+                {formatIDR(p.idr, roundTo)}{' '}
                 <span className="pr-aud" style={{ marginLeft: 6 }}>
-                  ≈ AUD {p.aud.toLocaleString('en-AU')}
+                  ≈ AUD {Math.round(p.idr / rate).toLocaleString('en-AU')}
                 </span>
               </span>
             </a>
