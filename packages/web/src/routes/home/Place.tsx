@@ -34,7 +34,7 @@ export const Place: React.FC = () => {
       <div className="place-grid">
         <Reveal>
           <div className="place-image">
-            <Img src={IMG.bali} fallbackLabel="BALI · NUSA DUA" fallbackHue={4} alt="" />
+            <Img media={g?.image} src={IMG.bali} fallbackLabel="BALI · NUSA DUA" fallbackHue={4} alt="" />
           </div>
         </Reveal>
         <Reveal delay={140}>
