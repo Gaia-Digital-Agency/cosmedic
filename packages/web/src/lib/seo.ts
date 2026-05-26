@@ -141,7 +141,7 @@ export function seoFor(pathname: string, cms: CmsCache): SeoFields {
     const post = (cms.blogPosts || []).find((p) => p.slug === blogMatch[1])
     if (post) {
       title = `${post.title}${fallbackTitleSuffix}`
-      if (post.excerpt) description = clampDescription(post.excerpt)
+      if (post.lede) description = clampDescription(post.lede)
       jsonLd = {
         '@context': 'https://schema.org',
         '@type': 'BlogPosting',

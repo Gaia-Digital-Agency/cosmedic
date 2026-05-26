@@ -177,6 +177,7 @@ export type ClinicCatalogueItem = {
   fdaApproved?: boolean
   bodyZone?: 'face' | 'upper-body' | 'lower-body' | 'package' | 'other'
   parentDiscipline?: number | Discipline
+  parentSubCategory?: number | SubCategory
   description?: Lexical
   pricing?: {
     priceIdr2025?: number

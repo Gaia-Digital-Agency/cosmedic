@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import type { JSX } from 'react'
 
 export function useReveal<T extends HTMLElement = HTMLDivElement>(): [
   React.RefObject<T | null>,

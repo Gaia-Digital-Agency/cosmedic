@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { TREATMENT_LIST, SUBCATEGORIES_BY_DISCIPLINE, SURGEON_LIST } from '@/content/seed'
-import { withLocale, localeFromPath } from '@/i18n'
 import { useCms } from '@/lib/cms-context'
 import { mediaUrl, mediaAlt } from '@/lib/cms'
 

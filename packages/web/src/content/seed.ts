@@ -56,6 +56,7 @@ export type Surgeon = {
   group: SurgeonGroup
   bio: string
   spec_areas: string[]
+  portrait?: import('./../lib/cms').CmsMedia | number | null
 }
 
 export type BaPair = {

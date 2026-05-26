@@ -164,6 +164,7 @@ export default buildConfig({
       beforeLogin: ['@/components/CosmedicBeforeLogin'],
       beforeNav: ['@/components/CosmedicNavLogo'],
       beforeNavLinks: ['@/components/CmsSidebarExplainer'],
+      afterNavLinks: ['@/components/CosmedicNavLabels'],
     },
     importMap: {
       baseDir: path.resolve(dirname),

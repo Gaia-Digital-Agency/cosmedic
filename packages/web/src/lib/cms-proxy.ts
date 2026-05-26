@@ -32,7 +32,7 @@ export function lazyArray<T>(compute: (cms: CmsCache) => T[]): T[] {
     return memo.value
   }
   return new Proxy([] as unknown as T[], {
-    get(_t, prop, receiver) {
+    get(_t, prop, _receiver) {
       const data = reify()
       const v = Reflect.get(data, prop, data)
       return typeof v === 'function' ? v.bind(data) : v

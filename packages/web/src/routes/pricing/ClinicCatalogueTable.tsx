@@ -384,7 +384,6 @@ export const ClinicCatalogueTable: React.FC = () => {
 
   const totalCatalogueRows =
     surgical.length + collapsedMachineVisible.length + injection.length + btl.length
-  const totalProcs = cms.clinicCatalogueItems.length
   const totalUnpriced = cms.clinicCatalogueItems.filter((p) => !hasPrice(p)).length
 
   // ── Section chrome (eyebrow / heading / intro)
