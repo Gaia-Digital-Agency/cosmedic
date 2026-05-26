@@ -37,7 +37,7 @@ export const SubCategoryDetailTemplate: GlobalConfig = {
       type: 'group',
       admin: { description: '"Take a step" CTA stack below the TOC sidebar. The three CTAs link to /video-consult, /contact, and the WhatsApp concierge.' },
       fields: [
-        { name: 'eyebrow', type: 'text', defaultValue: 'Take a step',
+        { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Take a step',
           admin: { description: 'Small-caps eyebrow above the CTA stack.' } },
         { name: 'videoConsultLabel', type: 'text', defaultValue: 'Book a video consult →',
           admin: { description: 'Solid CTA — links to /video-consult?procedure=<title>.' } },

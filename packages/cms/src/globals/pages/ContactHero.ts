@@ -20,7 +20,7 @@ export const ContactHero: GlobalConfig = {
       admin: { description: 'First line of the hero title.' } },
     { name: 'titleB', type: 'text', defaultValue: 'you are ready.',
       admin: { description: 'Second line of the hero title (rendered on its own line, italic-friendly).' } },
-    { name: 'lede', type: 'textarea',
+    { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue: 'Write to us in your own time, in your own words. A concierge will reply within twenty-four hours, in English or Bahasa Indonesia. There is no obligation — and no pressure — to proceed.',
       admin: { description: 'Lede paragraph beneath the title.' } },
     { name: 'heroImage', type: 'upload', relationTo: 'media',

@@ -15,13 +15,13 @@ export const HomeTreatmentsView: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     apiWarningField,
-    { name: 'eyebrow', type: 'text', defaultValue: 'Treatments',
+    { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Treatments',
       admin: { description: 'Section eyebrow above the heading.' } },
     { name: 'headingPart1', type: 'text', defaultValue: 'Six disciplines,',
       admin: { description: 'First line of the heading (roman).' } },
     { name: 'headingPart2', type: 'text', defaultValue: 'one sanctuary.',
       admin: { description: 'Second line of the heading (italic).' } },
-    { name: 'lede', type: 'textarea',
+    { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         'A complete repertoire under one roof, sequenced into a single journey. Treatments may be combined; recovery is always private.',
       admin: { description: 'Section lede beneath the heading.' } },

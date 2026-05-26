@@ -17,7 +17,7 @@ export const HomePlace: GlobalConfig = {
     apiWarningField,
     { name: 'image', type: 'upload', relationTo: 'media',
       admin: { description: 'Lead image for the "Recover in paradise" section (left column). 1200×1500 portrait orientation works best. Falls back to a placeholder when empty.' } },
-    { name: 'eyebrow', type: 'text', defaultValue: 'Recovery in Bali',
+    { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Recovery in Bali',
       admin: { description: 'Section eyebrow.' } },
     { name: 'headingPart1', type: 'text', defaultValue: 'Recover',
       admin: { description: 'First line of the heading (roman).' } },

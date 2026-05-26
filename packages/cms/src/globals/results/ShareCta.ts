@@ -15,7 +15,7 @@ export const ShareCta: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     apiWarningField,
-    { name: 'eyebrow', type: 'text', defaultValue: 'Sharing your story',
+    { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Sharing your story',
       admin: { description: 'Small-caps eyebrow above the heading.' } },
     { name: 'headingPre', type: 'text', defaultValue: 'Have a ',
       admin: { description: 'First part of the heading (roman). Renders before the italic word.' } },

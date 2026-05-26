@@ -14,7 +14,7 @@ export const ContactVisitSection: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     apiWarningField,
-    { name: 'eyebrow', type: 'text', defaultValue: 'Visit',
+    { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Visit',
       admin: { description: 'Small-caps eyebrow above the heading.' } },
     { name: 'headingPre', type: 'text', defaultValue: 'Find us in',
       admin: { description: 'First part of the section heading (roman).' } },

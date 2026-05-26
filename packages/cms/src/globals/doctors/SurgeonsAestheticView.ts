@@ -15,7 +15,7 @@ export const SurgeonsAestheticView: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     apiWarningField,
-    { name: 'eyebrow', type: 'text', required: true,
+    { name: 'eyebrow', label: 'Label above heading', type: 'text', required: true,
       admin: { description: 'Section eyebrow, e.g. "Aesthetic Medicine".' } },
     { name: 'headingA', type: 'text',
       admin: { description: 'Roman prefix before the italic word in the heading.' } },
@@ -23,7 +23,7 @@ export const SurgeonsAestheticView: GlobalConfig = {
       admin: { description: 'The italic word(s) inside the heading. e.g. "Quiet".' } },
     { name: 'headingB', type: 'text', required: true,
       admin: { description: 'Roman suffix after the italic word. e.g. " non-surgical.".' } },
-    { name: 'lede', type: 'textarea', required: true,
+    { name: 'lede', label: 'Intro paragraph', type: 'textarea', required: true,
       admin: { description: 'Single-paragraph section lede.' } },
   ],
 }

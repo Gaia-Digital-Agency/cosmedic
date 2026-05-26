@@ -21,7 +21,7 @@ export const ResultsHero: GlobalConfig = {
       admin: { description: 'First line of the two-line headline (roman).' } },
     { name: 'titleB', type: 'text', defaultValue: 'transformative.',
       admin: { description: 'Second line of the headline (italic-friendly).' } },
-    { name: 'lede', type: 'textarea',
+    { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         'A small selection of consented results paired with the stories behind them. Our complete library — over two hundred cases — is shared during private consultation.',
       admin: { description: 'Lede paragraph beneath the title (≈2 sentences).' } },

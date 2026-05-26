@@ -21,7 +21,7 @@ export const PricingHero: GlobalConfig = {
       admin: { description: 'First line of the two-line headline (roman).' } },
     { name: 'titleB', type: 'text', defaultValue: 'every price.',
       admin: { description: 'Second line of the headline (italic-friendly).' } },
-    { name: 'lede', type: 'textarea',
+    { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         'The complete pricing index, organised by discipline. Prices are starting figures in IDR with an Australian-dollar equivalent. Every plan is quoted precisely after a private consultation; what we quote is what you pay.',
       admin: { description: 'Lede paragraph beneath the title (≈2 sentences).' } },

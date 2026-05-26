@@ -38,7 +38,7 @@ export const BlogPage: GlobalConfig = {
           'The lower "archive" section of /blog — the grid of all past posts with the discipline filter.',
       },
       fields: [
-        { name: 'eyebrow', type: 'text', defaultValue: 'The archive' },
+        { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'The archive' },
         {
           name: 'headingPre',
           type: 'text',
@@ -53,6 +53,7 @@ export const BlogPage: GlobalConfig = {
         },
         {
           name: 'lede',
+          label: 'Intro paragraph',
           type: 'textarea',
           defaultValue:
             'Filter by discipline, or read down. New essays go out with the quarterly journal — subscribe at the foot of any page.',

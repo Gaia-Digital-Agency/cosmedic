@@ -49,7 +49,7 @@ export const BlogPostTemplate: GlobalConfig = {
       type: 'group',
       admin: { description: 'The "More from the journal" related-posts section at the foot of every post.' },
       fields: [
-        { name: 'eyebrow', type: 'text', defaultValue: 'More from the journal' },
+        { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'More from the journal' },
         {
           name: 'headingPre',
           type: 'text',

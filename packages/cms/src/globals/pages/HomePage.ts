@@ -17,7 +17,7 @@ const introBlock: Field = {
   type: 'group',
   admin: { description: 'Intro section on /. "Our Approach" eyebrow + italic pull quote + 2-column body.' },
   fields: [
-    { name: 'eyebrow', type: 'text' },
+    { name: 'eyebrow', label: 'Label above heading', type: 'text' },
     { name: 'pullQuoteBefore', type: 'text', admin: { description: 'Plain text before the italic accent word' } },
     { name: 'pullQuoteAccent', type: 'text', admin: { description: 'The italic accent word (e.g. "care")' } },
     { name: 'pullQuoteAfter', type: 'text', admin: { description: 'Plain text after the italic accent word' } },
@@ -31,10 +31,10 @@ const treatmentsBlock: Field = {
   type: 'group',
   admin: { description: 'Treatments preview section frame on / (above the 6 discipline cards).' },
   fields: [
-    { name: 'eyebrow', type: 'text' },
+    { name: 'eyebrow', label: 'Label above heading', type: 'text' },
     { name: 'headingPart1', type: 'text', admin: { description: 'Roman text part of H2' } },
     { name: 'headingPart2', type: 'text', admin: { description: 'Italic accent part of H2' } },
-    { name: 'lede', type: 'textarea' },
+    { name: 'lede', label: 'Intro paragraph', type: 'textarea' },
   ],
 }
 
@@ -43,10 +43,10 @@ const pricingTeaserBlock: Field = {
   type: 'group',
   admin: { description: 'Pricing teaser section frame on / (8 price rows + footnote).' },
   fields: [
-    { name: 'eyebrow', type: 'text' },
+    { name: 'eyebrow', label: 'Label above heading', type: 'text' },
     { name: 'headingPart1', type: 'text' },
     { name: 'headingPart2', type: 'text' },
-    { name: 'lede', type: 'textarea' },
+    { name: 'lede', label: 'Intro paragraph', type: 'textarea' },
     { name: 'footnote', type: 'textarea' },
     { name: 'viewAllLabel', type: 'text' },
     { name: 'viewAllHref', type: 'text' },
@@ -58,7 +58,7 @@ const surgeonsBlock: Field = {
   type: 'group',
   admin: { description: 'Surgeons strip section frame on / (lead surgeon + team group photo). q4 (2026-05-24): the 6-card associates grid was replaced with a single team photo. Per-surgeon profiles still live under /surgeons.' },
   fields: [
-    { name: 'eyebrow', type: 'text' },
+    { name: 'eyebrow', label: 'Label above heading', type: 'text' },
     { name: 'leadSurgeonEyebrow', type: 'text' },
     { name: 'leadBody', type: 'textarea' },
     { name: 'leadStat1Label', type: 'text' },
@@ -80,10 +80,10 @@ const galleryBlock: Field = {
   type: 'group',
   admin: { description: 'Gallery (Before & After) teaser section frame on /.' },
   fields: [
-    { name: 'eyebrow', type: 'text' },
+    { name: 'eyebrow', label: 'Label above heading', type: 'text' },
     { name: 'headingPart1', type: 'text' },
     { name: 'headingPart2', type: 'text' },
-    { name: 'lede', type: 'textarea' },
+    { name: 'lede', label: 'Intro paragraph', type: 'textarea' },
     { name: 'ctaLabel', type: 'text' },
     { name: 'ctaHref', type: 'text' },
   ],
@@ -103,7 +103,7 @@ const leadMagnetBlock: Field = {
     { name: 'bodyEyebrow', type: 'text' },
     { name: 'headingPart1', type: 'text' },
     { name: 'headingAccent', type: 'text' },
-    { name: 'lede', type: 'textarea' },
+    { name: 'lede', label: 'Intro paragraph', type: 'textarea' },
     { name: 'formPlaceholder', type: 'text' },
     { name: 'submitLabel', type: 'text' },
     { name: 'successHeading', type: 'text' },
@@ -117,7 +117,7 @@ const journeyBlock: Field = {
   type: 'group',
   admin: { description: 'Journey teaser section on / (5-step preview).' },
   fields: [
-    { name: 'eyebrow', type: 'text' },
+    { name: 'eyebrow', label: 'Label above heading', type: 'text' },
     { name: 'headingPart1', type: 'text' },
     { name: 'headingAccent', type: 'text' },
     { name: 'ctaLabel', type: 'text' },
@@ -130,10 +130,10 @@ const storiesBlock: Field = {
   type: 'group',
   admin: { description: 'Stories teaser section on / (3 testimonial cards).' },
   fields: [
-    { name: 'eyebrow', type: 'text' },
+    { name: 'eyebrow', label: 'Label above heading', type: 'text' },
     { name: 'headingAccent', type: 'text' },
     { name: 'headingPart2', type: 'text' },
-    { name: 'lede', type: 'textarea', admin: { description: 'May contain inline link via Markdown' } },
+    { name: 'lede', label: 'Intro paragraph', type: 'textarea', admin: { description: 'May contain inline link via Markdown' } },
     { name: 'ctaLabel', type: 'text' },
     { name: 'ctaHref', type: 'text' },
   ],
@@ -144,7 +144,7 @@ const placeBlock: Field = {
   type: 'group',
   admin: { description: 'Place / "Recover in paradise" section on /. Lettered rows (A./B./C./D.) stay in code for now — editable list rolls in via Phase Q.' },
   fields: [
-    { name: 'eyebrow', type: 'text' },
+    { name: 'eyebrow', label: 'Label above heading', type: 'text' },
     { name: 'headingPart1', type: 'text' },
     { name: 'headingAccent', type: 'text' },
     { name: 'body', type: 'textarea' },

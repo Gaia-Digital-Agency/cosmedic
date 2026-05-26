@@ -14,7 +14,7 @@ export const ContactEnquirySection: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     apiWarningField,
-    { name: 'eyebrow', type: 'text', localized: true, defaultValue: 'The Enquiry',
+    { name: 'eyebrow', label: 'Label above heading', type: 'text', localized: true, defaultValue: 'The Enquiry',
       admin: { description: 'Small-caps eyebrow above the heading.' } },
     { name: 'headingPre', type: 'text', localized: true, defaultValue: 'Tell us a little',
       admin: { description: 'First part of the section heading (roman).' } },
@@ -54,9 +54,9 @@ export const ContactEnquirySection: GlobalConfig = {
       ],
       fields: [
         { name: 'slug', type: 'text', localized: true, required: true, admin: { description: 'URL param value: estimate or video-consult.' } },
-        { name: 'eyebrow', type: 'text', localized: true, admin: { description: 'Hero eyebrow when this intent is active.' } },
+        { name: 'eyebrow', label: 'Label above heading', type: 'text', localized: true, admin: { description: 'Hero eyebrow when this intent is active.' } },
         { name: 'title', type: 'text', localized: true, admin: { description: 'Hero heading (replaces page default title).' } },
-        { name: 'lede', type: 'textarea', localized: true, admin: { description: 'Hero lede when this intent is active.' } },
+        { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true, admin: { description: 'Hero lede when this intent is active.' } },
       ],
     },
     {

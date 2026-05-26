@@ -23,10 +23,11 @@ export const PressPage: GlobalConfig = {
           'Section heading above the awards grid. The cards themselves are pulled from the Awards collection.',
       },
       fields: [
-        { name: 'eyebrow', type: 'text', defaultValue: 'Accreditations' },
+        { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Accreditations' },
         { name: 'heading', type: 'text', defaultValue: 'The credentials we hold.' },
         {
           name: 'lede',
+          label: 'Intro paragraph',
           type: 'textarea',
           defaultValue:
             'We have spent twenty-eight years building these credentials, one at a time, because they are the only thing that actually matters in our line of work.',
@@ -41,7 +42,7 @@ export const PressPage: GlobalConfig = {
           'Section heading above the press-mention rows. The rows themselves are pulled from the PressMentions collection.',
       },
       fields: [
-        { name: 'eyebrow', type: 'text', defaultValue: 'In the press' },
+        { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'In the press' },
         {
           name: 'headingPre',
           type: 'text',
@@ -56,6 +57,7 @@ export const PressPage: GlobalConfig = {
         },
         {
           name: 'lede',
+          label: 'Intro paragraph',
           type: 'textarea',
           defaultValue:
             'A small selection from the editorial coverage of the past eighteen months. We do not pitch — but we are happy to talk to journalists who reach us directly.',

@@ -15,7 +15,7 @@ export const SurgeonsPlasticView: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     apiWarningField,
-    { name: 'eyebrow', type: 'text', required: true,
+    { name: 'eyebrow', label: 'Label above heading', type: 'text', required: true,
       admin: { description: 'Section eyebrow, e.g. "Plastic Surgery".' } },
     { name: 'headingA', type: 'text',
       admin: { description: 'Roman prefix before the italic word in the heading. Leave blank if the heading starts with the italic word.' } },
@@ -23,7 +23,7 @@ export const SurgeonsPlasticView: GlobalConfig = {
       admin: { description: 'The italic word(s) inside the heading. e.g. "Reconstructive".' } },
     { name: 'headingB', type: 'text', required: true,
       admin: { description: 'Roman suffix after the italic word. e.g. " & aesthetic.".' } },
-    { name: 'lede', type: 'textarea', required: true,
+    { name: 'lede', label: 'Intro paragraph', type: 'textarea', required: true,
       admin: { description: 'Single-paragraph section lede.' } },
   ],
 }

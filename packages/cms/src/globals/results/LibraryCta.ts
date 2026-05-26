@@ -15,7 +15,7 @@ export const LibraryCta: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     apiWarningField,
-    { name: 'eyebrow', type: 'text', defaultValue: 'Private gallery',
+    { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Private gallery',
       admin: { description: 'Small-caps eyebrow above the heading.' } },
     { name: 'headingPre', type: 'text', defaultValue: 'Want to see ',
       admin: { description: 'First part of the heading (roman). Renders before the italic word.' } },

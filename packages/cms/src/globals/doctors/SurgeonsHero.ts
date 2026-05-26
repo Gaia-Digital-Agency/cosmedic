@@ -21,7 +21,7 @@ export const SurgeonsHero: GlobalConfig = {
       admin: { description: 'First line of the two-line headline, roman. e.g. "Hands you".' } },
     { name: 'titleB', type: 'text', required: true,
       admin: { description: 'Second line of the headline, italic-rendered. e.g. "can trust.".' } },
-    { name: 'lede', type: 'textarea', required: true,
+    { name: 'lede', label: 'Intro paragraph', type: 'textarea', required: true,
       admin: { description: 'Single paragraph below the headline. Keep ~2 sentences.' } },
     { name: 'heroImage', type: 'upload', relationTo: 'media',
       admin: { description: 'Right-side image in the ChapterOpener. ~1200×1500 portrait crop preferred.' } },

@@ -16,6 +16,7 @@ export const NotFoundPage: GlobalConfig = {
     apiWarningField,
     {
       name: 'eyebrow',
+      label: 'Label above heading',
       type: 'text',
       localized: true,
       defaultValue: 'Error · 404',
@@ -37,6 +38,7 @@ export const NotFoundPage: GlobalConfig = {
     },
     {
       name: 'lede',
+      label: 'Intro paragraph',
       type: 'textarea',
       localized: true,
       defaultValue:

@@ -15,13 +15,13 @@ export const HomeStoriesView: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     apiWarningField,
-    { name: 'eyebrow', type: 'text', defaultValue: 'Verified Patient Stories',
+    { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Verified Patient Stories',
       admin: { description: 'Section eyebrow.' } },
     { name: 'headingItalic', type: 'text', defaultValue: 'Stories,',
       admin: { description: 'First word of the heading (italic).' } },
     { name: 'headingPart2', type: 'text', defaultValue: 'not slogans.',
       admin: { description: 'Remainder of the heading (roman).' } },
-    { name: 'lede', type: 'textarea',
+    { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         'Verified reviews from international patients. Video testimonials and Google reviews on our full stories page.',
       admin: { description: 'Section lede beneath the heading. (Visible text version of the link-bearing default.)' } },

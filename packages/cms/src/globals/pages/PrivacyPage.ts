@@ -68,10 +68,10 @@ export const PrivacyPage: GlobalConfig = {
       type: 'group',
       admin: { description: 'Data Protection Officer contact block shown at the bottom of the Privacy page.' },
       fields: [
-        { name: 'eyebrow', type: 'text', localized: true, defaultValue: 'Data Protection Officer', admin: { description: 'Section eyebrow.' } },
+        { name: 'eyebrow', label: 'Label above heading', type: 'text', localized: true, defaultValue: 'Data Protection Officer', admin: { description: 'Section eyebrow.' } },
         { name: 'headingA', type: 'text', localized: true, defaultValue: 'Questions?', admin: { description: 'First part of the h2 (roman).' } },
         { name: 'headingB', type: 'text', localized: true, defaultValue: 'Write to us.', admin: { description: 'Second part of the h2 (italic).' } },
-        { name: 'lede', type: 'textarea', localized: true, defaultValue: 'We answer within five working days. For urgent medical questions, please use the main contact form — it reaches the on-call concierge in minutes.', admin: { description: 'Short paragraph under the heading.' } },
+        { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true, defaultValue: 'We answer within five working days. For urgent medical questions, please use the main contact form — it reaches the on-call concierge in minutes.', admin: { description: 'Short paragraph under the heading.' } },
         { name: 'emailLabel', type: 'text', localized: true, defaultValue: 'Email', admin: { description: 'Mono label on the email row.' } },
         { name: 'email', type: 'text', localized: true, defaultValue: 'privacy@bimcbali.com', admin: { description: 'DPO email address.' } },
         { name: 'postLabel', type: 'text', localized: true, defaultValue: 'Post', admin: { description: 'Mono label on the postal address row.' } },

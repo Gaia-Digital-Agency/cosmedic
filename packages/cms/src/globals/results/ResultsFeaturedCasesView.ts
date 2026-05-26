@@ -15,13 +15,13 @@ export const ResultsFeaturedCasesView: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     apiWarningField,
-    { name: 'eyebrow', type: 'text', defaultValue: 'Featured cases',
+    { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Featured cases',
       admin: { description: 'Filter-bar / section eyebrow (left side of the filter bar above the grid).' } },
     { name: 'headingPre', type: 'text', defaultValue: 'Four signature cases,',
       admin: { description: 'First line of the heading (roman). Renders before the italic line.' } },
     { name: 'headingItalic', type: 'text', defaultValue: 'shared with permission.',
       admin: { description: 'Second line of the heading (italic).' } },
-    { name: 'lede', type: 'textarea',
+    { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         'Each case represents a typical outcome, photographed at consistent angles and lighting, three to six months post-procedure.',
       admin: { description: 'Section lede paragraph under the heading.' } },

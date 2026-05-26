@@ -15,11 +15,11 @@ export const TreatmentsIndexSection: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     apiWarningField,
-    { name: 'eyebrow', type: 'text', defaultValue: 'An Index',
+    { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'An Index',
       admin: { description: 'Small-caps eyebrow above the section title.' } },
     { name: 'heading', type: 'text', defaultValue: 'Browse by discipline.',
       admin: { description: 'Section heading (h2).' } },
-    { name: 'lede', type: 'textarea',
+    { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         'Each discipline is led by a specialist surgeon and supported by the full clinical, recovery, and concierge team. Treatments may be combined across disciplines on a single visit.',
       admin: { description: 'Lede paragraph below the heading.' } },

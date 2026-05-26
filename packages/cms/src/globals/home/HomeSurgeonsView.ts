@@ -15,7 +15,7 @@ export const HomeSurgeonsView: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     apiWarningField,
-    { name: 'eyebrow', type: 'text', defaultValue: 'Meet the Surgeons',
+    { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Meet the Surgeons',
       admin: { description: 'Top section eyebrow.' } },
     { name: 'leadSurgeonEyebrow', type: 'text', defaultValue: 'Lead Surgeon',
       admin: { description: 'Eyebrow above the lead surgeon name.' } },

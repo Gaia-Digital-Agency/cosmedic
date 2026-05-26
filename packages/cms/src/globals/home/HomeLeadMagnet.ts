@@ -33,7 +33,7 @@ export const HomeLeadMagnet: GlobalConfig = {
       admin: { description: 'First part of the body heading (roman).' } },
     { name: 'headingAccent', type: 'text', defaultValue: 'recovery in Bali.',
       admin: { description: 'Italic accent part of the body heading.' } },
-    { name: 'lede', type: 'textarea',
+    { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         'A 24-page editorial guide written by our concierge team — covering recovery timelines for the ten most-requested procedures, what to pack, what villas suit which surgeries, and the pace of a typical fortnight in Nusa Dua.',
       admin: { description: 'Body lede beneath the heading.' } },

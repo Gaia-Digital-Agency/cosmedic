@@ -15,7 +15,7 @@ export const PricingInsurance: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     apiWarningField,
-    { name: 'eyebrow', type: 'text', defaultValue: 'Insurance',
+    { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Insurance',
       admin: { description: 'Small-caps eyebrow above the H2.' } },
     { name: 'headingRoman', type: 'text', defaultValue: 'Working',
       admin: { description: 'Roman text part of the H2.' } },

@@ -15,7 +15,7 @@ export const PricingPayment: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     apiWarningField,
-    { name: 'eyebrow', type: 'text', defaultValue: 'Payment',
+    { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Payment',
       admin: { description: 'Small-caps eyebrow above the H2.' } },
     { name: 'headingRoman', type: 'text', defaultValue: 'Quiet,',
       admin: { description: 'Roman text part of the H2.' } },

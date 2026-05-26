@@ -21,7 +21,7 @@ export const TreatmentsHero: GlobalConfig = {
       admin: { description: 'First line of the two-line headline (roman).' } },
     { name: 'titleB', type: 'text', defaultValue: 'one sanctuary.',
       admin: { description: 'Second line of the headline (italic-friendly).' } },
-    { name: 'lede', type: 'textarea',
+    { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         'A complete repertoire of cosmetic medicine practiced under one roof — surgical, non-surgical, restorative, and the careful coordination that holds it all together.',
       admin: { description: 'Lede paragraph beneath the title.' } },

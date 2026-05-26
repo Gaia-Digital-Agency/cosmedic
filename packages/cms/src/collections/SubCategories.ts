@@ -39,7 +39,7 @@ export const SubCategories: CollectionConfig = {
     },
     { name: 'tagline', type: 'text',
       admin: { description: 'Small mono-font eyebrow shown above the hero title on this sub-category page.' } },
-    { name: 'lede', type: 'textarea',
+    { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       admin: { description: 'Lede paragraph rendered under the hero title on this sub-category page.' } },
     { name: 'intro', type: 'richText',
       admin: { description: 'Rich-text intro paragraph rendered above the body sections.' } },

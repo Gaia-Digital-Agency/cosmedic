@@ -47,7 +47,7 @@ export const Disciplines: CollectionConfig = {
     },
     { name: 'tagline', type: 'text',
       admin: { description: 'Small mono-font eyebrow shown above the hero title on /treatments/{slug}.' } },
-    { name: 'lede', type: 'textarea',
+    { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       admin: { description: 'Lede paragraph rendered under the hero title on /treatments/{slug}.' } },
     { name: 'overview', type: 'richText',
       admin: { description: 'Long-form overview rich-text block rendered as the body content of /treatments/{slug}.' } },

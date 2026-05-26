@@ -15,13 +15,13 @@ export const HomeHero: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     apiWarningField,
-    { name: 'eyebrow', type: 'text', defaultValue: 'A sanctuary in Nusa Dua · Est. 1998',
+    { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'A sanctuary in Nusa Dua · Est. 1998',
       admin: { description: 'Small-caps eyebrow above the hero title.' } },
     { name: 'titleA', type: 'text', defaultValue: 'Plastic surgery',
       admin: { description: 'First line of the headline (roman).' } },
     { name: 'titleB', type: 'text', defaultValue: 'in Bali, by ISAPS surgeons.',
       admin: { description: 'Second line of the headline (italic accent).' } },
-    { name: 'lede', type: 'textarea',
+    { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         "Performed inside Indonesia's first ACHSI-accredited international hospital, with private villa recovery and twelve months of telehealth follow-up included. Procedures from Rp 18,900,000 (≈ AUD 1,800).",
       admin: { description: 'Lede paragraph beneath the title.' } },
@@ -40,7 +40,7 @@ export const HomeHero: GlobalConfig = {
       type: 'group',
       admin: { description: 'Chrome strings on the right-side quick-enquiry card. Field labels + placeholders + the four submit-button states.' },
       fields: [
-        { name: 'eyebrow', type: 'text', defaultValue: 'Begin · No commitment' },
+        { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Begin · No commitment' },
         { name: 'heading', type: 'text', defaultValue: 'Get a private price estimate within 24 hours.' },
         { name: 'intro', type: 'textarea',
           defaultValue: "Two fields to start. We'll reply with a tailored estimate and procedure guide — no marketing." },

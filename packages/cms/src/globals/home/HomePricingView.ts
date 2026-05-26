@@ -15,13 +15,13 @@ export const HomePricingView: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     apiWarningField,
-    { name: 'eyebrow', type: 'text', defaultValue: 'Pricing · Starting From',
+    { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Pricing · Starting From',
       admin: { description: 'Section eyebrow.' } },
     { name: 'headingPart1', type: 'text', defaultValue: 'Transparent',
       admin: { description: 'First line of the heading (roman).' } },
     { name: 'headingPart2', type: 'text', defaultValue: 'pricing.',
       admin: { description: 'Second line of the heading (italic).' } },
-    { name: 'lede', type: 'textarea',
+    { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         'Indicative starting prices in IDR (with AUD equivalent). Final quotes are tailored after consultation. Travel, accommodation and concierge can be packaged.',
       admin: { description: 'Section lede.' } },

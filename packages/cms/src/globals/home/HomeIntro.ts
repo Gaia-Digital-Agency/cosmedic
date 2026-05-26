@@ -15,7 +15,7 @@ export const HomeIntro: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     apiWarningField,
-    { name: 'eyebrow', type: 'text', defaultValue: 'Our Approach',
+    { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Our Approach',
       admin: { description: 'Section eyebrow above the pull quote.' } },
     { name: 'pullQuoteBefore', type: 'text', defaultValue: 'Aesthetic medicine, considered with the same ',
       admin: { description: 'Plain text before the italic accent word. Include trailing space if you want a space before the italic.' } },

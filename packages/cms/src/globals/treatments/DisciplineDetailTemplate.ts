@@ -85,7 +85,7 @@ export const DisciplineDetailTemplate: GlobalConfig = {
       type: 'group',
       admin: { description: '"Related" cross-discipline carousel at the bottom of each /treatments/<discipline> page.' },
       fields: [
-        { name: 'eyebrow', type: 'text', defaultValue: 'Related',
+        { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Related',
           admin: { description: 'Small-caps eyebrow above the section title.' } },
         { name: 'headingItalic', type: 'text', defaultValue: 'Often considered',
           admin: { description: 'First part of the heading rendered in italic.' } },

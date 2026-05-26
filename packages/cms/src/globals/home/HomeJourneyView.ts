@@ -15,7 +15,7 @@ export const HomeJourneyView: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     apiWarningField,
-    { name: 'eyebrow', type: 'text', defaultValue: 'Your Journey',
+    { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Your Journey',
       admin: { description: 'Section eyebrow.' } },
     { name: 'headingPart1', type: 'text', defaultValue: 'From enquiry to',
       admin: { description: 'First part of the heading (roman).' } },

@@ -22,7 +22,7 @@ const pageBlocks: Block[] = [
     slug: 'richText',
     labels: { singular: 'Rich Text', plural: 'Rich Text Blocks' },
     fields: [
-      { name: 'eyebrow', type: 'text' },
+      { name: 'eyebrow', label: 'Label above heading', type: 'text' },
       { name: 'heading', type: 'text' },
       { name: 'body', type: 'richText', required: true },
     ],
@@ -55,7 +55,7 @@ const pageBlocks: Block[] = [
     labels: { singular: 'CTA Band', plural: 'CTA Bands' },
     fields: [
       { name: 'heading', type: 'text', required: true },
-      { name: 'lede', type: 'textarea' },
+      { name: 'lede', label: 'Intro paragraph', type: 'textarea' },
       { name: 'primaryLabel', type: 'text' },
       { name: 'primaryHref', type: 'text' },
       { name: 'secondaryLabel', type: 'text' },
@@ -166,7 +166,7 @@ const pageBlocks: Block[] = [
     slug: 'contactForm',
     fields: [
       { name: 'heading', type: 'text' },
-      { name: 'lede', type: 'textarea' },
+      { name: 'lede', label: 'Intro paragraph', type: 'textarea' },
       { name: 'sourceCta', type: 'text', admin: { description: 'Recorded against any submission' } },
     ],
   },
@@ -236,8 +236,9 @@ export function pageFields(options: PageFieldsOptions = {}): Field[] {
           ],
         },
         { name: 'tagline', type: 'text' },
-        { name: 'lede', type: 'textarea' },
-        { name: 'heroImage', type: 'upload', relationTo: 'media' },
+        { name: 'lede', label: 'Intro paragraph', type: 'textarea' },
+        { name: 'heroImage', type: 'upload', relationTo: 'media',
+          admin: { description: 'Hero image for this page. Displayed in the ChapterOpener banner at the top of the page. Recommended 1600×1200px, JPG or WebP.' } },
       ]
   return [
     apiWarningField,
