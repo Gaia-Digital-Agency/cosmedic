@@ -115,6 +115,8 @@ export const PricingPage: React.FC = () => {
       </section>
     )}
 
+    <ClinicCatalogueTable />
+
     <section className="page-section">
       <div style={{ maxWidth: 1280, margin: '0 auto' }}>
         {(() => {
@@ -365,8 +367,6 @@ export const PricingPage: React.FC = () => {
         </p>
       </div>
     </section>
-
-    <ClinicCatalogueTable />
 
     <section className="page-section tinted">
       <div className="two-col">
