@@ -43,5 +43,52 @@ export const ContactEnquirySection: GlobalConfig = {
     { name: 'trustLine', type: 'textarea',
       defaultValue: 'Held in confidence. Reviewed by a credentialed surgeon. We reply within 24 hours.',
       admin: { description: 'Italic line shown next to the "Send enquiry" button at the bottom of the form.' } },
+    // 25.27 — intent copy, form labels, submit states, success message
+    {
+      name: 'intentCopy',
+      type: 'array',
+      admin: { description: 'Two intent types shown in the hero when a visitor arrives via ?intent=estimate or ?intent=video-consult. Slug must match the URL param value exactly.' },
+      defaultValue: [
+        { slug: 'estimate', eyebrow: 'Written estimate', title: 'Get a written estimate.', lede: 'Tell us a little, and a coordinator will reply within 24 hours with a tailored, itemised estimate — no marketing, no follow-on calls.' },
+        { slug: 'video-consult', eyebrow: 'Video consult', title: 'Book a video consult.', lede: "A free 20-minute video call with a coordinator. No surgeon time required at this stage — we'll triage and brief the right surgeon afterwards." },
+      ],
+      fields: [
+        { name: 'slug', type: 'text', required: true, admin: { description: 'URL param value: estimate or video-consult.' } },
+        { name: 'eyebrow', type: 'text', admin: { description: 'Hero eyebrow when this intent is active.' } },
+        { name: 'title', type: 'text', admin: { description: 'Hero heading (replaces page default title).' } },
+        { name: 'lede', type: 'textarea', admin: { description: 'Hero lede when this intent is active.' } },
+      ],
+    },
+    {
+      name: 'formLabels',
+      type: 'group',
+      admin: { description: 'Field labels and input placeholders visible inside the contact form.' },
+      fields: [
+        { name: 'nameLabel', type: 'text', defaultValue: 'Your name', admin: { description: 'Label on the name field.' } },
+        { name: 'namePlaceholder', type: 'text', defaultValue: 'First name', admin: { description: 'Placeholder inside the name input.' } },
+        { name: 'emailLabel', type: 'text', defaultValue: 'Email', admin: { description: 'Label on the email field.' } },
+        { name: 'emailPlaceholder', type: 'text', defaultValue: 'you@example.com', admin: { description: 'Placeholder inside the email input.' } },
+        { name: 'treatmentLabel', type: 'text', defaultValue: 'Area of interest', admin: { description: 'Label on the treatment selector.' } },
+        { name: 'treatmentPlaceholder', type: 'text', defaultValue: 'Select a treatment…', admin: { description: 'Default text shown in the treatment selector before a choice is made.' } },
+        { name: 'addDetailsLabel', type: 'text', defaultValue: '+ Add a few more details (optional)', admin: { description: 'Toggle button that reveals the optional fields.' } },
+        { name: 'countryLabel', type: 'text', defaultValue: 'Country & city', admin: { description: 'Label on the optional country/city field.' } },
+        { name: 'countryPlaceholder', type: 'text', defaultValue: 'Sydney, Australia', admin: { description: 'Placeholder inside the country/city input.' } },
+        { name: 'dateLabel', type: 'text', defaultValue: 'Approximate dates', admin: { description: 'Label on the optional travel-date field.' } },
+        { name: 'datePlaceholder', type: 'text', defaultValue: 'Month / year', admin: { description: 'Placeholder inside the date input.' } },
+        { name: 'messageLabel', type: 'text', defaultValue: 'Tell us a little', admin: { description: 'Label on the optional message textarea.' } },
+        { name: 'messagePlaceholder', type: 'textarea', defaultValue: "What you'd like to discuss, in your own words. Or simply say hello.", admin: { description: 'Placeholder inside the message textarea.' } },
+      ],
+    },
+    {
+      name: 'submitLabels',
+      type: 'group',
+      admin: { description: 'Submit button states and response messages.' },
+      fields: [
+        { name: 'send', type: 'text', defaultValue: 'Send enquiry', admin: { description: 'Button label in idle state.' } },
+        { name: 'sending', type: 'text', defaultValue: 'Sending…', admin: { description: 'Button label while the request is in-flight.' } },
+        { name: 'sent', type: 'text', defaultValue: 'Sent — thank you', admin: { description: 'Button label on success.' } },
+        { name: 'successMessage', type: 'textarea', defaultValue: 'Thank you — your concierge will reply within one business day.', admin: { description: 'Success confirmation shown below the form.' } },
+      ],
+    },
   ],
 }

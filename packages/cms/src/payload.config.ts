@@ -11,6 +11,7 @@ import { Surgeons } from './collections/Surgeons'
 import { Disciplines } from './collections/Disciplines'
 import { SubCategories } from './collections/SubCategories'
 import { Procedures } from './collections/Procedures'
+import { ClinicCatalogueItems } from './collections/ClinicCatalogueItems'
 // Phase C9c — PriceListItems / InjectableProducts / MachineTreatments /
 // HairRemovalAreas collections retired. All catalogue rows now live on
 // Procedures (catalogueGroup: surgical | machine | injection | btl). The
@@ -42,6 +43,7 @@ import { SeoDefaults } from './globals/SeoDefaults'
 import { HomePage } from './globals/pages/HomePage'
 import { PressPage } from './globals/pages/PressPage'
 import { PrivacyPage } from './globals/pages/PrivacyPage'
+import { NotFoundPage } from './globals/pages/NotFoundPage'
 import { TreatmentsPage } from './globals/pages/TreatmentsPage'
 import { SurgeonsPage } from './globals/pages/SurgeonsPage'
 import { ResultsPage } from './globals/pages/ResultsPage'
@@ -173,6 +175,7 @@ export default buildConfig({
     Disciplines,
     SubCategories,
     Procedures,
+    ClinicCatalogueItems,
     BeforeAfterCases,
     Stories,
     PressMentions,
@@ -211,6 +214,7 @@ export default buildConfig({
     HomeStoriesView,
     PressPage,
     PrivacyPage,
+    NotFoundPage,
     TreatmentsPage,
     TreatmentsHero,
     TreatmentsIndexSection,
