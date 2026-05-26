@@ -199,13 +199,30 @@ type SheetLabel = { title: string; subtitle: string }
 type SheetLabelMap = Record<CatalogueGroup, SheetLabel>
 type HairZoneLabelMap = Record<NonNullable<ClinicCatalogueItem['bodyZone']>, string>
 
-const CategoryGroup: React.FC<{ heading: string; children: React.ReactNode }> = ({
-  heading,
-  children,
-}) => (
-  <div style={{ marginBottom: 32 }}>
+const CategoryGroup: React.FC<{
+  heading: string
+  isOpen: boolean
+  onToggle: () => void
+  children: React.ReactNode
+}> = ({ heading, isOpen, onToggle, children }) => (
+  <div style={{ marginBottom: 4 }}>
     <Reveal delay={40}>
-      <div style={{ padding: '20px 0 10px', borderBottom: '1px solid var(--ink-20)' }}>
+      <button
+        type="button"
+        onClick={onToggle}
+        style={{
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '20px 0 10px',
+          background: 'none',
+          border: 'none',
+          borderBottom: '1px solid var(--ink-20)',
+          cursor: 'pointer',
+          textAlign: 'left',
+        }}
+      >
         <h3
           style={{
             fontFamily: 'var(--font-serif)',
@@ -218,9 +235,29 @@ const CategoryGroup: React.FC<{ heading: string; children: React.ReactNode }> = 
         >
           {heading}
         </h3>
-      </div>
+        <span
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 20,
+            color: 'var(--ink-60)',
+            flexShrink: 0,
+            marginLeft: 16,
+            lineHeight: 1,
+          }}
+        >
+          {isOpen ? '−' : '+'}
+        </span>
+      </button>
     </Reveal>
-    <div>{children}</div>
+    <div
+      style={{
+        overflow: 'hidden',
+        maxHeight: isOpen ? 9999 : 0,
+        transition: 'max-height 220ms ease',
+      }}
+    >
+      {children}
+    </div>
   </div>
 )
 
@@ -265,6 +302,13 @@ const hasPrice = (p: ClinicCatalogueItem): boolean =>
 export const ClinicCatalogueTable: React.FC = () => {
   const cms = useCms()
   const [hideUnpriced, setHideUnpriced] = useState(true)
+  const [open, setOpen] = useState<Set<string>>(new Set())
+  const toggle = (k: string) =>
+    setOpen((prev) => {
+      const s = new Set(prev)
+      s.has(k) ? s.delete(k) : s.add(k)
+      return s
+    })
   if (!cms || !cms.loaded) return null
 
   const rate = cms.settings?.audToIdrRate || DEFAULT_AUD_TO_IDR
@@ -458,8 +502,10 @@ export const ClinicCatalogueTable: React.FC = () => {
 
         {/* Surgical */}
         <SheetSection group="surgical" labels={sheetLabels}>
-          {Object.entries(surgicalByCategory).map(([cat, rows]) => (
-            <CategoryGroup key={cat} heading={cat}>
+          {Object.entries(surgicalByCategory).map(([cat, rows]) => {
+            const k = `surgical__${cat}`
+            return (
+            <CategoryGroup key={cat} heading={cat} isOpen={open.has(k)} onToggle={() => toggle(k)}>
               {rows.map((p) => {
                 const priceIdr = p.pricing?.priceIdr2026 ?? p.pricing?.priceIdr2025
                 const range =
@@ -487,65 +533,75 @@ export const ClinicCatalogueTable: React.FC = () => {
                 )
               })}
             </CategoryGroup>
-          ))}
+            )
+          })}
         </SheetSection>
 
         {/* Machine */}
         <SheetSection group="machine" labels={sheetLabels}>
-          {Object.entries(machineByMachine).map(([machine, rows]) => (
-            <CategoryGroup key={machine} heading={machine}>
-              {(rows as CollapsedMachine[]).map((m, i) => (
-                <TableRow
-                  key={`${m.mainCategory}-${m.subCategory}-${i}`}
-                  name={m.subCategory || m.name}
-                  notes={m.kitasKtpIdr ? `Kitas + KTP: ${fmtIdr(m.kitasKtpIdr, roundTo)}` : undefined}
-                  priceIdr={m.standardIdr}
-                  badge={m.packageIdr ? `Package: ${fmtIdr(m.packageIdr, roundTo)}` : undefined}
-                  rate={rate}
-                  roundTo={roundTo}
-                />
-              ))}
-            </CategoryGroup>
-          ))}
+          {Object.entries(machineByMachine).map(([machine, rows]) => {
+            const k = `machine__${machine}`
+            return (
+              <CategoryGroup key={machine} heading={machine} isOpen={open.has(k)} onToggle={() => toggle(k)}>
+                {(rows as CollapsedMachine[]).map((m, i) => (
+                  <TableRow
+                    key={`${m.mainCategory}-${m.subCategory}-${i}`}
+                    name={m.subCategory || m.name}
+                    notes={m.kitasKtpIdr ? `Kitas + KTP: ${fmtIdr(m.kitasKtpIdr, roundTo)}` : undefined}
+                    priceIdr={m.standardIdr}
+                    badge={m.packageIdr ? `Package: ${fmtIdr(m.packageIdr, roundTo)}` : undefined}
+                    rate={rate}
+                    roundTo={roundTo}
+                  />
+                ))}
+              </CategoryGroup>
+            )
+          })}
         </SheetSection>
 
         {/* Injectables */}
         <SheetSection group="injection" labels={sheetLabels}>
-          {Object.entries(injectionByCategory).map(([cat, prods]) => (
-            <CategoryGroup key={cat} heading={cat}>
-              {(prods as ClinicCatalogueItem[]).map((p) => (
-                <TableRow
-                  key={p.id}
-                  name={p.name}
-                  notes={[p.unit, p.productLine, p.pricing?.priceNotes].filter(Boolean).join(' · ')}
-                  priceIdr={p.pricing?.priceIdr2026 ?? p.pricing?.priceIdr2025}
-                  badge={p.brand}
-                  manufacturer={p.manufacturer}
-                  fdaApproved={p.fdaApproved}
-                  rate={rate}
-                  roundTo={roundTo}
-                />
-              ))}
-            </CategoryGroup>
-          ))}
+          {Object.entries(injectionByCategory).map(([cat, prods]) => {
+            const k = `injection__${cat}`
+            return (
+              <CategoryGroup key={cat} heading={cat} isOpen={open.has(k)} onToggle={() => toggle(k)}>
+                {(prods as ClinicCatalogueItem[]).map((p) => (
+                  <TableRow
+                    key={p.id}
+                    name={p.name}
+                    notes={[p.unit, p.productLine, p.pricing?.priceNotes].filter(Boolean).join(' · ')}
+                    priceIdr={p.pricing?.priceIdr2026 ?? p.pricing?.priceIdr2025}
+                    badge={p.brand}
+                    manufacturer={p.manufacturer}
+                    fdaApproved={p.fdaApproved}
+                    rate={rate}
+                    roundTo={roundTo}
+                  />
+                ))}
+              </CategoryGroup>
+            )
+          })}
         </SheetSection>
 
         {/* BTL */}
         <SheetSection group="btl" labels={sheetLabels}>
-          {Object.entries(btlByZone).map(([zone, rows]) => (
-            <CategoryGroup key={zone} heading={zone}>
-              {(rows as ClinicCatalogueItem[]).map((p) => (
-                <TableRow
-                  key={p.id}
-                  name={p.name}
-                  notes={p.pricing?.priceNotes}
-                  priceIdr={p.pricing?.priceIdr2026 ?? p.pricing?.priceIdr2025}
-                  rate={rate}
-                  roundTo={roundTo}
-                />
-              ))}
-            </CategoryGroup>
-          ))}
+          {Object.entries(btlByZone).map(([zone, rows]) => {
+            const k = `btl__${zone}`
+            return (
+              <CategoryGroup key={zone} heading={zone} isOpen={open.has(k)} onToggle={() => toggle(k)}>
+                {(rows as ClinicCatalogueItem[]).map((p) => (
+                  <TableRow
+                    key={p.id}
+                    name={p.name}
+                    notes={p.pricing?.priceNotes}
+                    priceIdr={p.pricing?.priceIdr2026 ?? p.pricing?.priceIdr2025}
+                    rate={rate}
+                    roundTo={roundTo}
+                  />
+                ))}
+              </CategoryGroup>
+            )
+          })}
         </SheetSection>
 
         {cms.consultationPolicy.feeIdr ? (

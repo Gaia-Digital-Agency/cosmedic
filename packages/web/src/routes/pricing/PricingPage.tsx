@@ -35,6 +35,13 @@ function parsePaymentTerms(input?: string): [string, string][] {
 export const PricingPage: React.FC = () => {
   const cms = useCms()
   const [hideUnpricedWellbeing, setHideUnpricedWellbeing] = useState(true)
+  const [openSubs, setOpenSubs] = useState<Set<string>>(new Set())
+  const toggleSub = (k: string) =>
+    setOpenSubs((prev) => {
+      const s = new Set(prev)
+      s.has(k) ? s.delete(k) : s.add(k)
+      return s
+    })
 
   const hero = cms?.pricingHero ?? {}
   const overview = cms?.pricingOverview ?? {}
@@ -115,10 +122,19 @@ export const PricingPage: React.FC = () => {
       </section>
     )}
 
+    <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 var(--page-gutter, 24px)' }}>
+      <div style={{ paddingBottom: 12 }}>
+        <Eyebrow>Clinic</Eyebrow>
+      </div>
+    </div>
+
     <ClinicCatalogueTable />
 
     <section className="page-section">
       <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+        <div style={{ paddingBottom: 12, borderTop: '1px solid var(--ink-20)', paddingTop: 32, marginBottom: 32 }}>
+          <Eyebrow>Wellness</Eyebrow>
+        </div>
         {(() => {
           let totalUnpricedWellbeing = 0
           for (const d of TREATMENT_LIST) {
@@ -227,13 +243,25 @@ export const PricingPage: React.FC = () => {
               </Reveal>
 
               {subsWithVisibleRows.map(({ subSlug, subTitle, visibleTreatments }) => {
+                const k = `${discipline.slug}__${subSlug}`
+                const isSubOpen = openSubs.has(k)
                 return (
-                  <div key={subSlug} style={{ marginBottom: 48 }}>
+                  <div key={subSlug} style={{ marginBottom: 4 }}>
                     <Reveal delay={60}>
-                      <div
+                      <button
+                        type="button"
+                        onClick={() => toggleSub(k)}
                         style={{
+                          width: '100%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
                           padding: '24px 0 12px',
+                          background: 'none',
+                          border: 'none',
                           borderBottom: '1px solid var(--ink-20)',
+                          cursor: 'pointer',
+                          textAlign: 'left',
                         }}
                       >
                         <h3
@@ -248,9 +276,27 @@ export const PricingPage: React.FC = () => {
                         >
                           {subTitle}
                         </h3>
-                      </div>
+                        <span
+                          style={{
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: 20,
+                            color: 'var(--ink-60)',
+                            flexShrink: 0,
+                            marginLeft: 16,
+                            lineHeight: 1,
+                          }}
+                        >
+                          {isSubOpen ? '−' : '+'}
+                        </span>
+                      </button>
                     </Reveal>
-                    <div>
+                    <div
+                      style={{
+                        overflow: 'hidden',
+                        maxHeight: isSubOpen ? 9999 : 0,
+                        transition: 'max-height 220ms ease',
+                      }}
+                    >
                       {visibleTreatments.map((t, tIdx) => {
                         const isNumber = typeof t.priceFromIdr === 'number'
                         const isIncluded =
