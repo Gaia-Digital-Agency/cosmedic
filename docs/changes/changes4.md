@@ -26,6 +26,39 @@ Restructure the CMS admin sidebar so the Treatments and Pricing buckets map clea
 
 ---
 
+## Full Structure — Four Column Depth
+
+| Bucket | Collection | Category | Items |
+|---|---|---|---|
+| **Treatments** | Category | — | surgical · non-surgical · hair · dental · reconstructive · weight-loss |
+| **Treatments** | Sub-Category | — | alignment · bariatric · body · breast ×2 · craniofacial · endoscopic · face · fue · glp-1 · injectables · laser · skin · therapy · trauma · veneers · whitening |
+| **Treatments** | Procedure | dental | Clear alignment · Composite veneers · Dental scale · Express alignment · Full smile · Lingual · Minimal-prep veneers · Porcelain veneers · Whitening ×2 · Retainer (12) |
+| **Treatments** | Procedure | hair | Beard restoration · Combined FUE+DHI · Combined therapy · DHI · Eyebrow restoration · PRP scalp · Polynucleotides scalp · Sapphire FUE · Topical protocol (9) |
+| **Treatments** | Procedure | non-surgical | Acne protocol · Botulinum toxin · Chemical peel · Dermal fillers · Fractional laser · HydraFacial · IPL · Medical facial · PRP · Polynucleotides · Pre-event facial · Profhilo · RF Microneedling · Skin boosters · 3-session programme (15) |
+| **Treatments** | Procedure | reconstructive | Burn reconstruction · Cleft ×3 · DIEP flap · Implant reconstruction ×2 · Keloid · Maxillofacial · Microtia · Nipple-areola · Orbital · Scar revision ×2 · Skin grafts · Symmetrising · TRAM flap (13) |
+| **Treatments** | Procedure | surgical | Abdominoplasty · Body contouring · Brachioplasty · Breast lift · Breast reduction · Brow lift · Blepharoplasty · Facelift · Implant revision · Lift with implants · Lip lift · Liposculpture · Neck lift · Nipple · Rhinoplasty · Saline implants · Silicone implants · Thigh lift (18) |
+| **Treatments** | Procedure | weight-loss | Dietitian · ESG · Endoscopic revision · GLP-1 · Intragastric balloon ×2 · Maintenance · Mini bypass · Revision bariatric · Roux-en-Y · Semaglutide · Sleeve gastrectomy · Tirzepatide (13) |
+| **Pricing** | Surgical | Arm | 2 rows |
+| **Pricing** | Surgical | Body | 11 rows |
+| **Pricing** | Surgical | Breast | 9 rows |
+| **Pricing** | Surgical | Eyelid | 4 rows |
+| **Pricing** | Surgical | Face & Neck | 5 rows |
+| **Pricing** | Surgical | Rhinoplasty | 2 rows |
+| **Pricing** | Surgical | Others | 9 rows |
+| **Pricing** | Surgical | *(uncategorised)* | 9 rows |
+| **Pricing** | Machine | Laser AFT Rejuvenation | 27 rows |
+| **Pricing** | Machine | Laser Erbium Resurfacing | 12 rows |
+| **Pricing** | Machine | Pixel Q-Switch Nd-Yag | 12 rows |
+| **Pricing** | Machine | Pigmentation Removal | 4 rows |
+| **Pricing** | Machine | Laser 360 | 3 rows |
+| **Pricing** | Machine | Tattoo Removal | 3 rows |
+| **Pricing** | Machine | Vascular Laser | 2 rows |
+| **Pricing** | Injection | Filler | 31 rows |
+| **Pricing** | Injection | Skin Booster | 3 rows |
+| **Pricing** | BTL | *(hair removal zones)* | 43 rows |
+
+---
+
 ## Changes Required
 
 ### Change 1 — Label rename: Disciplines → Category
