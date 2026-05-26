@@ -22,7 +22,7 @@ const CosmedicLogo: React.FC = () => (
     }}
   >
     <img
-      src="/cosmedic-mark-on-light.png"
+      src="/cosmedic-mark-32.png"
       alt="BIMC CosMedic"
       width={28}
       height={28}
