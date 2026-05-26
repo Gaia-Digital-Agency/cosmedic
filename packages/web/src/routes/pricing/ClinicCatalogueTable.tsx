@@ -2,30 +2,35 @@ import React, { useState } from 'react'
 import { Reveal } from '@/components/primitives/Reveal'
 import { Mono, Eyebrow } from '@/components/primitives/Mono'
 import { useCms } from '@/lib/cms-context'
-import type { Procedure } from '@/lib/cms'
+import { formatIDR, formatAUD, DEFAULT_AUD_TO_IDR, DEFAULT_ROUND_IDR_TO } from '@/lib/pricing'
+import type { ClinicCatalogueItem } from '@/lib/cms'
 
 /**
- * Phase C9c — the clinic catalogue table now reads from a single source:
- * the Procedures collection, filtered by `catalogueGroup`. The renderer
- * preserves the previous 4-section layout (Surgical / Machine / Injection /
- * BTL) but every row is now a Procedure, so editors edit pricing in ONE
- * place.
+ * 25.13c — the clinic catalogue table reads from the dedicated
+ * `ClinicCatalogueItems` collection (split out from `Procedures` so the
+ * admin Bucket structure mirrors the rendered hierarchy). Layout unchanged:
+ * 4 sheets (Surgical / Machine / Injection / BTL), grouped by mainCategory
+ * inside each sheet.
  *
- * Machine rows are emitted from C9b as one Procedure per audience tier
- * (standard / kitas_ktp / package). This renderer collapses them back to
- * one row per machine + area, showing the standard IDR price and listing
- * the other tiers in notes / badge — matching the prior visual shape.
+ * Machine rows are emitted as one item per audience tier (standard / kitas_ktp
+ * / package). This renderer collapses them back to one row per machine + area,
+ * showing the standard IDR price and listing the other tiers in notes / badge.
  */
-type CatalogueGroup = NonNullable<Procedure['catalogueGroup']>
+type CatalogueGroup = ClinicCatalogueItem['catalogueGroup']
 
-const fmtIdr = (n: number | undefined | null): string => {
+// 25.17: removed local fmtIdr/fmtAud. Use lib/pricing helpers which apply
+// Settings.roundIdrTo for IDR + derive AUD from Settings.audToIdrRate.
+// Helpers below stay synchronous + format-only — rate is read by caller and
+// passed in so this stays a pure component.
+
+const fmtIdr = (n: number | undefined | null, roundTo: number): string => {
   if (n == null) return '—'
-  return 'Rp ' + n.toLocaleString('de-DE')
+  return formatIDR(n, roundTo)
 }
 
-const fmtAud = (n: number | undefined | null): string => {
-  if (n == null) return ''
-  return 'AUD ' + n.toLocaleString('en-AU')
+const fmtAud = (idr: number | undefined | null, rate: number): string => {
+  if (idr == null) return ''
+  return formatAUD(idr / rate)
 }
 
 const DEFAULT_SHEET_LABEL: Record<CatalogueGroup, { title: string; subtitle: string }> = {
@@ -35,7 +40,7 @@ const DEFAULT_SHEET_LABEL: Record<CatalogueGroup, { title: string; subtitle: str
   btl: { title: 'BTL Hair Removal', subtitle: 'Per area · per session' },
 }
 
-const DEFAULT_HAIR_ZONE_LABEL: Record<NonNullable<Procedure['bodyZone']>, string> = {
+const DEFAULT_HAIR_ZONE_LABEL: Record<NonNullable<ClinicCatalogueItem['bodyZone']>, string> = {
   face: 'Face',
   'upper-body': 'Upper Body',
   'lower-body': 'Lower Body',
@@ -68,13 +73,14 @@ const TableRow: React.FC<{
   name: string
   notes?: string
   priceIdr?: number
-  priceAud?: number
   priceRange?: { low: number; high: number }
   badge?: string
   featured?: boolean
   manufacturer?: string
   fdaApproved?: boolean
-}> = ({ name, notes, priceIdr, priceAud, priceRange, badge, featured, manufacturer, fdaApproved }) => (
+  rate: number
+  roundTo: number
+}> = ({ name, notes, priceIdr, priceRange, badge, featured, manufacturer, fdaApproved, rate, roundTo }) => (
   <div
     className="pricing-row"
     style={{
@@ -147,7 +153,7 @@ const TableRow: React.FC<{
             whiteSpace: 'nowrap',
           }}
         >
-          {fmtIdr(priceRange.low)} – {fmtIdr(priceRange.high)}
+          {fmtIdr(priceRange.low, roundTo)} – {fmtIdr(priceRange.high, roundTo)}
         </span>
       ) : priceIdr != null ? (
         <>
@@ -160,20 +166,18 @@ const TableRow: React.FC<{
               whiteSpace: 'nowrap',
             }}
           >
-            {fmtIdr(priceIdr)}
+            {fmtIdr(priceIdr, roundTo)}
           </span>
-          {priceAud != null ? (
-            <span
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontStyle: 'italic',
-                fontSize: 13,
-                color: 'var(--ink-60)',
-              }}
-            >
-              ≈ {fmtAud(priceAud)}
-            </span>
-          ) : null}
+          <span
+            style={{
+              fontFamily: 'var(--font-serif)',
+              fontStyle: 'italic',
+              fontSize: 13,
+              color: 'var(--ink-60)',
+            }}
+          >
+            ≈ {fmtAud(priceIdr, rate)}
+          </span>
         </>
       ) : (
         <span
@@ -193,7 +197,7 @@ const TableRow: React.FC<{
 
 type SheetLabel = { title: string; subtitle: string }
 type SheetLabelMap = Record<CatalogueGroup, SheetLabel>
-type HairZoneLabelMap = Record<NonNullable<Procedure['bodyZone']>, string>
+type HairZoneLabelMap = Record<NonNullable<ClinicCatalogueItem['bodyZone']>, string>
 
 const CategoryGroup: React.FC<{ heading: string; children: React.ReactNode }> = ({
   heading,
@@ -253,7 +257,7 @@ const SheetSection: React.FC<{
   </div>
 )
 
-const hasPrice = (p: Procedure): boolean =>
+const hasPrice = (p: ClinicCatalogueItem): boolean =>
   p.pricing?.priceIdr2026 != null ||
   p.pricing?.priceIdr2025 != null ||
   (p.pricing?.priceIdrRangeLow != null && p.pricing?.priceIdrRangeHigh != null)
@@ -262,6 +266,9 @@ export const ClinicCatalogueTable: React.FC = () => {
   const cms = useCms()
   const [hideUnpriced, setHideUnpriced] = useState(true)
   if (!cms || !cms.loaded) return null
+
+  const rate = cms.settings?.audToIdrRate || DEFAULT_AUD_TO_IDR
+  const roundTo = cms.settings?.roundIdrTo || DEFAULT_ROUND_IDR_TO
 
   const view = cms.pricingCatalogueView ?? {}
   const sheetLabels: SheetLabelMap = {
@@ -305,7 +312,7 @@ export const ClinicCatalogueTable: React.FC = () => {
     return map[c] || DEFAULT_INJECTABLE_LABEL[c] || c
   }
 
-  const procs = [...cms.procedures].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
+  const procs = [...cms.clinicCatalogueItems].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
 
   // ── Surgical: group by mainCategory (xlsx legacy) or parentSubCategory name
   const surgical = procs.filter(
@@ -322,7 +329,7 @@ export const ClinicCatalogueTable: React.FC = () => {
   // Key by mainCategory + subCategory + name. Each group picks the standard
   // tier as the displayed row; non-standard tiers populate notes / badge.
   const machineRows = procs.filter((p) => p.catalogueGroup === 'machine')
-  const machineByKey = new Map<string, Procedure[]>()
+  const machineByKey = new Map<string, ClinicCatalogueItem[]>()
   for (const m of machineRows) {
     const k = `${m.mainCategory || ''}::${m.subCategory || ''}::${m.name}`
     const arr = machineByKey.get(k) || []
@@ -377,8 +384,8 @@ export const ClinicCatalogueTable: React.FC = () => {
 
   const totalCatalogueRows =
     surgical.length + collapsedMachineVisible.length + injection.length + btl.length
-  const totalProcs = cms.procedures.length
-  const totalUnpriced = cms.procedures.filter((p) => !hasPrice(p)).length
+  const totalProcs = cms.clinicCatalogueItems.length
+  const totalUnpriced = cms.clinicCatalogueItems.filter((p) => !hasPrice(p)).length
 
   // ── Section chrome (eyebrow / heading / intro)
   const sectionEyebrow = view.sectionEyebrow || 'Clinic catalogue · CMS-managed'
@@ -456,7 +463,6 @@ export const ClinicCatalogueTable: React.FC = () => {
             <CategoryGroup key={cat} heading={cat}>
               {rows.map((p) => {
                 const priceIdr = p.pricing?.priceIdr2026 ?? p.pricing?.priceIdr2025
-                const priceAud = p.pricing?.priceAud2026 ?? p.pricing?.priceAud2025
                 const range =
                   p.pricing?.priceIdrRangeLow && p.pricing?.priceIdrRangeHigh
                     ? { low: p.pricing.priceIdrRangeLow, high: p.pricing.priceIdrRangeHigh }
@@ -467,7 +473,6 @@ export const ClinicCatalogueTable: React.FC = () => {
                     name={p.name}
                     notes={p.pricing?.priceNotes || p.unit}
                     priceIdr={priceIdr}
-                    priceAud={priceAud}
                     priceRange={range}
                     badge={
                       p.featuredRank
@@ -477,6 +482,8 @@ export const ClinicCatalogueTable: React.FC = () => {
                         : undefined
                     }
                     featured={Boolean(p.featuredRank)}
+                    rate={rate}
+                    roundTo={roundTo}
                   />
                 )
               })}
@@ -492,9 +499,11 @@ export const ClinicCatalogueTable: React.FC = () => {
                 <TableRow
                   key={`${m.mainCategory}-${m.subCategory}-${i}`}
                   name={m.subCategory || m.name}
-                  notes={m.kitasKtpIdr ? `Kitas + KTP: ${fmtIdr(m.kitasKtpIdr)}` : undefined}
+                  notes={m.kitasKtpIdr ? `Kitas + KTP: ${fmtIdr(m.kitasKtpIdr, roundTo)}` : undefined}
                   priceIdr={m.standardIdr}
-                  badge={m.packageIdr ? `Package: ${fmtIdr(m.packageIdr)}` : undefined}
+                  badge={m.packageIdr ? `Package: ${fmtIdr(m.packageIdr, roundTo)}` : undefined}
+                  rate={rate}
+                  roundTo={roundTo}
                 />
               ))}
             </CategoryGroup>
@@ -505,7 +514,7 @@ export const ClinicCatalogueTable: React.FC = () => {
         <SheetSection group="injection" labels={sheetLabels}>
           {Object.entries(injectionByCategory).map(([cat, prods]) => (
             <CategoryGroup key={cat} heading={cat}>
-              {(prods as Procedure[]).map((p) => (
+              {(prods as ClinicCatalogueItem[]).map((p) => (
                 <TableRow
                   key={p.id}
                   name={p.name}
@@ -514,6 +523,8 @@ export const ClinicCatalogueTable: React.FC = () => {
                   badge={p.brand}
                   manufacturer={p.manufacturer}
                   fdaApproved={p.fdaApproved}
+                  rate={rate}
+                  roundTo={roundTo}
                 />
               ))}
             </CategoryGroup>
@@ -524,12 +535,14 @@ export const ClinicCatalogueTable: React.FC = () => {
         <SheetSection group="btl" labels={sheetLabels}>
           {Object.entries(btlByZone).map(([zone, rows]) => (
             <CategoryGroup key={zone} heading={zone}>
-              {(rows as Procedure[]).map((p) => (
+              {(rows as ClinicCatalogueItem[]).map((p) => (
                 <TableRow
                   key={p.id}
                   name={p.name}
                   notes={p.pricing?.priceNotes}
                   priceIdr={p.pricing?.priceIdr2026 ?? p.pricing?.priceIdr2025}
+                  rate={rate}
+                  roundTo={roundTo}
                 />
               ))}
             </CategoryGroup>
@@ -557,10 +570,8 @@ export const ClinicCatalogueTable: React.FC = () => {
                   color: 'var(--ink-100)',
                 }}
               >
-                Consultation fee: <strong>{fmtIdr(cms.consultationPolicy.feeIdr)}</strong>
-                {cms.consultationPolicy.feeAud
-                  ? ` (≈ ${fmtAud(cms.consultationPolicy.feeAud)})`
-                  : ''}
+                Consultation fee: <strong>{fmtIdr(cms.consultationPolicy.feeIdr, roundTo)}</strong>
+                {' '}(≈ {fmtAud(cms.consultationPolicy.feeIdr, rate)})
                 . {cms.consultationPolicy.waiverConditionText}
               </p>
             </div>

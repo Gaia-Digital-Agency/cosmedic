@@ -9,8 +9,8 @@
 
 import { getCmsCacheSync } from './cms'
 
-const DEFAULT_AUD_TO_IDR = 10500
-const DEFAULT_ROUND_IDR_TO = 50000
+export const DEFAULT_AUD_TO_IDR = 12800
+export const DEFAULT_ROUND_IDR_TO = 50000
 
 function readRate(): { rate: number; roundTo: number } {
   const s = getCmsCacheSync().settings

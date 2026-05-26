@@ -3,6 +3,7 @@ import { Reveal } from '@/components/primitives/Reveal'
 import { Eyebrow } from '@/components/primitives/Mono'
 import { Btn } from '@/components/primitives/Btn'
 import { useCms } from '@/lib/cms-context'
+import { formatIDR, DEFAULT_AUD_TO_IDR, DEFAULT_ROUND_IDR_TO } from '@/lib/pricing'
 
 const PRICE_TEASER = [
   { name: 'Rhinoplasty', aud: 4200, parent: 'surgical', slug: 'face' },
@@ -15,12 +16,11 @@ const PRICE_TEASER = [
   { name: 'Dermal Fillers', aud: 480, parent: 'non-surgical', slug: 'injectables' },
 ]
 
-const fmtIDR = (aud: number) =>
-  'Rp ' + (Math.round((aud * 10500) / 50000) * 50000).toLocaleString('de-DE')
-
 export const PricingTeaser: React.FC = () => {
   const cms = useCms()
   const g = cms?.homePricingView
+  const rate = cms?.settings?.audToIdrRate || DEFAULT_AUD_TO_IDR
+  const roundTo = cms?.settings?.roundIdrTo || DEFAULT_ROUND_IDR_TO
   const eyebrow = g?.eyebrow || 'Pricing · Starting From'
   const headingPart1 = g?.headingPart1 || 'Transparent'
   const headingPart2 = g?.headingPart2 || 'pricing.'
@@ -29,7 +29,7 @@ export const PricingTeaser: React.FC = () => {
     'Indicative starting prices in IDR (with AUD equivalent). Final quotes are tailored after consultation. Travel, accommodation and concierge can be packaged.'
   const footnote =
     g?.footnote ||
-    'Prices indicative for international patients. AUD shown at 1 AUD ≈ Rp 12,500 (May 2026). Recovery stays, transfers and 12-month telehealth follow-up included on most surgical packages.'
+    `Prices indicative for international patients. AUD shown at 1 AUD ≈ Rp ${rate.toLocaleString('en-AU')} (live rate). Recovery stays, transfers and 12-month telehealth follow-up included on most surgical packages.`
   const viewAllLabel = g?.viewAllLabel || 'View full pricing'
   const viewAllHref = g?.viewAllHref || '/pricing'
 
@@ -70,7 +70,7 @@ export const PricingTeaser: React.FC = () => {
               <h4 className="pr-name">{p.name}</h4>
               <span className="pr-from">From</span>
               <span className="pr-amount">
-                {fmtIDR(p.aud)}{' '}
+                {formatIDR(p.aud * rate, roundTo)}{' '}
                 <span className="pr-aud" style={{ marginLeft: 6 }}>
                   ≈ AUD {p.aud.toLocaleString('en-AU')}
                 </span>
