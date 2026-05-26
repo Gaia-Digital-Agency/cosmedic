@@ -180,4 +180,19 @@ export type CmsPage = {
   breadcrumbLabel?: string
   filterBarLabel?: string
   countFormat?: string
+  // 25.28 — privacy-page DPO section + TOC heading
+  tocHeading?: string
+  dpo?: {
+    eyebrow?: string
+    headingA?: string
+    headingB?: string
+    lede?: string
+    emailLabel?: string
+    email?: string
+    postLabel?: string
+    addressLine1?: string
+    addressLine2?: string
+    addressLine3?: string
+    generalContactLabel?: string
+  }
 }

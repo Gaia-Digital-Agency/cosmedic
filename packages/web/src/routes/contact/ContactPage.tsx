@@ -10,7 +10,8 @@ import { TREATMENT_LIST, IMG } from '@/content/seed'
 import { useCms } from '@/lib/cms-context'
 import { mediaUrl } from '@/lib/cms'
 
-const INTENT_COPY: Record<string, { eyebrow: string; title: string; lede: string }> = {
+// Fallback intent copy — overridden by CMS contactEnquirySection.intentCopy when populated
+const INTENT_COPY_FB: Record<string, { eyebrow: string; title: string; lede: string }> = {
   estimate: {
     eyebrow: 'Written estimate',
     title: 'Get a written estimate.',
@@ -50,6 +51,19 @@ export const ContactPage: React.FC = () => {
   const visit = cms?.contactVisitSection ?? {}
   const settings = cms?.settings ?? {}
   const directLines = enquiry.directLines ?? {}
+  const fl = enquiry.formLabels ?? {}
+  const sl = enquiry.submitLabels ?? {}
+
+  // Build intentCopy map from CMS array, falling back to hardcoded INTENT_COPY_FB
+  const intentCopyMap = React.useMemo(() => {
+    const map: Record<string, { eyebrow: string; title: string; lede: string }> = { ...INTENT_COPY_FB }
+    if (enquiry.intentCopy) {
+      for (const row of enquiry.intentCopy) {
+        if (row.slug) map[row.slug] = { eyebrow: row.eyebrow || '', title: row.title || '', lede: row.lede || '' }
+      }
+    }
+    return map
+  }, [enquiry.intentCopy])
 
   const [showOptional, setShowOptional] = useState(false)
   const [name, setName] = useState('')
@@ -69,7 +83,7 @@ export const ContactPage: React.FC = () => {
       : new URLSearchParams()
   const prefillProc = params.get('procedure') || ''
   const prefillIntent = params.get('intent') || ''
-  const intent = INTENT_COPY[prefillIntent]
+  const intent = intentCopyMap[prefillIntent]
 
   React.useEffect(() => {
     if (prefillProc && !treatment) setTreatment(prefillProc)
@@ -249,17 +263,17 @@ export const ContactPage: React.FC = () => {
                 aria-hidden="true"
               />
               <label className="field field-full">
-                <span className="field-label">Your name {REQUIRED_LABEL}</span>
-                <input type="text" placeholder="First name" required value={name} onChange={(e) => setName(e.target.value)} />
+                <span className="field-label">{fl.nameLabel || 'Your name'} {REQUIRED_LABEL}</span>
+                <input type="text" placeholder={fl.namePlaceholder || 'First name'} required value={name} onChange={(e) => setName(e.target.value)} />
               </label>
               <label className="field field-full">
-                <span className="field-label">Email {REQUIRED_LABEL}</span>
-                <input type="email" placeholder="you@example.com" required value={email} onChange={(e) => setEmail(e.target.value)} />
+                <span className="field-label">{fl.emailLabel || 'Email'} {REQUIRED_LABEL}</span>
+                <input type="email" placeholder={fl.emailPlaceholder || 'you@example.com'} required value={email} onChange={(e) => setEmail(e.target.value)} />
               </label>
               <label className="field field-full">
-                <span className="field-label">Area of interest {REQUIRED_LABEL}</span>
+                <span className="field-label">{fl.treatmentLabel || 'Area of interest'} {REQUIRED_LABEL}</span>
                 <div className="select-row">
-                  <span>{treatment || 'Select a treatment…'}</span>
+                  <span>{treatment || fl.treatmentPlaceholder || 'Select a treatment…'}</span>
                   <span className="chev">▾</span>
                 </div>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 16 }}>
@@ -300,7 +314,7 @@ export const ContactPage: React.FC = () => {
                       color: 'var(--accent-deep)',
                     }}
                   >
-                    + Add a few more details (optional)
+                    {fl.addDetailsLabel || '+ Add a few more details (optional)'}
                   </button>
                 )}
               </div>
@@ -308,16 +322,16 @@ export const ContactPage: React.FC = () => {
               {showOptional && (
                 <>
                   <label className="field">
-                    <span className="field-label">Country & city {OPTIONAL_LABEL}</span>
-                    <input type="text" placeholder="Sydney, Australia" value={country} onChange={(e) => setCountry(e.target.value)} />
+                    <span className="field-label">{fl.countryLabel || 'Country & city'} {OPTIONAL_LABEL}</span>
+                    <input type="text" placeholder={fl.countryPlaceholder || 'Sydney, Australia'} value={country} onChange={(e) => setCountry(e.target.value)} />
                   </label>
                   <label className="field">
-                    <span className="field-label">Approximate dates {OPTIONAL_LABEL}</span>
-                    <input type="text" placeholder="Month / year" value={preferredDate} onChange={(e) => setPreferredDate(e.target.value)} />
+                    <span className="field-label">{fl.dateLabel || 'Approximate dates'} {OPTIONAL_LABEL}</span>
+                    <input type="text" placeholder={fl.datePlaceholder || 'Month / year'} value={preferredDate} onChange={(e) => setPreferredDate(e.target.value)} />
                   </label>
                   <label className="field field-full">
-                    <span className="field-label">Tell us a little {OPTIONAL_LABEL}</span>
-                    <textarea placeholder="What you'd like to discuss, in your own words. Or simply say hello." value={message} onChange={(e) => setMessage(e.target.value)} />
+                    <span className="field-label">{fl.messageLabel || 'Tell us a little'} {OPTIONAL_LABEL}</span>
+                    <textarea placeholder={fl.messagePlaceholder || "What you'd like to discuss, in your own words. Or simply say hello."} value={message} onChange={(e) => setMessage(e.target.value)} />
                   </label>
                 </>
               )}
@@ -347,14 +361,14 @@ export const ContactPage: React.FC = () => {
                     || 'Held in confidence. Reviewed by a credentialed surgeon. We reply within 24 hours.'}
                 </p>
                 <button type="submit" className="btn btn-accent" disabled={submitting}>
-                  <span>{submitting ? 'Sending…' : status === 'success' ? 'Sent — thank you' : 'Send enquiry'}</span>
+                  <span>{submitting ? (sl.sending || 'Sending…') : status === 'success' ? (sl.sent || 'Sent — thank you') : (sl.send || 'Send enquiry')}</span>
                   <span className="btn-arrow">→</span>
                 </button>
               </div>
               {status === 'success' ? (
                 <div className="field-full" role="status" style={{ padding: 16, background: 'var(--accent-tint)', borderLeft: '3px solid var(--accent)', marginTop: 16 }}>
                   <p style={{ margin: 0, fontFamily: 'var(--font-serif)', fontSize: 16, lineHeight: 1.55 }}>
-                    Thank you — your concierge will reply within one business day.
+                    {sl.successMessage || 'Thank you — your concierge will reply within one business day.'}
                   </p>
                 </div>
               ) : null}

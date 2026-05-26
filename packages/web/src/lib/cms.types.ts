@@ -138,9 +138,7 @@ export type Procedure = {
   faqs?: Array<{ q: string; a: string }>
   pricing?: {
     priceIdr2025?: number
-    priceAud2025?: number
     priceIdr2026?: number
-    priceAud2026?: number
     priceIdrRangeLow?: number
     priceIdrRangeHigh?: number
     priceNotes?: string
@@ -161,6 +159,42 @@ export type Procedure = {
   recoveryTimeline?: Array<number | { id: number; slug?: string; title?: string; body?: string }>
   relatedBA?: Array<number | BeforeAfterCase>
   relatedProcedures?: Array<number | { id: number; slug?: string; name?: string }>
+}
+
+export type ClinicCatalogueItem = {
+  id: number
+  slug: string
+  name: string
+  shortName?: string
+  catalogueGroup: 'surgical' | 'machine' | 'injection' | 'btl'
+  mainCategory?: string
+  subCategory?: string
+  unit?: string
+  audienceTier?: 'standard' | 'tourist' | 'kitas_ktp' | 'package'
+  brand?: string
+  productLine?: string
+  manufacturer?: string
+  fdaApproved?: boolean
+  bodyZone?: 'face' | 'upper-body' | 'lower-body' | 'package' | 'other'
+  parentDiscipline?: number | Discipline
+  description?: Lexical
+  pricing?: {
+    priceIdr2025?: number
+    priceIdr2026?: number
+    priceIdrRangeLow?: number
+    priceIdrRangeHigh?: number
+    priceNotes?: string
+    displayYear?: '2025' | '2026'
+  }
+  featuredRank?: number
+  includesImplant?: boolean
+  detail?: {
+    duration?: string
+    recovery?: string
+    included?: Array<{ value: string }>
+  }
+  sortOrder?: number
+  heroImage?: number | CmsMedia
 }
 
 export type BeforeAfterCase = {
@@ -330,7 +364,6 @@ export type Settings = {
   googleMapsUrl?: string
   socialLinks?: Array<{ platform: string; url: string }>
   defaultLocale?: string
-  currencyDisplayMode?: 'idr-only' | 'idr-with-aud'
 }
 
 export type ContactHeroGlobal = {
@@ -357,6 +390,40 @@ export type ContactEnquirySectionGlobal = {
     pressLabel?: string
   }
   trustLine?: string
+  // 25.27 additions
+  intentCopy?: Array<{ slug?: string; eyebrow?: string; title?: string; lede?: string }>
+  formLabels?: {
+    nameLabel?: string
+    namePlaceholder?: string
+    emailLabel?: string
+    emailPlaceholder?: string
+    treatmentLabel?: string
+    treatmentPlaceholder?: string
+    addDetailsLabel?: string
+    countryLabel?: string
+    countryPlaceholder?: string
+    dateLabel?: string
+    datePlaceholder?: string
+    messageLabel?: string
+    messagePlaceholder?: string
+  }
+  submitLabels?: {
+    send?: string
+    sending?: string
+    sent?: string
+    successMessage?: string
+  }
+}
+
+export type NotFoundPageGlobal = {
+  eyebrow?: string
+  headingA?: string
+  headingB?: string
+  lede?: string
+  primaryBtnLabel?: string
+  primaryBtnHref?: string
+  secondaryBtnLabel?: string
+  secondaryBtnHref?: string
 }
 
 export type ContactVisitSectionGlobal = {
@@ -420,7 +487,6 @@ export type BrandStatsGlobal = {
 
 export type ConsultationPolicy = {
   feeIdr?: number
-  feeAud?: number
   waiverConditionText?: string
   displayOn?: string[]
 }
@@ -846,6 +912,7 @@ export type HomeLeadMagnetGlobal = {
 }
 
 export type HomePlaceGlobal = {
+  image?: CmsMedia | number | null
   eyebrow?: string
   headingPart1?: string
   headingAccent?: string
@@ -925,6 +992,7 @@ export type CmsCache = {
   disciplines: Discipline[]
   subCategories: SubCategory[]
   procedures: Procedure[]
+  clinicCatalogueItems: ClinicCatalogueItem[]
   beforeAfterCases: BeforeAfterCase[]
   stories: Story[]
   pressMentions: PressMention[]
@@ -990,4 +1058,6 @@ export type CmsCache = {
   homeGalleryView: HomeGalleryViewGlobal
   homeJourneyView: HomeJourneyViewGlobal
   homeStoriesView: HomeStoriesViewGlobal
+  // 25.29
+  notFoundPage: NotFoundPageGlobal
 }

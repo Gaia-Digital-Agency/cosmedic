@@ -27,6 +27,9 @@ export const PrivacyPage: React.FC = () => {
   const versionLine = page?.versionLine || 'Version 4.2 · Annual review cycle'
   const readingTimeLine = page?.readingTimeLine || 'Read in 6 minutes'
   const intro = page?.introParagraph
+  const imageLabel = page?.imageLabel || 'PRIVACY'
+  const tocHeading = page?.tocHeading || 'Contents'
+  const dpo = page?.dpo ?? {}
 
   return (
     <PageShell activePage="privacy">
@@ -36,7 +39,7 @@ export const PrivacyPage: React.FC = () => {
         lede={lede}
         image={heroImage}
         imageHue={5}
-        imageLabel="PRIVACY"
+        imageLabel={imageLabel}
         breadcrumbs={[{ label: 'BIMC CosMedic', href: '/' }, { label: 'Privacy & Terms' }]}
       />
 
@@ -76,7 +79,7 @@ export const PrivacyPage: React.FC = () => {
         <div className="privacy-layout">
           <aside className="privacy-toc">
             <Reveal>
-              <Eyebrow>Contents</Eyebrow>
+              <Eyebrow>{tocHeading}</Eyebrow>
               <ol className="privacy-toc-list">
                 {sections.map((s, i) => (
                   <li key={s.slug}>
@@ -123,35 +126,36 @@ export const PrivacyPage: React.FC = () => {
         <Reveal>
           <div className="privacy-contact">
             <div>
-              <Eyebrow>Data Protection Officer</Eyebrow>
+              <Eyebrow>{dpo.eyebrow || 'Data Protection Officer'}</Eyebrow>
               <h2 className="section-title" style={{ marginTop: 16 }}>
-                Questions? <span className="italic">Write to us.</span>
+                {dpo.headingA || 'Questions?'}{' '}
+                <span className="italic">{dpo.headingB || 'Write to us.'}</span>
               </h2>
               <p className="section-lede" style={{ maxWidth: 620 }}>
-                We answer within five working days. For urgent medical questions, please use the main
-                contact form — it reaches the on-call concierge in minutes.
+                {dpo.lede ||
+                  'We answer within five working days. For urgent medical questions, please use the main contact form — it reaches the on-call concierge in minutes.'}
               </p>
             </div>
             <div className="privacy-contact-meta">
               <div>
-                <Mono>Email</Mono>
-                <a href="mailto:privacy@bimcbali.com" className="privacy-contact-link">
-                  privacy@bimcbali.com
+                <Mono>{dpo.emailLabel || 'Email'}</Mono>
+                <a href={`mailto:${dpo.email || 'privacy@bimcbali.com'}`} className="privacy-contact-link">
+                  {dpo.email || 'privacy@bimcbali.com'}
                 </a>
               </div>
               <div>
-                <Mono>Post</Mono>
+                <Mono>{dpo.postLabel || 'Post'}</Mono>
                 <span className="privacy-contact-addr">
-                  Data Protection Officer
+                  {dpo.addressLine1 || 'Data Protection Officer'}
                   <br />
-                  BIMC CosMedic, Jl. Bypass Ngurah Rai 100X
+                  {dpo.addressLine2 || 'BIMC CosMedic, Jl. Bypass Ngurah Rai 100X'}
                   <br />
-                  Kuta, Bali 80361, Indonesia
+                  {dpo.addressLine3 || 'Kuta, Bali 80361, Indonesia'}
                 </span>
               </div>
               <div style={{ marginTop: 12 }}>
                 <Btn kind="ghost" as="a" href="/contact">
-                  General contact
+                  {dpo.generalContactLabel || 'General contact'}
                 </Btn>
               </div>
             </div>
