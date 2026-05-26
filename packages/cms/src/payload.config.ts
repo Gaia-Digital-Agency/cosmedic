@@ -197,8 +197,8 @@ export default buildConfig({
     JourneySteps,
     RecoveryStays,
     // g. Contact
-    Enquiries,
     Analytics,
+    Enquiries,
     // h. About
     BlogPosts,
     BlogTags,

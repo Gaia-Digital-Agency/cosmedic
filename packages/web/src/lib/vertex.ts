@@ -25,6 +25,16 @@ export function validateMessage(message: string): { ok: true } | { ok: false; er
 
 export function buildContext(): string {
   const cache = getCmsCacheSync()
+  const s = cache.settings as any
+
+  const clinic = {
+    name: s.siteName || 'BIMC CosMedic',
+    address: [s.addressLine1, s.addressLine2, s.city, s.country].filter(Boolean).join(', '),
+    phone: s.contactPhone || undefined,
+    whatsapp: s.whatsappNumber || undefined,
+    email: s.contactEmail || undefined,
+    hours: [s.hoursMonFri, s.hoursSatSun].filter(Boolean).join(' · ') || undefined,
+  }
 
   const surgeons = cache.surgeons.slice(0, 20).map((s) => ({
     name: s.name,
@@ -49,7 +59,7 @@ export function buildContext(): string {
     notes: c.pricing?.priceNotes || undefined,
   }))
 
-  return JSON.stringify({ surgeons, procedures, catalogue })
+  return JSON.stringify({ clinic, surgeons, procedures, catalogue })
 }
 
 function buildPrompt(message: string, contextJson: string): string {
