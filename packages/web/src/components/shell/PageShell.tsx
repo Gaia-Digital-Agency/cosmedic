@@ -4,6 +4,7 @@ import { Footer } from './Footer'
 import { FloatingChrome } from './FloatingChrome'
 import { CTABandSlim } from '@/components/primitives/CTABandSlim'
 import { BackToTop } from '@/components/primitives/BackToTop'
+import { AskDoctor } from './AskDoctor'
 
 type Props = {
   activePage?: string
@@ -21,5 +22,6 @@ export const PageShell: React.FC<Props> = ({ activePage, hideCTA = false, childr
     </div>
     <FloatingChrome />
     <BackToTop />
+    <AskDoctor />
   </>
 )

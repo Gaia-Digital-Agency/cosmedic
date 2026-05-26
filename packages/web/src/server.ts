@@ -5,6 +5,8 @@ import express from 'express'
 import { loadCmsCache } from './lib/cms'
 import { enquirySchema, type EnquiryResponse } from './lib/enquiry-schema'
 import { checkRateLimit } from './lib/enquiry-rate-limit'
+import { checkAskRateLimit } from './lib/ask-rate-limit'
+import { validateMessage, callVertex } from './lib/vertex'
 import { seoFor, renderSeoTags, renderAnalytics } from './lib/seo'
 import { resolveRoute } from './router'
 
@@ -125,6 +127,36 @@ async function createServer() {
     } catch (err) {
       console.warn('[enquiry] failed:', err)
       return respond(500, { ok: false, error: 'internal' })
+    }
+  })
+
+  // ─── Ask The Doctor — AI chat endpoint ──────────────────────────────
+  app.post('/api/ask', express.json({ limit: '8kb' }), async (req, res) => {
+    const ip =
+      (req.headers['x-forwarded-for'] as string | undefined)?.split(',')[0]?.trim() ||
+      req.socket.remoteAddress ||
+      'unknown'
+
+    const rl = checkAskRateLimit(ip)
+    if (!rl.ok) {
+      return res
+        .status(429)
+        .set('Retry-After', String(rl.retryAfter))
+        .json({ error: 'Too many requests. Please try again shortly.' })
+    }
+
+    const message = String(req.body?.message || '').trim()
+    const validation = validateMessage(message)
+    if (!validation.ok) {
+      return res.status(400).json({ error: validation.error })
+    }
+
+    try {
+      const answer = await callVertex(message)
+      return res.json({ answer })
+    } catch (err) {
+      console.warn('[ask] vertex error:', err)
+      return res.status(500).json({ error: 'Something went wrong. Please try again.' })
     }
   })
 
