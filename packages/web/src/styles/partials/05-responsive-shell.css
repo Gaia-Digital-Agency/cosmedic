@@ -9,6 +9,8 @@
     .header-inner { grid-template-columns: auto 1fr; }
     .primary-nav { display: none; }
     .burger-btn { display: flex !important; }
+    /* CTA lives in the mobile drawer — hide it from the header bar */
+    .header-cta { display: none !important; }
   }
 
   @media (max-width: 1100px) {
@@ -37,16 +39,10 @@
     .treatments-grid, .gallery-grid, .stories-grid, .surgeons-grid, .journey-steps, .footer-top { grid-template-columns: 1fr; }
     .header-inner { padding: 16px 20px; gap: 12px; }
     .lang-switcher { display: none; }
-    /* Shrink CTA to icon + short label so it stays in the bar without
-     * blowing out the width. Logo + CTA + burger remain visible. */
-    .header-cta { padding: 10px 14px; font-size: 11px; letter-spacing: 0.14em; }
     .intro-cols { grid-template-columns: 1fr; gap: 24px; }
     .surgeon-stats { grid-template-columns: 1fr 1fr; }
   }
   @media (max-width: 420px) {
-    /* Very narrow viewports — hide the CTA text label and keep only the
-     * arrow so logo + burger + CTA-icon all fit at 320px. */
-    .header-cta span:not(.btn-arrow) { display: none; }
-    .header-cta { padding: 10px; }
+    /* .header-cta is already display:none at ≤1480px — nothing to add here. */
   }
 
