@@ -1,0 +1,276 @@
+id (no edit),slug (no edit),name (no edit),main_category (no edit),audience_tier (no edit),unit (no edit),price_idr_2026
+27,surgical-armlifting,Armlifting,Arm,standard,"",86350000
+28,surgical-extended-armlifting,Extended Armlifting,Arm,standard,"",113300000
+17,surgical-abdominoplasty,Abdominoplasty,Body,standard,"",92400000
+18,surgical-mini-abdominoplasty,Mini Abdominoplasty,Body,standard,"",73040000
+19,surgical-lipo-abdominoplasty,Lipo Abdominoplasty,Body,standard,"",113300000
+20,surgical-extended-tummy-tuck,Extended Tummy Tuck,Body,standard,"",134145000
+21,surgical-body-lift,Body Lift,Body,standard,"",155320000
+22,surgical-small-liposuction,Small Liposuction,Body,standard,"",46585000
+23,surgical-medium-liposuction,Medium Liposuction,Body,standard,"",61105000
+24,surgical-large-liposuction,Large Liposuction,Body,standard,"",81290000
+25,surgical-extra-large-liposuction,Extra Large Liposuction,Body,standard,"",96360000
+42,surgical-fat-injection-or-fat-graft-per-each-area,Fat Injection or Fat Graft per Each Area,Body,standard,"",19250000
+26,surgical-lower-body-lift,Lower Body Lift,Body,standard,"",169900000
+4,surgical-breast-augmentation-with-implant,Breast Augmentation with Implant,Breast,standard,"",61490000
+5,surgical-breast-augmentation-with-nipple-reduction,Breast Augmentation with Nipple Reduction,Breast,standard,"",77220000
+6,surgical-breast-augmentation-include-replace-existing-implant-w-new,Breast Augmentation include replace existing implant w/ new,Breast,standard,"",80190000
+7,surgical-breast-implant-removal,Breast Implant removal,Breast,standard,"",68750000
+8,surgical-breast-lifting,Breast Lifting,Breast,standard,"",92400000
+9,surgical-breast-uplifting-with-implant,Breast Uplifting with Implant,Breast,standard,"",92400000
+10,surgical-breast-implant-removal-lifting,Breast Implant removal + lifting,Breast,standard,"",92400000
+11,surgical-breast-implant-exchange-lifting,Breast Implant Exchange + lifting,Breast,standard,"",92400000
+12,surgical-nipple-reduction,Nipple Reduction,Breast,standard,"",31350000
+13,surgical-blepharoplasty-upper-only,Blepharoplasty Upper only,Eyelid,standard,"",22330000
+14,surgical-blepharoplasty-lower-only,Blepharoplasty lower only,Eyelid,standard,"",24565000
+15,surgical-blepharoplasty-upper-or-lower,Blepharoplasty Upper or lower,Eyelid,standard,"",28490000
+16,surgical-double-eyelid,Double Eyelid,Eyelid,standard,"",27000000
+40,surgical-necklifting,Necklifting,Face & Neck,standard,"",80190000
+41,surgical-mini-facelifting,Mini Facelifting,Face & Neck,standard,"",86350000
+1,surgical-facelifting-plus-necklifting,Facelifting plus Necklifting,Face & Neck,standard,"",103400000
+2,surgical-foreheadlifting,Foreheadlifting,Face & Neck,standard,"",56430000
+3,surgical-neck-liposuction,Neck Liposuction,Face & Neck,standard,"",28490000
+31,surgical-otoplasty,Otoplasty,Others,standard,"",36100000
+32,surgical-labiaplasty,Labiaplasty,Others,standard,"",23500000
+33,surgical-vaginoplasty,Vaginoplasty,Others,standard,"",35300000
+34,surgical-small-scar-revision-or-flap,Small Scar Revision or Flap,Others,standard,"",11550000
+35,surgical-medium-scar-revision,Medium Scar Revision,Others,standard,"",24550000
+36,surgical-big-scar-revision,Big Scar Revision,Others,standard,"",35300000
+37,surgical-minor-surgery,Minor Surgery,Others,standard,"",16500000
+38,surgical-gynecomastia,Gynecomastia,Others,standard,"",53600000
+39,surgical-lobuloplasty,Lobuloplasty,Others,standard,"",20300000
+29,surgical-rhinoplasty-with-cartilage,Rhinoplasty with Cartilage,Rhinoplasty,standard,"",63900000
+30,surgical-nose-tips-or-dorsum-with-cartilage-graft,Nose : Tips (or Dorsum) with Cartilage graft,Rhinoplasty,standard,"",50700000
+50,standard-recovery-villa,Standard recovery villa,"",standard,"",3584000
+43,premium-recovery-villa,Premium recovery villa,"",standard,"",6144000
+44,family-friendly-villa,Family-friendly villa,"",standard,"",7424000
+45,extended-recovery-14-nights,Extended recovery (14+ nights),"",standard,"",3072000
+46,daily-in-villa-nursing,Daily in-villa nursing,"",standard,"",2304000
+47,manual-lymphatic-drainage,Manual lymphatic drainage,"",standard,"",1792000
+48,gentle-physiotherapy,Gentle physiotherapy,"",standard,"",2048000
+49,post-op-nutrition-consult,Post-op nutrition consult,"",standard,"",3072000
+51,three-session-drainage-course,Three-session drainage course,"",standard,"",4864000
+40,machine-laser-360-combination-of-aft-pixel-erbium-kitas-ktp,"Laser 360 — Combination of AFT, Pixel, Erbium",Laser 360,kitas_ktp,"Combination of AFT, Pixel, Erbium",4680000
+2,machine-laser-360-combination-of-aft-pixel-erbium-package,"Laser 360 — Combination of AFT, Pixel, Erbium",Laser 360,package,"Combination of AFT, Pixel, Erbium",9800000
+1,machine-laser-360-combination-of-aft-pixel-erbium-standard,"Laser 360 — Combination of AFT, Pixel, Erbium",Laser 360,standard,"Combination of AFT, Pixel, Erbium",5200000
+59,machine-laser-aft-rejuvenation-face-kitas-ktp,Laser AFT Rejuvenation — Face,Laser AFT Rejuvenation,kitas_ktp,Face,1350000
+31,machine-laser-aft-rejuvenation-face-package,Laser AFT Rejuvenation — Face,Laser AFT Rejuvenation,package,Face,6500000
+30,machine-laser-aft-rejuvenation-face-standard,Laser AFT Rejuvenation — Face,Laser AFT Rejuvenation,standard,Face,1500000
+58,machine-laser-aft-rejuvenation-neck-lip-kitas-ktp,Laser AFT Rejuvenation — Neck / Lip,Laser AFT Rejuvenation,kitas_ktp,Neck / Lip,720000
+29,machine-laser-aft-rejuvenation-neck-lip-package,Laser AFT Rejuvenation — Neck / Lip,Laser AFT Rejuvenation,package,Neck / Lip,3300000
+28,machine-laser-aft-rejuvenation-neck-lip-standard,Laser AFT Rejuvenation — Neck / Lip,Laser AFT Rejuvenation,standard,Neck / Lip,800000
+57,machine-laser-aft-rejuvenation-face-and-neck-kitas-ktp,Laser AFT Rejuvenation — Face and Neck,Laser AFT Rejuvenation,kitas_ktp,Face and Neck,1800000
+27,machine-laser-aft-rejuvenation-face-and-neck-package,Laser AFT Rejuvenation — Face and Neck,Laser AFT Rejuvenation,package,Face and Neck,8500000
+26,machine-laser-aft-rejuvenation-face-and-neck-standard,Laser AFT Rejuvenation — Face and Neck,Laser AFT Rejuvenation,standard,Face and Neck,2000000
+56,machine-laser-aft-rejuvenation-chest-kitas-ktp,Laser AFT Rejuvenation — Chest,Laser AFT Rejuvenation,kitas_ktp,Chest,1530000
+25,machine-laser-aft-rejuvenation-chest-package,Laser AFT Rejuvenation — Chest,Laser AFT Rejuvenation,package,Chest,6750000
+24,machine-laser-aft-rejuvenation-chest-standard,Laser AFT Rejuvenation — Chest,Laser AFT Rejuvenation,standard,Chest,1700000
+55,machine-laser-aft-rejuvenation-hands-kitas-ktp,Laser AFT Rejuvenation — Hands,Laser AFT Rejuvenation,kitas_ktp,Hands,540000
+23,machine-laser-aft-rejuvenation-hands-package,Laser AFT Rejuvenation — Hands,Laser AFT Rejuvenation,package,Hands,2100000
+22,machine-laser-aft-rejuvenation-hands-standard,Laser AFT Rejuvenation — Hands,Laser AFT Rejuvenation,standard,Hands,600000
+54,machine-laser-aft-rejuvenation-half-arm-kitas-ktp,Laser AFT Rejuvenation — Half Arm,Laser AFT Rejuvenation,kitas_ktp,Half Arm,1050000
+21,machine-laser-aft-rejuvenation-half-arm-package,Laser AFT Rejuvenation — Half Arm,Laser AFT Rejuvenation,package,Half Arm,4300000
+20,machine-laser-aft-rejuvenation-half-arm-standard,Laser AFT Rejuvenation — Half Arm,Laser AFT Rejuvenation,standard,Half Arm,1155000
+53,machine-laser-aft-rejuvenation-full-arm-kitas-ktp,Laser AFT Rejuvenation — Full Arm,Laser AFT Rejuvenation,kitas_ktp,Full Arm,1800000
+19,machine-laser-aft-rejuvenation-full-arm-package,Laser AFT Rejuvenation — Full Arm,Laser AFT Rejuvenation,package,Full Arm,8000000
+18,machine-laser-aft-rejuvenation-full-arm-standard,Laser AFT Rejuvenation — Full Arm,Laser AFT Rejuvenation,standard,Full Arm,2000000
+52,machine-laser-aft-rejuvenation-half-leg-kitas-ktp,Laser AFT Rejuvenation — Half Leg,Laser AFT Rejuvenation,kitas_ktp,Half Leg,2000000
+17,machine-laser-aft-rejuvenation-half-leg-package,Laser AFT Rejuvenation — Half Leg,Laser AFT Rejuvenation,package,Half Leg,8000000
+16,machine-laser-aft-rejuvenation-half-leg-standard,Laser AFT Rejuvenation — Half Leg,Laser AFT Rejuvenation,standard,Half Leg,2200000
+51,machine-laser-aft-rejuvenation-full-leg-kitas-ktp,Laser AFT Rejuvenation — Full Leg,Laser AFT Rejuvenation,kitas_ktp,Full Leg,3150000
+15,machine-laser-aft-rejuvenation-full-leg-package,Laser AFT Rejuvenation — Full Leg,Laser AFT Rejuvenation,package,Full Leg,13500000
+14,machine-laser-aft-rejuvenation-full-leg-standard,Laser AFT Rejuvenation — Full Leg,Laser AFT Rejuvenation,standard,Full Leg,3500000
+63,machine-laser-erbium-resurfacing-face-kitas-ktp,Laser Erbium Resurfacing — Face,Laser Erbium Resurfacing,kitas_ktp,Face,3240000
+39,machine-laser-erbium-resurfacing-face-package,Laser Erbium Resurfacing — Face,Laser Erbium Resurfacing,package,Face,8262000
+38,machine-laser-erbium-resurfacing-face-standard,Laser Erbium Resurfacing — Face,Laser Erbium Resurfacing,standard,Face,3600000
+62,machine-laser-erbium-resurfacing-neck-kitas-ktp,Laser Erbium Resurfacing — Neck,Laser Erbium Resurfacing,kitas_ktp,Neck,2700000
+37,machine-laser-erbium-resurfacing-neck-package,Laser Erbium Resurfacing — Neck,Laser Erbium Resurfacing,package,Neck,6885000
+36,machine-laser-erbium-resurfacing-neck-standard,Laser Erbium Resurfacing — Neck,Laser Erbium Resurfacing,standard,Neck,3000000
+61,machine-laser-erbium-resurfacing-chest-kitas-ktp,Laser Erbium Resurfacing — Chest,Laser Erbium Resurfacing,kitas_ktp,Chest,3240000
+35,machine-laser-erbium-resurfacing-chest-package,Laser Erbium Resurfacing — Chest,Laser Erbium Resurfacing,package,Chest,8262000
+34,machine-laser-erbium-resurfacing-chest-standard,Laser Erbium Resurfacing — Chest,Laser Erbium Resurfacing,standard,Chest,3600000
+60,machine-laser-erbium-resurfacing-eyes-kitas-ktp,Laser Erbium Resurfacing — Eyes,Laser Erbium Resurfacing,kitas_ktp,Eyes,810000
+33,machine-laser-erbium-resurfacing-eyes-package,Laser Erbium Resurfacing — Eyes,Laser Erbium Resurfacing,package,Eyes,2065500
+32,machine-laser-erbium-resurfacing-eyes-standard,Laser Erbium Resurfacing — Eyes,Laser Erbium Resurfacing,standard,Eyes,900000
+43,machine-pigmentation-removal-2-x-2-cm-kitas-ktp,Pigmentation Removal — 2 x 2 cm,Pigmentation Removal,kitas_ktp,2 x 2 cm,1980000
+6,machine-pigmentation-removal-2-x-2-cm-standard,Pigmentation Removal — 2 x 2 cm,Pigmentation Removal,standard,2 x 2 cm,2200000
+42,machine-pigmentation-removal-spot-kitas-ktp,Pigmentation Removal — Spot,Pigmentation Removal,kitas_ktp,Spot,450000
+5,machine-pigmentation-removal-spot-standard,Pigmentation Removal — Spot,Pigmentation Removal,standard,Spot,500000
+50,machine-pixel-q-switch-nd-yag-face-kitas-ktp,Pixel Q-Switch Nd-Yag — Face,Pixel Q-Switch Nd-Yag,kitas_ktp,Face,1260000
+13,machine-pixel-q-switch-nd-yag-face-standard,Pixel Q-Switch Nd-Yag — Face,Pixel Q-Switch Nd-Yag,standard,Face,1400000
+49,machine-pixel-q-switch-nd-yag-neck-kitas-ktp,Pixel Q-Switch Nd-Yag — Neck,Pixel Q-Switch Nd-Yag,kitas_ktp,Neck,720000
+12,machine-pixel-q-switch-nd-yag-neck-standard,Pixel Q-Switch Nd-Yag — Neck,Pixel Q-Switch Nd-Yag,standard,Neck,800000
+48,machine-pixel-q-switch-nd-yag-face-and-neck-kitas-ktp,Pixel Q-Switch Nd-Yag — Face and Neck,Pixel Q-Switch Nd-Yag,kitas_ktp,Face and Neck,1890000
+11,machine-pixel-q-switch-nd-yag-face-and-neck-standard,Pixel Q-Switch Nd-Yag — Face and Neck,Pixel Q-Switch Nd-Yag,standard,Face and Neck,2100000
+47,machine-pixel-q-switch-nd-yag-eyes-kitas-ktp,Pixel Q-Switch Nd-Yag — Eyes,Pixel Q-Switch Nd-Yag,kitas_ktp,Eyes,470000
+10,machine-pixel-q-switch-nd-yag-eyes-standard,Pixel Q-Switch Nd-Yag — Eyes,Pixel Q-Switch Nd-Yag,standard,Eyes,520000
+46,machine-pixel-q-switch-nd-yag-chest-kitas-ktp,Pixel Q-Switch Nd-Yag — Chest,Pixel Q-Switch Nd-Yag,kitas_ktp,Chest,1260000
+9,machine-pixel-q-switch-nd-yag-chest-standard,Pixel Q-Switch Nd-Yag — Chest,Pixel Q-Switch Nd-Yag,standard,Chest,1400000
+45,machine-pixel-q-switch-nd-yag-spot-kitas-ktp,Pixel Q-Switch Nd-Yag — Spot,Pixel Q-Switch Nd-Yag,kitas_ktp,Spot,300000
+8,machine-pixel-q-switch-nd-yag-spot-standard,Pixel Q-Switch Nd-Yag — Spot,Pixel Q-Switch Nd-Yag,standard,Spot,330000
+41,machine-tattoo-removal-per-cm2-kitas-ktp,Tattoo Removal — per cm2,Tattoo Removal,kitas_ktp,per cm2,400
+4,machine-tattoo-removal-per-cm2-package,Tattoo Removal — per cm2,Tattoo Removal,package,per cm2,1500000
+3,machine-tattoo-removal-per-cm2-standard,Tattoo Removal — per cm2,Tattoo Removal,standard,per cm2,400
+44,machine-vascular-laser-2-x-2-cm-kitas-ktp,Vascular Laser — 2 x 2 cm,Vascular Laser,kitas_ktp,2 x 2 cm,1980000
+7,machine-vascular-laser-2-x-2-cm-standard,Vascular Laser — 2 x 2 cm,Vascular Laser,standard,2 x 2 cm,2200000
+29,injection-botox,BOTOX,filler,standard,perunit,99000
+28,injection-frown-lines,Frown Lines,filler,standard,14 – 16 units,1386000
+27,injection-eyes,Eyes,filler,standard,12 – 18 units,1188000
+26,injection-forehead,Forehead,filler,standard,10 – 16 units,990000
+25,injection-restylane-lyft,Restylane Lyft,filler,standard,1 ml,4500000
+24,injection-restylane-obt,Restylane OBT,filler,standard,1 ml,4500000
+23,injection-teosyal-redensity-ii,Teosyal Redensity II,filler,standard,1 ml,5750000
+22,injection-teosyal-ultra-deep,Teosyal Ultra Deep,filler,standard,1 ml,4950000
+21,injection-teosyal-rha-4,Teosyal RHA 4,filler,standard,1 ml,4350000
+20,injection-juvederm-ultra-plus,Juvederm Ultra Plus,filler,standard,1 ml,4450000
+19,injection-juvederm-volux,Juvederm Volux,filler,standard,1 ml,4950000
+18,injection-juvederm-voluma,Juvederm Voluma,filler,standard,1 ml,4950000
+17,injection-juvederm-volbella,Juvederm Volbella,filler,standard,1 ml,3650000
+16,injection-juvederm-volift,Juvederm Volift,filler,standard,1 ml,3850000
+13,injection-radiesse,Radiesse,filler,standard,1.5 ml,7500000
+12,injection-profhilo,Profhilo,filler,standard,2 ml,7500000
+11,injection-nebido-testosterone,Nebido (Testosterone),filler,standard,1 vial,5500000
+10,injection-saizen-6mg,Saizen 6mg,filler,standard,1 pen,3750000
+9,injection-aptos,Aptos,filler,standard,Per thread,1800000
+8,injection-double-fix,Double fix,filler,standard,Per thread,3500000
+7,injection-prp,PRP,filler,standard,1 treatment,2500000
+6,injection-chemical-peel,Chemical Peel,filler,standard,1 treatment,500000
+5,injection-acne-peel-body-back-full-leg-or-arm,Acne Peel Body -back / full leg or arm,filler,standard,1 treatment,1500000
+4,injection-acne-peel-body-chest-half-leg-or-arm,Acne Peel Body - chest /half leg or arm,filler,standard,1 treatment,1000000
+3,injection-microdermabrassion,Microdermabrassion,filler,standard,1 treatment,350000
+2,injection-flamicort-acne,Flamicort Acne,filler,standard,1 injection,200
+1,injection-hyaluronidase,Hyaluronidase,filler,standard,1 injection,500000
+33,injection-mesotherapy-exosome,Mesotheraphy Exosome,filler,standard,1 treatment,2500000
+32,injection-mesotherapy-prp,Mesotheraphy PRP,filler,standard,1 treatment,2500000
+31,injection-mesotherapy-salmon-dna,Mesotheraphy Salmon DNA,filler,standard,1 treatment,2500000
+30,injection-mesotherapy-brightening,Mesotheraphy Brightening,filler,standard,1 treatment,1500000
+34,injection-restylane-vital,Restylane/Restylane Vital,skin-booster,standard,1 ml,3950000
+15,injection-teosyal-redensity-i,Teosyal Redensity I,skin-booster,standard,3mls,4950000
+14,injection-juvederm-volite,Juvederm Volite,skin-booster,standard,1 ml,3750000
+43,btl-face-upper-lip,Upper Lip,face,standard,"",250000
+42,btl-face-chin,Chin,face,standard,"",250000
+41,btl-face-chin-and-upper-lip,Chin and Upper Lip,face,standard,"",400000
+40,btl-face-whisker,Whisker,face,standard,"",400000
+39,btl-face-ears,Ears,face,standard,"",300000
+38,btl-face-neck,Neck,face,standard,"",400000
+37,btl-face-cheek,Cheek,face,standard,"",250000
+36,btl-face-full-face,Full Face,face,standard,"",1000000
+16,btl-face-rejuvination,Rejuvination,face,standard,"",1500000
+15,btl-face-pigmentation,Pigmentation,face,standard,"",1500000
+14,btl-face-vascular,Vascular,face,standard,"",1500000
+13,btl-face-acne,Acne,face,standard,"",1500000
+35,btl-upper-body-under-arm,Under Arm,upper-body,standard,"",500000
+34,btl-upper-body-full-back,Full Back,upper-body,standard,"",2200000
+33,btl-upper-body-half-back,Half Back,upper-body,standard,"",1300000
+32,btl-upper-body-full-chest,Full Chest,upper-body,standard,"",1800000
+31,btl-upper-body-chest-and-stomach,Chest and Stomach,upper-body,standard,"",2400000
+30,btl-upper-body-areola,Areola,upper-body,standard,"",300000
+29,btl-upper-body-tummy,Tummy,upper-body,standard,"",1200000
+28,btl-upper-body-full-arm,Full Arm,upper-body,standard,"",1300000
+27,btl-upper-body-half-arm,Half arm,upper-body,standard,"",900000
+26,btl-upper-body-hands,Hands,upper-body,standard,"",500000
+25,btl-lower-body-full-leg,Full Leg,lower-body,standard,"",2400000
+24,btl-lower-body-half-leg,Half Leg,lower-body,standard,"",1300000
+23,btl-lower-body-buttock,Buttock,lower-body,standard,"",1200000
+22,btl-lower-body-bikini-brazilian,Bikini Brazilian,lower-body,standard,"",800000
+21,btl-lower-body-bikini-line,Bikini Line,lower-body,standard,"",600000
+20,btl-lower-body-fingers-toes-spot,Fingers/ Toes/ Spot,lower-body,standard,"",200000
+19,btl-package-chest-stomach-full-back,"Chest, Stomach, Full BAck",package,standard,"",3500000
+18,btl-package-armpit-full-leg-brazilian,"Armpit, Full Leg, Brazilian",package,standard,"",2800000
+17,btl-package-bikini-under-arm,"Bikini, under arm",package,standard,"",800000
+11,btl-other-pigmentation,Pigmentation,other,standard,"",600000
+10,btl-other-vascular,Vascular,other,standard,"",600000
+8,btl-other-spot-per-area,Spot/ per area,other,standard,"",500000
+9,btl-other-acne,Acne,other,standard,"",2100000
+12,btl-other-rejuvination,Rejuvination,other,standard,"",2500000
+7,btl-other-full-face-and-neck,Full Face and neck,other,standard,"",6900000
+6,btl-other-lower-face,Lower Face,other,standard,"",4000000
+5,btl-other-upper-face-forehead-and-eyes,Upper Face (Forehead and eyes),other,standard,"",2000000
+4,btl-other-eyelift-eyebrow-lift,EyeLift/ Eyebrow Lift,other,standard,"",1500000
+3,btl-other-double-chin,Double chin,other,standard,"",2000000
+2,btl-other-lower-face-and-submental,Lower Face and submental,other,standard,"",4500000
+1,btl-other-neck-and-submental,Neck and Submental,other,standard,"",4000000
+1,silicone-implants,Silicone implants,"",standard,"",125440000
+2,saline-implants,Saline implants,"",standard,"",117760000
+3,breast-lift-mastopexy,Breast lift (Mastopexy),"",standard,"",143360000
+4,lift-with-implants,Lift with implants,"",standard,"",171520000
+5,breast-reduction,Breast reduction,"",standard,"",92400000
+6,nipple-refinement,Nipple refinement,"",standard,"",53760000
+7,implant-revision,Implant revision,"",standard,"",163840000
+8,rhinoplasty,Rhinoplasty,"",standard,"",99999999
+9,facelift-deep-plane-or-smas,Facelift (deep-plane or SMAS),"",standard,"",189440000
+10,eyelid-surgery-blepharoplasty,Eyelid surgery (Blepharoplasty),"",standard,"",69120000
+11,brow-lift,Brow lift,"",standard,"",56430000
+12,neck-lift,Neck lift,"",standard,"",125440000
+13,lip-lift,Lip lift,"",standard,"",18150000
+14,liposculpture,Liposculpture,"",standard,"",87040000
+15,abdominoplasty-tummy-tuck,Abdominoplasty (Tummy tuck),"",standard,"",158720000
+16,brachioplasty-arm-lift,Brachioplasty (Arm lift),"",standard,"",112640000
+17,thigh-lift,Thigh lift,"",standard,"",134145000
+18,body-contouring-after-weight-loss,Body contouring after weight loss,"",standard,"",235520000
+19,botulinum-toxin,Botulinum toxin,"",standard,"",4864000
+20,dermal-fillers,Dermal fillers,"",standard,"",7424000
+21,profhilo,Profhilo,"",standard,"",9216000
+22,polynucleotides,Polynucleotides,"",standard,"",8704000
+23,skin-boosters,Skin boosters,"",standard,"",6144000
+24,prp-for-skin,PRP for skin,"",standard,"",7424000
+25,fractional-laser,Fractional laser,"",standard,"",12544000
+26,ipl-photofacial,IPL Photofacial,"",standard,"",6144000
+27,chemical-peel,Chemical peel,"",standard,"",4864000
+28,rf-microneedling,RF Microneedling,"",standard,"",11264000
+29,hydrafacial,HydraFacial,"",standard,"",3584000
+30,medical-grade-facial,Medical-grade facial,"",standard,"",2816000
+31,three-session-skin-programme,Three-session skin programme,"",standard,"",7424000
+32,pre-event-facial,Pre-event facial,"",standard,"",3584000
+33,acne-and-barrier-protocol,Acne & barrier protocol,"",standard,"",12544000
+34,sapphire-fue,Sapphire FUE,"",standard,"",61440000
+35,dhi-choi-implanter,DHI Choi Implanter,"",standard,"",79360000
+36,combined-fue-dhi,Combined FUE + DHI,"",standard,"",99840000
+37,eyebrow-restoration,Eyebrow restoration,"",standard,"",40960000
+38,beard-restoration,Beard restoration,"",standard,"",56320000
+39,prp-scalp-therapy,PRP scalp therapy,"",standard,"",17920000
+40,polynucleotides-scalp,Polynucleotides (scalp),"",standard,"",14080000
+41,topical-maintenance-protocol,Topical maintenance protocol,"",standard,"",4864000
+42,combined-therapy-programme,Combined therapy programme,"",standard,"",30720000
+43,porcelain-veneers-per-tooth,Porcelain veneers (per tooth),"",standard,"",12544000
+44,composite-veneers-per-tooth,Composite veneers (per tooth),"",standard,"",6144000
+45,minimal-prep-veneers,Minimal-prep veneers,"",standard,"",13824000
+46,full-smile-makeover-8-10-teeth,Full smile makeover (8–10 teeth),"",standard,"",99840000
+47,clear-alignment-invisalign-clearcorrect,Clear alignment (Invisalign / ClearCorrect),"",standard,"",48640000
+48,express-clear-alignment,Express clear alignment,"",standard,"",28160000
+49,lingual-alignment,Lingual alignment,"",standard,"",107520000
+50,retainer-programme,Retainer programme,"",standard,"",7424000
+51,professional-in-chair-whitening,Professional in-chair whitening,"",standard,"",7424000
+52,take-home-whitening-kit,Take-home whitening kit,"",standard,"",4864000
+53,combined-in-chair-take-home,Combined in-chair + take-home,"",standard,"",9984000
+54,dental-scale-and-polish,Dental scale and polish,"",standard,"",2304000
+64,glp-1-consultation-and-initiation,GLP-1 consultation & initiation,"",standard,"",7424000
+65,semaglutide-wegovy-programme,Semaglutide (Wegovy) programme,"",standard,"",15104000
+66,tirzepatide-mounjaro-programme,Tirzepatide (Mounjaro) programme,"",standard,"",18944000
+67,dietitian-led-programme,Dietitian-led programme,"",standard,"",12544000
+68,maintenance-programme,Maintenance programme,"",standard,"",4864000
+69,intragastric-balloon-orbera-6-months,"Intragastric balloon (Orbera, 6 months)","",standard,"",87040000
+70,intragastric-balloon-spatz-12-months,"Intragastric balloon (Spatz, 12 months)","",standard,"",107520000
+71,endoscopic-sleeve-gastroplasty-esg,Endoscopic Sleeve Gastroplasty (ESG),"",standard,"",189440000
+72,endoscopic-revision,Endoscopic revision,"",standard,"",125440000
+73,sleeve-gastrectomy,Sleeve gastrectomy,"",standard,"",189440000
+74,roux-en-y-gastric-bypass,Roux-en-Y gastric bypass,"",standard,"",235520000
+75,mini-gastric-bypass-oagb,Mini-gastric bypass (OAGB),"",standard,"",222720000
+76,revision-bariatric-surgery,Revision bariatric surgery,"",standard,"",286720000
+77,implant-based-reconstruction-one-stage,Implant-based reconstruction (one-stage),"",standard,"",189440000
+78,implant-based-reconstruction-two-stage,Implant-based reconstruction (two-stage),"",standard,"",235520000
+79,diep-flap-reconstruction,DIEP flap reconstruction,"",standard,"",363520000
+80,tram-flap-reconstruction,TRAM flap reconstruction,"",standard,"",312320000
+81,nipple-areola-reconstruction,Nipple-areola reconstruction,"",standard,"",61440000
+82,symmetrising-procedure-opposite-breast,Symmetrising procedure (opposite breast),"",standard,"",125440000
+83,scar-revision-minor,Scar revision (minor),"",standard,"",23040000
+84,scar-revision-major,Scar revision (major),"",standard,"",61440000
+85,burn-reconstruction,Burn reconstruction,"",standard,"",189440000
+86,skin-grafts-and-dermal-substitute,Skin grafts & dermal substitute,"",standard,"",112640000
+87,keloid-scar-management,Keloid scar management,"",standard,"",30720000
+88,cleft-lip-repair,Cleft lip repair,"",standard,"",87040000
+89,cleft-palate-repair,Cleft palate repair,"",standard,"",107520000
+90,cleft-revision-older-children,Cleft revision (older children),"",standard,"",125440000
+91,maxillofacial-trauma-reconstruction,Maxillofacial trauma reconstruction,"",standard,"",158720000
+92,orbital-reconstruction,Orbital reconstruction,"",standard,"",145920000
+93,microtia-ear-reconstruction,Microtia ear reconstruction,"",standard,"",235520000

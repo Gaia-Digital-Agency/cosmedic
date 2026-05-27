@@ -8,61 +8,64 @@
 > - "Does anything fall through the cracks?" → §5 coverage audit.
 
 > **⚠️ SUPERSEDED BY [CMS_structure.md](CMS_structure.md) (2026-05-23)** — that doc holds the locked sidebar bucket / entity / field structure. Use it for current CMS layout decisions. This file remains useful for:
-> - **§3** Per-page mapping matrix (UI surface → CMS field) — still accurate for current rendering, EXCEPT the `Pages` collection rows now route through 14 Page Globals (`pages(slug=home)` → `home-page` global, etc.) and the 4 pricing collections (`PriceListItems`, `MachineTreatments`, `InjectableProducts`, `HairRemovalAreas`) collapse onto `Procedures` in **Phase C9**.
-> - **§4** Reverse map (collection → routes it surfaces on) — broadly accurate; revisit when C2/C3/C9 land.
+> - **§3** Per-page mapping matrix (UI surface → CMS field path). **Important change (2026-05-27):** all `Pages (slug=home)` etc. references in §3 now route through the corresponding Page Global (`home-page`, `surgeons-page`, etc.) or Section Global (e.g. `contact-enquiry-section`). Field paths within each global are the same.
+> - **§4** Reverse map (collection → routes it surfaces on) — broadly accurate.
 > - **§5** Coverage audit checklist — still the launch-gate.
 >
-> Do not amend §1 (CMS inventory recap) — counts drifted (e.g. 17 collections → 22 → planned 19; 10 globals → 24 with Page Globals). [CMS_structure.md §2 Buckets overview](CMS_structure.md) has the current numbers.
+> **2026-05-27 state:** 18 live collections (see §1.1 below). Removed: `PricingTiers` (q5) · `InclusionItems` / `ExclusionItems` (q19) · `MachineTreatments` / `InjectableProducts` / `HairRemovalAreas` (q19) · `Pages` (Rule-4, 2026-05-24) · `SurgicalItems` / `MachineItems` / `InjectionItems` / `BTLItems` / `ClinicCatalogueItems` (changes08-B). All pricing data now lives on `Procedures.catalogue_group`. [CMS_structure.md §2 Buckets overview](CMS_structure.md) has the current admin taxonomy.
 
 ---
 
 ## 1. CMS inventory recap
 
-### 1.1 Collections (17)
+### 1.1 Collections (18 live — updated 2026-05-27)
 
 | Slug | Records | Drives |
 |---|---|---|
-| `surgeons` | 8 | All surgeon mentions, surgeon detail pages, surgeon mega-menu, lead-surgeon mini-cards |
-| `disciplines` | 6 | Treatments mega-menu, treatments index cards, discipline detail page hero |
-| `subCategories` | 18 | Treatments mega-menu sub-items, sub-category detail page |
-| `procedures` | 41+ | Procedure detail pages, sub-category procedure list, related procedures |
-| `priceListItems` | ~150 | `/pricing` table rows (full clinic catalogue) |
-| `injectableProducts` | ~30 | `/pricing` injectables table, future booking transparency |
-| `machineTreatments` | ~20 | `/pricing` machine treatments table with audience tiers |
-| `hairRemovalAreas` | ~25 | `/pricing` BTL hair removal table |
-| `beforeAfterCases` | 29 | `/gallery`, gallery teaser on home, procedure detail "related cases" |
-| `stories` | TBD | `/stories`, stories teaser on home, surgeon detail testimonials |
-| `pressMentions` | TBD | `/press` |
-| `awards` | TBD | `/press` (awards section), brand stats on home |
-| `recoveryStays` | TBD | `/recovery-stays`, procedure detail recovery teaser |
-| `pricingTiers` | TBD | `/pricing` concierge packages section |
-| `blogPosts` | future | `/blog`, `/blog/:slug`, home blog teaser (if added) |
-| `blogTags` | future | `/blog` filter chips, `/blog/:slug` tag pills |
-| `authors` | future | Blog post bylines |
-| `pages` | 15 | Per-route hand-crafted hero + body blocks (home, journey, gallery, stories, press, pricing, contact, recovery-stays, video-consult, funnel-assessment, privacy, blog index, treatments index, surgeons index, etc.) |
-| `journeySteps` | ~8 | `/journey` page steps + procedure detail recovery timeline (Day 1/2/4/7/10/14) |
-| `inclusionItems` | ~5 | Procedure detail "What's included" list (universal) |
-| `exclusionItems` | ~7 | Procedure detail "What's excluded" list (universal) |
-| `enquiries` | dynamic | Form submissions (admin-only view; never on public UI) |
-| `newsletterSubscribers` | dynamic | (optional, future) |
-| `redirects` | dynamic | nginx-edge / web-route redirect rules |
-| `media` | dynamic | EVERY image, video, PDF on the site |
+| `surgeons` | 8 | Surgeon detail pages, surgeon mega-menu, lead-surgeon mini-cards, Doctors index |
+| `disciplines` | 6 | Treatments mega-menu, treatments index cards, discipline detail page |
+| `subCategories` | 18 | Treatments mega-menu sub-items, `/treatments/{disc}/{sub}` pages |
+| `procedures` | 233+ | Procedure detail pages, sub-cat procedure list, `/pricing` catalogue (via `catalogue_group`), pricing teaser |
+| `beforeAfterCases` | 29 | `/gallery`, gallery teaser on home, procedure detail related cases |
+| `stories` | live | `/stories`, stories teaser on home, surgeon detail testimonials |
+| `pressMentions` | 3 | `/press` |
+| `awards` | 5 | `/press` awards section |
+| `recoveryStays` | 6 | `/recovery-stays` |
+| `blogPosts` | 7 | `/blog`, `/blog/:slug`, home blog teaser |
+| `blogTags` | live | `/blog` filter chips, `/blog/:slug` tag pills |
+| `authors` | live | Blog post bylines |
+| `journeySteps` | 6 | `/journey` page steps, procedure detail recovery timeline |
+| `enquiries` | dynamic | Form submissions (admin-only; never on public UI) |
+| `privacySections` | live | `/privacy` — block-based privacy policy sections |
+| `analytics` | dynamic | Ask The Doctor chat question log (admin analytics) |
+| `media` | dynamic | All images on the site |
 | `users` | dynamic | Admin / editor accounts |
 
-### 1.2 Globals (10)
+**Removed collections** (TS files deleted; DB tables orphaned — read-only, do not write):
+`PricingTiers` (q5) · `InclusionItems` / `ExclusionItems` (q19) · `MachineTreatments` / `InjectableProducts` / `HairRemovalAreas` (q19) · `Pages` (Rule-4 gate 2026-05-24) · `SurgicalItems` / `MachineItems` / `InjectionItems` / `BTLItems` / `ClinicCatalogueItems` (changes08-B)
+
+### 1.2 Globals (~42 — updated 2026-05-27)
+
+**Top-level `src/globals/` (10):**
 
 | Global | Drives |
 |---|---|
-| `Settings` | Site name, tagline, AUD↔IDR rate, contact email/phone, address, hours, social links, default locale, IDR rounding, default OG image |
+| `Settings` | Site name, AUD↔IDR rate, contact email/phone/WhatsApp, address, hours, social links, IDR rounding |
 | `Header` | Logo (light + dark), nav items, mega-menu structure, EN\|ID switcher labels |
-| `Footer` | Logo (light), link columns, enquiry summary, address block, copyright template, social icons |
-| `FloatingChrome` | CTA pill (label, href, enabled), chat affordance config |
-| `BrandStats` | Stats strip values (28 years, 8 ISAPS-FICS, 3,400+ procedures, #1 hospital 2026) |
-| `EndorsementMark` | "Managed by BIMC Hospital" endorsement text + lockup variants + clearspace rules |
-| `ConsultationPolicy` | Consultation fee (IDR 150,000) + same-day waiver text + where to display |
+| `Footer` | Logo (light), link columns, address block, copyright, social icons |
+| `FloatingChrome` | CTA pill (label, href, enabled), WhatsApp FAB config |
+| `BrandStats` | Stats strip values (28 years, 8 ISAPS-FICS surgeons, 3,400+, #1 hospital 2026) |
+| `EndorsementMark` | "Managed by BIMC Hospital" endorsement text + lockup variants |
+| `ConsultationPolicy` | Consultation fee (IDR 150,000) + same-day waiver text |
 | `FormDefaults` | All form labels, placeholders, success/error messages, submit-button text |
-| `EmailTemplates` | Enquiry autoresponder, clinic notification, newsletter confirmation, password reset |
-| `SeoDefaults` | Page title pattern, robots.txt content, default OG image, organization JSON-LD |
+| `EmailTemplates` | Enquiry autoresponder, clinic notification, password reset |
+| `SeoDefaults` | Page title pattern, default OG image, organization JSON-LD |
+
+**Page Globals `src/globals/pages/` (14):** HomePage · PressPage · PrivacyPage · TreatmentsPage · SurgeonsPage · ResultsPage · GalleryPage · PricingPage · JourneyPage · StoriesPage · RecoveryStaysPage · ContactPage · VideoConsultPage · BlogPage
+
+**Section Globals (18):** R1: ContactHero · ContactEnquirySection · ContactVisitSection · R4: SurgeonsHero · SurgeonsLeadView · SurgeonsPlasticView · SurgeonsAestheticView · SurgeonDetailTemplate · R6: PricingHero · PricingOverview · PricingFootnote · PricingInsurance · PricingPayment · PricingDisciplineListView · PricingCatalogueView (all in `Treatments` bucket since changes08-A) · R7: JourneyHero · JourneyStats · R8: BlogPostTemplate
+
+**Home Section Globals `src/globals/home/` (10):** HomeHero · HomeIntro · HomeTreatmentsView · HomePricingView · HomeSurgeonsView · HomeGalleryView · HomeLeadMagnetView · HomeJourneyView · HomeStoriesView · HomePlace
 
 ### 1.3 Composable blocks (Pages.sections array)
 
@@ -144,30 +147,29 @@ Lives in `packages/web/src/components/` (Phase 2+). Each maps one design primiti
 
 ## 2. Site IA cross-reference
 
-Full route list lives in `docs/sitemap.md`. Recap of top-level routes the matrix below covers:
+Full route list lives in `docs/architecture/sitemap.md`. **Note:** `Pages` collection replaced by Page Globals + Section Globals (see §1.2). Sub-categories nested at `/treatments/{discipline}/{sub}` (not flat).
 
 | Route | Page type | Records / globals it consumes |
 |---|---|---|
-| `/` | Homepage | Pages (slug=home), BrandStats, Disciplines, Surgeons, BeforeAfterCases, JourneySteps, Stories, Header, Footer, FloatingChrome |
-| `/treatments` | Index | Pages (slug=treatments), Disciplines (all), Header/Footer/FloatingChrome |
-| `/treatments/:discipline` | Discipline detail | Disciplines (one), SubCategories (children), Surgeons (leadSurgeons), Header/Footer/FC |
-| `/treatments/:discipline/:sub` | SubCategory detail | SubCategories (one), Procedures (children), Surgeons (leadSurgeon), InclusionItems/ExclusionItems, Header/Footer/FC |
-| `/treatments/:discipline/:sub/:procedure` | Procedure detail | Procedures (one), Surgeons (credentialed), InclusionItems, ExclusionItems, JourneySteps (recoveryTimeline), BeforeAfterCases (related), PriceListItems (linked), Header/Footer/FC |
-| `/surgeons` | Index | Pages (slug=surgeons), Surgeons (all, grouped) |
-| `/surgeons/:slug` | Surgeon detail | Surgeons (one), Procedures (credentialedProcedures rel), Stories (filter by surgeon) |
-| `/journey` | Page | Pages (slug=journey), JourneySteps (all) |
-| `/gallery` | Page | Pages (slug=gallery), BeforeAfterCases (all + filter) |
-| `/stories` | Page | Pages (slug=stories), Stories (all) |
-| `/press` | Page | Pages (slug=press), PressMentions, Awards |
-| `/pricing` | Page | Pages (slug=pricing), PricingTiers, Procedures (with pricing), PriceListItems, InjectableProducts, MachineTreatments, HairRemovalAreas, ConsultationPolicy, Settings.audToIdrRate |
-| `/recovery-stays` | Page | Pages (slug=recovery-stays), RecoveryStays |
-| `/contact` | Page | Pages (slug=contact), FormDefaults, Settings (address/phone/hours), Enquiries (create-only) |
-| `/video-consult` | Page | Pages (slug=video-consult) |
-| `/funnel-assessment` | Page | Pages (slug=funnel-assessment), FormDefaults, Enquiries (create-only with sourceCta) |
-| `/blog`, `/blog/:slug` | Blog | Pages (slug=blog), BlogPosts, BlogTags, Authors |
-| `/privacy` | Page | Pages (slug=privacy) |
+| `/` | Homepage | HomeHero · HomeIntro · HomeTreatmentsView · HomePricingView · HomeSurgeonsView · HomeGalleryView · HomeLeadMagnetView · HomeJourneyView · HomeStoriesView · HomePlace · BrandStats · Disciplines · Surgeons · BeforeAfterCases · JourneySteps · Stories |
+| `/treatments` | Index | TreatmentsPage · Disciplines (all) |
+| `/treatments/:discipline` | Discipline detail | Disciplines (one) · SubCategories (children) · Surgeons (leadSurgeons) |
+| `/treatments/:discipline/:sub` | SubCategory detail | SubCategories (one) · Procedures (children) · Surgeons (leadSurgeon) |
+| `/treatments/:discipline/:sub/:procedure` | Procedure detail | Procedures (one) · Surgeons (credentialed via rels) · JourneySteps (recoveryTimeline) · BeforeAfterCases (related via rels) |
+| `/surgeons` | Index | SurgeonsPage · SurgeonsHero · SurgeonsLeadView · SurgeonsPlasticView · SurgeonsAestheticView · Surgeons (all) |
+| `/surgeons/:slug` | Surgeon detail | SurgeonDetailTemplate · Surgeons (one) · Procedures (credentialedProcedures rel) · Stories (filter by surgeon) |
+| `/results` | Gallery | ResultsPage · BeforeAfterCases (all + filter) |
+| `/journey` | Page | JourneyPage · JourneyHero · JourneyStats · JourneySteps (all) |
+| `/stories` | Page | StoriesPage · Stories (all) |
+| `/press` | Page | PressPage · PressMentions · Awards |
+| `/pricing` | Page | PricingPage · PricingHero · PricingOverview · PricingFootnote · PricingInsurance · PricingPayment · PricingDisciplineListView · PricingCatalogueView · Procedures (catalogue_group set) · ConsultationPolicy · Settings.audToIdrRate |
+| `/recovery-stays` | Page | RecoveryStaysPage · RecoveryStays |
+| `/contact` | Page | ContactPage · ContactHero · ContactEnquirySection · ContactVisitSection · FormDefaults · Settings (address/phone/hours) · Enquiries (create-only) |
+| `/video-consult` | Page | VideoConsultPage |
+| `/blog`, `/blog/:slug` | Blog | BlogPage · BlogPostTemplate · BlogPosts · BlogTags · Authors |
+| `/privacy` | Page | PrivacyPage · PrivacySections |
 
-Header / Footer / FloatingChrome appear on every public route. Localised mirror at `/id/*` (Phase 9) — every editorial field is `localized: true` so same records drive both locales.
+Header / Footer / FloatingChrome appear on every public route. Localised mirror at `/id/*` (Phase 9 — not yet shipped) — every editorial field is `localized: true`.
 
 ---
 

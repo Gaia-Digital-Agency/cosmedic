@@ -4,8 +4,8 @@
 
 This document captures the full spec for the admin-UI customization. Implementation lands in Phase 1.
 
-> **Updated 2026-05-24 (Phase Q complete):**
-> - Sidebar bucket structure is now locked in [CMS_structure.md](CMS_structure.md) — **8 buckets** (HOMEPAGE / TREATMENTS / DOCTORS / RESULTS / PRICING / JOURNEY / CONTACT / MEDIA + ungrouped Users).
+> **Updated 2026-05-27 (changes08 applied):**
+> - Sidebar bucket structure locked in [CMS_structure.md](CMS_structure.md) — **8 buckets** (Homepage / Treatments / Doctors / Results / Journey / Contact / About / Media Library + ungrouped Users). **No standalone Pricing bucket** — the 9 Pricing page globals were moved to the Treatments bucket (changes08-A). About bucket added (holds Blog Posts, Blog Tags, Authors, Press Mentions, Awards, Privacy Sections, Recovery Stays).
 > - **Phase C4** adds an admin sidebar explainer banner above nav: "Collections → many of the same thing · Globals → one-of-a-kind".
 > - **Phase Q-6 / q19**: Inclusion/Exclusion pipeline dropped end-to-end (collections + DB + relations) — clinic editors no longer manage shared inclusion/exclusion lists; per-procedure inclusions live in the procedure's own `detail.included` array. Light theme default is the runtime norm (admin theme = `'light'`).
 > - **Phase Q / q5**: PricingTiers collection removed end-to-end (dead data).

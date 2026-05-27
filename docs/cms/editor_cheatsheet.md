@@ -12,21 +12,21 @@
 
 ## The dashboard
 
-The sidebar is grouped into **8 buckets** that mirror the live site. A short banner at the top of the sidebar explains the difference between **Collections** (many records of the same shape) and **Globals** (one-of-a-kind editorial records).
+The sidebar is grouped into **8 buckets** (Homepage / Treatments / Doctors / Results / Journey / Contact / About / Media) plus Users ungrouped. A short banner at the top explains the difference between **Collections** (many records) and **Globals** (one-of-a-kind).
 
 | Bucket | What lives here |
 |---|---|
 | *(ungrouped)* | **Users** (admin accounts) |
-| **HOMEPAGE** | Press Mentions · Awards · Home Page · Press Page · Privacy Page · Brand Stats · Header · Footer · Floating Chrome · Endorsement Mark · Settings · Seo Defaults |
-| **TREATMENTS** | Disciplines · Sub Categories · Procedures · Inclusion Items · Exclusion Items · Treatments Page |
-| **DOCTORS** | Surgeons · Surgeons Page |
-| **RESULTS** | Before/After Cases · Results Page · Gallery Page |
-| **PRICING** | Pricing Tiers · Pricing Page · Consultation Policy. *(Catalogue rows — Surgical · Machine · Injection · BTL — live on **Procedures** in TREATMENTS as single source of truth. The PRICING bucket points to it.)* |
-| **JOURNEY** | Journey Steps · Stories · Recovery Stays · Blog Posts · Blog Tags · Authors · Journey Page · Stories Page · Recovery Stays Page · Blog Page |
-| **CONTACT** | Enquiries · Contact Page · Form Defaults · Email Templates · Video Consult Page |
-| **MEDIA** | Media (the image library, browsable by folder + category) |
+| **Homepage** | Home Page (+ 10 sub-globals: Hero · Intro · Treatments View · Surgeons View · Gallery View · Stories View · Pricing View · Journey View · Lead Magnet · Place) · Brand Stats · Header · Footer · Floating Chrome · Endorsement Mark · Settings · SEO Defaults |
+| **Treatments** | **Collections:** Disciplines · Sub-Categories · Procedures · **Globals:** Treatments Page · Treatments Hero · Index · Stats · Discipline Template · Sub-Category Template · **Pricing: Page** · **Pricing: Hero** · Overview · Footnote · Insurance · Payment · Catalogue View · Discipline List View · Consultation |
+| **Doctors** | **Collections:** Surgeons · **Globals:** Surgeons Page · Hero · Lead View · Plastic Surgery View · Aesthetic Medicine View · Surgeon Detail Template |
+| **Results** | **Collections:** Before/After Cases · Patient Stories · **Globals:** Results Page · Results Hero · Gallery Page · Stories Page · Library CTA · Share CTA |
+| **Journey** | **Collections:** Journey Steps · Recovery Stays · **Globals:** Journey Page · Journey Hero · Journey Stats · Recovery Stays Page |
+| **Contact** | **Collections:** Enquiries · Analytics (Ask The Doctor) · **Globals:** Contact Page · Contact Hero · Enquiry Section · Visit Section · Form Defaults · Email Templates · Video Consult Page |
+| **About** | **Collections:** Blog Posts · Blog Tags · Authors · Press Mentions · Awards · Privacy Sections · **Globals:** Blog Page · Blog Post Template · Press Page · Privacy Page · Not Found Page |
+| **Media** | Media (image library, browsable by folder + category) |
 
-Scroll the dashboard to see all groups; long page.
+> Note: There is no standalone **Pricing** bucket. All pricing-related admin items are under **Treatments** (prefixed "Pricing: …") since changes08.
 
 ## Updating a surgeon
 
@@ -37,7 +37,7 @@ Scroll the dashboard to see all groups; long page.
 
 ## Updating a treatment / discipline
 
-1. **TREATMENTS → Disciplines** (the 6 chapters) or **Sub Categories** (the 17 leaves) or **Procedures**
+1. **Treatments → Disciplines** (the 6 chapters) or **Sub-Categories** (the 18 sub-pages) or **Procedures**
 2. Edit `title`, `tagline`, `lede`, `body`, `chapterTitle`, `faqs` etc.
 3. **Save**
 
@@ -62,17 +62,17 @@ Common booleans (every checkbox = click to flip, then Save):
 
 ## Adding a new blog post
 
-1. Editorial → **Blog Posts** → **Create New**
-2. Fill `slug` (e.g. `recovery-from-rhinoplasty`), `title`, `excerpt`, `body` (rich text)
-3. Optional: pick an `author` (Editorial → Authors), `tags` (Blog Tags), `coverImage`
+1. **About → Blog Posts** → **Create New**
+2. Fill `slug` (e.g. `recovery-from-rhinoplasty`), `title`, `lede`, `body` (rich text)
+3. Optional: pick an `author` (About → Authors), `tags` (About → Blog Tags), `heroImage`
 4. **Save**
-5. Visit `https://cosmedic.gaiada.online/blog-<slug>` to verify
+5. Visit `https://cosmedic.gaiada.online/blog/<slug>` to verify
 
 ## Bulk pricing updates
 
-All pricing (Surgical + Machine + Injection + BTL line items) is managed in **one place: TREATMENTS → Procedures**. Each Procedures record holds the price (IDR + AUD), the catalogue group (surgical / machine / injection / btl), the main category and sub category, and the editorial fields (description, sections, FAQs). Change the IDR/AUD numbers → Save; `/pricing` re-renders within a second.
+All pricing (Surgical + Machine + Injection + BTL line items) is managed in **Treatments → Procedures**. Each Procedures record holds IDR + AUD prices, catalogue group (surgical/machine/injection/btl), main category, sub category, and editorial fields. Prices display IDR primary with AUD secondary — no toggle needed.
 
-Bulk re-price across many procedures: re-run the seed script via the developer (re-imports `docs/pricelist.xlsx`).
+Change the IDR/AUD numbers → Save; `/pricing` re-renders within a second. Bulk re-price: re-run the seed script via the developer (re-imports `docs/assets/pricelist.xlsx`).
 
 ## When something looks wrong
 

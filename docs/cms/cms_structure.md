@@ -15,17 +15,19 @@
 
 ## 2. Buckets overview
 
-| # | Bucket | Mirrors on the site | Collections in bucket | Globals in bucket |
+> Updated 2026-05-27: No standalone Pricing bucket — changes08-A merged 9 Pricing globals into Treatments. About bucket added (25.18) — Blog/Press/Privacy items live there.
+
+| # | Bucket | Mirrors on the site | Collections | Globals |
 |---|---|---|---|---|
-| 0 | *(ungrouped)* | admin login only | 1 | 0 |
-| 1 | **HOMEPAGE** | `/` + `/press` + `/privacy` + shell on every page | 2 | 10 |
-| 2 | **TREATMENTS** | `/treatments` + `/treatment-<discipline>` + `/treatment-<sub-category>` | 5 | 1 |
-| 3 | **DOCTORS** | `/surgeons` + `/surgeon-<slug>` | 1 | 1 |
-| 4 | **RESULTS** | `/results` + `/gallery` | 1 | 2 |
-| 5 | **PRICING** | `/pricing` top→bottom (catalogue rows actually live on Procedures in TREATMENTS — single-source) | 1 | 2 |
-| 6 | **JOURNEY** | `/journey` + `/stories` + `/recovery-stays` + `/blog` + `/blog/<slug>` | 6 | 4 |
-| 7 | **CONTACT** | `/contact` + `/video-consult` + outbound mail | 1 | 4 |
-| 8 | **MEDIA** | Every image / video / PDF on the site | 1 | 0 |
+| 0 | *(ungrouped)* | admin login only | 1 (Users) | 0 |
+| 1 | **Homepage** | `/` + shell on every page | 0 | 18 (Home Page + 10 section globals + Brand Stats + Header + Footer + Floating Chrome + Endorsement Mark + Settings + SEO Defaults) |
+| 2 | **Treatments** | `/treatments` + `/treatments/{disc}` + `/treatments/{disc}/{sub}` + `/pricing` | 3 (Disciplines · Sub-Categories · Procedures) | 15 (Treatments Page · Hero · Index · Stats · Discipline Template · Sub-Category Template · Pricing: Page · Pricing: Hero · Overview · Footnote · Insurance · Payment · Catalogue View · Discipline List View · Consultation) |
+| 3 | **Doctors** | `/surgeons` + `/surgeons/{slug}` | 1 (Surgeons) | 6 (Surgeons Page · Hero · Lead View · Plastic Surgery View · Aesthetic Medicine View · Surgeon Detail Template) |
+| 4 | **Results** | `/results` + `/gallery` + `/stories` | 2 (Before After Cases · Patient Stories) | 8 (Results Page · Results Hero · Gallery Page · Stories Page · Library CTA · Share CTA · Featured Cases View · Stories View) |
+| 5 | **Journey** | `/journey` + `/recovery-stays` | 2 (Journey Steps · Recovery Stays) | 4 (Journey Page · Journey Hero · Journey Stats · Recovery Stays Page) |
+| 6 | **Contact** | `/contact` + `/video-consult` + outbound mail + AI chat | 2 (Enquiries · Analytics) | 7 (Contact Page · Contact Hero · Enquiry Section · Visit Section · Form Defaults · Email Templates · Video Consult Page) |
+| 7 | **About** | `/press` + `/blog` + `/blog/{slug}` + `/privacy` + 404 | 6 (Blog Posts · Blog Tags · Authors · Press Mentions · Awards · Privacy Sections) | 5 (Blog Page · Blog Post Template · Press Page · Privacy Page · Not Found Page) |
+| 8 | **Media** | Every image / video / PDF | 1 (Media) | 0 |
 
 ---
 
@@ -34,49 +36,62 @@
 | Bucket | Type | Section Label | Entity | Renders on |
 |---|---|---|---|---|
 | *(ungrouped)* | Collection | — | Users | admin login only |
-| HOMEPAGE | Collection | Trust band | Press Mentions | `/press`, home trust strip |
-| HOMEPAGE | Collection | Accreditations | Awards | `/press`, home BrandStats source |
-| HOMEPAGE | Global | Hero + Intro + Treatments + PricingTeaser + Surgeons + Gallery + LeadMagnet + Journey + Stories + Place (/) | Home Page | `/` |
-| HOMEPAGE | Global | TrustStrip | Brand Stats | every page |
-| HOMEPAGE | Global | Hero (/press) | Press Page | `/press` |
-| HOMEPAGE | Global | Hero (/privacy) | Privacy Page | `/privacy` |
-| HOMEPAGE | Global | Top nav | Header | every page |
-| HOMEPAGE | Global | Header endorsement | Endorsement Mark | every page |
-| HOMEPAGE | Global | Footer | Footer | every page |
-| HOMEPAGE | Global | Floating overlay | Floating Chrome | every page |
-| HOMEPAGE | Global | Clinic info | Settings | every page |
-| HOMEPAGE | Global | Meta defaults | Seo Defaults | every page meta head |
-| TREATMENTS | Collection | Discipline grid | Disciplines | `/treatments` cards, `/treatment-<disc>` hero, mega-menu, footer |
-| TREATMENTS | Collection | Sub-category pages | Sub Categories | `/treatment-<sub>`, mega-menu items |
-| TREATMENTS | Collection | Procedure rows + **unified pricing catalogue** | Procedures | procedure detail pages, sub-cat lists, home pricing teaser, AND every row of `/pricing` Surgical / Machine / Injection / BTL tables |
-| TREATMENTS | Collection | What's included | Inclusion Items | procedure detail |
-| TREATMENTS | Collection | What's not | Exclusion Items | procedure detail |
-| TREATMENTS | Global | Hero (/treatments) | Treatments Page | `/treatments` |
-| DOCTORS | Collection | Surgeons | Surgeons | `/surgeons` (4 sections), `/surgeon-<slug>` (5 sections), home strip, mega-menu, footer |
-| DOCTORS | Global | Hero (/surgeons) | Surgeons Page | `/surgeons` |
-| RESULTS | Collection | Before/After | Before After Cases | `/gallery` grid, `/results` featured, home Gallery teaser |
-| RESULTS | Global | Hero (/results) | Results Page | `/results` |
-| RESULTS | Global | Hero (/gallery) | Gallery Page | `/gallery` |
-| PRICING | Collection | Tier cards | Pricing Tiers | `/pricing` concierge tier cards |
-| PRICING | (pointer) | Catalogue rows — Surgical / Machine / Injection / BTL | → Procedures (lives in TREATMENTS) | `/pricing` main tables, grouped by `Procedures.catalogueGroup → mainCategory → subCategory → name` |
-| PRICING | Global | Hero + Overview + Footnote + Insurance + Payment | Pricing Page | `/pricing` editorial frame |
-| PRICING | Global | Callout | Consultation Policy | `/pricing` + `/contact` + every procedure detail |
-| JOURNEY | Collection | Journey Steps | Journey Steps | `/journey` 8-step list, procedure-detail recovery timeline |
-| JOURNEY | Collection | Stories | Stories | `/stories`, home Stories teaser, surgeon-detail testimonials |
-| JOURNEY | Collection | Recovery Stays | Recovery Stays | `/recovery-stays` villa cards, procedure-detail recovery suggestion |
-| JOURNEY | Collection | Blog Posts | Blog Posts | `/blog` index, `/blog/<slug>` detail |
-| JOURNEY | Collection | Blog Tags | Blog Tags | `/blog` filter chips |
-| JOURNEY | Collection | Authors | Authors | `/blog/<slug>` byline |
-| JOURNEY | Global | Hero (/journey) | Journey Page | `/journey` |
-| JOURNEY | Global | Hero (/stories) | Stories Page | `/stories` |
-| JOURNEY | Global | Hero (/recovery-stays) | Recovery Stays Page | `/recovery-stays` |
-| JOURNEY | Global | Hero (/blog) | Blog Page | `/blog` index |
-| CONTACT | Collection | Enquiries | Enquiries | form submissions only (admin-only view) |
-| CONTACT | Global | Hero (/contact) | Contact Page | `/contact` |
-| CONTACT | Global | Form copy | Form Defaults | every form on the site |
-| CONTACT | Global | Outbound mail | Email Templates | clinic notify + autoresponder |
-| CONTACT | Global | Hero (/video-consult) | Video Consult Page | `/video-consult` |
-| MEDIA | Collection | Media library | Media | every image / video / PDF |
+| Homepage | Global | Hero + 10 sections (/) | Home Page | `/` |
+| Homepage | Global | TrustStrip | Brand Stats | every page |
+| Homepage | Global | Top nav | Header | every page |
+| Homepage | Global | Footer | Footer | every page |
+| Homepage | Global | Floating overlay | Floating Chrome | every page |
+| Homepage | Global | Header endorsement | Endorsement Mark | every page |
+| Homepage | Global | Clinic info | Settings | every page |
+| Homepage | Global | Meta defaults | SEO Defaults | every page meta head |
+| Treatments | Collection | Discipline grid | Disciplines | `/treatments` cards, discipline detail pages, mega-menu, footer |
+| Treatments | Collection | Sub-category pages | Sub-Categories | `/treatments/{disc}/{sub}`, mega-menu items |
+| Treatments | Collection | Procedure rows + **unified pricing catalogue** | Procedures | procedure detail pages, sub-cat lists, home pricing teaser, every `/pricing` table row |
+| Treatments | Global | Hero (/treatments) | Treatments Page | `/treatments` |
+| Treatments | Global | Pricing page frame | Pricing: Page | `/pricing` |
+| Treatments | Global | Pricing hero | Pricing: Hero | `/pricing` |
+| Treatments | Global | Pricing overview | Overview | `/pricing` |
+| Treatments | Global | Pricing footnote | Footnote | `/pricing` |
+| Treatments | Global | Insurance info | Insurance | `/pricing` |
+| Treatments | Global | Payment info | Payment | `/pricing` |
+| Treatments | Global | Catalogue display | Catalogue View | `/pricing` |
+| Treatments | Global | Discipline list display | Discipline List View | `/pricing` |
+| Treatments | Global | Consultation fee callout | Consultation | `/pricing` + `/contact` + every procedure detail |
+| Doctors | Collection | Surgeons/Experts | Surgeons | `/surgeons` (nav: Experts), `/surgeons/{slug}`, home strip, mega-menu, footer |
+| Doctors | Global | Hero (/surgeons) | Surgeons Page | `/surgeons` |
+| Doctors | Global | Surgeons lead view | Lead View | `/surgeons` |
+| Doctors | Global | Plastic Surgery section | Plastic Surgery View | `/surgeons` |
+| Doctors | Global | Aesthetic Medicine section | Aesthetic Medicine View | `/surgeons` |
+| Doctors | Global | Surgeon detail template | Surgeon Detail Template | `/surgeons/{slug}` |
+| Results | Collection | Before/After | Before After Cases | `/gallery`, `/results` featured, home Gallery teaser |
+| Results | Collection | Patient testimonials | Patient Stories | `/stories`, home Stories teaser |
+| Results | Global | Hero (/results) | Results Page | `/results` |
+| Results | Global | Hero (/gallery) | Gallery Page | `/gallery` |
+| Results | Global | Hero (/stories) | Stories Page | `/stories` |
+| Journey | Collection | Journey steps | Journey Steps | `/journey` step list |
+| Journey | Collection | Recovery villas | Recovery Stays | `/recovery-stays` villa cards |
+| Journey | Global | Hero (/journey) | Journey Page | `/journey` |
+| Journey | Global | Recovery stays page | Recovery Stays Page | `/recovery-stays` |
+| Contact | Collection | Form submissions | Enquiries | admin-only view |
+| Contact | Collection | Ask The Doctor log | Analytics | admin-only view |
+| Contact | Global | Hero (/contact) | Contact Page | `/contact` |
+| Contact | Global | Enquiry section | Enquiry Section | `/contact` |
+| Contact | Global | Visit + map section | Visit Section | `/contact` |
+| Contact | Global | Form copy | Form Defaults | every form on the site |
+| Contact | Global | Outbound mail | Email Templates | clinic notify + autoresponder |
+| Contact | Global | Hero (/video-consult) | Video Consult Page | `/video-consult` |
+| About | Collection | Blog posts | Blog Posts | `/blog` index, `/blog/{slug}` detail |
+| About | Collection | Blog tags | Blog Tags | `/blog` filter chips |
+| About | Collection | Blog authors | Authors | `/blog/{slug}` byline |
+| About | Collection | Press mentions | Press Mentions | `/press` |
+| About | Collection | Awards / accreditations | Awards | `/press` awards section |
+| About | Collection | Privacy sections | Privacy Sections | `/privacy` |
+| About | Global | Hero (/blog) | Blog Page | `/blog` |
+| About | Global | Blog post template | Blog Post Template | `/blog/{slug}` |
+| About | Global | Hero (/press) | Press Page | `/press` |
+| About | Global | Hero (/privacy) | Privacy Page | `/privacy` |
+| About | Global | 404 page | Not Found Page | `/404` and unknown routes |
+| Media | Collection | Media library | Media | every image / video / PDF |
 
 ---
 
@@ -398,22 +413,6 @@ Inherits **PAGE_BASE** only. No additional fields.
 
 Group-specific fields (`audienceTier`, `brand`, `productLine`, `manufacturer`, `fdaApproved`, `bodyZone`) are conditionally shown in the admin form based on `catalogueGroup`.
 
-#### Inclusion Items  (Collection · "What's included")
-
-| Field | Type | Notes |
-|---|---|---|
-| `text` | text | inclusion line |
-| `scope` | select | which type of procedure this applies to |
-| `sortOrder` | number | |
-
-#### Exclusion Items  (Collection · "What's not")
-
-| Field | Type | Notes |
-|---|---|---|
-| `text` | text | exclusion line |
-| `scope` | select | applies to which procedure type |
-| `sortOrder` | number | |
-
 #### Treatments Page  (Global · "Hero (/treatments)")
 
 Inherits **PAGE_BASE** only.
@@ -488,26 +487,11 @@ Inherits **PAGE_BASE** only. Filter-chip + section copy on `/gallery` lives in `
 
 ---
 
-### 5.5 PRICING
+### 5.5 TREATMENTS (Pricing globals — formerly PRICING bucket)
 
-> **Note:** All line-item pricing (Surgical / Machine / Injection / BTL) lives on **Procedures** (see §5.2). Procedures is the single source of truth — editor changes any price in one place. PRICING bucket holds only the concierge tier cards + the editorial page frame + the consultation-fee callout.
+> **Note (changes08-A, 2026-05-27):** The standalone Pricing bucket was eliminated. All 9 pricing-related globals were moved to the Treatments bucket with "Pricing: " prefixes where needed to avoid collisions. The `PricingTiers` collection was removed in q5. All price data lives on **Procedures** (see §5.2).
 
-#### Pricing Tiers  (Collection · "Tier cards")
-
-Concierge packages live separately because they have a different shape (richText descriptor + inclusions[]) and don't fit the line-item hierarchy.
-
-| Field | Type | Notes |
-|---|---|---|
-| `slug` | text | unique, indexed |
-| `name` | text | tier name |
-| `descriptor` | richText | tier blurb |
-| `priceFromAud` | number | |
-| `priceFromIdr` | number | |
-| `inclusions[].value` | array → text | included items list |
-| `isFeatured` | checkbox | highlight on /pricing |
-| `sortOrder` | number | |
-
-#### Pricing Page  (Global · "Hero + Overview + Footnote + Insurance + Payment")
+#### Pricing: Page  (Global · now in Treatments · "Pricing page frame")
 
 Inherits **PAGE_BASE** and adds:
 
@@ -530,6 +514,8 @@ Inherits **PAGE_BASE** and adds:
 ---
 
 ### 5.6 JOURNEY
+
+> **Note:** Stories collection moved to Results bucket (2026-05-27). Blog Posts/Tags/Authors moved to About bucket.
 
 #### Journey Steps  (Collection)
 
@@ -616,9 +602,11 @@ Inherits **PAGE_BASE** and adds:
 | `portrait` | upload | |
 | `surgeonProfile` | relationship → Surgeons | optional link if author is also a surgeon |
 
-#### Journey Page / Stories Page / Recovery Stays Page / Blog Page  (Globals)
+#### Journey Page / Recovery Stays Page  (Globals)
 
 Each inherits **PAGE_BASE** only.
+
+> Stories Page and Blog Page have moved to Results and About buckets respectively.
 
 ---
 
@@ -685,6 +673,28 @@ Inherits **PAGE_BASE** only.
 #### Video Consult Page  (Global · "Hero (/video-consult)")
 
 Inherits **PAGE_BASE** only.
+
+---
+
+### 5.7b ABOUT (new bucket, 2026-05-27)
+
+> Contains Blog Posts/Tags/Authors, Press Mentions, Awards, and Privacy Sections — all previously scattered across Journey and Homepage buckets.
+
+#### Blog Posts / Blog Tags / Authors — see §5.6 (fields unchanged, bucket changed to About)
+
+#### Press Mentions — see §5.1 fields (bucket changed from Homepage to About)
+
+#### Awards — see §5.1 fields (bucket changed from Homepage to About)
+
+#### Privacy Sections  (Collection)
+
+| Field | Type | Notes |
+|---|---|---|
+| `slug` | text | unique, indexed |
+| `title` | text | section heading |
+| `paragraphs[].body` | array → richText | body paragraphs |
+| `listItems[].text` | array → text | optional bullet list |
+| `sortOrder` | number | |
 
 ---
 

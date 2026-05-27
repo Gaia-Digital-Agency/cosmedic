@@ -24,12 +24,12 @@ Marketing site for **BIMC CosMedic** — Bali International Medical Centre's pla
 | [docs/cms/CMS_structure.md](./docs/cms/CMS_structure.md) | **Source of truth** — locked CMS sidebar structure (buckets · entities · fields) the code aligns to |
 | [docs/cms/editor_cheatsheet.md](./docs/cms/editor_cheatsheet.md) | Clinic-editor quick reference for the CMS |
 | [docs/planning/plan.md](./docs/planning/plan.md) | Full 14-phase execution plan + locked architecture decisions + Appendix A |
-| [docs/planning/all_todo.md](./docs/planning/all_todo.md) | **Single TODO file** — DO FIRST/SECOND/THIRD shipped, Phases C/M(✅)/N(✅)/P(✅)/Q(18/19✅) tracked here |
-| [docs/changes/changerequest_21May.md](./docs/changes/changerequest_21May.md) | **Phase Q ordered tracker** — 19 q-items with per-q Notes + Commit columns (Step-6 propose-for-approval workflow) |
-| [docs/changes/change01.md](./docs/changes/change01.md) | Phase Q cluster tracker — original `changes01.docx` 27-item batch + Q-7 addendum |
-| [docs/changes/change2a.pdf](./docs/changes/change2a.pdf) | Phase Q visual addendum (28 text+image items) — uploaded 2026-05-24 |
-| [docs/changes/change_request_may25.md](./docs/changes/change_request_may25.md) | **Active CR — 41 items, 31 closed, 3 launch-blocking open** (25.3 SMTP · 25.32 visual QA · 25.38 form E2E). See also [temp.md](./temp.md) for Completed/Pending summary. |
-| [docs/changes/changes5-collections.md](./docs/changes/changes5-collections.md) | **CMS field rearrangement plan.** Phase 1 (reorders) ✅ + Phase 3 (hideHero toggles) ✅ shipped 2026-05-27. Phase 2 (D1/D2 field merges with DB migrations) pending. |
+| [docs/planning/all_todo.md](./docs/planning/all_todo.md) | **Single TODO file** — Phases M/N/P/Q(✅ 19/19) complete; CR25May 38/48 closed; R3/R5 pending |
+| [docs/changes/app_map.md](./docs/changes/app_map.md) | Admin bucket → site page mapping — complete entity list with bucket assignments |
+| [docs/db/db_info.md](./docs/db/db_info.md) | **DB reference** — main tables, column names, FK map, orphan legacy tables, common query patterns |
+| [docs/changes/changerequest_21May.md](./docs/changes/changerequest_21May.md) | Phase Q ordered tracker — 19 q-items (all shipped) |
+| [docs/changes/change_request_may25.md](./docs/changes/change_request_may25.md) | **Active CR — 48 items, 38 closed, 3 launch-blocking open** (25.3 SMTP · 25.32 visual QA · 25.38 form E2E) |
+| [docs/changes/changes5-collections.md](./docs/changes/changes5-collections.md) | CMS field rearrangement plan. Phase 1 + Phase 3 ✅ shipped. Phase 2 (DB migrations) pending. |
 | [docs/changes/changes7-db.md](./docs/changes/changes7-db.md) | DB operations reference. |
 | [docs/image_inventory.md](./docs/image_inventory.md) | **Image inventory** — every CMS image slot, media ID, filename, AI-generated/real/placeholder status. Last audited 2026-05-27. |
 | [docs/planning/phase-m-signoff.md](./docs/planning/phase-m-signoff.md) | Phase M mobile-responsive audit · sign-off (2026-05-23) |

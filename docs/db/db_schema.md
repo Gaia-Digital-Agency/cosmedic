@@ -2,14 +2,14 @@
 
 > Comprehensive Payload CMS schema. The contract for "every editorial surface on the public site is managed in the CMS." Source documents: `shared.jsx`, `pages/subcategory-data.jsx`, `docs/pricelist.xlsx`, `docs/brand-guidelines.pdf`.
 
-> **Updated 2026-05-23 — important deltas vs the original schema below:**
+> **Updated 2026-05-27 — live state:**
 >
-> - **Pages collection → 14 Page Globals** (shipped 2026-05-22 DO SECOND). The original "Pages" collection was an over-modelled list-of-singletons. Now each route has its own Payload Global, scaffolded from `packages/cms/src/globals/pages/_pageFields.ts`. See [CMS_structure.md](CMS_structure.md) §4 for the shared PAGE_BASE fields.
-> - **Pricing unification (planned Phase C9)** — `MachineTreatments`, `InjectableProducts`, `HairRemovalAreas`, and `PriceListItems` collections collapse into **Procedures** as a single source of truth. The 4 collections + their tables drop after data migration. Procedures gains `catalogueGroup` / `mainCategory` / `subCategory` / `audienceTier` / `brand` / `productLine` / `manufacturer` / `fdaApproved` / `bodyZone` fields.
-> - **Home Page + Pricing Page A2 blocks (planned C6/C7)** — `HomePage` global gains 9 dedicated block group fields (introBlock, treatmentsBlock, pricingTeaserBlock, surgeonsBlock, galleryBlock, leadMagnetBlock, journeyBlock, storiesBlock, placeBlock); `PricingPage` global gains 3 (overviewBlock, footnoteBlock, insurancePaymentBlock). Replaces hardcoded section frame copy in route components.
-> - **Blog items move to JOURNEY bucket (planned C2)** — admin.group only; no schema change.
->
-> Read [CMS_structure.md](CMS_structure.md) for the **locked sidebar bucket + entity + field reference** with the planned-state schema applied. The schema sections below describe the original target; the live schema may have drifted (e.g. some seed fields were merged/removed during Phase 6).
+> - **18 live collections**: Analytics · Authors · Awards · BeforeAfterCases · BlogPosts · BlogTags · Disciplines · Enquiries · JourneySteps · Media · PressMentions · PrivacySections · Procedures · RecoveryStays · Stories · SubCategories · Surgeons · Users.
+> - **Removed collections** (unregistered, orphan DB tables may remain): PricingTiers (q5) · InclusionItems · ExclusionItems (q19) · MachineTreatments · InjectableProducts · HairRemovalAreas (Phase 6 — merged into Procedures) · SurgicalItems · MachineItems · InjectionItems · BTLItems · ClinicCatalogueItems (changes08-B) · PriceListItems · Pages · NewsletterSubscribers · Redirects.
+> - **Procedures is the single pricing source** — holds all surgical/machine/injection/btl line items via `catalogueGroup` field.
+> - **No standalone Pricing bucket** in admin — 9 Pricing globals moved to Treatments bucket (changes08-A).
+> - **About bucket** added — Blog/Press/Privacy items moved there.
+> - Read [cms_structure.md](../cms/cms_structure.md) for the current CMS sidebar structure.
 
 ---
 

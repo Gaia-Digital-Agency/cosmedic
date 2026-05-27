@@ -4,11 +4,11 @@
 >
 > **Hard sign-off rule (set by user):** _No horizontal scroll at any width on any route. Only vertical scroll._
 >
-> **2026-05-24 status banner:** Phase Q is **18/19 shipped** (q17 deferred — Figma asset delivery). Phases M, N, P also complete. Per-q tracker (with Notes + Commit columns and the Step-6 propose-for-approval workflow) is at [changerequest_21May.md](./changerequest_21May.md). Cluster summary at [change01.md](./change01.md). Visual addendum at [change2a.pdf](./change2a.pdf).
+> **2026-05-27 status banner:** Phase Q is **19/19 shipped** (q17 Figma images delivered — `9cd808a`). Phases M, N, P complete. CR25May: 38/48 closed, 3 launch-blocking open (25.3 SMTP · 25.32 visual QA · 25.38 form E2E). changes08 shipped: 9 Pricing globals moved to Treatments bucket; 5 orphan pricing collection TS files deleted; live collections = 18. Per-q tracker at [changerequest_21May.md](./changerequest_21May.md); CR25May full tracker at [change_request_may25.md](./change_request_may25.md).
 >
-> **2026-05-24 URL-shape note:** All `/treatment-<slug>`, `/surgeon-<slug>`, `/blog-<slug>` references in the historical narrative below refer to the **pre-q11 routing shape**. Production now serves `/treatments/<slug>`, `/surgeons/<slug>`, `/blog/<slug>` (q11 — `8de7eb5`). Legacy URLs hard-404 on purpose. Historical text preserved as-written — do not retroactively rewrite slug strings; the router.ts diff in `8de7eb5` is the source of truth.
+> **2026-05-24 URL-shape note:** All `/treatment-<slug>`, `/surgeon-<slug>`, `/blog-<slug>` references in the historical narrative below refer to the **pre-q11 routing shape**. Production now serves `/treatments/<slug>`, `/surgeons/<slug>`, `/blog/<slug>` (q11 — `8de7eb5`). Sub-categories nested at `/treatments/{discipline}/{sub}` (25.15 — no standalone `surgical-face` etc.). Legacy flat URLs 301-redirect via `LEGACY_SUB_REDIRECTS` in router.ts. Historical text preserved as-written — do not retroactively rewrite slug strings.
 >
-> **2026-05-24 CMS-collection note:** `PricingTiers` (q5 — `a1601e5`) and `InclusionItems` + `ExclusionItems` (q19 — `1b35bfb`) have been removed end-to-end (collections + DB + adapters). Historical references to these below reflect pre-removal state.
+> **2026-05-24 CMS-collection note:** `PricingTiers` (q5 — `a1601e5`), `InclusionItems` + `ExclusionItems` (q19 — `1b35bfb`), and `SurgicalItems` / `MachineItems` / `InjectionItems` / `BTLItems` / `ClinicCatalogueItems` (changes08-B) have been removed end-to-end (TS files + payload.config.ts; DB tables retained as orphans). Historical references to these below reflect pre-removal state.
 
 ---
 

@@ -2,7 +2,7 @@
 
 > Every page · subpage · link · sublink · button. Source of truth for navigation IA, routing, and Pixel-Fidelity Gate sign-off (Phase 11). Keep in sync with `Header` + `Footer` Payload globals.
 >
-> **Updated 2026-05-24 (Phase Q q11):** slug structure rewritten from `/treatment-<slug>` / `/surgeon-<slug>` / `/blog-<slug>` to `/treatments/<slug>` / `/surgeons/<slug>` / `/blog/<slug>`. Flat structure (discipline + sub-category siblings under `/treatments/`, e.g. `/treatments/surgical` + `/treatments/surgical-face`). Old URLs hard-404 (no redirect layer — per user, "so we can pick up errors later"). Authoritative router: `packages/web/src/router.ts`. CMS bucket source of truth: [CMS_structure.md](CMS_structure.md).
+> **Updated 2026-05-27:** URL structure is **nested** — sub-categories live at `/treatments/{discipline}/{sub}` (e.g. `/treatments/surgical/face`). Discipline slug for Weight Loss is `weight-loss`. 28 legacy flat URLs (`/treatments/surgical-face` etc.) redirect 301 to nested equivalents. 52 confirmed live routes. Nav order: Treatments → Surgeons (label: Experts) → Results → Pricing → Journey → Contact. Authoritative router: `packages/web/src/router.ts`. CMS bucket source of truth: [cms_structure.md](../cms/cms_structure.md).
 
 ---
 
@@ -10,14 +10,12 @@
 
 | Tier | Count | Notes |
 |---|---|---|
-| Top-level pages | 15 | Home, treatments index, surgeons index, journey, gallery, stories, press, pricing, recovery-stays, contact, video-consult, funnel-assessment, blog index, blog post, privacy |
+| Top-level pages | 13 | Home, treatments index, surgeons index, results, gallery, stories, pricing, journey, recovery-stays, press, contact, blog index + 7 posts, privacy |
 | Discipline pages | 6 | One per Disciplines record |
-| Sub-category pages | 18 | One per SubCategories record |
-| Procedure pages | 41+ | One per editorial Procedures record (more may be added from pricelist) |
+| Sub-category pages | 18 | Nested under discipline: `/treatments/{discipline}/{sub}` |
+| Procedure pages | 41+ | One per editorial Procedures record |
 | Surgeon pages | 8 | One per Surgeons record |
-| Localised mirrors (`/id/*`) | ×2 | Every route above also under `/id/` |
-| **Total unique routes (EN)** | ~88 | |
-| **Total with ID** | ~176 | |
+| **Total confirmed live (EN)** | **52** | Verified 2026-05-27 |
 
 ---
 
@@ -26,12 +24,14 @@
 | Label | Route | Has mega-menu? |
 |---|---|---|
 | Treatments | `/treatments` | YES → 6 disciplines × N sub-categories |
-| Surgeons | `/surgeons` | YES → 8 surgeons grouped (Plastic Surgery / Aesthetic Medicine) |
-| Your Journey | `/journey` | no |
-| Gallery | `/gallery` | no |
-| Stories | `/stories` | no |
+| Experts | `/surgeons` | YES → 8 surgeons grouped (Plastic Surgery / Aesthetic Medicine) |
+| Results | `/results` | no |
+| Pricing | `/pricing` | no |
+| Journey | `/journey` | no |
 | Contact | `/contact` | no |
 | **EN \| ID** | (locale switcher) | — |
+
+> Note: The nav label "Experts" links to `/surgeons`. The CMS admin bucket is "Doctors". The collection slug is `surgeons`.
 
 ### Treatments mega-menu
 
@@ -59,22 +59,22 @@ Columns of `[Group] → [surgeon list]`:
 
 ## All routes (full enumeration)
 
-### Top-level (15 routes)
+### Top-level
 
 - `/`               → Homepage
 - `/treatments`     → Treatments index (6 discipline cards)
-- `/surgeons`       → Surgeons index (grouped: Plastic Surgery / Aesthetic Medicine)
-- `/journey`        → 8-step journey
-- `/gallery`        → 29 B&A cases with filters
+- `/surgeons`       → Surgeons/Experts index (grouped: Plastic Surgery / Aesthetic Medicine)
+- `/results`        → Results overview (B&A + stories)
+- `/gallery`        → B&A gallery with filters
 - `/stories`        → Patient testimonials
 - `/press`          → Editorial mentions + awards
-- `/pricing`        → Tier packages + per-treatment table + full price list
+- `/pricing`        → Full price list (IDR primary + AUD secondary)
 - `/recovery-stays` → Villa partners for post-op
+- `/journey`        → 6-step patient journey
 - `/contact`        → Enquiry form + practical info
 - `/video-consult`  → Video consultation flow
-- `/funnel-assessment` → Treatment assessment form
 - `/blog`           → Blog index
-- `/blog/:slug`     → Blog post
+- `/blog/:slug`     → Blog post (7 live: the-quiet-rhinoplasty · before-you-fly · the-villa-protocol · fillers-restraint · achsi-what-it-means · crani-bali · dental-veneers-honesty)
 - `/privacy`        → Privacy policy
 
 ### Discipline pages (6 routes)
@@ -84,22 +84,24 @@ Columns of `[Group] → [surgeon list]`:
 - `/treatments/non-surgical`
 - `/treatments/hair`
 - `/treatments/dental`
-- `/treatments/recovery` (Weight Loss — slug retained from design)
+- `/treatments/weight-loss`
 
-### Sub-category pages (17 routes)
+### Sub-category pages (18 routes)
 
-Sub-category slugs are **flat** under `/treatments/` (post-q11): the parent discipline prefix is embedded in the slug itself, not the URL path.
+Sub-categories are **nested** under their parent discipline: `/treatments/{discipline}/{sub}`.
 
-- `/treatments/surgical-face` · `/treatments/surgical-body` · `/treatments/surgical-breast`
-- `/treatments/reconstructive-breast` · `/treatments/reconstructive-trauma` · `/treatments/reconstructive-craniofacial`
-- `/treatments/non-surgical-injectables` · `/treatments/non-surgical-laser` · `/treatments/non-surgical-skin`
-- `/treatments/hair-fue` · `/treatments/hair-therapy`
-- `/treatments/dental-veneers` · `/treatments/dental-alignment` · `/treatments/dental-whitening`
-- `/treatments/weight-loss-medical` · `/treatments/weight-loss-endoscopic` · `/treatments/weight-loss-surgical`
+- `/treatments/surgical/face` · `/treatments/surgical/body` · `/treatments/surgical/breast`
+- `/treatments/reconstructive/breast` · `/treatments/reconstructive/trauma` · `/treatments/reconstructive/craniofacial`
+- `/treatments/non-surgical/injectables` · `/treatments/non-surgical/laser` · `/treatments/non-surgical/skin`
+- `/treatments/hair/fue` · `/treatments/hair/therapy`
+- `/treatments/dental/veneers` · `/treatments/dental/alignment` · `/treatments/dental/whitening`
+- `/treatments/weight-loss/glp-1` · `/treatments/weight-loss/endoscopic` · `/treatments/weight-loss/bariatric`
+
+**301 legacy redirects (28):** flat `/treatments/surgical-face` and prefixed variants redirect to nested equivalents. Not counted as live routes.
 
 ### Procedure pages (41+ routes)
 
-Under each sub-category — these are the **editorial** procedures from `pages/subcategory-data.jsx`. (Additional pricelist line items from `docs/pricelist.xlsx` live in `PriceListItems` and surface on `/pricing` but don't get their own page.)
+Editorial procedures — each gets its own detail page. Additional pricing-only line items live on Procedures with `catalogueGroup` set but no dedicated route.
 
 | Sub-category | Procedure slugs |
 |---|---|
@@ -117,9 +119,9 @@ Under each sub-category — these are the **editorial** procedures from `pages/s
 | `dental/veneers` | porcelain-veneers · composite-veneers |
 | `dental/alignment` | clear-alignment |
 | `dental/whitening` | professional-whitening · smile-design |
-| `recovery/medical` | glp1 · tirzepatide |
-| `recovery/endoscopic` | intragastric-balloon · esg |
-| `recovery/surgical` | sleeve · gastric-bypass |
+| `weight-loss/glp-1` | glp1 · tirzepatide |
+| `weight-loss/endoscopic` | intragastric-balloon · esg |
+| `weight-loss/bariatric` | sleeve · gastric-bypass |
 
 ### Surgeon pages (8 routes)
 
@@ -175,7 +177,7 @@ Every route above also available under `/id/` prefix (Phase 9).
 | Column | Items |
 |---|---|
 | **Treatments** | Links to each of 6 discipline pages |
-| **Surgeons** | Links to each of 8 surgeon pages |
+| **Experts** | Links to each of 8 surgeon pages |
 | **Information** | Journey · Gallery · Stories · Press · Pricing · Recovery Stays · Contact · Privacy |
 | **Social** | Instagram · WhatsApp · Email (icons) |
 | **Copyright** | © {year} BIMC CosMedic. Logo (white-on-dark variant). Address line. |

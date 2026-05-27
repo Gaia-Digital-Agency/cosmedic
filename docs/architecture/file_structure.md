@@ -2,7 +2,7 @@
 
 > The target end-state layout of `/var/www/cosmedic/`. This describes where everything **should** live; the current state may be partially migrated. Tracked in this document so any contributor can read the intent without inferring it from the tree.
 >
-> **Updated 2026-05-23:** post-Phase-8 the project shipped a Pages → 14 Page Globals refactor + 9-bucket admin taxonomy (`DO SECOND` in [all_todo.md](all_todo.md)). The CMS sidebar source of truth is now [CMS_structure.md](CMS_structure.md). Phase C (Q3 2026) will further fold the 4 pricing collections into Procedures (single-source pricing) — at that point `PriceListItems.ts`, `MachineTreatments.ts`, `InjectableProducts.ts`, `HairRemovalAreas.ts` files in `packages/cms/src/collections/` are deleted. Tree below kept as-is for historical reference; check the live tree for what exists today.
+> **Updated 2026-05-27:** Live state. 18 collections registered. Separate pricing collections (MachineTreatments, InjectableProducts, HairRemovalAreas, SurgicalItems, MachineItems, InjectionItems, BTLItems, ClinicCatalogueItems, PriceListItems) and legacy collections (PricingTiers, InclusionItems, ExclusionItems, Pages) have all been unregistered — Procedures is the single pricing source. No standalone Pricing bucket in admin (merged into Treatments by changes08-A). CMS sidebar source of truth: [cms_structure.md](../cms/cms_structure.md).
 
 ---
 
@@ -105,60 +105,58 @@
 │   │   ├── tsconfig.json
 │   │   ├── src/
 │   │   │   ├── server.ts            ← Payload bootstrap
-│   │   │   ├── collections/         ← see db_schema.md
-│   │   │   │   ├── Surgeons.ts
-│   │   │   │   ├── Disciplines.ts
-│   │   │   │   ├── SubCategories.ts
-│   │   │   │   ├── Procedures.ts
-│   │   │   │   ├── PriceListItems.ts
-│   │   │   │   ├── InjectableProducts.ts
-│   │   │   │   ├── MachineTreatments.ts
-│   │   │   │   ├── HairRemovalAreas.ts
-│   │   │   │   ├── BeforeAfterCases.ts
-│   │   │   │   ├── Stories.ts
-│   │   │   │   ├── PressMentions.ts
+│   │   │   ├── collections/         ← 18 live collections (see db_schema.md)
+│   │   │   │   ├── Analytics.ts     ← Ask The Doctor chat log (Contact bucket)
+│   │   │   │   ├── Authors.ts
 │   │   │   │   ├── Awards.ts
-│   │   │   │   ├── RecoveryStays.ts
-│   │   │   │   ├── PricingTiers.ts
+│   │   │   │   ├── BeforeAfterCases.ts
 │   │   │   │   ├── BlogPosts.ts
 │   │   │   │   ├── BlogTags.ts
-│   │   │   │   ├── Authors.ts
-│   │   │   │   ├── Pages.ts
-│   │   │   │   ├── JourneySteps.ts
-│   │   │   │   ├── InclusionItems.ts
-│   │   │   │   ├── ExclusionItems.ts
+│   │   │   │   ├── Disciplines.ts
 │   │   │   │   ├── Enquiries.ts
-│   │   │   │   ├── NewsletterSubscribers.ts
-│   │   │   │   ├── Redirects.ts
+│   │   │   │   ├── JourneySteps.ts
 │   │   │   │   ├── Media.ts
+│   │   │   │   ├── PressMentions.ts
+│   │   │   │   ├── PrivacySections.ts
+│   │   │   │   ├── Procedures.ts    ← single source of truth for ALL pricing
+│   │   │   │   ├── RecoveryStays.ts
+│   │   │   │   ├── Stories.ts
+│   │   │   │   ├── SubCategories.ts
+│   │   │   │   ├── Surgeons.ts
 │   │   │   │   └── Users.ts
+│   │   │   │
+│   │   │   │   ← REMOVED (orphan DB tables remain but unregistered):
+│   │   │   │     PricingTiers.ts · InclusionItems.ts · ExclusionItems.ts
+│   │   │   │     MachineTreatments.ts · InjectableProducts.ts · HairRemovalAreas.ts
+│   │   │   │     SurgicalItems.ts · MachineItems.ts · InjectionItems.ts
+│   │   │   │     BTLItems.ts · ClinicCatalogueItems.ts · PriceListItems.ts
+│   │   │   │     Pages.ts · NewsletterSubscribers.ts · Redirects.ts
+│   │   │   │
 │   │   │   ├── globals/
 │   │   │   │   ├── Settings.ts      ← AUD↔IDR, contact info, social, etc.
 │   │   │   │   ├── Header.ts        ← nav structure + mega-menus
 │   │   │   │   ├── Footer.ts        ← link columns + social + address
 │   │   │   │   ├── FloatingChrome.ts ← CTA pill + chat config
 │   │   │   │   ├── BrandStats.ts    ← 28 years / 8 surgeons / etc.
-│   │   │   │   ├── EndorsementMark.ts ← "Managed by BIMC Hospital"
-│   │   │   │   ├── ConsultationPolicy.ts ← fee + waiver
-│   │   │   │   ├── FormDefaults.ts  ← labels + placeholders + messages
+│   │   │   │   ├── EndorsementMark.ts
+│   │   │   │   ├── ConsultationPolicy.ts ← fee + waiver (group: Treatments)
+│   │   │   │   ├── FormDefaults.ts
 │   │   │   │   ├── EmailTemplates.ts
 │   │   │   │   ├── SeoDefaults.ts
-│   │   │   │   └── pages/            ← (added DO SECOND 2026-05-22) 14 Page Globals
-│   │   │   │       ├── _pageFields.ts    ← shared field factory used by all 14
-│   │   │   │       ├── HomePage.ts
-│   │   │   │       ├── PressPage.ts
-│   │   │   │       ├── PrivacyPage.ts
-│   │   │   │       ├── TreatmentsPage.ts
-│   │   │   │       ├── SurgeonsPage.ts
-│   │   │   │       ├── ResultsPage.ts
-│   │   │   │       ├── GalleryPage.ts
-│   │   │   │       ├── PricingPage.ts
-│   │   │   │       ├── JourneyPage.ts
-│   │   │   │       ├── StoriesPage.ts
-│   │   │   │       ├── RecoveryStaysPage.ts
-│   │   │   │       ├── ContactPage.ts
-│   │   │   │       ├── VideoConsultPage.ts
-│   │   │   │       └── BlogPage.ts
+│   │   │   │   ├── pages/            ← per-route Page Globals + templates
+│   │   │   │   │   ├── _pageFields.ts
+│   │   │   │   │   ├── HomePage.ts · PressPage.ts · PrivacyPage.ts
+│   │   │   │   │   ├── TreatmentsPage.ts · SurgeonsPage.ts · ResultsPage.ts
+│   │   │   │   │   ├── GalleryPage.ts · PricingPage.ts · JourneyPage.ts
+│   │   │   │   │   ├── StoriesPage.ts · RecoveryStaysPage.ts · ContactPage.ts
+│   │   │   │   │   ├── VideoConsultPage.ts · BlogPage.ts · BlogPostTemplate.ts
+│   │   │   │   │   └── NotFoundPage.ts
+│   │   │   │   ├── home/             ← 10 Home section globals
+│   │   │   │   ├── treatments/       ← Treatments + Pricing section globals
+│   │   │   │   ├── pricing/          ← Pricing globals (group: Treatments after changes08-A)
+│   │   │   │   ├── doctors/          ← Surgeons section globals
+│   │   │   │   ├── results/          ← Results section globals
+│   │   │   │   └── (ConsultationPolicy, FormDefaults, EmailTemplates at root)
 │   │   │   ├── blocks/              ← reusable content blocks for Pages
 │   │   │   │   ├── ChapterOpener.ts
 │   │   │   │   ├── RichText.ts
@@ -183,34 +181,11 @@
 │   │   │   │   └── admin-theme.css  ← brand-palette overrides for Payload admin
 │   │   │   ├── access/              ← role-based access control
 │   │   │   ├── hooks/               ← e.g. enquiry email, revalidate web cache
-│   │   │   ├── seed/                ← scripts to seed from shared.jsx + pricelist.xlsx
+│   │   │   ├── seed/                ← scripts to seed from content + pricelist.xlsx
 │   │   │   │   ├── index.ts         ← orchestrator
-│   │   │   │   ├── media.ts
-│   │   │   │   ├── surgeons.ts
-│   │   │   │   ├── disciplines.ts
-│   │   │   │   ├── subcategories.ts
-│   │   │   │   ├── procedures.ts
-│   │   │   │   ├── priceList.ts     ← parses pricelist.xlsx all sheets
-│   │   │   │   ├── injectableProducts.ts
-│   │   │   │   ├── machineTreatments.ts
-│   │   │   │   ├── hairRemoval.ts
-│   │   │   │   ├── further-information.ts
-│   │   │   │   ├── pages.ts
-│   │   │   │   ├── beforeAfter.ts
-│   │   │   │   ├── stories.ts
-│   │   │   │   ├── pressMentions.ts
-│   │   │   │   ├── awards.ts
-│   │   │   │   ├── recoveryStays.ts
-│   │   │   │   ├── pricingTiers.ts
-│   │   │   │   ├── journeySteps.ts
-│   │   │   │   ├── brand-stats.ts
-│   │   │   │   ├── endorsement-mark.ts
-│   │   │   │   ├── seo-defaults.ts
-│   │   │   │   ├── settings.ts
-│   │   │   │   ├── consultation-policy.ts
-│   │   │   │   ├── form-defaults.ts
-│   │   │   │   ├── email-templates.ts
-│   │   │   │   └── admin.ts          ← bootstrap super_admin user from env
+│   │   │   │   ├── runtime.ts       ← main runtime seed
+│   │   │   │   ├── parse-pricelist.ts ← parses pricelist.xlsx all 7 sheets
+│   │   │   │   └── admin.ts         ← bootstrap super_admin user from env
 │   │   │   └── payload-types.ts     ← auto-generated by `pnpm generate:types`
 │   │   └── public/                  ← served by Payload from /
 │   │       ├── cosmedic-mark-on-light.png

@@ -10,15 +10,15 @@
 
 ### Header — fixed top, cream surface, hairline bottom rule
 - **Logo (left)**: BIMC CosMedic lockup (bronze) → links to `/`.
-- **Primary nav (centre)**: `Treatments` · `Surgeons` · `Your Journey` · `Gallery` · `Stories` · `Contact`.
+- **Primary nav (centre)**: `Treatments` · `Experts` (links to `/surgeons`) · `Results` · `Pricing` · `Journey` · `Contact`.
   - Active route is highlighted (matches parent section when on a detail page, e.g. `/treatments/surgical/face/rhinoplasty` highlights `Treatments`).
 - **Locale switcher (right)**: `EN | ID` — toggles between English and Bahasa Indonesia mirrors, preserving the current path.
 - **Treatments mega-menu** (hover): six discipline columns (Surgical · Reconstructive · Non-surgical · Hair · Dental · Weight Loss), each listing its sub-categories. A 12 px hover bridge keeps the menu open while the cursor crosses the gap.
-- **Surgeons mega-menu** (hover): two grouped columns (Plastic Surgery · Aesthetic Medicine), each listing surgeons by name.
+- **Experts mega-menu** (hover): two grouped columns (Plastic Surgery · Aesthetic Medicine), each listing surgeons by name.
 
 ### Footer — ink-100 surface, paper text
 - White BIMC CosMedic mark.
-- Four link columns: **Treatments** (6 disciplines), **Surgeons** (8 surgeons), **Information** (Journey · Gallery · Stories · Press · Pricing · Recovery Stays · Contact · Privacy), **Connect** (Instagram · WhatsApp · Email).
+- Four link columns: **Treatments** (6 disciplines), **Experts** (8 surgeons), **Information** (Journey · Gallery · Stories · Press · Pricing · Recovery Stays · Contact · Privacy), **Connect** (Instagram · WhatsApp · Email).
 - Clinic address line + copyright.
 
 ### Floating chrome (fixed bottom-right, every page)
@@ -60,9 +60,12 @@ Per-discipline chapter page:
 - **CTABand** → `/contact`.
 
 ### `/treatments/:discipline/:subcategory` (18 routes)
+
+URL format: `/treatments/{discipline}/{sub}` (e.g. `/treatments/surgical/face`). All sub-category heroes are filled with Figma images (uploaded 2026-05-27).
+
 - ChapterOpener with deeper breadcrumb.
 - Intro + Overview.
-- **Procedures list** — clickable rows, each with name, short blurb, **PriceTag** (IDR primary + AUD italic). On hover: `READ →` slides right.
+- **Procedures list** — clickable rows, each with name, short blurb, **PriceTag** (IDR primary + AUD inline). On hover: `READ →` slides right.
 - Lead surgeon mini-card.
 - FAQs.
 - CTABand.
@@ -126,10 +129,12 @@ Each step has an icon, headline, body copy. Items sourced from the JourneySteps 
 
 ## 8. Pricing `/pricing`
 
-- **Tier packages** (PricingTiers collection) — 3–4 concierge tiers, each with name, descriptor, "from IDR / AUD" headline, inclusions list, "Begin your journey" CTA.
-- **Consultation policy banner** — sourced from ConsultationPolicy global ("IDR 150,000 — waived if treatment is booked the same day").
-- **Per-treatment table** — every PriceListItem from the xlsx, grouped by sheet (Surgical · Non-surgical · Machine · Injection · BTL), with audience tier columns (Standard / Tourist / Kitas+KTP / Package), 2025 + 2026 prices in IDR + AUD, range values for grouped procedures.
-- Search + filter chips so patients can narrow by category.
+- **Consultation policy banner** — sourced from the Consultation global ("IDR 150,000 — waived if treatment is booked the same day").
+- **Clinic Catalogue** — every Procedure with `catalogueGroup` set, grouped by Surgical / Machine / Injection / BTL. Prices display IDR primary with AUD secondary inline. No toggle — always shows both.
+- **Discipline pricing list** — summarised by discipline for a cleaner browse view.
+- Collapsible accordion sections per catalogue group.
+
+> Note: `PricingTiers` collection was removed in q5. All price data lives on the Procedures collection.
 
 ## 9. Recovery Stays `/recovery-stays`
 
@@ -210,13 +215,13 @@ Long-form policy page. Single Pages record (richtext body).
 
 # Pricing model
 
-- All amounts stored as AUD in Payload (per-procedure + per-PriceListItem records).
-- `<PriceTag>` converts to IDR at the active `Settings.audToIdrRate` (default 10500 IDR / AUD per May 2026 rate, from brand.pdf §IV).
+- All amounts stored as IDR + AUD directly on each Procedures record (`priceIdr2026` / `priceAud2026`).
+- `<PriceTag>` always shows IDR primary + AUD inline secondary — no toggle.
 - IDR rounded to nearest 50,000 (configurable via `Settings.roundIdrTo`).
-- Display rules:
-  - EN locale → IDR primary + AUD italic underneath.
-  - ID locale → IDR only.
-  - Range values ("IDR 1.4M – IDR 1.6M") supported via `priceIdrRangeLow` / `priceIdrRangeHigh`.
+- Exchange rate stored in `Settings.audToIdrRate` for display reference only.
+- Range values ("IDR 1.4M – IDR 1.6M") supported via `priceIdrRangeLow` / `priceIdrRangeHigh`.
+
+> Note: The IDR/AUD toggle that was briefly shipped in 25.13c was removed (`d409f57`). Pricing now always shows both currencies simultaneously.
 
 # Forms & email
 

@@ -39,7 +39,7 @@ Every change must respect:
 | [docs/planning/all_todo.md](docs/planning/all_todo.md) | **Single TODO file** — covers DO FIRST/SECOND/THIRD plus Phases C (CMS → CMS_structure.md alignment), M (Mobile), N (Header/Chrome/Pricing polish), P (favicon), Q (changes01.docx batch). Replaces former `cms_todo.md` and absorbs `todo.md` (since 2026-05-23). |
 | [docs/remap.md](docs/remap.md) | **Phase R — Admin↔Site IA Remap.** Target Bucket structure (9 prefixed + Users) + per-Bucket item maps. Planning ✅ User · Media · Journey · Contact · Homepage · About; ⏳ Treatments · Doctors · Results · Pricing. |
 | [docs/remap_plan.md](docs/remap_plan.md) | **Phase R implementation plan.** R0/R1/R2/R4/R6/R7/R8 ✅ shipped · R3/R5 pending. Rules 8 (universal coverage, no duplication) + 9 (full Payload capability preserved). |
-| [docs/changes/change_request_may25.md](docs/changes/change_request_may25.md) | **Active change request (CR25May).** 70-item TODO + Details. Section 1 = Rules (8 CMS + 3 Standing + 4 Operating + 8-step workflow). Read before every change. |
+| [docs/changes/change_request_may25.md](docs/changes/change_request_may25.md) | **Active change request (CR25May).** 48-item TODO + Details. Section 1 = Rules (8 CMS + 3 Standing + 4 Operating + 8-step workflow). Read before every change. |
 | [docs/assets/brand-guidelines.pdf](docs/assets/brand-guidelines.pdf) | Canonical brand source — palette, typography, mark, usage rules |
 | [docs/assets/pricelist.xlsx](docs/assets/pricelist.xlsx) | Canonical clinic price + procedure catalogue — seed source for Phase 6 |
 | [design/](design/) | Original Claude Design source — never modified, only mirrored |
@@ -70,69 +70,35 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
 - **Be supercritical + reality-grounded + 99.9999999999999% accurate.** Never overreport. Every claim of "done", every checkbox ticked, every count must reflect literal truth on disk / live site / DB. **If unsure: verify TWICE, not once** (two independent checks — e.g. grep the file AND curl the URL; query the DB AND read the page HTML). No partial-credit framing, no aspirational status, no "✅" for items where any part is blocked.
 - **Never overwrite existing CMS/DB data.** If a field/row already has a non-empty value, do NOT overwrite. Seed/migration only inserts when destination is empty (`WHERE col IS NULL OR col = ''`). Wire-up reads before write. If existing non-empty data needs to change, **ASK first** — editor content is authoritative, seed defaults are placeholders.
 
-## Current state (Phase R0/R1/R2/R4/R6/R7/R8 shipped · R3/R5 pending · Phase 8 live · CR25May 31/41 closed · 3 launch-blocking open · image audit 2026-05-27 ✅)
+## Current state (2026-05-27)
 
-- `packages/cms` — Payload 3.84.1 on Next.js 15.4.11 + Postgres adapter, port **4007**. Admin white-labelled as **Cosmedic CMS** (Cormorant Garamond + JetBrains Mono, brand-beige palette from `docs/assets/brand-guidelines.pdf`). Light theme default (q19, 2026-05-24).
-  - **18 collections** in `src/collections/` (as of 2026-05-24 — `PricingTiers` removed in q5 `a1601e5`; `InclusionItems` + `ExclusionItems` removed in q19 `1b35bfb`; orphan `Pages` collection removed (Rule 4 gate resolved 2026-05-24 — DB table `pages` retained with 8 backup rows); R8 added `PrivacySections`): Users · Media · Surgeons · Disciplines · SubCategories · Procedures · BeforeAfterCases · Stories · PressMentions · Awards · RecoveryStays · BlogPosts · BlogTags · Authors · JourneySteps · Enquiries · PrivacySections.
-  - **42 globals**: 10 in `src/globals/` (Settings · Header · Footer · FloatingChrome · BrandStats · EndorsementMark · ConsultationPolicy · FormDefaults · EmailTemplates · SeoDefaults) + **14 Page Globals** in `src/globals/pages/` (HomePage · PressPage · PrivacyPage · TreatmentsPage · SurgeonsPage · ResultsPage · GalleryPage · PricingPage · JourneyPage · StoriesPage · RecoveryStaysPage · ContactPage · VideoConsultPage · BlogPage) + **18 Section Globals** added by per-Bucket detail phases: R1 ContactHero / ContactEnquirySection / ContactVisitSection (`pages/`); R7 JourneyHero / JourneyStats (`pages/`); R8 BlogPostTemplate (`pages/`); R4 SurgeonsHero / SurgeonsLeadView / SurgeonsPlasticView / SurgeonsAestheticView / SurgeonDetailTemplate (`doctors/`); R6 PricingHero / PricingOverview / PricingFootnote / PricingInsurance / PricingPayment / PricingDisciplineListView / PricingCatalogueView (`pricing/`).
-  - **Admin taxonomy (R0 shipped 2026-05-24 `97c1e23`):** 9 Buckets matching site IA reading order. **Letter prefixes stripped in 25.18 (`59d7f36`)** — groups now read: Homepage · Treatments · Doctors · Results · Pricing · Journey · Contact · About · Media Library · + Users ungrouped. Counts post per-Bucket detail phases — Homepage (8) · Treatments (4) · Doctors (7) · Results (5) · Pricing (9) · Journey (6) · Contact (8) · About (10) · Media Library (1). Per-Bucket detail phases planned in [docs/remap.md](docs/remap.md) + [docs/remap_plan.md](docs/remap_plan.md). **Execution order**: R0 ✅ → R8 ✅ → R7 ✅ → R1 ✅ → R4 ✅ → R6 ✅ → **R5 next** → R3 → R2 (lowest-risk-first).
-  - Phase-6 seed (`src/seed/runtime.ts` + `src/seed/parse-pricelist.ts`) parses all 7 sheets of `docs/assets/pricelist.xlsx` and idempotently upserts into Payload via Local API. Run with `pnpm --filter @cosmedic/cms seed`. Seed source files are imported from `packages/web/src/content/*` via relative path (will be deleted after Phase 6c rewires every web page).
-  - Counts seeded: **149 PriceListItems**, 233 Procedures, 8 Surgeons, 6 Disciplines, 17 SubCategories, 24 MachineTreatments, 43 HairRemovalAreas, 34 InjectableProducts, 6 JourneySteps, 5 Awards, 3 PressMentions, 6 RecoveryStays, 7 BlogPosts, 10 globals. (PricingTiers / InclusionItems / ExclusionItems / Pages no longer seeded — q5, q19, Rule-4 close-out.)
-- `packages/web` — Vite 6 SSR + React 19 + Express, port **3007**. Renders the full homepage matching the Claude Design source.
-  - `design/global.css` (3,687 lines) ported **verbatim** then evolved to 3,927 lines through Phases 6–N + Phase M. **2026-05-23: split into 13 partials under `packages/web/src/styles/partials/`** (cascade order preserved line-for-line, MD5 of concat == pre-split file). `globals.css` is now a 13-line `@import` index. Edit the partial that owns the rule, not the index.
-  - Google Fonts (Cormorant Garamond + Inter + JetBrains Mono) preconnected + loaded in `index.html`.
-  - Primitives: `Btn`, `Mono`/`Eyebrow`, `Img` (painted-SVG fallback), `Reveal` (IntersectionObserver), `PriceTag` (IDR + AUD), `ChapterOpener`, `TrustBar`, `CTABandSlim`.
-  - Shell: `Header` (mega-menu hover bridge, EN|ID, scroll-state, mobile drawer) + `Footer` (3 columns + newsletter) + `FloatingChrome` (CTA pill + WhatsApp fab) + `PageShell`.
-  - Homepage (`src/routes/home/`): Hero · TrustStrip · Intro · Treatments · PricingTeaser · Surgeons · Gallery · LeadMagnet · Journey · Stories · Place.
-  - Detail templates (`src/routes/detail/`): `DisciplineDetail` (6 routes) · `SubCategoryDetail` (17 routes) · `SurgeonDetail` (8 routes).
-  - Index + content pages (`src/routes/*/`): `treatments` · `surgeons` · `results` · `gallery` · `stories` · `journey` · `pricing` · `recovery-stays` · `press` · `contact` · `video-consult` · `blog` (index + 7 posts) · `privacy` (14 routes).
-  - Total **52 live routes** + 404 for unknown paths.
-  - **URL structure (post-25.15)**: sub-categories nested at `/treatments/{discipline-slug}/{sub-slug}` (e.g. `/treatments/surgical/face`). 28 legacy flat URLs redirect via 301 (`LEGACY_SUB_REDIRECTS` in `router.ts`). Discipline slugs: `weight-loss` · `dental` · `hair` · `non-surgical` · `reconstructive` · `surgical` (note: `recovery` renamed to `weight-loss` in 25.14).
-  - SSR router (`src/router.ts`) parses `pathname` → `{kind, slug}` via static-routes map + nested treatment/surgeon/blog matchers + 301 redirect handler. Status 404 on unknown slugs. `entry-server.tsx` / `entry-client.tsx` both resolve before render so hydration matches SSR.
-  - Seed data in `src/content/seed.ts` — `TREATMENT_LIST`, `SUBCATEGORIES_BY_DISCIPLINE`, `SURGEON_LIST`, `BA_PAIRS`, `STORY_PORTRAITS`, `IMG`, `TREATMENT_IMG()`, `SURGEON_IMG()`, `WHATSAPP_HREF`.
-  - Editorial content for detail pages: `src/content/treatment-content.ts` (per-discipline) + `src/content/subcategory-data.ts` (per-sub-category, 22 entries, with `treatments[]` accordion data). Phase 6 replaces all four `src/content/*` files with Payload-backed fetch.
-  - Brand + treatment + surgeon + B&A imagery at `packages/web/public/assets/{logo*.png,treatments/,surgeons/,results/}`.
-  - **Phase 6a**: `src/lib/cms.ts` is the typed SSR-side data loader — fetches all CMS collections + globals from `http://127.0.0.1:4007/api/...` on first request, caches in-memory with 60s TTL, hydrates the client via `<script>window.__COSMEDIC_CMS__=...</script>` so SSR + hydration match. `server.ts` awaits `loadCmsCache()` before each render and threads the cache to `render(url, cms)`. Cache is bust-able via `POST /api/revalidate` — Payload `afterChange` hooks call this on every collection + global save.
-  - `/pricing` route renders a `ClinicCatalogueTable` block under the editorial pricing — full CMS-driven view of every line item from `docs/assets/pricelist.xlsx` (surgical, machine, injection, BTL), grouped by sheet → category, with consultation-policy callout from `consultation-policy` global.
-  - **Phase 6b + 6c**: Every page reads CMS data through lazy Proxy-backed shims at `src/content/*.ts` (see `src/lib/cms-proxy.ts` + `src/lib/cms-adapters.ts`) — no component rewrites needed. `lazyArray` / `lazyRecord` from `cms-proxy.ts` wrap exports so each access reifies from the current `getCmsCacheSync()` snapshot, memoized by `cmsCache.loadedAt`. Shell components (Header / Footer / FloatingChrome) wire to the corresponding globals. `<TrustStrip>` reads `brand-stats.stats`. `<Hero>` reads `pages[home]` for tagline/title/lede/heroImage. `<CmsExtraBlocks slug="..."/>` injects any clinic-edited `Pages.sections` blocks (15 block types) on Home / Journey / Contact / Privacy / Press / Gallery / Stories / VideoConsult / RecoveryStays. Payload `revalidationHooks()` (in `packages/cms/src/lib/revalidate.ts`) is spread into every collection + global so saves POST to `web /api/revalidate` and bust the cache within seconds. All 51 routes still 200 after the rewrite.
-- Postgres `cosmedic` role + db provisioned on `127.0.0.1:5432`. Phase 6 catalogue migration applied. Super-admin seeded. Content seed run.
-- pm2 manages both processes (`cosmedic-cms`, `cosmedic-web`); `pm2 save` persisted.
+**Live:** https://cosmedic.gaiada.online · DNS `34.124.244.233` · Let's Encrypt cert expires 2026-08-18 · **52 routes HTTP 200 ✅** · CR25May 38/48 closed · **3 launch-blocking open: 25.3 SMTP · 25.32 visual QA · 25.38 form E2E**
 
-- **Phase 7 enquiry pipeline**: `POST /api/enquiry` on web (Zod schema in `lib/enquiry-schema.ts` + IP rate-limit in `lib/enquiry-rate-limit.ts`: 2 req/IP/60s) creates `Enquiries` records via Payload REST. Honeypot is silent-accept-as-spam. `Enquiries.afterChange` (create only) calls `sendEnquiryEmails` → loads the `email-templates` global + resolves destination via `resolveClinicEmail()` (chain: `Settings.clinicEnquiryEmail` → `MAIL_CLINIC_TO` env → fallback) + sends clinic-notify + autoresponder via `nodemailerAdapter` in `packages/cms/src/lib/email-adapter.ts`. SMTP wiring is Path B (commit `b397c5d`, 2026-05-25): `transportOptions: { host, port, secure, auth, skipVerify: true }` — no JSON fallback. Hero quick-form on `/` + full form on `/contact` both POST to `/api/enquiry` with inline success/error states. **Pending creds**: see CR25May 25.3.
+### `packages/cms` — Payload 3.84.1, port 4007
 
-- **Phase 8**: Live at **https://cosmedic.gaiada.online** with green padlock. DNS A → `34.124.244.233`; Let's Encrypt cert at `/etc/letsencrypt/live/cosmedic.gaiada.online/` (issued 2026-05-20, expires 2026-08-18). nginx block in `/etc/nginx/sites-enabled/subdomains.gaiada.online` mirrors the VRTPN pattern — HTTP→HTTPS 301, web-owned `/api/{page-data,preview,exit-preview,revalidate,enquiry}` → `:3007`, Payload `/admin` + `/_next` + `/api` → `:4007` (25M client_max_body_size for media uploads), `/` → `:3007` (Vite SSR). Nginx backups under `/etc/nginx/backups/`. SMTP creds outstanding: see CR25May 25.3.
+- **18 live collections**: Users · Media · Surgeons · Disciplines · SubCategories · Procedures · BeforeAfterCases · Stories · PressMentions · Awards · RecoveryStays · BlogPosts · BlogTags · Authors · JourneySteps · Enquiries · PrivacySections · Analytics.
+- **~42 globals** across `src/globals/` (10 top-level) + `src/globals/pages/` (14 Page Globals + 18 Section Globals from Phase R).
+- **8 admin buckets** (no standalone Pricing bucket — changes08-A moved 9 Pricing globals to Treatments): Homepage · Treatments · Doctors · Results · Journey · Contact · About · Media Library + ungrouped Users. Full bucket map in [docs/changes/app_map.md](docs/changes/app_map.md).
+- Seed: `pnpm --filter @cosmedic/cms seed` — idempotent upsert from `docs/assets/pricelist.xlsx` + `packages/web/src/content/*`.
 
-- **CR25May status (2026-05-27): 31/41 closed · 3 launch-blocking open (25.3 SMTP, 25.32 visual QA, 25.38 form E2E)**. See [docs/changes/change_request_may25.md](docs/changes/change_request_may25.md) + [temp.md](temp.md) for full Completed/Pending breakdown.
+### `packages/web` — Vite 6 SSR + React 19 + Express, port 3007
 
-- **changes5 — CMS field rearrangement (2026-05-27)**: Phase 1 (15 TypeScript field reorders — D3/D7 compliance: Hero globals all follow breadcrumbLabel→title→lede→heroImage→imageHue→imageLabel→chapter; images moved last before seo; Settings/Header/Footer/Endorsement logos to end; BlogPosts/Authors/PressMentions/Awards images to end) + Phase 3 (3 `pageFields({ hideHero: true })` toggles on JourneyPage/ContactPage/ResultsPage) shipped. Build ✅ CMS restarted. Phase 2 (D1/D2 field merges with DB migrations) still pending. See [docs/changes/changes5-collections.md](docs/changes/changes5-collections.md).
+- **URL structure**: `/treatments/{discipline}/{sub}` (nested, e.g. `/treatments/surgical/face`). 28 legacy flat URLs 301-redirect via `LEGACY_SUB_REDIRECTS` in `router.ts`. Discipline slugs: `surgical` · `reconstructive` · `non-surgical` · `hair` · `dental` · `weight-loss`.
+- **CSS**: split into 13 partials under `packages/web/src/styles/partials/`. Edit the owning partial, not `globals.css` (13-line `@import` index).
+- **CMS data layer**: `src/lib/cms.ts` fetches all collections+globals from `http://127.0.0.1:4007/api/...`, caches 60s TTL, busted via `POST /api/revalidate` on every Payload save. Pages read via lazy Proxy shims (`cms-proxy.ts` + `cms-adapters.ts`).
+- **Enquiry pipeline**: `POST /api/enquiry` → Zod validate + IP rate-limit (2/IP/60s) → Payload Enquiries → nodemailer email. SMTP creds pending (CR25May 25.3).
+- **Pricing**: IDR primary + AUD secondary always shown inline (no toggle). All prices on `Procedures.pricing_price_idr2026`. `catalogue_group` (`surgical`/`machine`/`injection`/`btl`) drives `/pricing` table grouping.
 
-- **Key CR25May commits (2026-05-25 → 2026-05-26)**:
-  - `c9a1efe` — 25.19 brown.svg logo swap + 5-color palette enforcement.
-  - `3a87d4c` — R2 Homepage Bucket detail: 10 section globals under `globals/home/`.
-  - `2ed10ec` — 25.13c IDR/AUD toggle on treatment detail pages.
-  - `881c136` — 25.30+25.31 WhatsApp number + hospital name single-sourced from CMS Settings.
-  - `14a292f` — 25.17 PricingTeaser + PricingPage flipped to IDR-source; AUD fields removed from Procedures CMS.
-  - `a27f5b4` — 25.40+25.41 nav reorder (Treatments > Results > Doctors > Pricing > Journey > Contact) + Clinic Catalogue first on /pricing.
-  - `59d7f36` — 25.18 strip letter prefixes from all admin bucket groups.
-  - `d3178fd` / `035dbba` — 25.27+25.28+25.29 contact/privacy/not-found pages wired to CMS.
-  - `0318d16` — 25.23 Home Place image wired to CMS (HomePlace.image upload field).
-  - `6f73326` — 25.36 DB backup cron setup; fix 25.40/25.41 detail status; refresh temp.md.
+### nginx
 
-### Historical infra changes (kept for context)
+Block in `/etc/nginx/sites-enabled/subdomains.gaiada.online`: HTTP→HTTPS 301, `/api/media/file/` → disk alias, `/api/*` + `/_next/*` + `/admin*` → :4007, `/` → :3007 (25M body for uploads). Backups under `/etc/nginx/backups/`.
 
-- **nginx CMS upload fix** (`6c5299b`, 2026-05-22): `location ^~ /api/media/` → `/api/media/file/` to break a 301→308 loop that ate POST bodies. Phase-10 30d cache preserved on `/file/*`.
-- **Pages → 14 Globals refactor** (`3bc02e5`, 2026-05-22): single `Pages` collection split into 14 per-route Globals, then later expanded to 18 Section Globals via R1/R4/R6/R7/R8. Original `Pages` collection unregistered 2026-05-24; DB table retained as one-shot rollback backup.
+### Images (2026-05-27)
 
-### Image pipeline (2026-05-27)
-
-- **All 52 routes HTTP 200 ✅** (verified 2026-05-27). Real blog slugs: `the-quiet-rhinoplasty`, `before-you-fly`, `the-villa-protocol`, `fillers-restraint`, `achsi-what-it-means`, `crani-bali`, `dental-veneers-honesty`.
-- **10 page hero slots** — all unique, zero duplicates, zero placeholders. Journey + contact heroes are Vertex AI Imagen 3 generated (`journey-hero.webp` ID 94, `contact-hero.webp` ID 96).
-- **Contact visit map** (`contact-map.webp` ID 95) — AI-generated Nusa Dua coastal map illustration.
-- **`isPlaceholder` flag on IDs 73–92** — synthetic cream-coloured lifestyle PNGs from seed-upgrade-media.ts; suppressed in `mediaUrl()`. Do not unset.
-- **nginx media serving** — `/api/media/file/` served direct from disk (`alias /var/www/cosmedic/packages/cms/media/`), falling back to Payload proxy. CMS restarts never cause 404s.
-- **`?v=1` cache-bust** — appended to all CMS media URLs via `withVer()` in `cms.media.ts`. Bump to `v=2` on production migration.
-- **SubCategoryDetail heroImage** — now reads `cms.subCategories[slug].heroImage` first, falls back to `TREATMENT_IMG(parent.slug)`. 17 sub-cat slots are CMS-ready; none have images uploaded yet.
-- **Full image inventory** → `docs/image_inventory.md`.
+- All 18 sub-category hero slots filled (Figma images, commit `9cd808a`).
+- `isPlaceholder: true` on media IDs 73–92 — synthetic seed PNGs, suppressed in `mediaUrl()`. Do not unset.
+- `?v=1` cache-bust on all CMS media URLs via `withVer()`. Bump to `v=2` on migration.
+- Full inventory: [docs/image_inventory.md](docs/image_inventory.md).
 
 ### Gotchas to remember next session
 
@@ -147,9 +113,11 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
 
 ## Completed phases (full detail in docs)
 
-- **Phase M — Mobile-Responsive Sweep** ✅ 2026-05-23. Zero horizontal scroll across 46 routes × 5 widths (320/375/414/640/768). Sign-off: [docs/planning/phase-m-signoff.md](docs/planning/phase-m-signoff.md). Audit harness at `/tmp/cosmedic-audit/`.
-- **Phase N — Header / Chrome / Pricing polish** ✅ 2026-05-23. N1 `f053733`, N2 `e6f8c8b`, N3 `e90302f`.
-- **Phase Q — change-request batch** ✅ 18/19 shipped 2026-05-24 (q17 image-set deferred pending Figma access). Per-q tracker: [docs/changes/changerequest_21May.md](docs/changes/changerequest_21May.md). Companion: [docs/changes/change01.md](docs/changes/change01.md), [docs/changes/change2a.pdf](docs/changes/change2a.pdf).
+- **Phase M — Mobile-Responsive Sweep** ✅ 2026-05-23. Zero horizontal scroll across 46 routes × 5 widths. Sign-off: [docs/planning/phase-m-signoff.md](docs/planning/phase-m-signoff.md).
+- **Phase N — Header / Chrome / Pricing polish** ✅ 2026-05-23.
+- **Phase Q — change-request batch** ✅ 19/19 shipped (q17 Figma images delivered 2026-05-27, commit `9cd808a`). Per-q tracker: [docs/changes/changerequest_21May.md](docs/changes/changerequest_21May.md).
+- **Phase R (Admin IA Remap)** — R0/R1/R2/R4/R6/R7/R8 ✅ shipped · R3/R5 pending. Plan: [docs/remap_plan.md](docs/remap_plan.md).
+- **changes08** ✅ 2026-05-27 — 9 Pricing globals moved to Treatments bucket; 5 orphan pricing collection TS files deleted. Orphan DB tables retained.
 
 ## Common ops
 

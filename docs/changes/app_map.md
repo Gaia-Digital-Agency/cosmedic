@@ -1,7 +1,8 @@
 # Cosmedic — App Map
 
 > Single reference combining: web sitemap · CMS globals · CMS collections.
-> Generated 2026-05-27. Source: router.ts · changes6-globals.md · changes5-collections.md.
+> Updated 2026-05-27 (post-changes08). Source: router.ts · changes8-cmspricing.md · changes5-collections.md.
+> Key changes: No standalone Pricing bucket — 9 Pricing globals merged into Treatments. About bucket added. Analytics collection added to Contact.
 
 ---
 
@@ -67,7 +68,7 @@
 
 ---
 
-## 2. CMS Globals — 63 globals across 8 buckets
+## 2. CMS Globals — across 8 buckets (no standalone Pricing bucket)
 
 ### Shared Page Blocks (15 types — available in every `sections` field)
 
@@ -120,6 +121,15 @@
 | **Treatments** | Stats | stats |
 | **Treatments** | Discipline Template | toc, overview, chooseAFocus, procedures, faqs, related |
 | **Treatments** | Sub-Category Template | chapterSeparator, toc, takeAStep, overview, treatments, faqs |
+| **Treatments** | Pricing: Page *(moved from Pricing bucket — changes08-A)* | slug, route, title, sections, publishStatus, seo |
+| **Treatments** | Pricing: Hero | chapter, titleA, titleB, lede, heroImage, imageHue, imageLabel, breadcrumbLabel |
+| **Treatments** | Overview | eyebrow, heading, body |
+| **Treatments** | Footnote | text |
+| **Treatments** | Insurance | eyebrow, headingRoman, headingItalic, body |
+| **Treatments** | Payment | eyebrow, headingRoman, headingItalic, termsText |
+| **Treatments** | Catalogue View | sectionEyebrow, headingRoman, headingItalic, introTemplate, sheetLabels, hairZoneLabels, injectableCategoryLabels |
+| **Treatments** | Discipline List View | sectionEyebrow, onRequestLabel, includedLabel, arrowChar |
+| **Treatments** | Consultation | feeIdr, waiverConditionText, displayOn |
 | **Doctors** | Main | slug, route, title, sections, publishStatus, seo |
 | **Doctors** | Hero | breadcrumbLabel, title, lede, heroImage, imageHue, imageLabel, chapter |
 | **Doctors** | Lead View | sectionEyebrow, blockEyebrow, statLabelTrained, statLabelSpecialty, statLabelDistinction, ctaLabel |
@@ -134,15 +144,6 @@
 | **Results** | Stories | slug, route, title, sections, publishStatus, seo, breadcrumbLabel, imageLabel, imageHue |
 | **Results** | Featured Cases View | eyebrow, headingPre, headingItalic, lede, filterBarLabel, countFormat |
 | **Results** | Stories View | eyebrow, headingPre, headingItalic, lede |
-| **Pricing** | Main | slug, route, title, sections, publishStatus, seo |
-| **Pricing** | Hero | chapter, titleA, titleB, lede, heroImage, imageHue, imageLabel, breadcrumbLabel |
-| **Pricing** | Overview | eyebrow, heading, body |
-| **Pricing** | Footnote | text |
-| **Pricing** | Insurance | eyebrow, headingRoman, headingItalic, body |
-| **Pricing** | Payment | eyebrow, headingRoman, headingItalic, termsText |
-| **Pricing** | Catalogue View | sectionEyebrow, headingRoman, headingItalic, introTemplate, sheetLabels, hairZoneLabels, injectableCategoryLabels |
-| **Pricing** | Discipline List View | sectionEyebrow, onRequestLabel, includedLabel, arrowChar |
-| **Pricing** | Consultation | feeIdr, waiverConditionText, displayOn |
 | **Journey** | Main | slug, route, title, sections, publishStatus, seo |
 | **Journey** | Hero | breadcrumbLabel, title, lede, heroImage, imageHue, imageLabel, chapter |
 | **Journey** | Stats | stats |
@@ -162,7 +163,7 @@
 
 ---
 
-## 3. CMS Collections — 21 collections across 8 buckets + Users + Media
+## 3. CMS Collections — 18 live collections across 8 buckets + Users + Media
 
 | Bucket | Item | Fields |
 |---|---|---|
@@ -232,6 +233,7 @@
 | **Contact** | Form | labels, placeholders, submitLabel, successMessage, errorMessage, rateLimitMessage |
 | **Contact** | Email | templates |
 | **Contact** | Inbox | name, email, phone, country, status, assignedTo, treatmentInterest, treatmentInterestText, preferredDate, message, internalNotes, sourcePage, sourceCta, submittedAt, ip, userAgent, honeypot |
+| **Contact** | Analytics | question, answer, sessionId, createdAt |
 | **Contact** | Video Consult | slug, route, title, chapterTitle, tagline, lede, heroImage, sections, publishStatus, seo |
 | **About** | Blog | slug, route, title, sections, publishStatus, seo, thisIssueEyebrow, readTheEssayCtaLabel, archiveSection |
 | **About** | Press | slug, route, title, sections, publishStatus, seo, accreditationsSection, pressSection, pressEnquiriesCtaLabel |
