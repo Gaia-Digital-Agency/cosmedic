@@ -62,7 +62,6 @@ export const Footer: React.FC = () => {
   const addr2 = settings?.addressLine2 || 'Kawasan ITDC Blok D'
   const cityLine = `${settings?.city || 'Nusa Dua'} ${settings?.postalCode || '80363'}, ${settings?.country || 'Bali, Indonesia'}`
 
-  const brandTagline = fg?.brandTagline ?? 'Managed by BIMC Hospital'
   const footerLogoSrc = mediaUrl(fg?.logoLight, '/assets/logo-light.svg') || '/assets/logo-light.svg'
   const treatmentsHeading = fg?.treatmentsHeading ?? 'Treatments'
   const newsletterLabel = fg?.newsletter?.label ?? 'Receive our quarterly journal'
@@ -76,7 +75,6 @@ export const Footer: React.FC = () => {
           <a href="/" className="logo logo-dark" aria-label="BIMC CosMedic — home">
             <img src={footerLogoSrc} alt="BIMC CosMedic" />
           </a>
-          <p className="footer-brand-tagline">{brandTagline}</p>
           <p>
             {addr1}<br />
             {addr2}<br />
