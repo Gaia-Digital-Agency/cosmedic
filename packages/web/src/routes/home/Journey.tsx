@@ -39,7 +39,7 @@ export const Journey: React.FC = () => {
             <div className="journey-step">
               <div className="journey-num">
                 <span>{n}</span>
-                {i < STEPS.length - 1 && <span className="journey-arrow">→</span>}
+                <span className="journey-arrow">→</span>
               </div>
               <h4>{t}</h4>
               <p>{d}</p>
