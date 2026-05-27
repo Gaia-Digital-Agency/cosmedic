@@ -1,14 +1,17 @@
   /* ============================================
      RESPONSIVE — light coverage; designed for desktop
      ============================================ */
-  @media (max-width: 1100px) {
-    /* Two-cell header: logo | right-cluster (lang + CTA + burger).
-     * Per user requirement: logo + CTA + lang switcher remain visible at all
-     * widths above the narrow-viewport breakpoint below. Only the primary
-     * nav links collapse into the burger drawer. */
+  /* ── Header collapses to burger at 1480px ──────────────────────────────────
+   * At this width the logo + 6 nav items + CTA start to crowd each other.
+   * Only the three header rules move here; all content-layout changes
+   * (hero, grids, footer) remain at the ≤1100px breakpoint below. */
+  @media (max-width: 1480px) {
     .header-inner { grid-template-columns: auto 1fr; }
     .primary-nav { display: none; }
     .burger-btn { display: flex !important; }
+  }
+
+  @media (max-width: 1100px) {
     .hero { grid-template-columns: 1fr; }
     .hero-image { min-height: 60vh; }
     .intro-grid, .treatments-head, .surgeons-feature, .place-grid, .cta-grid { grid-template-columns: 1fr; gap: 40px; }

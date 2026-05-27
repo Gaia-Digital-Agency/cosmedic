@@ -17,7 +17,7 @@
 /* --- Mega-menu dropdown --- */
 .has-dropdown { position: relative; display: inline-flex; align-items: center; }
 
-/* Burger button — hidden on desktop, shown ≤1100px */
+/* Burger button — hidden on desktop, shown ≤1480px */
 .burger-btn {
   display: none;
   flex-direction: column;
