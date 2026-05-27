@@ -53,8 +53,10 @@
     line-height: 1.6;
   }
 
-  html, body { overflow-x: hidden; }
-  html { overflow-x: clip; }
+  /* overflow-x: clip (not hidden) — clip does not create a scroll container,
+     so position:sticky on .detail-toc / .surgeon-bio-aside works correctly.
+     overflow-x: hidden on body silently breaks all sticky descendants. */
+  html, body { overflow-x: clip; }
 
   img { display: block; max-width: 100%; }
 
