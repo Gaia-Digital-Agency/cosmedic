@@ -14,7 +14,7 @@ export const BlogPage: GlobalConfig = {
   access: { read: publishedOrAuthed, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    ...pageFields(),
+    ...pageFields({ hideHero: true }),
     {
       name: 'thisIssueEyebrow',
       type: 'text',

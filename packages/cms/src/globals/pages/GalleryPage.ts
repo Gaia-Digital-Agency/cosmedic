@@ -9,12 +9,12 @@ export const GalleryPage: GlobalConfig = {
   admin: {
     group: 'Results',
     description:
-      'Whole /gallery editorial: hero + filter-bar chrome + the shared Library-Cta block at the bottom (edited in c. Library-Cta — same Bucket — single source of truth across /results + /gallery). The before/after card grid is rendered from **g. Before-After-Cases**. Use the chapterTitle / tagline / lede / heroImage fields for the ChapterOpener; the imageHue / imageLabel / breadcrumbLabel / filterBarLabel / countFormat fields below complete the hero + filter chrome.',
+      'Chrome fields for /gallery: filter-bar labels + the shared Library-Cta block at the bottom (edited in c. Library-Cta). The before/after card grid is rendered from **g. Before-After-Cases**. Hero title is hardcoded; edit imageHue / imageLabel / breadcrumbLabel / filterBarLabel / countFormat here.',
   },
   access: { read: publishedOrAuthed, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    ...pageFields(),
+    ...pageFields({ hideHero: true }),
     { name: 'imageHue', type: 'number', min: 0, max: 6, defaultValue: 1,
       admin: { description: 'Painted-SVG fallback hue when no hero image is uploaded (0–6).' } },
     { name: 'imageLabel', type: 'text', defaultValue: 'GALLERY',

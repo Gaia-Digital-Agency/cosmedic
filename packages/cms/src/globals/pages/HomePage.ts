@@ -14,6 +14,6 @@ export const HomePage: GlobalConfig = {
   access: { read: publishedOrAuthed, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    ...pageFields(),
+    ...pageFields({ hideHero: true }),
   ],
 }

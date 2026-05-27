@@ -14,7 +14,7 @@ export const PressPage: GlobalConfig = {
   access: { read: publishedOrAuthed, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    ...pageFields(),
+    ...pageFields({ hideHero: true }),
     {
       name: 'accreditationsSection',
       type: 'group',

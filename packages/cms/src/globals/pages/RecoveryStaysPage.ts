@@ -15,7 +15,7 @@ export const RecoveryStaysPage: GlobalConfig = {
   access: { read: publishedOrAuthed, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    ...pageFields(),
+    ...pageFields({ hideHero: true }),
     {
       name: 'hero',
       type: 'group',

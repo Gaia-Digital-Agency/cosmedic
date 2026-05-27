@@ -9,12 +9,12 @@ export const StoriesPage: GlobalConfig = {
   admin: {
     group: 'Results',
     description:
-      'Whole /stories editorial: hero + the shared Share-Cta block at the bottom (edited in d. Share-Cta — same Bucket — single source of truth across /results + /stories). The patient-quote rows are rendered from **h. Patient-Stories**. Use the chapterTitle / tagline / lede / heroImage fields for the ChapterOpener; the imageHue / imageLabel / breadcrumbLabel fields below complete the hero chrome.',
+      'Chrome fields for /stories: hero image labels + the shared Share-Cta block at the bottom (edited in d. Share-Cta). Patient-quote rows come from **h. Patient-Stories**. Hero title is hardcoded; edit imageHue / imageLabel / breadcrumbLabel here.',
   },
   access: { read: publishedOrAuthed, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    ...pageFields(),
+    ...pageFields({ hideHero: true }),
     { name: 'imageHue', type: 'number', min: 0, max: 6, defaultValue: 5,
       admin: { description: 'Painted-SVG fallback hue when no hero image is uploaded (0–6).' } },
     { name: 'imageLabel', type: 'text', defaultValue: 'STORIES',

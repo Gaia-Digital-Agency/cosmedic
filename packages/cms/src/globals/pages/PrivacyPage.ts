@@ -14,7 +14,7 @@ export const PrivacyPage: GlobalConfig = {
   access: { read: publishedOrAuthed, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    ...pageFields(),
+    ...pageFields({ hideHero: true }),
     {
       name: 'lastUpdatedDate',
       type: 'text',
