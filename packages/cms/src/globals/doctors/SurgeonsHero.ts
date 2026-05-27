@@ -15,8 +15,8 @@ export const SurgeonsHero: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     apiWarningField,
-    { name: 'chapter', type: 'text', required: true,
-      admin: { description: 'Eyebrow above the title, e.g. "Chapter III — The Practitioners".' } },
+    { name: 'breadcrumbLabel', type: 'text', defaultValue: 'Surgeons',
+      admin: { description: 'Last segment in the breadcrumb trail. e.g. "Surgeons".' } },
     { name: 'titleA', type: 'text', required: true,
       admin: { description: 'First line of the two-line headline, roman. e.g. "Hands you".' } },
     { name: 'titleB', type: 'text', required: true,
@@ -29,7 +29,7 @@ export const SurgeonsHero: GlobalConfig = {
       admin: { description: 'Brand-palette colour token (0–5) used as the placeholder gradient when the image fails to load.' } },
     { name: 'imageLabel', type: 'text',
       admin: { description: 'Caption shown on the image card (uppercase mono), e.g. "THE PRACTITIONERS".' } },
-    { name: 'breadcrumbLabel', type: 'text', defaultValue: 'Surgeons',
-      admin: { description: 'Last segment in the breadcrumb trail. e.g. "Surgeons".' } },
+    { name: 'chapter', type: 'text', required: true,
+      admin: { description: 'Eyebrow above the title, e.g. "Chapter III — The Practitioners".' } },
   ],
 }

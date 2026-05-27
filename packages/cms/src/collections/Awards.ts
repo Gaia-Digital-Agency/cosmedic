@@ -26,9 +26,9 @@ export const Awards: CollectionConfig = {
     { name: 'name', type: 'text', required: true },
     { name: 'year', type: 'number' },
     { name: 'issuer', type: 'text' },
-    { name: 'logo', type: 'upload', relationTo: 'media',
-      admin: { description: 'Award badge or accreditation logo shown in the awards strip on /press (e.g. ACHSI seal, ISAPS badge). PNG with transparent background preferred.' } },
     { name: 'summary', type: 'textarea' },
     sortOrderField,
+    { name: 'logo', type: 'upload', relationTo: 'media',
+      admin: { description: 'Award badge or accreditation logo shown in the awards strip on /press (e.g. ACHSI seal, ISAPS badge). PNG with transparent background preferred.' } },
   ],
 }

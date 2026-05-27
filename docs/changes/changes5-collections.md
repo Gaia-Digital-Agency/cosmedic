@@ -165,21 +165,21 @@ Already done: `SurgeonsPage.ts`, `PricingPage.ts`.
 ## TODO
 
 ### Phase 1 — Reorders
-- [ ] Doctors | Hero — reorder fields to standard Hero order
-- [ ] Doctors | Surgeons — move portrait, portraitPosition before seo; seo before hue
-- [ ] Doctors | Detail Template — reorder by group (breadcrumb → hero → stat → sidebar → fallbacks → faculty → specialty → training → bio)
-- [ ] Journey | Hero — reorder to standard Hero order
-- [ ] Contact | Hero — reorder to standard Hero order
-- [ ] Results | Hero — reorder to standard Hero order
-- [ ] Homepage | Hero — reorder (breadcrumbLabel first, heroImage last)
-- [ ] Homepage | Settings — move defaultOgImage, defaultMetaDescription to end
-- [ ] Homepage | Header — move logoLight, logoDark to end
-- [ ] Homepage | Footer — move logoLight to end
-- [ ] Homepage | Endorsement — move primaryLockup, inverseLockup to end
-- [ ] About | Blog Posts — move heroImage before seo
-- [ ] About | Authors — move portrait to end
-- [ ] About | Press Mentions — move logo to end
-- [ ] About | Awards — move logo to end
+- [x] Doctors | Hero — reorder fields to standard Hero order
+- [x] Doctors | Surgeons — move portrait, portraitPosition before seo; seo before hue
+- [x] Doctors | Detail Template — reorder by group (breadcrumb → hero → stat → sidebar → fallbacks → faculty → specialty → training → bio)
+- [x] Journey | Hero — reorder to standard Hero order
+- [x] Contact | Hero — reorder to standard Hero order
+- [x] Results | Hero — reorder to standard Hero order
+- [x] Homepage | Hero — reorder (breadcrumbLabel first, heroImage last)
+- [x] Homepage | Settings — move defaultOgImage, defaultMetaDescription to end
+- [x] Homepage | Header — move logoLight, logoDark to end
+- [x] Homepage | Footer — move logoLight to end
+- [x] Homepage | Endorsement — move primaryLockup, inverseLockup to end
+- [x] About | Blog Posts — move heroImage before seo
+- [x] About | Authors — move portrait to end
+- [x] About | Press Mentions — move logo to end
+- [x] About | Awards — move logo to end
 
 ### Phase 2 — Merges
 - [ ] Surgeons.ts — rename field title → designation + DB migration
@@ -200,9 +200,9 @@ Already done: `SurgeonsPage.ts`, `PricingPage.ts`.
 - [ ] Web adapters — update all .titleA/.titleB and .headingA/.headingB references in cms-adapters.ts after each merge
 
 ### Phase 3 — Config toggles
-- [ ] JourneyPage.ts — add hideHero: true
-- [ ] ContactPage.ts — add hideHero: true
-- [ ] ResultsPage.ts — add hideHero: true
+- [x] JourneyPage.ts — add hideHero: true
+- [x] ContactPage.ts — add hideHero: true
+- [x] ResultsPage.ts — add hideHero: true
 
 ---
 

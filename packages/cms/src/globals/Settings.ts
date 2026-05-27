@@ -18,10 +18,6 @@ export const Settings: GlobalConfig = {
       admin: { description: 'Used in <title> tags, OG meta, footer copyright, header logo alt-text. Visible on every page.' } },
     { name: 'siteTagline', type: 'text',
       admin: { description: 'Short tagline used in SEO meta + share previews. Not currently rendered on-screen.' } },
-    { name: 'defaultOgImage', type: 'upload', relationTo: 'media',
-      admin: { description: 'Fallback Open Graph image for social-share previews when a page record has no OG image of its own.' } },
-    { name: 'defaultMetaDescription', type: 'textarea',
-      admin: { description: 'Fallback SEO description used when a page record has no description of its own.' } },
     { name: 'audToIdrRate', type: 'number', defaultValue: 12800,
       admin: { description: 'AUD → IDR conversion rate. SINGLE SOURCE: editing this re-pegs every AUD figure across the entire site (home pricing teaser, /pricing tables, every procedure card, consultation fee). Live default = 12,800 (May 2026). Locale-driven display: EN shows IDR + ≈ AUD; ID shows IDR only.' } },
     { name: 'roundIdrTo', type: 'number', defaultValue: 50000,
@@ -75,5 +71,9 @@ export const Settings: GlobalConfig = {
     // currencyDisplayMode removed 25.17 — was dead code; PriceTag switches on
     // locale (EN = IDR + AUD, ID = IDR only). The selector below was never
     // read by any consumer.
+    { name: 'defaultOgImage', type: 'upload', relationTo: 'media',
+      admin: { description: 'Fallback Open Graph image for social-share previews when a page record has no OG image of its own.' } },
+    { name: 'defaultMetaDescription', type: 'textarea',
+      admin: { description: 'Fallback SEO description used when a page record has no description of its own.' } },
   ],
 }

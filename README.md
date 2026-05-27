@@ -29,6 +29,8 @@ Marketing site for **BIMC CosMedic** — Bali International Medical Centre's pla
 | [docs/changes/change01.md](./docs/changes/change01.md) | Phase Q cluster tracker — original `changes01.docx` 27-item batch + Q-7 addendum |
 | [docs/changes/change2a.pdf](./docs/changes/change2a.pdf) | Phase Q visual addendum (28 text+image items) — uploaded 2026-05-24 |
 | [docs/changes/change_request_may25.md](./docs/changes/change_request_may25.md) | **Active CR — 41 items, 31 closed, 3 launch-blocking open** (25.3 SMTP · 25.32 visual QA · 25.38 form E2E). See also [temp.md](./temp.md) for Completed/Pending summary. |
+| [docs/changes/changes5-collections.md](./docs/changes/changes5-collections.md) | **CMS field rearrangement plan.** Phase 1 (reorders) ✅ + Phase 3 (hideHero toggles) ✅ shipped 2026-05-27. Phase 2 (D1/D2 field merges with DB migrations) pending. |
+| [docs/changes/changes7-db.md](./docs/changes/changes7-db.md) | DB operations reference. |
 | [docs/planning/phase-m-signoff.md](./docs/planning/phase-m-signoff.md) | Phase M mobile-responsive audit · sign-off (2026-05-23) |
 | [docs/planning/commit_list.md](./docs/planning/commit_list.md) | Commit-level tracker for the Phases D/C/P/N/Q/M work plan |
 | [docs/assets/brand-guidelines.pdf](./docs/assets/brand-guidelines.pdf) | BIMC CosMedic Brand Guidelines v1.0 (canonical brand source) |

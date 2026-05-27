@@ -24,9 +24,9 @@ export const Authors: CollectionConfig = {
     { name: 'name', type: 'text', required: true },
     { name: 'role', type: 'text' },
     { name: 'bio', type: 'richText' },
-    { name: 'portrait', type: 'upload', relationTo: 'media',
-      admin: { description: 'Author headshot shown in the blog post byline and "About the author" callout at the bottom of /blog/{slug}. Square crop, minimum 200×200px.' } },
     { name: 'surgeonProfile', type: 'relationship', relationTo: 'surgeons',
       admin: { description: 'If author is one of the clinic surgeons' } },
+    { name: 'portrait', type: 'upload', relationTo: 'media',
+      admin: { description: 'Author headshot shown in the blog post byline and "About the author" callout at the bottom of /blog/{slug}. Square crop, minimum 200×200px.' } },
   ],
 }

@@ -15,8 +15,8 @@ export const ResultsHero: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     apiWarningField,
-    { name: 'chapter', type: 'text', defaultValue: 'Chapter IV — Results & Stories',
-      admin: { description: 'Small-caps eyebrow above the hero title.' } },
+    { name: 'breadcrumbLabel', type: 'text', defaultValue: 'Results & Stories',
+      admin: { description: 'Last segment in the breadcrumb trail.' } },
     { name: 'titleA', type: 'text', defaultValue: 'Quietly',
       admin: { description: 'First line of the two-line headline (roman).' } },
     { name: 'titleB', type: 'text', defaultValue: 'transformative.',
@@ -31,7 +31,7 @@ export const ResultsHero: GlobalConfig = {
       admin: { description: 'Painted-SVG fallback hue when no image is uploaded (0–6).' } },
     { name: 'imageLabel', type: 'text', defaultValue: 'RESULTS & STORIES',
       admin: { description: 'Caption shown over the painted-SVG fallback / image card.' } },
-    { name: 'breadcrumbLabel', type: 'text', defaultValue: 'Results & Stories',
-      admin: { description: 'Last segment in the breadcrumb trail.' } },
+    { name: 'chapter', type: 'text', defaultValue: 'Chapter IV — Results & Stories',
+      admin: { description: 'Small-caps eyebrow above the hero title.' } },
   ],
 }

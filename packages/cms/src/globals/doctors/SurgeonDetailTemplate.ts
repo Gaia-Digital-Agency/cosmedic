@@ -31,6 +31,12 @@ export const SurgeonDetailTemplate: GlobalConfig = {
   fields: [
     apiWarningField,
 
+    // ─── Breadcrumb ──────────────────────────────────────────────────────
+    { name: 'breadcrumbHomeLabel', type: 'text', required: true, defaultValue: 'BIMC CosMedic',
+      admin: { description: 'First crumb in the breadcrumb trail. Links to /.' } },
+    { name: 'breadcrumbSurgeonsLabel', type: 'text', required: true, defaultValue: 'Surgeons',
+      admin: { description: 'Second crumb. Links to /surgeons.' } },
+
     // ─── Hero ────────────────────────────────────────────────────────────
     { name: 'heroLeadLabel', type: 'text', required: true, defaultValue: 'Lead Surgeon',
       admin: { description: 'Eyebrow shown on the detail page when the surgeon\'s "lead" flag is TRUE.' } },
@@ -66,12 +72,6 @@ export const SurgeonDetailTemplate: GlobalConfig = {
     { name: 'heroCtaTreatmentsLabelFallback', type: 'text', required: true, defaultValue: 'Treatments',
       admin: { description: 'Fallback button label when the surgeon\'s discipline cannot be resolved. Rendered as the literal text, no template substitution.' } },
 
-    // ─── Breadcrumb ──────────────────────────────────────────────────────
-    { name: 'breadcrumbHomeLabel', type: 'text', required: true, defaultValue: 'BIMC CosMedic',
-      admin: { description: 'First crumb in the breadcrumb trail. Links to /.' } },
-    { name: 'breadcrumbSurgeonsLabel', type: 'text', required: true, defaultValue: 'Surgeons',
-      admin: { description: 'Second crumb. Links to /surgeons.' } },
-
     // ─── Stats row ───────────────────────────────────────────────────────
     { name: 'statLabelYears', type: 'text', required: true, defaultValue: 'Years in practice',
       admin: { description: 'Label under the first stat (yearsInPractice from the surgeon record).' } },
@@ -81,8 +81,6 @@ export const SurgeonDetailTemplate: GlobalConfig = {
       admin: { description: 'Label under the third stat (first specialty area from the surgeon record).' } },
 
     // ─── Biography sidebar ───────────────────────────────────────────────
-    { name: 'biographyEyebrow', type: 'text', required: true, defaultValue: 'Biography',
-      admin: { description: 'Eyebrow above the biography sidebar.' } },
     { name: 'sidebarLabelSpecialism', type: 'text', required: true, defaultValue: 'Specialism',
       admin: { description: 'Sidebar definition-list label for the doctor\'s specialism / group.' } },
     { name: 'sidebarLabelCredentials', type: 'text', required: true, defaultValue: 'Credentials',
@@ -96,12 +94,21 @@ export const SurgeonDetailTemplate: GlobalConfig = {
     { name: 'availabilityFallback', type: 'text', required: true, defaultValue: 'Mon & Thu in person · weekday mornings by video',
       admin: { description: 'Fallback rendered when the surgeon record has no `availabilitySchedule` rows.' } },
 
-    // ─── Biography body ──────────────────────────────────────────────────
-    { name: 'secondaryBioParagraph', type: 'textarea', required: true,
-      admin: {
-        description:
-          'Second paragraph of the bio body, shown after the per-surgeon `bio`. Templated — use {title} and {common} for the doctor\'s honorific and first name. Default: \'Patients often describe {title} {common} as quiet, deeply patient, and frank — comfortable with saying "no" when "yes" would be the easier answer. We hold this very highly.\'',
-      },
+    // ─── Faculty section ─────────────────────────────────────────────────
+    { name: 'facultyEyebrow', type: 'text', required: true, defaultValue: 'The faculty',
+      admin: { description: 'Eyebrow above the "Meet the other practitioners" card grid.' } },
+    {
+      name: 'facultyHeading',
+      type: 'group',
+      admin: { description: '"Meet the other practitioners." heading — split into 3 parts so the italic mid-sentence renders correctly.' },
+      fields: [
+        { name: 'pre', type: 'text', required: true, defaultValue: 'Meet the ',
+          admin: { description: 'Roman prefix before the italic. Default "Meet the ". Include trailing space.' } },
+        { name: 'italic', type: 'text', required: true, defaultValue: 'other practitioners.',
+          admin: { description: 'The italic phrase. Default "other practitioners.".' } },
+        { name: 'post', type: 'text', defaultValue: '',
+          admin: { description: 'Roman suffix after the italic, if any. Default empty.' } },
+      ],
     },
 
     // ─── Specialty areas ─────────────────────────────────────────────────
@@ -150,21 +157,14 @@ export const SurgeonDetailTemplate: GlobalConfig = {
       },
     },
 
-    // ─── Faculty section ─────────────────────────────────────────────────
-    { name: 'facultyEyebrow', type: 'text', required: true, defaultValue: 'The faculty',
-      admin: { description: 'Eyebrow above the "Meet the other practitioners" card grid.' } },
-    {
-      name: 'facultyHeading',
-      type: 'group',
-      admin: { description: '"Meet the other practitioners." heading — split into 3 parts so the italic mid-sentence renders correctly.' },
-      fields: [
-        { name: 'pre', type: 'text', required: true, defaultValue: 'Meet the ',
-          admin: { description: 'Roman prefix before the italic. Default "Meet the ". Include trailing space.' } },
-        { name: 'italic', type: 'text', required: true, defaultValue: 'other practitioners.',
-          admin: { description: 'The italic phrase. Default "other practitioners.".' } },
-        { name: 'post', type: 'text', defaultValue: '',
-          admin: { description: 'Roman suffix after the italic, if any. Default empty.' } },
-      ],
+    // ─── Biography orphan singles ────────────────────────────────────────
+    { name: 'biographyEyebrow', type: 'text', required: true, defaultValue: 'Biography',
+      admin: { description: 'Eyebrow above the biography sidebar.' } },
+    { name: 'secondaryBioParagraph', type: 'textarea', required: true,
+      admin: {
+        description:
+          'Second paragraph of the bio body, shown after the per-surgeon `bio`. Templated — use {title} and {common} for the doctor\'s honorific and first name. Default: \'Patients often describe {title} {common} as quiet, deeply patient, and frank — comfortable with saying "no" when "yes" would be the easier answer. We hold this very highly.\'',
+      },
     },
   ],
 }

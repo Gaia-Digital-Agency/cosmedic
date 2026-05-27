@@ -16,9 +16,10 @@ export const JourneyHero: GlobalConfig = {
   fields: [
     apiWarningField,
     {
-      name: 'chapter',
+      name: 'breadcrumbLabel',
       type: 'text',
-      admin: { description: 'Chapter eyebrow above the title, e.g. "Chapter V — Your Journey".' },
+      defaultValue: 'Your Journey',
+      admin: { description: 'Label shown for /journey in the breadcrumb trail.' },
     },
     {
       name: 'title',
@@ -52,10 +53,9 @@ export const JourneyHero: GlobalConfig = {
       admin: { description: 'Tiny mono label shown on the hero image card.' },
     },
     {
-      name: 'breadcrumbLabel',
+      name: 'chapter',
       type: 'text',
-      defaultValue: 'Your Journey',
-      admin: { description: 'Label shown for /journey in the breadcrumb trail.' },
+      admin: { description: 'Chapter eyebrow above the title, e.g. "Chapter V — Your Journey".' },
     },
   ],
 }

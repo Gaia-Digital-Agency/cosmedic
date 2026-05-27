@@ -14,10 +14,6 @@ export const Header: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     apiWarningField,
-    { name: 'logoLight', type: 'upload', relationTo: 'media',
-      admin: { description: 'Top-left logo on every page (default state: light/cream background). Recommended ~56px tall PNG with transparent background.' } },
-    { name: 'logoDark', type: 'upload', relationTo: 'media',
-      admin: { description: 'Top-left logo when header scrolls past the hero into dark sections. Auto-swaps with Logo Light via CSS.' } },
     {
       name: 'navItems',
       type: 'array',
@@ -59,5 +55,9 @@ export const Header: GlobalConfig = {
           admin: { description: 'Text shown on the Indonesian pill (default "ID").' } },
       ],
     },
+    { name: 'logoLight', type: 'upload', relationTo: 'media',
+      admin: { description: 'Top-left logo on every page (default state: light/cream background). Recommended ~56px tall PNG with transparent background.' } },
+    { name: 'logoDark', type: 'upload', relationTo: 'media',
+      admin: { description: 'Top-left logo when header scrolls past the hero into dark sections. Auto-swaps with Logo Light via CSS.' } },
   ],
 }

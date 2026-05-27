@@ -14,8 +14,6 @@ export const Footer: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     apiWarningField,
-    { name: 'logoLight', type: 'upload', relationTo: 'media',
-      admin: { description: 'Logo in the footer brand column on every page. White-on-dark variant — typically the inverse of the header logo.' } },
     { name: 'brandTagline', type: 'text',
       defaultValue: 'Managed by BIMC Hospital',
       admin: { description: 'Mono-small-caps line under the footer logo. Editorial reinforcement of the "Managed by BIMC Hospital" endorsement; matches the header logo alt text.' } },
@@ -77,5 +75,7 @@ export const Footer: GlobalConfig = {
     { name: 'copyrightTemplate', type: 'text',
       defaultValue: '© {year} BIMC CosMedic Centre',
       admin: { description: 'DEPRECATED — kept for backwards-compat. Use footerBottomLines[0] instead (the first bottom line is now the copyright with `{year}` substitution). This field still works as a fallback if footerBottomLines is empty.' } },
+    { name: 'logoLight', type: 'upload', relationTo: 'media',
+      admin: { description: 'Logo in the footer brand column on every page. White-on-dark variant — typically the inverse of the header logo.' } },
   ],
 }

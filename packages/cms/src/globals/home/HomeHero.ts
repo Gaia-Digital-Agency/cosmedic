@@ -15,6 +15,8 @@ export const HomeHero: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     apiWarningField,
+    { name: 'breadcrumbLabel', type: 'text', defaultValue: 'Home',
+      admin: { description: 'Last segment in the breadcrumb trail (reserved — / does not currently render a breadcrumb).' } },
     { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'A sanctuary in Nusa Dua · Est. 1998',
       admin: { description: 'Small-caps eyebrow above the hero title.' } },
     { name: 'titleA', type: 'text', defaultValue: 'Plastic surgery',
@@ -25,10 +27,6 @@ export const HomeHero: GlobalConfig = {
       defaultValue:
         "Performed inside Indonesia's first ACHSI-accredited international hospital, with private villa recovery and twelve months of telehealth follow-up included. Procedures from Rp 18,900,000 (≈ AUD 1,800).",
       admin: { description: 'Intro paragraph beneath the title.' } },
-    { name: 'heroImage', type: 'upload', relationTo: 'media',
-      admin: { description: 'Hero background image. If unset, the vignette + dark background carry the section.' } },
-    { name: 'breadcrumbLabel', type: 'text', defaultValue: 'Home',
-      admin: { description: 'Last segment in the breadcrumb trail (reserved — / does not currently render a breadcrumb).' } },
     { name: 'primaryCtaLabel', type: 'text', defaultValue: 'Plan Your Treatment',
       admin: { description: 'Filled-pill CTA beneath the headline.' } },
     { name: 'secondaryCtaLabel', type: 'text', defaultValue: 'View Pricing',
@@ -63,5 +61,7 @@ export const HomeHero: GlobalConfig = {
           defaultValue: 'Held in confidence. Reviewed by a credentialed surgeon.' },
       ],
     },
+    { name: 'heroImage', type: 'upload', relationTo: 'media',
+      admin: { description: 'Hero background image. If unset, the vignette + dark background carry the section.' } },
   ],
 }

@@ -102,7 +102,9 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
 
 - **Phase 8**: Live at **https://cosmedic.gaiada.online** with green padlock. DNS A → `34.124.244.233`; Let's Encrypt cert at `/etc/letsencrypt/live/cosmedic.gaiada.online/` (issued 2026-05-20, expires 2026-08-18). nginx block in `/etc/nginx/sites-enabled/subdomains.gaiada.online` mirrors the VRTPN pattern — HTTP→HTTPS 301, web-owned `/api/{page-data,preview,exit-preview,revalidate,enquiry}` → `:3007`, Payload `/admin` + `/_next` + `/api` → `:4007` (25M client_max_body_size for media uploads), `/` → `:3007` (Vite SSR). Nginx backups under `/etc/nginx/backups/`. SMTP creds outstanding: see CR25May 25.3.
 
-- **CR25May status (2026-05-26): 31/41 closed · 3 launch-blocking open (25.3 SMTP, 25.32 visual QA, 25.38 form E2E)**. See [docs/changes/change_request_may25.md](docs/changes/change_request_may25.md) + [temp.md](temp.md) for full Completed/Pending breakdown.
+- **CR25May status (2026-05-27): 31/41 closed · 3 launch-blocking open (25.3 SMTP, 25.32 visual QA, 25.38 form E2E)**. See [docs/changes/change_request_may25.md](docs/changes/change_request_may25.md) + [temp.md](temp.md) for full Completed/Pending breakdown.
+
+- **changes5 — CMS field rearrangement (2026-05-27)**: Phase 1 (15 TypeScript field reorders — D3/D7 compliance: Hero globals all follow breadcrumbLabel→title→lede→heroImage→imageHue→imageLabel→chapter; images moved last before seo; Settings/Header/Footer/Endorsement logos to end; BlogPosts/Authors/PressMentions/Awards images to end) + Phase 3 (3 `pageFields({ hideHero: true })` toggles on JourneyPage/ContactPage/ResultsPage) shipped. Build ✅ CMS restarted. Phase 2 (D1/D2 field merges with DB migrations) still pending. See [docs/changes/changes5-collections.md](docs/changes/changes5-collections.md).
 
 - **Key CR25May commits (2026-05-25 → 2026-05-26)**:
   - `c9a1efe` — 25.19 brown.svg logo swap + 5-color palette enforcement.

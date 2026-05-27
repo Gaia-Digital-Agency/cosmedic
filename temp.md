@@ -1,4 +1,4 @@
-# CR25May — Status snapshot (2026-05-26)
+# CR25May — Status snapshot (2026-05-27)
 
 ---
 
@@ -37,6 +37,7 @@
 | 25.39 | Sibling-site safety post-pm2-restarts re-verified (5/5 web-fronted siblings 200) |
 | 25.40 | Nav reorder: Treatments > Results > Doctors > Pricing > Journey > Contact |
 | 25.41 | /pricing: Clinic Catalogue before Well-Being Catalogue |
+| ch5-p1+p3 | CMS field rearrangement — Phase 1 (15 reorders) + Phase 3 (3 hideHero toggles). JourneyPage/ContactPage/ResultsPage now use `pageFields({ hideHero: true })`. All Hero globals follow D3 standard order. Images moved to end per D7. |
 
 **Also N/A-Done (1):**
 - 25.5 — Phase 10 imagery gaps: A1 code-wiring ✅ shipped; B1/B2/B3 blocked (see Pending)

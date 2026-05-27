@@ -12,5 +12,5 @@ export const ContactPage: GlobalConfig = {
   },
   access: { read: publishedOrAuthed, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
-  fields: pageFields(),
+  fields: pageFields({ hideHero: true }),
 }
