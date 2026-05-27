@@ -5,6 +5,7 @@ import { Mono, Eyebrow } from '@/components/primitives/Mono'
 import { Btn } from '@/components/primitives/Btn'
 import { IMG } from '@/content/seed'
 import { useCms } from '@/lib/cms-context'
+import { mediaUrl } from '@/lib/cms'
 
 const DEFAULT_ROWS: [string, string][] = [
   ['A.', 'Private recovery villas in Nusa Dua & Ubud'],
@@ -28,13 +29,15 @@ export const Place: React.FC = () => {
       : DEFAULT_ROWS
   const ctaLabel = g?.ctaLabel || 'View recovery stays'
   const ctaHref = g?.ctaHref || '/recovery-stays'
+  const placeImageSrc =
+    g?.image && typeof g.image === 'object' ? mediaUrl(g.image, '') || IMG.bali : IMG.bali
 
   return (
     <section className="place">
       <div className="place-grid">
         <Reveal>
           <div className="place-image">
-            <Img media={g?.image} src={IMG.bali} fallbackLabel="BALI · NUSA DUA" fallbackHue={4} alt="" />
+            <Img media={g?.image} src={placeImageSrc} fallbackLabel="BALI · NUSA DUA" fallbackHue={4} alt="" />
           </div>
         </Reveal>
         <Reveal delay={140}>
