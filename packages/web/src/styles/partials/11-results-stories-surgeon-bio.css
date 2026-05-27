@@ -23,7 +23,7 @@
   display: flex;
   align-items: center;
   gap: 28px;
-  margin: 100px var(--page-x);
+  margin: 40px var(--page-x);
 }
 .results-stories-divider .rule {
   flex: 1;
@@ -38,7 +38,7 @@
   line-height: 1;
 }
 @media (max-width: 700px) {
-  .results-stories-divider { margin: 64px var(--page-x); }
+  .results-stories-divider { margin: 32px var(--page-x); }
 }
 
 
