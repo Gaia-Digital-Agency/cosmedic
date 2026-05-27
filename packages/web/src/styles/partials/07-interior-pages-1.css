@@ -124,7 +124,7 @@
   grid-template-columns: 1fr 1fr;
   border-bottom: 1px solid var(--ink-20);
   border-right: 1px solid var(--ink-20);
-  min-height: 360px;
+  height: 420px;
 }
 .treatment-row:nth-child(2n) { border-right: none; }
 .treatment-row .ti-image {

@@ -136,7 +136,19 @@ export const ContactPage: React.FC = () => {
 
   const heroImage = mediaUrl(hero.heroImage ?? null, IMG.reception) || IMG.reception
   const mapImage = mediaUrl(visit.mapImage ?? null, IMG.bali) || IMG.bali
-  const mapsUrl = settings.googleMapsUrl
+  const mapsUrl = settings.googleMapsUrl ||
+    (() => {
+      const parts = [
+        settings.addressLine1,
+        settings.addressLine2,
+        settings.city,
+        settings.postalCode,
+        settings.country,
+      ].filter(Boolean)
+      return parts.length
+        ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(parts.join(', '))}`
+        : undefined
+    })()
 
   const titleLines: [string, string] = intent
     ? [intent.title, '']
