@@ -4,9 +4,9 @@ import { revalidateGlobalAfterChange } from '../../lib/revalidate'
 
 export const PricingHero: GlobalConfig = {
   slug: 'pricing-hero',
-  label: 'Hero',
+  label: 'Pricing: Hero',
   admin: {
-    group: 'Pricing',
+    group: 'Treatments',
     description:
       'ChapterOpener at the top of /pricing — chapter eyebrow, two-line title, lede, hero image, image hue, image label, breadcrumb label. Single source of truth for the /pricing hero.',
   },

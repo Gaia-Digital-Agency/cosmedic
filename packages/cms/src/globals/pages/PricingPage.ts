@@ -18,11 +18,11 @@ import { pageFields } from './_pageFields'
  */
 export const PricingPage: GlobalConfig = {
   slug: 'pricing-page',
-  label: 'Main',
+  label: 'Pricing: Page',
   admin: {
-    group: 'Pricing',
+    group: 'Treatments',
     description:
-      'Page-level metadata for /pricing — title, slug, route, SEO, publishStatus, and a CmsExtraBlocks slot. Hero / Overview / Footnote / Insurance / Payment are now edited via the dedicated b–f items in the e. Pricing Bucket.',
+      'Page-level metadata for /pricing — title, slug, route, SEO, publishStatus, and a CmsExtraBlocks slot. Hero / Overview / Footnote / Insurance / Payment are edited via the dedicated Pricing globals in this bucket.',
   },
   access: { read: publishedOrAuthed, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
