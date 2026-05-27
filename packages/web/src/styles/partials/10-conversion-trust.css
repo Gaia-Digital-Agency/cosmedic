@@ -480,7 +480,7 @@ a.price-row:hover .pr-name { color: var(--accent-deep); }
   .trust-strip { grid-template-columns: 1fr; gap: 16px; }
 }
 @media (max-width: 700px) {
-  .hero-v2-content { padding-top: 80px; padding-bottom: 40px; }
+  .hero-v2-content { padding-top: var(--hero-top-pad); padding-bottom: 40px; }
   .hero-v2-actions { flex-direction: column; align-items: stretch; }
   .hero-v2-actions .btn, .hero-v2-actions .wa-pill { width: 100%; }
   .price-teaser-grid { grid-template-columns: 1fr; }

@@ -27,7 +27,7 @@
 .chapter-content {
   position: relative;
   width: 100%;
-  padding: 60px var(--page-x) 100px;
+  padding: var(--hero-top-pad) var(--page-x) 100px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 60px;

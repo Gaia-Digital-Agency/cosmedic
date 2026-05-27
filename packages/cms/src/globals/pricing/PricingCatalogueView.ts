@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../../lib/access'
 import { revalidateGlobalAfterChange } from '../../lib/revalidate'
-import { apiWarningField } from '../../lib/api-warning'
 
 export const PricingCatalogueView: GlobalConfig = {
   slug: 'pricing-catalogue-view',
@@ -14,7 +13,6 @@ export const PricingCatalogueView: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    apiWarningField,
     { name: 'sectionEyebrow', type: 'text', defaultValue: 'Clinic catalogue · CMS-managed',
       admin: { description: 'Small-caps eyebrow above the section H2.' } },
     { name: 'headingRoman', type: 'text', defaultValue: 'The full',

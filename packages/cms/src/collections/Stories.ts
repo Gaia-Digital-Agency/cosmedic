@@ -2,7 +2,6 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
 import { seoGroup, sortOrderField, publishStatusField } from '../lib/seo'
-import { apiWarningField } from '../lib/api-warning'
 
 export const Stories: CollectionConfig = {
   slug: 'stories',
@@ -21,7 +20,6 @@ export const Stories: CollectionConfig = {
   },
   hooks: revalidationHooks(),
   fields: [
-    apiWarningField,
     { name: 'slug', type: 'text', required: true, unique: true, index: true },
     { name: 'patientLabel', type: 'text', required: true,
       admin: { description: 'Display name shown on /stories + /results, e.g. "Sarah K." or "Margaux D.". Use first name + last initial only — anonymous-friendly.' } },

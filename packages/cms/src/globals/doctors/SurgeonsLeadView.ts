@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../../lib/access'
 import { revalidateGlobalAfterChange } from '../../lib/revalidate'
-import { apiWarningField } from '../../lib/api-warning'
 
 export const SurgeonsLeadView: GlobalConfig = {
   slug: 'surgeons-lead-view',
@@ -14,7 +13,6 @@ export const SurgeonsLeadView: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    apiWarningField,
     { name: 'sectionEyebrow', type: 'text', required: true,
       admin: { description: 'Eyebrow above the section, e.g. "Lead Plastic Surgeon".' } },
     { name: 'blockEyebrow', type: 'text', required: true,

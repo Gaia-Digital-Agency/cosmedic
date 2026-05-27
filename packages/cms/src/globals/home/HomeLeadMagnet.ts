@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../../lib/access'
 import { revalidateGlobalAfterChange } from '../../lib/revalidate'
-import { apiWarningField } from '../../lib/api-warning'
 
 export const HomeLeadMagnet: GlobalConfig = {
   slug: 'home-lead-magnet',
@@ -14,7 +13,6 @@ export const HomeLeadMagnet: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    apiWarningField,
     { name: 'coverImage', type: 'upload', relationTo: 'media',
       admin: { description: 'Optional cover image (e.g. PDF cover photo). When set, replaces the CSS text card entirely. Leave blank to keep the default styled cover.' } },
     { name: 'coverEyebrow', type: 'text', defaultValue: 'A guide · 24 pages · PDF',

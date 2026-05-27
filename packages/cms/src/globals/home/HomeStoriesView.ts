@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../../lib/access'
 import { revalidateGlobalAfterChange } from '../../lib/revalidate'
-import { apiWarningField } from '../../lib/api-warning'
 
 export const HomeStoriesView: GlobalConfig = {
   slug: 'home-stories-view',
@@ -14,7 +13,6 @@ export const HomeStoriesView: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    apiWarningField,
     { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         'Verified reviews from international patients. Video testimonials and Google reviews on our full stories page.',

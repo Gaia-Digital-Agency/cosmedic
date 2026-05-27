@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../../lib/access'
 import { revalidateGlobalAfterChange } from '../../lib/revalidate'
-import { apiWarningField } from '../../lib/api-warning'
 
 export const ResultsFeaturedCasesView: GlobalConfig = {
   slug: 'results-featured-cases-view',
@@ -14,7 +13,6 @@ export const ResultsFeaturedCasesView: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    apiWarningField,
     { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Featured cases',
       admin: { description: 'Filter-bar / section eyebrow (left side of the filter bar above the grid).' } },
     { name: 'headingPre', type: 'text', defaultValue: 'Four signature cases,',

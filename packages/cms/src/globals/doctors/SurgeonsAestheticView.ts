@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../../lib/access'
 import { revalidateGlobalAfterChange } from '../../lib/revalidate'
-import { apiWarningField } from '../../lib/api-warning'
 
 export const SurgeonsAestheticView: GlobalConfig = {
   slug: 'surgeons-aesthetic-view',
@@ -14,7 +13,6 @@ export const SurgeonsAestheticView: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    apiWarningField,
     { name: 'lede', label: 'Intro paragraph', type: 'textarea', required: true,
       admin: { description: 'Section intro paragraph (D8 — lede before eyebrow).' } },
     { name: 'eyebrow', label: 'Label above heading', type: 'text', required: true,

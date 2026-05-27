@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../../lib/access'
 import { revalidateGlobalAfterChange } from '../../lib/revalidate'
-import { apiWarningField } from '../../lib/api-warning'
 
 export const TreatmentsIndexSection: GlobalConfig = {
   slug: 'treatments-index-section',
@@ -14,7 +13,6 @@ export const TreatmentsIndexSection: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    apiWarningField,
     { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'An Index',
       admin: { description: 'Small-caps eyebrow above the section title.' } },
     { name: 'heading', type: 'text', defaultValue: 'Browse by discipline.',

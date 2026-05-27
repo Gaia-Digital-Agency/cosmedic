@@ -2,7 +2,6 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
 import { seoGroup, sortOrderField } from '../lib/seo'
-import { apiWarningField } from '../lib/api-warning'
 
 export const SubCategories: CollectionConfig = {
   slug: 'sub-categories',
@@ -21,7 +20,6 @@ export const SubCategories: CollectionConfig = {
   },
   hooks: revalidationHooks(),
   fields: [
-    apiWarningField,
     { name: 'slug', type: 'text', required: true, index: true,
       admin: { description: 'URL fragment scoped to the parent discipline. Two sub-categories may share a slug (e.g. "breast" under Surgical and Reconstructive) — uniqueness is enforced per (parent, slug). Renders at /treatments/{discipline-slug}/{slug}.' } },
     { name: 'parent', type: 'relationship', relationTo: 'disciplines', required: true,

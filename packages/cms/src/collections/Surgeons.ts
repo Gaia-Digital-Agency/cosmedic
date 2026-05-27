@@ -2,7 +2,6 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
 import { seoGroup, sortOrderField } from '../lib/seo'
-import { apiWarningField } from '../lib/api-warning'
 
 export const Surgeons: CollectionConfig = {
   slug: 'surgeons',
@@ -21,7 +20,6 @@ export const Surgeons: CollectionConfig = {
   },
   hooks: revalidationHooks(),
   fields: [
-    apiWarningField,
     { name: 'slug', type: 'text', required: true, unique: true, index: true,
       admin: { description: 'URL fragment for the doctor\'s page. "suka" → https://cosmedic.gaiada.online/surgeons/suka. Lowercase, hyphens only.' } },
     { name: 'designation', type: 'text', defaultValue: 'dr.',

@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../../lib/access'
 import { revalidateGlobalAfterChange } from '../../lib/revalidate'
-import { apiWarningField } from '../../lib/api-warning'
 
 export const LibraryCta: GlobalConfig = {
   slug: 'library-cta',
@@ -14,7 +13,6 @@ export const LibraryCta: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    apiWarningField,
     { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Private gallery',
       admin: { description: 'Small-caps eyebrow above the heading.' } },
     { name: 'headingPre', type: 'text', defaultValue: 'Want to see ',

@@ -2,7 +2,6 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
 import { seoGroup } from '../lib/seo'
-import { apiWarningField } from '../lib/api-warning'
 
 export const SurgicalItems: CollectionConfig = {
   slug: 'surgical-items',
@@ -23,7 +22,6 @@ export const SurgicalItems: CollectionConfig = {
     ...revalidationHooks(),
   },
   fields: [
-    apiWarningField,
     { name: 'slug', type: 'text', required: true, unique: true, index: true,
       admin: { description: 'URL fragment / catalogue key for this item.' } },
     { name: 'name', type: 'text', required: true,

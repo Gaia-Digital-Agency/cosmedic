@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../../lib/access'
 import { revalidateGlobalAfterChange } from '../../lib/revalidate'
-import { apiWarningField } from '../../lib/api-warning'
 
 export const SubCategoryDetailTemplate: GlobalConfig = {
   slug: 'sub-category-detail-template',
@@ -14,7 +13,6 @@ export const SubCategoryDetailTemplate: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    apiWarningField,
     { name: 'chapterSeparator', type: 'text', defaultValue: ' · ',
       admin: { description: 'Glue characters between the parent discipline title and the sub-category title in the ChapterOpener eyebrow. e.g. " · " → "Surgical · Breast Surgery".' } },
     {

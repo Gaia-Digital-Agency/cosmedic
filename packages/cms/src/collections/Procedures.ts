@@ -2,7 +2,6 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
 import { seoGroup } from '../lib/seo'
-import { apiWarningField } from '../lib/api-warning'
 
 export const Procedures: CollectionConfig = {
   slug: 'procedures',
@@ -52,7 +51,6 @@ export const Procedures: CollectionConfig = {
     ],
   },
   fields: [
-    apiWarningField,
     { name: 'slug', type: 'text', required: true, unique: true, index: true,
       admin: { description: 'URL fragment for the procedure (e.g. "breast-augmentation"). Used in /pricing cross-links and any future /procedure-{slug} routes.' } },
     { name: 'name', type: 'text', required: true,

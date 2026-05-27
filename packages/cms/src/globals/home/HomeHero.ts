@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../../lib/access'
 import { revalidateGlobalAfterChange } from '../../lib/revalidate'
-import { apiWarningField } from '../../lib/api-warning'
 
 export const HomeHero: GlobalConfig = {
   slug: 'home-hero',
@@ -14,7 +13,6 @@ export const HomeHero: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    apiWarningField,
     { name: 'breadcrumbLabel', type: 'text', defaultValue: 'Home',
       admin: { description: 'Last segment in the breadcrumb trail (reserved — / does not currently render a breadcrumb).' } },
     { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'A sanctuary in Nusa Dua · Est. 1998',

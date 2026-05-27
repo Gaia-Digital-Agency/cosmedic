@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../../lib/access'
 import { revalidateGlobalAfterChange } from '../../lib/revalidate'
-import { apiWarningField } from '../../lib/api-warning'
 
 export const PricingPayment: GlobalConfig = {
   slug: 'pricing-payment',
@@ -14,7 +13,6 @@ export const PricingPayment: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    apiWarningField,
     { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Payment',
       admin: { description: 'Small-caps eyebrow above the H2.' } },
     { name: 'headingRoman', type: 'text', defaultValue: 'Quiet,',

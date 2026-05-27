@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidateGlobalAfterChange } from '../lib/revalidate'
-import { apiWarningField } from '../lib/api-warning'
 
 export const ConsultationPolicy: GlobalConfig = {
   slug: 'consultation-policy',
@@ -13,7 +12,6 @@ export const ConsultationPolicy: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    apiWarningField,
     { name: 'feeIdr', type: 'number', defaultValue: 150000,
       admin: { description: 'Consultation fee in IDR. Shown as the bold number in the /pricing consultation-policy callout. AUD equivalent is computed at render-time from Settings.audToIdrRate.' } },
     { name: 'waiverConditionText', type: 'textarea',

@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../../lib/access'
 import { revalidateGlobalAfterChange } from '../../lib/revalidate'
-import { apiWarningField } from '../../lib/api-warning'
 
 export const HomeIntro: GlobalConfig = {
   slug: 'home-intro',
@@ -14,7 +13,6 @@ export const HomeIntro: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    apiWarningField,
     { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Our Approach',
       admin: { description: 'Section eyebrow above the pull quote.' } },
     { name: 'pullQuoteBefore', type: 'text', defaultValue: 'Aesthetic medicine, considered with the same ',

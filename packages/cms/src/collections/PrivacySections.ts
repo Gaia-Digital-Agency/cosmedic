@@ -2,7 +2,6 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
 import { sortOrderField } from '../lib/seo'
-import { apiWarningField } from '../lib/api-warning'
 
 export const PrivacySections: CollectionConfig = {
   slug: 'privacy-sections',
@@ -25,7 +24,6 @@ export const PrivacySections: CollectionConfig = {
   },
   hooks: revalidationHooks(),
   fields: [
-    apiWarningField,
     {
       name: 'slug',
       type: 'text',

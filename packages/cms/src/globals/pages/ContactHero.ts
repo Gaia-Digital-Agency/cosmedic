@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../../lib/access'
 import { revalidateGlobalAfterChange } from '../../lib/revalidate'
-import { apiWarningField } from '../../lib/api-warning'
 
 export const ContactHero: GlobalConfig = {
   slug: 'contact-hero',
@@ -13,7 +12,6 @@ export const ContactHero: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    apiWarningField,
     { name: 'breadcrumbLabel', type: 'text', defaultValue: 'Plan Your Journey',
       admin: { description: 'Label for the current page in the breadcrumb (the "Home → <this>" trail).' } },
     {

@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidateGlobalAfterChange } from '../lib/revalidate'
-import { apiWarningField } from '../lib/api-warning'
 
 export const Footer: GlobalConfig = {
   slug: 'footer',
@@ -13,7 +12,6 @@ export const Footer: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    apiWarningField,
     { name: 'brandTagline', type: 'text',
       defaultValue: 'Managed by BIMC Hospital',
       admin: { description: 'Mono-small-caps line under the footer logo. Editorial reinforcement of the "Managed by BIMC Hospital" endorsement; matches the header logo alt text.' } },

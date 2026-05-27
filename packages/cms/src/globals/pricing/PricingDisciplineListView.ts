@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../../lib/access'
 import { revalidateGlobalAfterChange } from '../../lib/revalidate'
-import { apiWarningField } from '../../lib/api-warning'
 
 export const PricingDisciplineListView: GlobalConfig = {
   slug: 'pricing-discipline-list-view',
@@ -14,7 +13,6 @@ export const PricingDisciplineListView: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    apiWarningField,
     { name: 'sectionEyebrow', type: 'text',
       admin: { description: 'Optional eyebrow above the first discipline H2.' } },
     { name: 'onRequestLabel', type: 'text', defaultValue: 'On request',

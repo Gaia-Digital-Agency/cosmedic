@@ -2,7 +2,6 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
 import { seoGroup, sortOrderField } from '../lib/seo'
-import { apiWarningField } from '../lib/api-warning'
 
 export const Disciplines: CollectionConfig = {
   slug: 'disciplines',
@@ -21,7 +20,6 @@ export const Disciplines: CollectionConfig = {
   },
   hooks: revalidationHooks(),
   fields: [
-    apiWarningField,
     { name: 'slug', type: 'text', required: true, unique: true, index: true,
       admin: { description: 'URL fragment for the discipline page. "surgical" → https://cosmedic.gaiada.online/treatments/surgical. Lowercase, hyphens only.' } },
     { name: 'title', type: 'text', required: true,

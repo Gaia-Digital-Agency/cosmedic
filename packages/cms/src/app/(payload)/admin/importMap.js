@@ -1,4 +1,3 @@
-import { default as default_527cc2b5390a6418cabf729cdc7803a7 } from '@/components/ApiWarningBanner'
 import { FolderTableCell as FolderTableCell_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 import { FolderField as FolderField_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
@@ -28,13 +27,14 @@ import { FolderTypeField as FolderTypeField_2b8867833a34864a02ddf429b0728a40 } f
 import { default as default_45b96fa7077d7e61c37929e460e4fc37 } from '@/components/CosmedicUserAvatar'
 import { default as default_7aaff18b36e70d9210e24ae88ec57457 } from '@/components/CosmedicIcon'
 import { default as default_70443325cec6146905e7ff94dd88f51b } from '@/components/CosmedicLogo'
+import { default as default_6ff224a0e4af269f62dd4b7689b67ef2 } from '@/components/CosmedicNavLabels'
 import { default as default_1af07b3c71f0d2f23dbf601e35d67213 } from '@/components/CosmedicBeforeLogin'
-import { default as default_09be22865e8b1d2f24df5fb7cbc89e6a } from '@/components/CmsSidebarExplainer'
+import { default as default_aa019d37bb241530968bc74c3cdd2a3d } from '@/components/CosmedicNavLogo'
+import { default as default_ad9ab1c166838b20bd6406b0113c153c } from '@/components/CmsGlobalStyles'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 /** @type import('payload').ImportMap */
 export const importMap = {
-  "@/components/ApiWarningBanner#default": default_527cc2b5390a6418cabf729cdc7803a7,
   "@payloadcms/next/rsc#FolderTableCell": FolderTableCell_f9c02e79a4aed9a3924487c0cd4cafb1,
   "@payloadcms/next/rsc#FolderField": FolderField_f9c02e79a4aed9a3924487c0cd4cafb1,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
@@ -64,7 +64,9 @@ export const importMap = {
   "@/components/CosmedicUserAvatar#default": default_45b96fa7077d7e61c37929e460e4fc37,
   "@/components/CosmedicIcon#default": default_7aaff18b36e70d9210e24ae88ec57457,
   "@/components/CosmedicLogo#default": default_70443325cec6146905e7ff94dd88f51b,
+  "@/components/CosmedicNavLabels#default": default_6ff224a0e4af269f62dd4b7689b67ef2,
   "@/components/CosmedicBeforeLogin#default": default_1af07b3c71f0d2f23dbf601e35d67213,
-  "@/components/CmsSidebarExplainer#default": default_09be22865e8b1d2f24df5fb7cbc89e6a,
+  "@/components/CosmedicNavLogo#default": default_aa019d37bb241530968bc74c3cdd2a3d,
+  "@/components/CmsGlobalStyles#default": default_ad9ab1c166838b20bd6406b0113c153c,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

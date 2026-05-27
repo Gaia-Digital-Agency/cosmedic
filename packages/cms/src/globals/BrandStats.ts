@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidateGlobalAfterChange } from '../lib/revalidate'
-import { apiWarningField } from '../lib/api-warning'
 
 export const BrandStats: GlobalConfig = {
   slug: 'brand-stats',
@@ -13,7 +12,6 @@ export const BrandStats: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    apiWarningField,
     {
       name: 'stats',
       type: 'array',

@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidateGlobalAfterChange } from '../lib/revalidate'
-import { apiWarningField } from '../lib/api-warning'
 
 export const SeoDefaults: GlobalConfig = {
   slug: 'seo-defaults',
@@ -13,7 +12,6 @@ export const SeoDefaults: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    apiWarningField,
     { name: 'titlePattern', type: 'text', defaultValue: '{page} — BIMC CosMedic',
       admin: { description: 'Format used for every <title> tag across the site. `{page}` is replaced with the page name (e.g. "Home — BIMC CosMedic", "Surgeons — BIMC CosMedic").' } },
     { name: 'robotsTxt', type: 'textarea',

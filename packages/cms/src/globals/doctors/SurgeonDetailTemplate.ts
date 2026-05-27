@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../../lib/access'
 import { revalidateGlobalAfterChange } from '../../lib/revalidate'
-import { apiWarningField } from '../../lib/api-warning'
 
 /**
  * Shared template-level chrome for every /surgeons/<slug> detail page (×8).
@@ -29,7 +28,6 @@ export const SurgeonDetailTemplate: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    apiWarningField,
 
     // ─── Breadcrumb ──────────────────────────────────────────────────────
     { name: 'breadcrumbHomeLabel', type: 'text', required: true, defaultValue: 'BIMC CosMedic',

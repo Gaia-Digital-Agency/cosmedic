@@ -14,7 +14,6 @@
  */
 
 import type { Block, Field } from 'payload'
-import { apiWarningField } from '../../lib/api-warning'
 import { publishStatusField, seoGroup } from '../../lib/seo'
 
 const pageBlocks: Block[] = [
@@ -241,7 +240,6 @@ export function pageFields(options: PageFieldsOptions = {}): Field[] {
           admin: { description: 'Hero image for this page. Displayed in the ChapterOpener banner at the top of the page. Recommended 1600×1200px, JPG or WebP.' } },
       ]
   return [
-    apiWarningField,
     { name: 'title', type: 'text', required: true, admin: { description: 'Admin label only' } },
     {
       name: 'slug',

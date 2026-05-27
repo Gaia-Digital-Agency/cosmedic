@@ -2,7 +2,6 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
 import { seoGroup, sortOrderField } from '../lib/seo'
-import { apiWarningField } from '../lib/api-warning'
 
 export const RecoveryStays: CollectionConfig = {
   slug: 'recovery-stays',
@@ -22,7 +21,6 @@ export const RecoveryStays: CollectionConfig = {
   },
   hooks: revalidationHooks(),
   fields: [
-    apiWarningField,
     { name: 'slug', type: 'text', required: true, unique: true, index: true },
     { name: 'name', type: 'text', required: true, admin: { description: 'Villa or suite name, e.g. "Villa Sembilan".' } },
     { name: 'location', type: 'text', admin: { description: 'Suburb / area, e.g. "Nusa Dua", "Ubud", "Sanur", "Jimbaran".' } },

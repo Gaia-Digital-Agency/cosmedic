@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../../lib/access'
 import { revalidateGlobalAfterChange } from '../../lib/revalidate'
-import { apiWarningField } from '../../lib/api-warning'
 
 export const TreatmentsHero: GlobalConfig = {
   slug: 'treatments-hero',
@@ -14,7 +13,6 @@ export const TreatmentsHero: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    apiWarningField,
     { name: 'chapter', type: 'text', defaultValue: 'Chapter II — The Repertoire',
       admin: { description: 'Small-caps eyebrow above the hero title, e.g. "Chapter II — The Repertoire".' } },
     { name: 'titleA', type: 'text', defaultValue: 'Six disciplines,',

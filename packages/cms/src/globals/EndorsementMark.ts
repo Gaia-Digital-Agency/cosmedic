@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidateGlobalAfterChange } from '../lib/revalidate'
-import { apiWarningField } from '../lib/api-warning'
 
 export const EndorsementMark: GlobalConfig = {
   slug: 'endorsement-mark',
@@ -13,7 +12,6 @@ export const EndorsementMark: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    apiWarningField,
     { name: 'endorsementLine', type: 'text', defaultValue: 'Managed by BIMC Hospital · Nusa Dua · Bali',
       admin: { description: 'Tiny mono-font caption next to the logo on every page (both header and footer). Falls back to this text when no image lockup is uploaded.' } },
     { name: 'clearspaceUnit', type: 'text', defaultValue: '1X (height of medical cross)',

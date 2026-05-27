@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../../lib/access'
 import { revalidateGlobalAfterChange } from '../../lib/revalidate'
-import { apiWarningField } from '../../lib/api-warning'
 
 export const HomeGalleryView: GlobalConfig = {
   slug: 'home-gallery-view',
@@ -14,7 +13,6 @@ export const HomeGalleryView: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    apiWarningField,
     { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue: 'Three signature results from our facial repertoire.',
       admin: { description: 'Intro paragraph (D8 — lede before eyebrow for section views).' } },
