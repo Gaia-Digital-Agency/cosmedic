@@ -54,7 +54,7 @@
 }
 .hero-v2-headline { max-width: 760px; }
 .hero-v2-headline .display { color: white; margin-top: 22px; }
-.hero-v2-headline .display .accent { color: var(--accent); }
+.hero-v2-headline .display .accent { color: #D4B48C; }
 .hero-v2-headline .eyebrow { color: rgba(255,255,255,0.85); }
 .hero-v2-headline .eyebrow-rule { background: rgba(255,255,255,0.6); }
 .hero-v2-sub-h1 {
