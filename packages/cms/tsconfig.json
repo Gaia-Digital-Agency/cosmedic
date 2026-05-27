@@ -53,6 +53,7 @@
     "src/seed/seed-results-section-globals.ts",
     "src/seed/seed-home-section-globals.ts",
     "src/seed/seed-footer-atoms.ts",
-    "scripts/test-email.ts"
+    "scripts/test-email.ts",
+    "src/seed/seed-upgrade-media.ts"
   ]
 }

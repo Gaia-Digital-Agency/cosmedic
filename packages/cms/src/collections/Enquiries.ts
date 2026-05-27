@@ -46,7 +46,7 @@ export const Enquiries: CollectionConfig = {
     { name: 'country', type: 'text' },
     { name: 'treatmentInterest', type: 'relationship', relationTo: 'procedures' },
     { name: 'treatmentInterestText', type: 'text', admin: { description: 'Fallback when not a known procedure' } },
-    { name: 'preferredDate', type: 'date' },
+    { name: 'preferredDate', type: 'text', admin: { description: 'Free-text preferred visit window, e.g. "June 2026" or "after school term 2"' } },
     { name: 'message', type: 'textarea' },
     { name: 'sourcePage', type: 'text' },
     { name: 'sourceCta', type: 'text' },

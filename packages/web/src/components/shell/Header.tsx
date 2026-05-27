@@ -81,8 +81,8 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
   }, [mobileOpen])
 
   const surgeonCols = [
-    { key: 'surgical', label: 'Surgical Doctors', group: 'Plastic Surgery', anchor: 'surgical' },
-    { key: 'aesthetic', label: 'Aesthetic Doctors', group: 'Aesthetic Medicine', anchor: 'aesthetic' },
+    { key: 'surgical', label: 'Surgical Experts', group: 'Plastic Surgery', anchor: 'surgical' },
+    { key: 'aesthetic', label: 'Aesthetic Experts', group: 'Aesthetic Medicine', anchor: 'aesthetic' },
   ] as const
 
   return (
@@ -159,7 +159,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
               href="/surgeons"
               className={activePage.startsWith('surgeon') ? 'active' : ''}
             >
-              Doctors
+              Experts
             </a>
             <div className="dropdown-panel dropdown-panel-wide">
               <div className="dropdown-panel-grid dropdown-panel-grid-2col">
@@ -318,7 +318,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
               className={`mobile-menu-head ${mobileSurgeonsOpen ? 'open' : ''}`}
               onClick={() => setMobileSurgeonsOpen((o) => !o)}
             >
-              <span>Doctors</span>
+              <span>Experts</span>
               <span className="mobile-chev">{mobileSurgeonsOpen ? '−' : '+'}</span>
             </button>
             {mobileSurgeonsOpen && (

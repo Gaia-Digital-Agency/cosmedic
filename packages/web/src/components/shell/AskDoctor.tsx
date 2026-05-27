@@ -59,7 +59,7 @@ export const AskDoctor: React.FC = () => {
       {/* FAB button — bottom: 94 sits between WhatsApp (28) and BackToTop (160) */}
       <button
         type="button"
-        aria-label="Ask the Doctor"
+        aria-label="Ask the Expert"
         onClick={() => setOpen((v) => !v)}
         className="ask-doctor-fab"
         style={{
@@ -95,7 +95,7 @@ export const AskDoctor: React.FC = () => {
       {/* Chat panel */}
       <div
         role="dialog"
-        aria-label="Ask The Doctor"
+        aria-label="Ask The Expert"
         aria-modal="true"
         style={{
           position: 'fixed',
@@ -145,7 +145,7 @@ export const AskDoctor: React.FC = () => {
                 letterSpacing: '-0.01em',
               }}
             >
-              Ask The Doctor
+              Ask The Expert
             </span>
           </div>
           <button

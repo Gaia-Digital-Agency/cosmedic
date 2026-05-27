@@ -7,7 +7,7 @@ export const SurgeonsAestheticView: GlobalConfig = {
   slug: 'surgeons-aesthetic-view',
   label: 'Aesthetic Medicine View',
   admin: {
-    group: 'Doctors',
+    group: 'Experts',
     description:
       'Section chrome for the Aesthetic Medicine grid on /surgeons. The cards are NOT edited here — they come from **c. Surgeons** filtered to group=aesthetic-medicine. This item controls only the eyebrow / heading / lede.',
   },

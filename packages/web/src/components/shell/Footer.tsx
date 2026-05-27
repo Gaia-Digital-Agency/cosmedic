@@ -135,7 +135,7 @@ export const Footer: React.FC = () => {
             <div className="footer-col">
               <Mono>About</Mono>
               <ul>
-                <li><a href="/surgeons">Doctors</a></li>
+                <li><a href="/surgeons">Experts</a></li>
                 <li><a href="/journey">Your Journey</a></li>
                 <li><a href="/results">Results</a></li>
                 <li><a href="/pricing">Pricing</a></li>

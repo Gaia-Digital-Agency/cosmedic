@@ -40,7 +40,7 @@ const CmsSidebarExplainer: React.FC = () => (
       <span style={{ color: 'var(--theme-elevation-500)' }}>Collections</span>
       <span>many of the same thing</span>
       <span style={{ color: 'var(--theme-elevation-500)' }}></span>
-      <span style={{ color: 'var(--theme-elevation-450)' }}>(e.g. 8 Doctors · all Before/After cases)</span>
+      <span style={{ color: 'var(--theme-elevation-450)' }}>(e.g. 8 Experts · all Before/After cases)</span>
       <span style={{ color: 'var(--theme-elevation-500)' }}>Globals</span>
       <span>one-of-a-kind</span>
       <span style={{ color: 'var(--theme-elevation-500)' }}></span>

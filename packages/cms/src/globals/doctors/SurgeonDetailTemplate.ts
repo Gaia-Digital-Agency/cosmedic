@@ -22,7 +22,7 @@ export const SurgeonDetailTemplate: GlobalConfig = {
   slug: 'surgeon-detail-template',
   label: 'Detail Template',
   admin: {
-    group: 'Doctors',
+    group: 'Experts',
     description:
       'Template-level strings shared by every /surgeons/<slug> detail page (×8). Per-doctor data lives on **c. Surgeons** (the row). Two view-only mirrors point at cross-bucket sources — Treatments back-link label (← b. Treatments → e. Disciplines) and the "BIMC CosMedic Centre, Bali" Training row (← a. Homepage → l. Settings).',
   },

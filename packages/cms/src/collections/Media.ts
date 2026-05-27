@@ -34,7 +34,7 @@ export const Media: CollectionConfig = {
       options: [
         { label: 'Homepage', value: 'homepage' },
         { label: 'Treatments', value: 'treatments' },
-        { label: 'Doctors', value: 'doctors' },
+        { label: 'Experts', value: 'doctors' },
         { label: 'Results', value: 'results' },
         { label: 'Pricing', value: 'pricing' },
         { label: 'Journey', value: 'journey' },
