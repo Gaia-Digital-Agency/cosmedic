@@ -890,6 +890,7 @@ export type HomeIntroGlobal = {
 }
 
 export type HomeLeadMagnetGlobal = {
+  coverImage?: CmsMedia | number | null
   coverEyebrow?: string
   coverLine1?: string
   coverLine2?: string

@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { Reveal } from '@/components/primitives/Reveal'
 import { Mono, Eyebrow } from '@/components/primitives/Mono'
+import { Img } from '@/components/primitives/Img'
 import { useCms } from '@/lib/cms-context'
+import { mediaUrl } from '@/lib/cms'
 
 export const LeadMagnet: React.FC = () => {
   const [submitted, setSubmitted] = useState(false)
@@ -11,6 +13,8 @@ export const LeadMagnet: React.FC = () => {
   const cms = useCms()
   const g = cms?.homeLeadMagnet
 
+  const coverImage = g?.coverImage
+  const coverImageUrl = coverImage && typeof coverImage === 'object' ? mediaUrl(coverImage) : undefined
   const coverEyebrow = g?.coverEyebrow || 'A guide · 24 pages · PDF'
   const coverLine1 = g?.coverLine1 || 'The Bali'
   const coverLine2 = g?.coverLine2 || 'Recovery'
@@ -32,21 +36,27 @@ export const LeadMagnet: React.FC = () => {
   return (
     <section className="lead-magnet">
       <Reveal>
-        <div className="lead-magnet-cover">
-          <span className="cover-eyebrow">{coverEyebrow}</span>
-          <h3 className="cover-title">
-            <span>{coverLine1}</span>
-            <br />
-            <span className="italic">{coverLine2}</span>
-            <br />
-            <span>{coverLine3}</span>
-          </h3>
-          <div className="cover-spacer" />
-          <div className="cover-foot">
-            <span>{coverFoot1}</span>
-            <span>{coverFoot2}</span>
+        {coverImageUrl ? (
+          <div className="lead-magnet-cover lead-magnet-cover-img">
+            <Img media={coverImage} src={coverImageUrl} alt="The Bali Recovery Guide" />
           </div>
-        </div>
+        ) : (
+          <div className="lead-magnet-cover">
+            <span className="cover-eyebrow">{coverEyebrow}</span>
+            <h3 className="cover-title">
+              <span>{coverLine1}</span>
+              <br />
+              <span className="italic">{coverLine2}</span>
+              <br />
+              <span>{coverLine3}</span>
+            </h3>
+            <div className="cover-spacer" />
+            <div className="cover-foot">
+              <span>{coverFoot1}</span>
+              <span>{coverFoot2}</span>
+            </div>
+          </div>
+        )}
       </Reveal>
       <Reveal delay={140}>
         <div className="lead-magnet-body">

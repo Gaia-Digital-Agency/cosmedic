@@ -15,6 +15,8 @@ export const HomeLeadMagnet: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     apiWarningField,
+    { name: 'coverImage', type: 'upload', relationTo: 'media',
+      admin: { description: 'Optional cover image (e.g. PDF cover photo). When set, replaces the CSS text card entirely. Leave blank to keep the default styled cover.' } },
     { name: 'coverEyebrow', type: 'text', defaultValue: 'A guide · 24 pages · PDF',
       admin: { description: 'Eyebrow at the top of the cover card.' } },
     { name: 'coverLine1', type: 'text', defaultValue: 'The Bali',

@@ -54,7 +54,7 @@ async function uploadIfMissing(
 
   const doc = await payload.create({
     collection: 'media',
-    data: { alt, category, isPlaceholder: true },
+    data: { alt, category: category as 'uncategorised', isPlaceholder: true },
     file: {
       data: fs.readFileSync(filePath),
       mimetype,
@@ -73,7 +73,7 @@ async function setGlobalImageIfEmpty(
   mediaId: number,
 ): Promise<void> {
   const current = await payload.findGlobal({ slug: slug as 'settings' })
-  const currentVal = (current as Record<string, unknown>)[field]
+  const currentVal = (current as unknown as Record<string, unknown>)[field]
   if (currentVal != null && currentVal !== 0) {
     const id = typeof currentVal === 'object' ? (currentVal as { id: number }).id : currentVal
     console.log(`  [skip] ${slug}.${field} already set (id=${id})`)
@@ -91,7 +91,7 @@ async function setCollectionImageIfEmpty(
   mediaId: number,
 ): Promise<void> {
   const current = await payload.findByID({ collection: collection as 'media', id: docId })
-  const currentVal = (current as Record<string, unknown>)[field]
+  const currentVal = (current as unknown as Record<string, unknown>)[field]
   if (currentVal != null && currentVal !== 0) {
     const id = typeof currentVal === 'object' ? (currentVal as { id: number }).id : currentVal
     console.log(`  [skip] ${collection}#${docId}.${field} already set (id=${id})`)
