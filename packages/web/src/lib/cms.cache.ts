@@ -14,7 +14,6 @@ import type {
   Discipline,
   SubCategory,
   Procedure,
-  ClinicCatalogueItem,
   BeforeAfterCase,
   Story,
   PressMention,
@@ -150,7 +149,7 @@ let inflight: Promise<CmsCache> | null = null
 async function doLoad(): Promise<CmsCache> {
   try {
     const [
-      surgeons, disciplines, subCategories, procedures, clinicCatalogueItems,
+      surgeons, disciplines, subCategories, procedures,
       beforeAfterCases, stories, pressMentions, awards, recoveryStays,
       blogPosts, authors, journeySteps, privacySections, pages,
       settings, header, footer, floatingChrome, brandStats, endorsementMark,
@@ -176,12 +175,12 @@ async function doLoad(): Promise<CmsCache> {
       fetchAll<Discipline>('disciplines'),
       fetchAll<SubCategory>('sub-categories'),
       fetchAll<Procedure>('procedures', 500, 2),
-      Promise.all([
-        fetchAll<ClinicCatalogueItem>('surgical-items', 200, 1).catch(() => []),
-        fetchAll<ClinicCatalogueItem>('machine-items', 200, 1).catch(() => []),
-        fetchAll<ClinicCatalogueItem>('injection-items', 200, 1).catch(() => []),
-        fetchAll<ClinicCatalogueItem>('btl-items', 200, 1).catch(() => []),
-      ]).then(([s, m, i, b]) => [...s, ...m, ...i, ...b]),
+      // clinicCatalogueItems derived from procedures after await (see below)
+
+
+
+
+
       fetchAll<BeforeAfterCase>('before-after-cases'),
       fetchAll<Story>('stories'),
       fetchAll<PressMention>('press-mentions'),
@@ -242,6 +241,10 @@ async function doLoad(): Promise<CmsCache> {
       fetchGlobal<HomeStoriesViewGlobal>('home-stories-view').catch(() => ({})),
       fetchGlobal<NotFoundPageGlobal>('not-found-page').catch(() => ({})),
     ])
+    // changes08-B: clinicCatalogueItems derived from procedures (single source of truth).
+    // Surgical/Machine/Injection/BTL collections removed — Procedures covers all.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const clinicCatalogueItems = procedures.filter(p => p.catalogueGroup != null) as any[]
     // R6 — pricing-page lost its hero fields (split into pricing-hero global).
     // Mirror pricing-hero.lede + heroImage onto the pricing-page row inside
     // `pages` so seoFor() (which reads page.lede / page.heroImage) continues

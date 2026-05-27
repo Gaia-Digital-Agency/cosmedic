@@ -11,15 +11,6 @@ import { Surgeons } from './collections/Surgeons'
 import { Disciplines } from './collections/Disciplines'
 import { SubCategories } from './collections/SubCategories'
 import { Procedures } from './collections/Procedures'
-import { SurgicalItems } from './collections/SurgicalItems'
-import { MachineItems } from './collections/MachineItems'
-import { InjectionItems } from './collections/InjectionItems'
-import { BTLItems } from './collections/BTLItems'
-// Phase C9c — PriceListItems / InjectableProducts / MachineTreatments /
-// HairRemovalAreas collections retired. All catalogue rows now live on
-// Procedures (catalogueGroup: surgical | machine | injection | btl). The
-// underlying DB tables are intentionally preserved as a one-commit-rollback
-// data backup; remove them only after sign-off on the unified /pricing.
 import { BeforeAfterCases } from './collections/BeforeAfterCases'
 import { Stories } from './collections/Stories'
 import { PressMentions } from './collections/PressMentions'
@@ -188,11 +179,6 @@ export default buildConfig({
     // d. Results
     BeforeAfterCases,
     Stories,
-    // e. Pricing
-    SurgicalItems,
-    MachineItems,
-    InjectionItems,
-    BTLItems,
     // f. Journey
     JourneySteps,
     RecoveryStays,
@@ -259,8 +245,7 @@ export default buildConfig({
     ResultsFeaturedCasesView, // Featured Cases View
     ResultsStoriesView,       // Stories View
 
-    // ── e. Pricing ────────────────────────────────────────────────
-    // Collection (ClinicCatalogueItems) always first.
+    // ── e. Pricing (globals moved to Treatments bucket — changes08-A) ──────
     PricingPage,               // Main
     PricingHero,               // Hero
     PricingOverview,           // Overview

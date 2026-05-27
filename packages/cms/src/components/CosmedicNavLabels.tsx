@@ -29,7 +29,7 @@ const FIRST_GLOBALS = [
   'treatments-page',  // Treatments bucket (after Disciplines / SubCategories / Procedures)
   'surgeons-page',    // Doctors bucket    (after Surgeons)
   'results-page',     // Results bucket    (after BeforeAfterCases / Stories)
-  'pricing-page',     // Pricing bucket    (after ClinicCatalogueItems)
+  'pricing-page',     // Pricing page (now in Treatments bucket — changes08)
   'journey-page',     // Journey bucket    (after JourneySteps / RecoveryStays)
   'contact-page',     // Contact bucket    (after Enquiries)
   'blog-page',        // About bucket      (after BlogPosts / BlogTags / Authors / PressMentions / Awards / PrivacySections)
