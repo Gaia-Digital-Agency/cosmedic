@@ -1,6 +1,7 @@
 # Cosmedic CMS — Complete Field Map
 
-> Full inventory of every field across all 19 collections and 42 globals.
+> Full inventory of every field across all 19 collections (18 + Analytics) and 63 globals.
+> 63 globals = 10 top-level + 21 pages/ + 10 home/ + 5 doctors/ + 7 pricing/ + 5 results/ + 5 treatments/.
 > Format mirrors `docs/changes/app_map.md`. Source: `packages/cms/src/{collections,globals}/`.
 > Dot-notation for group sub-fields (`heading.a`, `pricing.priceIdr2026`). Arrays shown as `items (field, field)`.
 > Generated 2026-05-27.
