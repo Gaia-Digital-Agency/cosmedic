@@ -17,8 +17,7 @@ import { mediaUrl } from '@/lib/cms'
 const FB = {
   hero: {
     chapter: 'Chapter IV — Results & Stories',
-    titleA: 'Quietly',
-    titleB: 'transformative.',
+    title: { a: 'Quietly', b: 'transformative.' },
     lede:
       'A small selection of consented results paired with the stories behind them. Our complete library — over two hundred cases — is shared during private consultation.',
     imageHue: 1,
@@ -80,8 +79,8 @@ export const ResultsPage: React.FC = () => {
 
   const hero = {
     chapter: heroCms?.chapter || FB.hero.chapter,
-    titleA: heroCms?.titleA || FB.hero.titleA,
-    titleB: heroCms?.titleB || FB.hero.titleB,
+    titleA: heroCms?.title?.a || FB.hero.title.a,
+    titleB: heroCms?.title?.b || FB.hero.title.b,
     lede: heroCms?.lede || FB.hero.lede,
     image: mediaUrl(heroCms?.heroImage) || IMG.texture,
     imageHue: heroCms?.imageHue ?? FB.hero.imageHue,

@@ -15,14 +15,18 @@ export const HomePlace: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     apiWarningField,
-    { name: 'image', type: 'upload', relationTo: 'media',
-      admin: { description: 'Lead image for the "Recover in paradise" section (left column). 1200×1500 portrait orientation works best. Falls back to a placeholder when empty.' } },
     { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Recovery in Bali',
       admin: { description: 'Section eyebrow.' } },
-    { name: 'headingPart1', type: 'text', defaultValue: 'Recover',
-      admin: { description: 'First line of the heading (roman).' } },
-    { name: 'headingAccent', type: 'text', defaultValue: 'in paradise.',
-      admin: { description: 'Second line of the heading (italic accent).' } },
+    {
+      name: 'heading', type: 'group',
+      admin: { description: 'Two-part heading. Part A renders roman; part B renders italic.' },
+      fields: [
+        { name: 'a', type: 'text', defaultValue: 'Recover',
+          admin: { description: 'Roman part. e.g. "Recover".' } },
+        { name: 'b', type: 'text', defaultValue: 'in paradise.',
+          admin: { description: 'Italic accent. e.g. "in paradise.".' } },
+      ],
+    },
     { name: 'body', type: 'textarea',
       defaultValue:
         'Nusa Dua sits on the southernmost reach of Bali — quiet beaches, soft afternoons, and the kind of warm, careful hospitality that has made the island synonymous with rest. We work with a small portfolio of villas and resorts, hand-selected for privacy and post-operative comfort.',
@@ -42,5 +46,7 @@ export const HomePlace: GlobalConfig = {
       admin: { description: 'Bottom CTA label.' } },
     { name: 'ctaHref', type: 'text', defaultValue: '/recovery-stays',
       admin: { description: 'Where the bottom CTA links.' } },
+    { name: 'image', type: 'upload', relationTo: 'media',
+      admin: { description: 'Lead image for the "Recover in paradise" section (left column). 1200×1500 portrait orientation works best. Falls back to a placeholder when empty.' } },
   ],
 }

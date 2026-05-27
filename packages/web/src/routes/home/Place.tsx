@@ -17,8 +17,8 @@ export const Place: React.FC = () => {
   const cms = useCms()
   const g = cms?.homePlace
   const eyebrow = g?.eyebrow || 'Recovery in Bali'
-  const headingPart1 = g?.headingPart1 || 'Recover'
-  const headingAccent = g?.headingAccent || 'in paradise.'
+  const headingPart1 = g?.heading?.a || 'Recover'
+  const headingAccent = g?.heading?.b || 'in paradise.'
   const body =
     g?.body ||
     'Nusa Dua sits on the southernmost reach of Bali — quiet beaches, soft afternoons, and the kind of warm, careful hospitality that has made the island synonymous with rest. We work with a small portfolio of villas and resorts, hand-selected for privacy and post-operative comfort.'

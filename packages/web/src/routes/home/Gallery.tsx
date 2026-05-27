@@ -10,8 +10,8 @@ export const Gallery: React.FC = () => {
   const cms = useCms()
   const g = cms?.homeGalleryView
   const eyebrow = g?.eyebrow || 'Before & After Results'
-  const headingItalic = g?.headingItalic || 'Quietly'
-  const headingPart2 = g?.headingPart2 || 'transformative.'
+  const headingItalic = g?.heading?.a || 'Quietly'
+  const headingPart2 = g?.heading?.b || 'transformative.'
   const lede = g?.lede || 'Three signature results from our facial repertoire.'
   const ctaLabel = g?.ctaLabel || 'View the full gallery'
   const ctaHref = g?.ctaHref || '/results#results'

@@ -140,7 +140,7 @@ export const ContactPage: React.FC = () => {
 
   const titleLines: [string, string] = intent
     ? [intent.title, '']
-    : [hero.titleA || 'Begin, when', hero.titleB || 'you are ready.']
+    : [hero.title?.a || 'Begin, when', hero.title?.b || 'you are ready.']
   const heroLede = intent
     ? intent.lede
     : hero.lede

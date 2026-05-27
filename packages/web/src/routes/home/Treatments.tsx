@@ -9,8 +9,8 @@ export const Treatments: React.FC = () => {
   const cms = useCms()
   const g = cms?.homeTreatmentsView
   const eyebrow = g?.eyebrow || 'Treatments'
-  const headingPart1 = g?.headingPart1 || 'Six disciplines,'
-  const headingPart2 = g?.headingPart2 || 'one sanctuary.'
+  const headingPart1 = g?.heading?.a || 'Six disciplines,'
+  const headingPart2 = g?.heading?.b || 'one sanctuary.'
   const lede =
     g?.lede ||
     'A complete repertoire under one roof, sequenced into a single journey. Treatments may be combined; recovery is always private.'

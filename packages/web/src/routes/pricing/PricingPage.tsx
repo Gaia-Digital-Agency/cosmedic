@@ -46,7 +46,7 @@ export const PricingPage: React.FC = () => {
   const hero = cms?.pricingHero ?? {}
   const overview = cms?.pricingOverview ?? {}
   const overviewHasContent = Boolean(
-    overview.headingPart1 || overview.headingPart2 || overview.body,
+    overview.heading?.a || overview.heading?.b || overview.body,
   )
 
   const liveRate = cms?.settings?.audToIdrRate || DEFAULT_AUD_TO_IDR
@@ -103,12 +103,12 @@ export const PricingPage: React.FC = () => {
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
           <Reveal>
             {overview.eyebrow && <Eyebrow>{overview.eyebrow}</Eyebrow>}
-            {(overview.headingPart1 || overview.headingPart2) && (
+            {(overview.heading?.a || overview.heading?.b) && (
               <h2 className="section-title" style={{ marginTop: 16, marginBottom: 24 }}>
-                {overview.headingPart1 && <span>{overview.headingPart1}</span>}
-                {overview.headingPart1 && overview.headingPart2 && ' '}
-                {overview.headingPart2 && (
-                  <span className="italic">{overview.headingPart2}</span>
+                {overview.heading?.a && <span>{overview.heading.a}</span>}
+                {overview.heading?.a && overview.heading?.b && ' '}
+                {overview.heading?.b && (
+                  <span className="italic">{overview.heading.b}</span>
                 )}
               </h2>
             )}

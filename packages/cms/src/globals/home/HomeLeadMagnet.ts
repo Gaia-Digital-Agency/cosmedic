@@ -29,10 +29,16 @@ export const HomeLeadMagnet: GlobalConfig = {
       admin: { description: 'Bottom-right of the cover card.' } },
     { name: 'bodyEyebrow', type: 'text', defaultValue: 'Free Guide',
       admin: { description: 'Eyebrow on the right-side body column.' } },
-    { name: 'headingPart1', type: 'text', defaultValue: 'What to expect from',
-      admin: { description: 'First part of the body heading (roman).' } },
-    { name: 'headingAccent', type: 'text', defaultValue: 'recovery in Bali.',
-      admin: { description: 'Italic accent part of the body heading.' } },
+    {
+      name: 'heading', type: 'group',
+      admin: { description: 'Two-part body heading. Part A renders roman; part B renders italic.' },
+      fields: [
+        { name: 'a', type: 'text', defaultValue: 'What to expect from',
+          admin: { description: 'Roman part. e.g. "What to expect from".' } },
+        { name: 'b', type: 'text', defaultValue: 'recovery in Bali.',
+          admin: { description: 'Italic accent. e.g. "recovery in Bali.".' } },
+      ],
+    },
     { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         'A 24-page editorial guide written by our concierge team — covering recovery timelines for the ten most-requested procedures, what to pack, what villas suit which surgeries, and the pace of a typical fortnight in Nusa Dua.',

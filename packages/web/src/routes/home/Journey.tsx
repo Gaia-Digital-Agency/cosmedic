@@ -16,8 +16,8 @@ export const Journey: React.FC = () => {
   const cms = useCms()
   const g = cms?.homeJourneyView
   const eyebrow = g?.eyebrow || 'Your Journey'
-  const headingPart1 = g?.headingPart1 || 'From enquiry to'
-  const headingAccent = g?.headingAccent || 'homecoming.'
+  const headingPart1 = g?.heading?.a || 'From enquiry to'
+  const headingAccent = g?.heading?.b || 'homecoming.'
   const ctaLabel = g?.ctaLabel || 'Read the full journey'
   const ctaHref = g?.ctaHref || '/journey'
 

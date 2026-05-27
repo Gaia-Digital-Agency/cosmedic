@@ -17,10 +17,16 @@ export const ResultsHero: GlobalConfig = {
     apiWarningField,
     { name: 'breadcrumbLabel', type: 'text', defaultValue: 'Results & Stories',
       admin: { description: 'Last segment in the breadcrumb trail.' } },
-    { name: 'titleA', type: 'text', defaultValue: 'Quietly',
-      admin: { description: 'First line of the two-line headline (roman).' } },
-    { name: 'titleB', type: 'text', defaultValue: 'transformative.',
-      admin: { description: 'Second line of the headline (italic-friendly).' } },
+    {
+      name: 'title', type: 'group',
+      admin: { description: 'Two-line headline. Line A renders roman; line B renders italic.' },
+      fields: [
+        { name: 'a', type: 'text', defaultValue: 'Quietly',
+          admin: { description: 'First line (roman).' } },
+        { name: 'b', type: 'text', defaultValue: 'transformative.',
+          admin: { description: 'Second line (italic-friendly).' } },
+      ],
+    },
     { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         'A small selection of consented results paired with the stories behind them. Our complete library — over two hundred cases — is shared during private consultation.',

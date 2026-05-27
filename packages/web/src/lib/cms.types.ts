@@ -53,7 +53,8 @@ export type Surgeon = {
   slug: string
   name: string
   commonName?: string
-  title?: string
+  /** Honorific prefix (e.g. "dr."). Renamed from `title` per D2. */
+  designation?: string
   suffix?: string
   spec?: string
   train?: string
@@ -369,8 +370,7 @@ export type Settings = {
 
 export type ContactHeroGlobal = {
   chapter?: string
-  titleA?: string
-  titleB?: string
+  title?: { a?: string; b?: string }
   lede?: string
   heroImage?: CmsMedia | number | null
   imageHue?: number
@@ -609,8 +609,7 @@ export type SubCategoryDetailTemplateGlobal = {
 
 export type SurgeonsHeroGlobal = {
   chapter?: string
-  titleA?: string
-  titleB?: string
+  title?: { a?: string; b?: string }
   lede?: string
   heroImage?: number | CmsMedia | null
   imageHue?: number
@@ -628,11 +627,10 @@ export type SurgeonsLeadViewGlobal = {
 }
 
 export type SurgeonsSectionViewGlobal = {
-  eyebrow?: string
-  headingA?: string
-  headingItalic?: string
-  headingB?: string
   lede?: string
+  eyebrow?: string
+  heading?: { a?: string; b?: string }
+  headingItalic?: string
 }
 
 export type SurgeonDetailTemplateGlobal = {
@@ -691,8 +689,7 @@ export type PricingHeroGlobal = {
 
 export type PricingOverviewGlobal = {
   eyebrow?: string
-  headingPart1?: string
-  headingPart2?: string
+  heading?: { a?: string; b?: string }
   body?: string
 }
 
@@ -760,8 +757,7 @@ export type PricingCatalogueViewGlobal = {
 
 export type ResultsHeroGlobal = {
   chapter?: string
-  titleA?: string
-  titleB?: string
+  title?: { a?: string; b?: string }
   lede?: string
   heroImage?: number | CmsMedia | null
   imageHue?: number
@@ -856,8 +852,7 @@ export type RecoveryStaysPageGlobal = {
 
 export type HomeHeroGlobal = {
   eyebrow?: string
-  titleA?: string
-  titleB?: string
+  title?: { a?: string; b?: string }
   lede?: string
   heroImage?: CmsMedia | number | null
   breadcrumbLabel?: string
@@ -902,8 +897,7 @@ export type HomeLeadMagnetGlobal = {
   coverFoot1?: string
   coverFoot2?: string
   bodyEyebrow?: string
-  headingPart1?: string
-  headingAccent?: string
+  heading?: { a?: string; b?: string }
   lede?: string
   formPlaceholder?: string
   submitLabel?: string
@@ -913,28 +907,25 @@ export type HomeLeadMagnetGlobal = {
 }
 
 export type HomePlaceGlobal = {
-  image?: CmsMedia | number | null
   eyebrow?: string
-  headingPart1?: string
-  headingAccent?: string
+  heading?: { a?: string; b?: string }
   body?: string
   rows?: Array<{ letter: string; text: string }>
   ctaLabel?: string
   ctaHref?: string
+  image?: CmsMedia | number | null
 }
 
 export type HomeTreatmentsViewGlobal = {
-  eyebrow?: string
-  headingPart1?: string
-  headingPart2?: string
   lede?: string
+  eyebrow?: string
+  heading?: { a?: string; b?: string }
 }
 
 export type HomePricingViewGlobal = {
-  eyebrow?: string
-  headingPart1?: string
-  headingPart2?: string
   lede?: string
+  eyebrow?: string
+  heading?: { a?: string; b?: string }
   footnote?: string
   viewAllLabel?: string
   viewAllHref?: string
@@ -958,27 +949,24 @@ export type HomeSurgeonsViewGlobal = {
 }
 
 export type HomeGalleryViewGlobal = {
-  eyebrow?: string
-  headingItalic?: string
-  headingPart2?: string
   lede?: string
+  eyebrow?: string
+  heading?: { a?: string; b?: string }
   ctaLabel?: string
   ctaHref?: string
 }
 
 export type HomeJourneyViewGlobal = {
   eyebrow?: string
-  headingPart1?: string
-  headingAccent?: string
+  heading?: { a?: string; b?: string }
   ctaLabel?: string
   ctaHref?: string
 }
 
 export type HomeStoriesViewGlobal = {
-  eyebrow?: string
-  headingItalic?: string
-  headingPart2?: string
   lede?: string
+  eyebrow?: string
+  heading?: { a?: string; b?: string }
   ctaLabel?: string
   ctaHref?: string
 }

@@ -15,15 +15,21 @@ export const HomeTreatmentsView: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     apiWarningField,
-    { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Treatments',
-      admin: { description: 'Section eyebrow above the heading.' } },
-    { name: 'headingPart1', type: 'text', defaultValue: 'Six disciplines,',
-      admin: { description: 'First line of the heading (roman).' } },
-    { name: 'headingPart2', type: 'text', defaultValue: 'one sanctuary.',
-      admin: { description: 'Second line of the heading (italic).' } },
     { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         'A complete repertoire under one roof, sequenced into a single journey. Treatments may be combined; recovery is always private.',
-      admin: { description: 'Intro paragraph beneath the heading.' } },
+      admin: { description: 'Intro paragraph (D8 — lede before eyebrow for section views).' } },
+    { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Treatments',
+      admin: { description: 'Section eyebrow above the heading.' } },
+    {
+      name: 'heading', type: 'group',
+      admin: { description: 'Two-part section heading. Part A renders roman; part B renders italic.' },
+      fields: [
+        { name: 'a', type: 'text', defaultValue: 'Six disciplines,',
+          admin: { description: 'First part (roman). e.g. "Six disciplines,".' } },
+        { name: 'b', type: 'text', defaultValue: 'one sanctuary.',
+          admin: { description: 'Second part (italic). e.g. "one sanctuary.".' } },
+      ],
+    },
   ],
 }

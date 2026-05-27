@@ -17,8 +17,7 @@ import { mediaUrl } from '@/lib/cms'
 const FB = {
   hero: {
     chapter: 'Chapter III — The Practitioners',
-    titleA: 'Hands you',
-    titleB: 'can trust.',
+    title: { a: 'Hands you', b: 'can trust.' },
     lede: 'Eight specialists across plastic surgery and aesthetic medicine — ISAPS members, fellowship-trained in Korea, Japan, and Singapore, and rooted in Bali.',
     imageHue: 2,
     imageLabel: 'THE PRACTITIONERS',
@@ -34,16 +33,14 @@ const FB = {
   },
   plastic: {
     eyebrow: 'Plastic Surgery',
-    headingA: '',
+    heading: { a: '', b: ' & aesthetic.' },
     headingItalic: 'Reconstructive',
-    headingB: ' & aesthetic.',
     lede: 'Our plastic surgery team holds combined fellowships from Korea, Japan, Singapore, and Indonesia — and ISAPS, FICS, and craniomaxillofacial subspecialty credentials.',
   },
   aesthetic: {
     eyebrow: 'Aesthetic Medicine',
-    headingA: '',
+    heading: { a: '', b: ' non-surgical.' },
     headingItalic: 'Quiet',
-    headingB: ' non-surgical.',
     lede: 'Anti-aging, dermatology, venereology and aesthetics — for the considered, everyday refinements between bigger decisions.',
   },
 }
@@ -101,8 +98,8 @@ export const SurgeonsIndex: React.FC = () => {
   // so a partially-empty global degrades to a literal — never undefined.
   const hero = {
     chapter: heroCms?.chapter || FB.hero.chapter,
-    titleA: heroCms?.titleA || FB.hero.titleA,
-    titleB: heroCms?.titleB || FB.hero.titleB,
+    titleA: heroCms?.title?.a || FB.hero.title.a,
+    titleB: heroCms?.title?.b || FB.hero.title.b,
     lede: heroCms?.lede || FB.hero.lede,
     image: mediaUrl(heroCms?.heroImage) || IMG.clinic,
     imageHue: heroCms?.imageHue ?? FB.hero.imageHue,
@@ -199,9 +196,9 @@ export const SurgeonsIndex: React.FC = () => {
           <Eyebrow>{plasticCms?.eyebrow || FB.plastic.eyebrow}</Eyebrow>
           <div>
             <h2 className="section-title">
-              {plasticCms?.headingA ?? FB.plastic.headingA}
+              {plasticCms?.heading?.a ?? FB.plastic.heading.a}
               <span className="italic">{plasticCms?.headingItalic || FB.plastic.headingItalic}</span>
-              {plasticCms?.headingB ?? FB.plastic.headingB}
+              {plasticCms?.heading?.b ?? FB.plastic.heading.b}
             </h2>
             <p className="section-lede">{plasticCms?.lede || FB.plastic.lede}</p>
           </div>
@@ -220,9 +217,9 @@ export const SurgeonsIndex: React.FC = () => {
           <Eyebrow>{aestheticCms?.eyebrow || FB.aesthetic.eyebrow}</Eyebrow>
           <div>
             <h2 className="section-title">
-              {aestheticCms?.headingA ?? FB.aesthetic.headingA}
+              {aestheticCms?.heading?.a ?? FB.aesthetic.heading.a}
               <span className="italic">{aestheticCms?.headingItalic || FB.aesthetic.headingItalic}</span>
-              {aestheticCms?.headingB ?? FB.aesthetic.headingB}
+              {aestheticCms?.heading?.b ?? FB.aesthetic.heading.b}
             </h2>
             <p className="section-lede">{aestheticCms?.lede || FB.aesthetic.lede}</p>
           </div>

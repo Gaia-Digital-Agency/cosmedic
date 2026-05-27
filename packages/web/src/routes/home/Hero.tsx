@@ -9,8 +9,8 @@ export const Hero: React.FC = () => {
   const cms = useCms()
   const g = cms?.homeHero
   const eyebrow = g?.eyebrow || 'A sanctuary in Nusa Dua · Est. 1998'
-  const titleA = g?.titleA || 'Plastic surgery'
-  const titleB = g?.titleB || 'in Bali, by ISAPS surgeons.'
+  const titleA = g?.title?.a || 'Plastic surgery'
+  const titleB = g?.title?.b || 'in Bali, by ISAPS surgeons.'
   const lede = g?.lede
   // If the linked media is flagged isPlaceholder, render no image at all —
   // the vignette + dark background carry the section.
@@ -95,7 +95,7 @@ export const Hero: React.FC = () => {
         <div className="hero-v2-headline">
           <Eyebrow>{eyebrow}</Eyebrow>
           <h1 className="display">
-            {g?.titleA || g?.titleB ? (
+            {g?.title?.a || g?.title?.b ? (
               <>
                 <span className="line">{titleA}</span>
                 <span className="line italic accent">{titleB}</span>

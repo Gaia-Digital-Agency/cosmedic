@@ -19,10 +19,16 @@ export const HomeHero: GlobalConfig = {
       admin: { description: 'Last segment in the breadcrumb trail (reserved — / does not currently render a breadcrumb).' } },
     { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'A sanctuary in Nusa Dua · Est. 1998',
       admin: { description: 'Small-caps eyebrow above the hero title.' } },
-    { name: 'titleA', type: 'text', defaultValue: 'Plastic surgery',
-      admin: { description: 'First line of the headline (roman).' } },
-    { name: 'titleB', type: 'text', defaultValue: 'in Bali, by ISAPS surgeons.',
-      admin: { description: 'Second line of the headline (italic accent).' } },
+    {
+      name: 'title', type: 'group',
+      admin: { description: 'Two-line hero headline. Line A renders roman on the first line; line B renders italic on the second.' },
+      fields: [
+        { name: 'a', type: 'text', defaultValue: 'Plastic surgery',
+          admin: { description: 'First line (roman). e.g. "Plastic surgery".' } },
+        { name: 'b', type: 'text', defaultValue: 'in Bali, by ISAPS surgeons.',
+          admin: { description: 'Second line (italic accent). e.g. "in Bali, by ISAPS surgeons.".' } },
+      ],
+    },
     { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         "Performed inside Indonesia's first ACHSI-accredited international hospital, with private villa recovery and twelve months of telehealth follow-up included. Procedures from Rp 18,900,000 (≈ AUD 1,800).",

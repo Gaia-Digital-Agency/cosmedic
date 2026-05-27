@@ -40,8 +40,8 @@ export const Stories: React.FC = () => {
   const cms = useCms()
   const g = cms?.homeStoriesView
   const eyebrow = g?.eyebrow || 'Verified Patient Stories'
-  const headingItalic = g?.headingItalic || 'Stories,'
-  const headingPart2 = g?.headingPart2 || 'not slogans.'
+  const headingItalic = g?.heading?.a || 'Stories,'
+  const headingPart2 = g?.heading?.b || 'not slogans.'
   const ledeDefault = (
     <>
       Verified reviews from international patients. Video testimonials and Google reviews on our{' '}

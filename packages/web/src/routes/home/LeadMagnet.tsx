@@ -18,8 +18,8 @@ export const LeadMagnet: React.FC = () => {
   const coverFoot1 = g?.coverFoot1 || 'BIMC CosMedic'
   const coverFoot2 = g?.coverFoot2 || 'MMXXVI'
   const bodyEyebrow = g?.bodyEyebrow || 'Free Guide'
-  const headingPart1 = g?.headingPart1 || 'What to expect from'
-  const headingAccent = g?.headingAccent || 'recovery in Bali.'
+  const headingPart1 = g?.heading?.a || 'What to expect from'
+  const headingAccent = g?.heading?.b || 'recovery in Bali.'
   const lede =
     g?.lede ||
     'A 24-page editorial guide written by our concierge team — covering recovery timelines for the ten most-requested procedures, what to pack, what villas suit which surgeries, and the pace of a typical fortnight in Nusa Dua.'

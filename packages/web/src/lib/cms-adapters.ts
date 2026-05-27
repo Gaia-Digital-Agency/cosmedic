@@ -50,7 +50,7 @@ export function adaptSurgeon(s: Surgeon): LegacySurgeon {
     slug: s.slug,
     name: s.name,
     common: s.commonName || s.name,
-    title: s.title || 'dr.',
+    title: s.designation || 'dr.',
     suffix: s.suffix || '',
     spec: s.spec || '',
     train: s.train || '',

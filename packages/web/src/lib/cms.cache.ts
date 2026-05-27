@@ -270,8 +270,8 @@ async function doLoad(): Promise<CmsCache> {
         lede: rp.lede || resultsHero.lede,
         heroImage: rp.heroImage || resultsHero.heroImage || undefined,
         chapterTitle: rp.chapterTitle || {
-          a: resultsHero.titleA,
-          b: resultsHero.titleB,
+          a: resultsHero.title?.a,
+          b: resultsHero.title?.b,
         },
         tagline: rp.tagline || resultsHero.chapter,
       } as typeof rp

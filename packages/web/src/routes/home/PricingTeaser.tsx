@@ -26,8 +26,8 @@ export const PricingTeaser: React.FC = () => {
   const rate = cms?.settings?.audToIdrRate || DEFAULT_AUD_TO_IDR
   const roundTo = cms?.settings?.roundIdrTo || DEFAULT_ROUND_IDR_TO
   const eyebrow = g?.eyebrow || 'Pricing · Starting From'
-  const headingPart1 = g?.headingPart1 || 'Transparent'
-  const headingPart2 = g?.headingPart2 || 'pricing.'
+  const headingPart1 = g?.heading?.a || 'Transparent'
+  const headingPart2 = g?.heading?.b || 'pricing.'
   const lede =
     g?.lede ||
     'Indicative starting prices in IDR (with AUD equivalent). Final quotes are tailored after consultation. Travel, accommodation and concierge can be packaged.'
