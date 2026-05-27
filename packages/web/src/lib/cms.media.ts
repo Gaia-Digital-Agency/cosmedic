@@ -10,12 +10,21 @@ import type { CmsMedia, Lexical, LexicalNode } from './cms.types'
 
 /**
  * Browser-visible Payload origin. Empty string means "root-relative" —
- * the browser hits `/api/media/...` which nginx routes to :4007. The
- * server-internal PAYLOAD_URL (in cms.fetch.ts) is used only for SSR-time
+ * the browser hits `/api/media/...` which nginx now serves directly from
+ * disk at /var/www/cosmedic/packages/cms/media/ (no CMS process involved).
+ * The server-internal PAYLOAD_URL (in cms.fetch.ts) is used only for SSR-time
  * fetches. Don't bake the internal 127.0.0.1:4007 into HTML; it isn't
  * reachable from outside the box.
  */
 export const PUBLIC_PAYLOAD_URL = process.env.PUBLIC_PAYLOAD_URL || ''
+
+/**
+ * Cache-bust suffix appended to all CMS media URLs.
+ * Increment when nginx config or file-serving method changes to force
+ * browsers to fetch a fresh copy (avoids immutable-cached 404s from
+ * prior CMS restart windows).
+ */
+const MEDIA_VER = 'v=1'
 
 export function lexicalToText(value: Lexical): string {
   if (!value || !value.root || !value.root.children) return ''
@@ -48,6 +57,13 @@ export function lexicalToParagraphs(value: Lexical): string[] {
     .filter(Boolean)
 }
 
+/** Append cache-bust param to a CMS-relative media URL. External http(s)
+ *  URLs (user CDN / Cloudinary) are returned as-is. */
+function withVer(url: string): string {
+  if (url.startsWith('http')) return url
+  return `${url}${url.includes('?') ? '&' : '?'}${MEDIA_VER}`
+}
+
 export function mediaUrl(m: number | CmsMedia | undefined | null, fallback?: string): string | undefined {
   if (!m) return fallback
   if (typeof m === 'number') return fallback
@@ -56,7 +72,8 @@ export function mediaUrl(m: number | CmsMedia | undefined | null, fallback?: str
   // Record remains editable; only public rendering is hidden.
   if ((m as { isPlaceholder?: boolean }).isPlaceholder === true) return fallback
   if (m.url) {
-    return m.url.startsWith('http') ? m.url : `${PUBLIC_PAYLOAD_URL}${m.url}`
+    const base = m.url.startsWith('http') ? m.url : `${PUBLIC_PAYLOAD_URL}${m.url}`
+    return withVer(base)
   }
   return fallback
 }
@@ -79,12 +96,12 @@ export function mediaSrcSet(m: number | CmsMedia | undefined | null): string | u
   const parts: string[] = []
   for (const size of Object.values(m.sizes)) {
     if (!size || !size.url || !size.width) continue
-    const url = size.url.startsWith('http') ? size.url : `${PUBLIC_PAYLOAD_URL}${size.url}`
-    parts.push(`${url} ${size.width}w`)
+    const base = size.url.startsWith('http') ? size.url : `${PUBLIC_PAYLOAD_URL}${size.url}`
+    parts.push(`${withVer(base)} ${size.width}w`)
   }
   if (m.url && m.width) {
-    const url = m.url.startsWith('http') ? m.url : `${PUBLIC_PAYLOAD_URL}${m.url}`
-    parts.push(`${url} ${m.width}w`)
+    const base = m.url.startsWith('http') ? m.url : `${PUBLIC_PAYLOAD_URL}${m.url}`
+    parts.push(`${withVer(base)} ${m.width}w`)
   }
   return parts.length > 0 ? parts.join(', ') : undefined
 }

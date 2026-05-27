@@ -8,6 +8,7 @@ import { TREATMENT_LIST, SUBCATEGORIES_BY_DISCIPLINE, IMG } from '@/content/seed
 import { SUBCATEGORY_DATA } from '@/content/subcategory-data'
 import { ClinicCatalogueTable } from './ClinicCatalogueTable'
 import { useCms } from '@/lib/cms-context'
+import { mediaUrl } from '@/lib/cms'
 import { DEFAULT_AUD_TO_IDR } from '@/lib/pricing'
 
 const DEFAULT_PAYMENT_TERMS: [string, string][] = [
@@ -76,9 +77,7 @@ export const PricingPage: React.FC = () => {
   const includedLabel = list.includedLabel || 'Included'
   const arrowChar = list.arrowChar || '→'
 
-  const heroImageUrl =
-    (hero.heroImage && typeof hero.heroImage === 'object' ? hero.heroImage.url : undefined) ||
-    IMG.texture
+  const heroImageUrl = mediaUrl(hero.heroImage) || IMG.texture
 
   return (
   <PageShell activePage="pricing">

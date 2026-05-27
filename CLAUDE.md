@@ -70,7 +70,7 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
 - **Be supercritical + reality-grounded + 99.9999999999999% accurate.** Never overreport. Every claim of "done", every checkbox ticked, every count must reflect literal truth on disk / live site / DB. **If unsure: verify TWICE, not once** (two independent checks — e.g. grep the file AND curl the URL; query the DB AND read the page HTML). No partial-credit framing, no aspirational status, no "✅" for items where any part is blocked.
 - **Never overwrite existing CMS/DB data.** If a field/row already has a non-empty value, do NOT overwrite. Seed/migration only inserts when destination is empty (`WHERE col IS NULL OR col = ''`). Wire-up reads before write. If existing non-empty data needs to change, **ASK first** — editor content is authoritative, seed defaults are placeholders.
 
-## Current state (Phase R0/R1/R2/R4/R6/R7/R8 shipped · R3/R5 pending · Phase 8 live · CR25May 31/41 closed · 3 launch-blocking open)
+## Current state (Phase R0/R1/R2/R4/R6/R7/R8 shipped · R3/R5 pending · Phase 8 live · CR25May 31/41 closed · 3 launch-blocking open · image audit 2026-05-27 ✅)
 
 - `packages/cms` — Payload 3.84.1 on Next.js 15.4.11 + Postgres adapter, port **4007**. Admin white-labelled as **Cosmedic CMS** (Cormorant Garamond + JetBrains Mono, brand-beige palette from `docs/assets/brand-guidelines.pdf`). Light theme default (q19, 2026-05-24).
   - **18 collections** in `src/collections/` (as of 2026-05-24 — `PricingTiers` removed in q5 `a1601e5`; `InclusionItems` + `ExclusionItems` removed in q19 `1b35bfb`; orphan `Pages` collection removed (Rule 4 gate resolved 2026-05-24 — DB table `pages` retained with 8 backup rows); R8 added `PrivacySections`): Users · Media · Surgeons · Disciplines · SubCategories · Procedures · BeforeAfterCases · Stories · PressMentions · Awards · RecoveryStays · BlogPosts · BlogTags · Authors · JourneySteps · Enquiries · PrivacySections.
@@ -122,6 +122,17 @@ Local Postgres on `127.0.0.1:5432`. Dedicated `cosmedic` role + db — never reu
 
 - **nginx CMS upload fix** (`6c5299b`, 2026-05-22): `location ^~ /api/media/` → `/api/media/file/` to break a 301→308 loop that ate POST bodies. Phase-10 30d cache preserved on `/file/*`.
 - **Pages → 14 Globals refactor** (`3bc02e5`, 2026-05-22): single `Pages` collection split into 14 per-route Globals, then later expanded to 18 Section Globals via R1/R4/R6/R7/R8. Original `Pages` collection unregistered 2026-05-24; DB table retained as one-shot rollback backup.
+
+### Image pipeline (2026-05-27)
+
+- **All 52 routes HTTP 200 ✅** (verified 2026-05-27). Real blog slugs: `the-quiet-rhinoplasty`, `before-you-fly`, `the-villa-protocol`, `fillers-restraint`, `achsi-what-it-means`, `crani-bali`, `dental-veneers-honesty`.
+- **10 page hero slots** — all unique, zero duplicates, zero placeholders. Journey + contact heroes are Vertex AI Imagen 3 generated (`journey-hero.webp` ID 94, `contact-hero.webp` ID 96).
+- **Contact visit map** (`contact-map.webp` ID 95) — AI-generated Nusa Dua coastal map illustration.
+- **`isPlaceholder` flag on IDs 73–92** — synthetic cream-coloured lifestyle PNGs from seed-upgrade-media.ts; suppressed in `mediaUrl()`. Do not unset.
+- **nginx media serving** — `/api/media/file/` served direct from disk (`alias /var/www/cosmedic/packages/cms/media/`), falling back to Payload proxy. CMS restarts never cause 404s.
+- **`?v=1` cache-bust** — appended to all CMS media URLs via `withVer()` in `cms.media.ts`. Bump to `v=2` on production migration.
+- **SubCategoryDetail heroImage** — now reads `cms.subCategories[slug].heroImage` first, falls back to `TREATMENT_IMG(parent.slug)`. 17 sub-cat slots are CMS-ready; none have images uploaded yet.
+- **Full image inventory** → `docs/image_inventory.md`.
 
 ### Gotchas to remember next session
 

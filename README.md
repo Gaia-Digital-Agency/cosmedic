@@ -31,6 +31,7 @@ Marketing site for **BIMC CosMedic** — Bali International Medical Centre's pla
 | [docs/changes/change_request_may25.md](./docs/changes/change_request_may25.md) | **Active CR — 41 items, 31 closed, 3 launch-blocking open** (25.3 SMTP · 25.32 visual QA · 25.38 form E2E). See also [temp.md](./temp.md) for Completed/Pending summary. |
 | [docs/changes/changes5-collections.md](./docs/changes/changes5-collections.md) | **CMS field rearrangement plan.** Phase 1 (reorders) ✅ + Phase 3 (hideHero toggles) ✅ shipped 2026-05-27. Phase 2 (D1/D2 field merges with DB migrations) pending. |
 | [docs/changes/changes7-db.md](./docs/changes/changes7-db.md) | DB operations reference. |
+| [docs/image_inventory.md](./docs/image_inventory.md) | **Image inventory** — every CMS image slot, media ID, filename, AI-generated/real/placeholder status. Last audited 2026-05-27. |
 | [docs/planning/phase-m-signoff.md](./docs/planning/phase-m-signoff.md) | Phase M mobile-responsive audit · sign-off (2026-05-23) |
 | [docs/planning/commit_list.md](./docs/planning/commit_list.md) | Commit-level tracker for the Phases D/C/P/N/Q/M work plan |
 | [docs/assets/brand-guidelines.pdf](./docs/assets/brand-guidelines.pdf) | BIMC CosMedic Brand Guidelines v1.0 (canonical brand source) |
@@ -50,7 +51,7 @@ Marketing site for **BIMC CosMedic** — Bali International Medical Centre's pla
 | TLS | Let's Encrypt via certbot |
 | Forms | react-hook-form + Zod |
 | Email | nodemailer (SMTP provider TBD) |
-| Images | Sharp + AVIF/WebP via Payload Media |
+| Images | Sharp + AVIF/WebP via Payload Media · Vertex AI Imagen 3 for AI-generated heroes |
 | Testing | Vitest + Playwright + visual regression |
 
 Internal abbreviation for this stack across Gaia infra: **VRTPN**.

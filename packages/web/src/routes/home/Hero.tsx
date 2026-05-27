@@ -86,7 +86,7 @@ export const Hero: React.FC = () => {
     <section className="hero-v2">
       <div className="hero-image-inner">
         {heroImage ? (
-          <Img media={heroMedia} src={heroImage} fallbackLabel="BIMC · NUSA DUA" fallbackHue={3} alt="" />
+          <Img media={heroMedia} src={heroImage} fallbackLabel="BIMC · NUSA DUA" fallbackHue={3} alt="" loading="eager" />
         ) : null}
         <div className="hero-image-vignette" />
       </div>

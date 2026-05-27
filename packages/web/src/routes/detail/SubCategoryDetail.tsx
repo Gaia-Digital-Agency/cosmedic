@@ -10,6 +10,7 @@ import { ProcedureFactsPanel } from '@/components/detail/ProcedureFactsPanel'
 import { TREATMENT_LIST, SURGEON_LIST, TREATMENT_IMG, IMG } from '@/content/seed'
 import { SUBCATEGORY_DATA } from '@/content/subcategory-data'
 import { useCms } from '@/lib/cms-context'
+import { mediaUrl } from '@/lib/cms'
 
 type Props = { disciplineSlug: string; slug: string }
 
@@ -48,9 +49,14 @@ export const SubCategoryDetail: React.FC<Props> = ({ disciplineSlug, slug }) => 
 
   const parent = TREATMENT_LIST.find((t) => t.slug === s.parent)
   const surgeon = SURGEON_LIST.find((x) => x.slug === s.leadSurgeon)
-  const heroImg = parent ? TREATMENT_IMG(parent.slug) : IMG.hero
 
   const cms = useCms()
+  // CMS heroImage on SubCategory record takes priority; falls back to the
+  // parent discipline's static asset so existing pages stay unchanged when
+  // no CMS image has been uploaded.
+  const cmsSub = cms?.subCategories?.find((sc) => sc.slug === slug && sc.parent)
+  const cmsHeroImg = cmsSub?.heroImage ? mediaUrl(cmsSub.heroImage) : undefined
+  const heroImg = cmsHeroImg || (parent ? TREATMENT_IMG(parent.slug) : IMG.hero)
   const tpl = cms?.subCategoryDetailTemplate
   // 25.30 — single-source WhatsApp number from CMS Settings; strip non-digits for wa.me URL
   const waNumber = (cms?.settings?.whatsappNumber || '').replace(/\D/g, '') || '6281339001911'

@@ -26,7 +26,8 @@ export const ChapterOpener: React.FC<Props> = ({
     <>
       <section className="chapter-opener">
         <div className="chapter-bg">
-          <Img src={image} fallbackLabel={imageLabel} fallbackHue={imageHue} alt="" />
+          {/* Hero is always above-the-fold — load eagerly, never lazy */}
+          <Img src={image} fallbackLabel={imageLabel} fallbackHue={imageHue} alt="" loading="eager" />
         </div>
         <div className="chapter-content">
           <div className="chapter-meta">

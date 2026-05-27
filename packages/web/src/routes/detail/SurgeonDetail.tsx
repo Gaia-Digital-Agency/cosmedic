@@ -134,6 +134,7 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
             fallbackLabel={imgLabel}
             fallbackHue={s.hue}
             alt=""
+            loading="eager"
             sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 700px"
           />
         </div>
