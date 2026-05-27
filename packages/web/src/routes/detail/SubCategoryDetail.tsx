@@ -6,7 +6,6 @@ import { Mono } from '@/components/primitives/Mono'
 import { FAQItem } from '@/components/detail/FAQItem'
 import { TreatmentRow } from '@/components/detail/TreatmentRow'
 import { SurgeonMini } from '@/components/detail/SurgeonMini'
-import { ProcedureFactsPanel } from '@/components/detail/ProcedureFactsPanel'
 import { TREATMENT_LIST, SURGEON_LIST, TREATMENT_IMG, IMG } from '@/content/seed'
 import { SUBCATEGORY_DATA } from '@/content/subcategory-data'
 import { useCms } from '@/lib/cms-context'
@@ -236,8 +235,6 @@ export const SubCategoryDetail: React.FC<Props> = ({ disciplineSlug, slug }) => 
               ))}
             </div>
           </section>
-
-          <ProcedureFactsPanel subCategorySlug={slug} />
 
           {s.faqs && s.faqs.length > 0 && (
             <section id="faqs">
