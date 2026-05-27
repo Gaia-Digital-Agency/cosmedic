@@ -138,16 +138,6 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
               </div>
             </div>
           </div>
-          <a
-            href="/results"
-            className={
-              activePage === 'gallery' || activePage === 'stories' || activePage === 'results'
-                ? 'active'
-                : ''
-            }
-          >
-            Results
-          </a>
           <div
             className={`has-dropdown ${openMenu === 'surgeons' ? 'open' : ''}`}
             onMouseEnter={() => openMenuNow('surgeons')}
@@ -185,6 +175,16 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
               </div>
             </div>
           </div>
+          <a
+            href="/results"
+            className={
+              activePage === 'gallery' || activePage === 'stories' || activePage === 'results'
+                ? 'active'
+                : ''
+            }
+          >
+            Results
+          </a>
           <a href="/pricing" className={activePage === 'pricing' ? 'active' : ''}>
             Pricing
           </a>
@@ -299,19 +299,6 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
             )}
           </div>
 
-          <div className="mobile-menu-links">
-            <a
-              href="/results"
-              className={
-                activePage === 'gallery' || activePage === 'stories' || activePage === 'results'
-                  ? 'active'
-                  : ''
-              }
-            >
-              Results
-            </a>
-          </div>
-
           <div className="mobile-menu-section">
             <button
               type="button"
@@ -347,6 +334,19 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
                 ))}
               </div>
             )}
+          </div>
+
+          <div className="mobile-menu-links">
+            <a
+              href="/results"
+              className={
+                activePage === 'gallery' || activePage === 'stories' || activePage === 'results'
+                  ? 'active'
+                  : ''
+              }
+            >
+              Results
+            </a>
           </div>
 
           <div className="mobile-menu-links">
