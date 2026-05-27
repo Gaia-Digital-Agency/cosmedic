@@ -159,7 +159,7 @@ export const ResultsPage: React.FC = () => {
         <p className="section-lede" style={{ maxWidth: 640 }}>{featured.lede}</p>
       </div>
 
-      <div className="filter-bar" style={{ maxWidth: 1280, margin: '0 auto 40px' }}>
+      <div className="filter-bar" style={{ marginBottom: 40 }}>
         <Mono>{featured.filterBarLabel}</Mono>
         <span style={{ marginLeft: 'auto' }} className="mono">
           {featured.countFormat.replace('{n}', String(BA_PAIRS.length))}
@@ -245,8 +245,6 @@ export const ResultsPage: React.FC = () => {
             textAlign: 'center',
             background: 'var(--paper-warm)',
             border: '1px solid var(--ink-20)',
-            maxWidth: 1280,
-            marginInline: 'auto',
           }}
         >
           <Mono>{library.eyebrow}</Mono>
@@ -284,7 +282,7 @@ export const ResultsPage: React.FC = () => {
         <p className="section-lede" style={{ maxWidth: 640 }}>{storiesView.lede}</p>
       </div>
 
-      <div className="stories-index" style={{ maxWidth: 1280, margin: '0 auto' }}>
+      <div className="stories-index">
         {STORIES.map((s, i) => (
           <Reveal key={i} delay={0} y={24}>
             <article className="story-row">
