@@ -97,22 +97,47 @@ export const Surgeons: React.FC = () => {
         style={{
           marginTop: 80,
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-end',
           alignItems: 'baseline',
           borderBottom: '1px solid var(--ink-20)',
           paddingBottom: 18,
         }}
       >
-        <Mono>{associatesEyebrow}</Mono>
         <Mono>{teamCaption}</Mono>
       </div>
       <Reveal delay={80}>
-        <div className="surgeons-team-photo" style={{ marginTop: 32 }}>
-          <Img
-            src={groupPhotoSrc}
-            alt={groupPhotoAlt}
-            sizes="(max-width: 700px) 100vw, (max-width: 1100px) 92vw, 1200px"
-          />
+        <div style={{ position: 'relative', marginTop: 32 }}>
+          <div className="surgeons-team-photo">
+            <Img
+              src={groupPhotoSrc}
+              alt={groupPhotoAlt}
+              sizes="(max-width: 700px) 100vw, (max-width: 1100px) 92vw, 1200px"
+            />
+          </div>
+          <a
+            href="/surgeons"
+            style={{
+              position: 'absolute',
+              bottom: 20,
+              right: 20,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+              padding: '10px 20px',
+              background: 'var(--ink-100)',
+              color: 'rgba(255,255,255,0.92)',
+              fontFamily: 'var(--font-mono)',
+              fontSize: 11,
+              letterSpacing: '0.20em',
+              textTransform: 'uppercase',
+              textDecoration: 'none',
+              transition: 'background .25s ease',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.background = 'var(--accent-deep)')}
+            onMouseLeave={e => (e.currentTarget.style.background = 'var(--ink-100)')}
+          >
+            Experts&nbsp;→
+          </a>
         </div>
       </Reveal>
     </section>
