@@ -28,7 +28,7 @@ export const Place: React.FC = () => {
       ? g.rows.map<[string, string]>((r) => [r.letter, r.text])
       : DEFAULT_ROWS
   const ctaLabel = g?.ctaLabel || 'View recovery stays'
-  const ctaHref = g?.ctaHref || '/recovery-stays'
+  const ctaHref = g?.ctaHref || '/journey'
   const placeImageSrc =
     g?.image && typeof g.image === 'object' ? mediaUrl(g.image, '') || IMG.bali : IMG.bali
 
