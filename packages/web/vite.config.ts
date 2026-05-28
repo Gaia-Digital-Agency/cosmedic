@@ -4,6 +4,10 @@ import path from 'node:path'
 
 export default defineConfig({
   plugins: [react()],
+  build: {
+    target: ['es2020', 'chrome90', 'firefox88', 'safari14'],
+    ssrManifest: true,
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
