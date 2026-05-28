@@ -18,6 +18,7 @@ import * as migration_20260524_153000_r3_treatments_globals from './20260524_153
 import * as migration_20260524_160000_r5_results_globals from './20260524_160000_r5_results_globals';
 import * as migration_20260525_080000_r2_home_globals from './20260525_080000_r2_home_globals';
 import * as migration_20260528_090000_analytics_topics_wordcount from './20260528_090000_analytics_topics_wordcount';
+import * as migration_20260528_120000_analytics_topics_id_trigger from './20260528_120000_analytics_topics_id_trigger';
 
 export const migrations = [
   {
@@ -123,5 +124,10 @@ export const migrations = [
     up: migration_20260528_090000_analytics_topics_wordcount.up,
     down: migration_20260528_090000_analytics_topics_wordcount.down,
     name: '20260528_090000_analytics_topics_wordcount',
+  },
+  {
+    up: migration_20260528_120000_analytics_topics_id_trigger.up,
+    down: migration_20260528_120000_analytics_topics_id_trigger.down,
+    name: '20260528_120000_analytics_topics_id_trigger',
   },
 ];
