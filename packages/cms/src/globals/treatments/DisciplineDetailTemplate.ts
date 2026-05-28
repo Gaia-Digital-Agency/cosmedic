@@ -7,6 +7,7 @@ export const DisciplineDetailTemplate: GlobalConfig = {
   label: 'Discipline Template',
   admin: {
     group: 'Treatments',
+    hidden: true,
     description:
       'Template-level strings shared across every /treatments/<discipline> page (6 routes). Per-discipline data (chapter, title, lede, hero image, body sections, faqs, sub-categories list, procedures list) lives on the row in e. Disciplines. This global controls only the chrome that repeats on every discipline detail page.',
   },

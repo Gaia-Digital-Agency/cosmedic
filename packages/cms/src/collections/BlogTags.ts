@@ -19,7 +19,8 @@ export const BlogTags: CollectionConfig = {
   },
   hooks: revalidationHooks(),
   fields: [
-    { name: 'slug', type: 'text', required: true, unique: true, index: true },
+    { name: 'slug', type: 'text', required: true, unique: true, index: true,
+      admin: { hidden: true } },
     { name: 'name', type: 'text', required: true },
     { name: 'description', type: 'textarea' },
     sortOrderField,

@@ -20,7 +20,8 @@ export const PressMentions: CollectionConfig = {
   },
   hooks: revalidationHooks(),
   fields: [
-    { name: 'slug', type: 'text', required: true, unique: true, index: true },
+    { name: 'slug', type: 'text', required: true, unique: true, index: true,
+      admin: { hidden: true } },
     { name: 'publication', type: 'text', required: true },
     { name: 'headline', type: 'text' },
     { name: 'url', type: 'text', admin: { description: 'Outbound link' } },

@@ -14,7 +14,7 @@ export const HomeHero: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     { name: 'breadcrumbLabel', type: 'text', defaultValue: 'Home',
-      admin: { description: 'Last segment in the breadcrumb trail (reserved — / does not currently render a breadcrumb).' } },
+      admin: { description: 'Last segment in the breadcrumb trail (reserved — / does not currently render a breadcrumb).', hidden: true } },
     { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'A sanctuary in Nusa Dua · Est. 1998',
       admin: { description: 'Small-caps eyebrow above the hero title.' } },
     {

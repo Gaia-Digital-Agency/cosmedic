@@ -87,10 +87,10 @@
 
 /* --- Generic page section --- */
 .page-section {
-  padding: 120px var(--page-x);
+  padding: 80px var(--page-x);
   border-bottom: 1px solid var(--ink-20);
 }
-.page-section.tight { padding: 100px var(--page-x); }
+.page-section.tight { padding: 64px var(--page-x); }
 .page-section.tinted { background: var(--paper-warm); }
 .page-section.cream { background: var(--cream); }
 .page-section.dark { background: var(--ink-100); color: white; }

@@ -309,7 +309,7 @@ export const ResultsPage: React.FC = () => {
       </div>
 
       <Reveal>
-        <div style={{ textAlign: 'center', maxWidth: 720, margin: '80px auto 0' }}>
+        <div style={{ textAlign: 'center', maxWidth: 720, margin: '48px auto 0' }}>
           <Mono>{share.eyebrow}</Mono>
           <h3
             className="section-title"

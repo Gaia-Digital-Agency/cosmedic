@@ -36,7 +36,7 @@ export const Analytics: CollectionConfig = {
       name: 'ip',
       type: 'text',
       label: 'IP Address',
-      admin: { readOnly: true },
+      admin: { readOnly: true, hidden: true },
     },
     {
       name: 'country',
@@ -51,13 +51,13 @@ export const Analytics: CollectionConfig = {
     {
       name: 'timezone',
       type: 'text',
-      admin: { readOnly: true },
+      admin: { readOnly: true, hidden: true },
     },
     {
       name: 'userAgent',
       type: 'text',
       label: 'Browser / Device',
-      admin: { readOnly: true },
+      admin: { readOnly: true, hidden: true },
     },
   ],
   timestamps: true,

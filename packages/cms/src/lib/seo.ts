@@ -3,7 +3,10 @@ import type { Field } from 'payload'
 export const seoGroup: Field = {
   name: 'seo',
   type: 'group',
-  admin: { description: 'Per-record SEO overrides for THIS page. Anything left blank inherits from the Globals → SEO & Meta → SEO Defaults record.' },
+  admin: {
+    description: 'Per-record SEO overrides for THIS page. Anything left blank inherits from the Globals → SEO & Meta → SEO Defaults record.',
+    hidden: true,
+  },
   fields: [
     { name: 'title', type: 'text',
       admin: { description: '<title> tag for this page only. Overrides the global title pattern when set.' } },
@@ -35,5 +38,9 @@ export const sortOrderField: Field = {
   name: 'sortOrder',
   type: 'number',
   defaultValue: 0,
-  admin: { position: 'sidebar', description: 'Lower numbers appear EARLIER in listings (mega-menu, index pages, cards). Use 0/10/20/30 leaving room to insert items between.' },
+  admin: {
+    position: 'sidebar',
+    description: 'Lower numbers appear EARLIER in listings (mega-menu, index pages, cards). Use 0/10/20/30 leaving room to insert items between.',
+    hidden: true,
+  },
 }

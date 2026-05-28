@@ -33,6 +33,7 @@ export const PrivacySections: CollectionConfig = {
       admin: {
         description:
           'Used as the URL anchor (#slug). Keep lowercase, hyphen-separated, no spaces. Editors should not change once a section is live (existing inbound links would break).',
+        hidden: true,
       },
     },
     { name: 'title', type: 'text', required: true },

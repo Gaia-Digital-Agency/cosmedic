@@ -21,7 +21,8 @@ export const RecoveryStays: CollectionConfig = {
   },
   hooks: revalidationHooks(),
   fields: [
-    { name: 'slug', type: 'text', required: true, unique: true, index: true },
+    { name: 'slug', type: 'text', required: true, unique: true, index: true,
+      admin: { hidden: true } },
     { name: 'name', type: 'text', required: true, admin: { description: 'Villa or suite name, e.g. "Villa Sembilan".' } },
     { name: 'location', type: 'text', admin: { description: 'Suburb / area, e.g. "Nusa Dua", "Ubud", "Sanur", "Jimbaran".' } },
     {
@@ -40,7 +41,7 @@ export const RecoveryStays: CollectionConfig = {
       name: 'imageHue',
       type: 'number',
       defaultValue: 0,
-      admin: { description: 'Fallback hue index (0-5) used when no image uploaded.' },
+      admin: { description: 'Fallback hue index (0-5) used when no image uploaded.', hidden: true },
     },
     {
       name: 'body',
@@ -61,17 +62,18 @@ export const RecoveryStays: CollectionConfig = {
       defaultValue: 'Available daily',
       admin: { description: 'Right-most meta cell, e.g. "Available daily".' },
     },
-    { name: 'gallery', type: 'array', fields: [{ name: 'image', type: 'upload', relationTo: 'media', required: true }] },
+    { name: 'gallery', type: 'array', fields: [{ name: 'image', type: 'upload', relationTo: 'media', required: true }],
+      admin: { hidden: true } },
     {
       name: 'descriptor',
       type: 'richText',
-      admin: { description: 'LEGACY — long-form descriptor (currently unused on /recovery-stays).' },
+      admin: { description: 'LEGACY — long-form descriptor (currently unused on /recovery-stays).', hidden: true },
     },
     { name: 'amenities', type: 'array', fields: [{ name: 'value', type: 'text', required: true }] },
     {
       name: 'priceFromAudPerNight',
       type: 'number',
-      admin: { description: 'Optional AUD price-from (auto-computed from IDR via Settings if blank).' },
+      admin: { description: 'Optional AUD price-from (auto-computed from IDR via Settings if blank).', hidden: true },
     },
     {
       name: 'priceFromIdrPerNight',
@@ -82,6 +84,7 @@ export const RecoveryStays: CollectionConfig = {
     {
       name: 'geo',
       type: 'group',
+      admin: { hidden: true },
       fields: [
         { name: 'lat', type: 'number' },
         { name: 'lng', type: 'number' },

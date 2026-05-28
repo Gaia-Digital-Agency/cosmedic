@@ -21,7 +21,8 @@ export const JourneySteps: CollectionConfig = {
   },
   hooks: revalidationHooks(),
   fields: [
-    { name: 'slug', type: 'text', required: true, unique: true, index: true },
+    { name: 'slug', type: 'text', required: true, unique: true, index: true,
+      admin: { hidden: true } },
     {
       name: 'order',
       type: 'number',
@@ -65,7 +66,7 @@ export const JourneySteps: CollectionConfig = {
       name: 'imageHue',
       type: 'number',
       defaultValue: 0,
-      admin: { description: 'Fallback hue index (0-5) used when no image uploaded.' },
+      admin: { description: 'Fallback hue index (0-5) used when no image uploaded.', hidden: true },
     },
     {
       name: 'dayLabel',
@@ -81,13 +82,14 @@ export const JourneySteps: CollectionConfig = {
       relationTo: 'media',
       admin: {
         description: 'OPTIONAL — small icon used by the older procedure-detail timeline block. Not rendered on /journey.',
+        hidden: true,
       },
     },
     {
       name: 'category',
       type: 'select',
       defaultValue: 'consult',
-      admin: { description: 'Used by the older procedure-detail timeline block for filtering. Not used by /journey.' },
+      admin: { description: 'Used by the older procedure-detail timeline block for filtering. Not used by /journey.', hidden: true },
       options: [
         { label: 'Consultation', value: 'consult' },
         { label: 'Medical', value: 'medical' },

@@ -21,9 +21,9 @@ export const SubCategories: CollectionConfig = {
   hooks: revalidationHooks(),
   fields: [
     { name: 'slug', type: 'text', required: true, index: true,
-      admin: { description: 'URL fragment scoped to the parent discipline. Two sub-categories may share a slug (e.g. "breast" under Surgical and Reconstructive) — uniqueness is enforced per (parent, slug). Renders at /treatments/{discipline-slug}/{slug}.' } },
+      admin: { description: 'URL fragment scoped to the parent discipline. Two sub-categories may share a slug (e.g. "breast" under Surgical and Reconstructive) — uniqueness is enforced per (parent, slug). Renders at /treatments/{discipline-slug}/{slug}.', hidden: true } },
     { name: 'parent', type: 'relationship', relationTo: 'disciplines', required: true,
-      admin: { description: 'Parent discipline (Surgical / Reconstructive / etc.). Determines where in the mega-menu this sub-category appears.' } },
+      admin: { description: 'Parent discipline (Surgical / Reconstructive / etc.). Determines where in the mega-menu this sub-category appears.', hidden: true } },
     { name: 'title', type: 'text', required: true,
       admin: { description: 'Display name shown on the mega-menu link and as the sub-category page heading. e.g. "Breast Surgery".' } },
     {

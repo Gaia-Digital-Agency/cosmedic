@@ -62,7 +62,7 @@
   .site-footer {
     background: var(--ink-100);
     color: rgba(255,255,255,0.7);
-    padding: 80px var(--page-x) 40px;
+    padding: 48px var(--page-x) 28px;
     position: relative;
   }
   .site-footer > * { position: relative; z-index: 3; }
@@ -82,7 +82,7 @@
     display: grid;
     grid-template-columns: 1.4fr 1fr 1fr 1fr;
     gap: 56px;
-    padding-bottom: 60px;
+    padding-bottom: 36px;
     border-bottom: 1px solid rgba(255,255,255,0.12);
   }
   .footer-brand p {
@@ -155,7 +155,7 @@
   .footer-col a:hover { color: white; padding-left: 4px; }
 
   .footer-bottom {
-    margin-top: 32px;
+    margin-top: 20px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     align-items: center;

@@ -21,7 +21,7 @@ export const Surgeons: CollectionConfig = {
   hooks: revalidationHooks(),
   fields: [
     { name: 'slug', type: 'text', required: true, unique: true, index: true,
-      admin: { description: 'URL fragment for the doctor\'s page. "suka" → https://cosmedic.gaiada.online/surgeons/suka. Lowercase, hyphens only.' } },
+      admin: { description: 'URL fragment for the doctor\'s page. "suka" → https://cosmedic.gaiada.online/surgeons/suka. Lowercase, hyphens only.', hidden: true } },
     { name: 'designation', type: 'text', defaultValue: 'dr.',
       admin: { description: 'Honorific prefix shown before the name (e.g. "dr.", "drg."). Default "dr.". Renamed from `title` (D2) to avoid collision with the admin useAsTitle field.' } },
     { name: 'name', type: 'text', required: true,
@@ -37,9 +37,9 @@ export const Surgeons: CollectionConfig = {
     { name: 'proc', type: 'text',
       admin: { description: 'Memberships line shown as the "Distinction" stat block on /surgeons/{slug}. e.g. "ISAPS Member".' } },
     { name: 'credLine', type: 'text',
-      admin: { description: 'Compact credentials line displayed under the name on the surgeon\'s grid card and bio aside. e.g. "ISAPS Member · 22 years experience".' } },
+      admin: { description: 'Compact credentials line displayed under the name on the surgeon\'s grid card and bio aside. e.g. "ISAPS Member · 22 years experience".', hidden: true } },
     { name: 'yearsInPractice', type: 'number',
-      admin: { description: 'Big number shown in the "Years in practice" stat block on /surgeons/{slug}.' } },
+      admin: { description: 'Big number shown in the "Years in practice" stat block on /surgeons/{slug}.', hidden: true } },
     { name: 'group', type: 'select', required: true, defaultValue: 'plastic-surgery',
       admin: { description: 'Determines which column of the Doctors mega-menu this surgeon appears in: "Plastic Surgery" or "Aesthetic Medicine".' },
       options: [
@@ -55,7 +55,7 @@ export const Surgeons: CollectionConfig = {
       admin: { description: 'Chip-style specialty tags shown under the bio (and as the "Specialty" stat block). Add 3–5 short tags.' },
       fields: [{ name: 'value', type: 'text', required: true }] },
     { name: 'credentialedProcedures', type: 'relationship', relationTo: 'procedures', hasMany: true,
-      admin: { description: 'Procedures this surgeon is credentialed for. Drives the reverse-link "Performed by" lists on procedure detail / sub-category pages.' } },
+      admin: { description: 'Procedures this surgeon is credentialed for. Drives the reverse-link "Performed by" lists on procedure detail / sub-category pages.', hidden: true } },
     {
       name: 'availabilitySchedule',
       type: 'array',
@@ -78,9 +78,9 @@ export const Surgeons: CollectionConfig = {
     { name: 'portrait', type: 'upload', relationTo: 'media',
       admin: { description: 'The surgeon\'s portrait shown on: (1) /surgeons grid card, (2) /surgeons/{slug} hero, (3) Doctors mega-menu thumbnail, (4) blog byline when this surgeon authored. Square crop ideal, ~500×500 minimum.' } },
     { name: 'portraitPosition', type: 'text', defaultValue: 'center 30%',
-      admin: { description: 'CSS object-position value (e.g. "center 30%") to fine-tune the crop focal point of the portrait image.' } },
+      admin: { description: 'CSS object-position value (e.g. "center 30%") to fine-tune the crop focal point of the portrait image.', hidden: true } },
     seoGroup,
     { name: 'hue', type: 'number', min: 0, max: 5, defaultValue: 0,
-      admin: { description: 'Brand-palette colour token (0-5) used as the placeholder gradient when the portrait fails to load.' } },
+      admin: { description: 'Brand-palette colour token (0-5) used as the placeholder gradient when the portrait fails to load.', hidden: true } },
   ],
 }
