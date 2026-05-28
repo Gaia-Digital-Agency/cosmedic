@@ -202,11 +202,17 @@ code,
  * large at this scale. Tighten to a denser list feel.
  * ─────────────────────────────────────────────────────────────────── */
 .collections__card-list .card {
-  padding: 9px 12px;
+  padding: 9px 8px;
   min-height: 44px;
-  gap: 10px;
+  gap: 8px;
   background: #d9ccb8;
 }
+
+/* More columns so each card is narrower */
+.collections { --cols: 6 !important; }
+@media (max-width: 1440px) { .collections { --cols: 5 !important; } }
+@media (max-width: 1024px) { .collections { --cols: 3 !important; } }
+@media (max-width: 768px)  { .collections { --cols: 2 !important; } }
 
 .collections__card-list {
   gap: 6px !important;
