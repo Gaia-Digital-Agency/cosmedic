@@ -4,7 +4,7 @@ import { ChapterOpener } from '@/components/primitives/ChapterOpener'
 import { Reveal } from '@/components/primitives/Reveal'
 import { Img } from '@/components/primitives/Img'
 import { Eyebrow } from '@/components/primitives/Mono'
-import { StatsRow } from '@/components/primitives/StatsRow'
+import { TrustStrip } from '@/routes/home/TrustStrip'
 import { TREATMENT_LIST, TREATMENT_IMG, IMG } from '@/content/seed'
 import { useCms } from '@/lib/cms-context'
 import { mediaUrl } from '@/lib/cms'
@@ -33,20 +33,12 @@ const FB = {
     readMoreLabel: 'Read more',
     readMoreArrow: '→',
   },
-  stats: [
-    { number: '28', label: 'Years in Bali' },
-    { number: '2,400+', label: 'Procedures yearly' },
-    { number: '8', label: 'Specialists on faculty' },
-    { number: '96%', label: 'Patient satisfaction' },
-  ],
 }
 
 export const TreatmentsIndex: React.FC = () => {
   const cms = useCms()
   const heroCms = cms?.treatmentsHero
   const indexCms = cms?.treatmentsIndexSection
-  const statsCms = cms?.treatmentsStats
-
   const hero = {
     chapter: heroCms?.chapter || FB.hero.chapter,
     titleA: heroCms?.titleA || FB.hero.titleA,
@@ -65,9 +57,6 @@ export const TreatmentsIndex: React.FC = () => {
     readMoreLabel: indexCms?.readMoreLabel || FB.index.readMoreLabel,
     readMoreArrow: indexCms?.readMoreArrow || FB.index.readMoreArrow,
   }
-
-  const stats =
-    statsCms?.stats && statsCms.stats.length > 0 ? statsCms.stats : FB.stats
 
   return (
     <PageShell activePage="treatments">
@@ -117,7 +106,7 @@ export const TreatmentsIndex: React.FC = () => {
         </div>
       </section>
 
-      <StatsRow stats={stats} variant="page-row" />
+      <TrustStrip />
     </PageShell>
   )
 }

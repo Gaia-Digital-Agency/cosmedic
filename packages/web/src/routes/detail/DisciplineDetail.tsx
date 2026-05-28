@@ -10,6 +10,7 @@ import { SurgeonMini } from '@/components/detail/SurgeonMini'
 import { TREATMENT_LIST, SURGEON_LIST, TREATMENT_IMG, SUBCATEGORY_IMG } from '@/content/seed'
 import { TREATMENT_CONTENT } from '@/content/treatment-content'
 import { useCms } from '@/lib/cms-context'
+import { mediaUrl } from '@/lib/cms'
 
 type Props = { slug: string }
 
@@ -177,7 +178,7 @@ export const DisciplineDetail: React.FC<Props> = ({ slug }) => {
                         }}
                       >
                         <Img
-                          src={SUBCATEGORY_IMG(slug, sc.slug) || heroImg}
+                          src={mediaUrl(sc.heroImage) || SUBCATEGORY_IMG(slug, sc.slug) || heroImg}
                           fallbackLabel={sc.title.toUpperCase()}
                           fallbackHue={(t.hue || 0) + i}
                           alt=""

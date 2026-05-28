@@ -233,7 +233,7 @@ export type LegacyDisciplineContent = {
   title: [string, string]
   lede: string
   leadSurgeon: string
-  subcategories?: Array<{ slug: string; title: string; short: string; available: boolean }>
+  subcategories?: Array<{ slug: string; title: string; short: string; available: boolean; heroImage?: number | import('./cms.types').CmsMedia }>
   overview: string
   sections: Array<{ id: string; t: string; body: string }>
   procedures?: Array<{ n: string; d: string; priceFromIdr: number | null }>
@@ -259,6 +259,7 @@ export function adaptDisciplineContent(slug: string, cms: CmsCache): LegacyDisci
       title: s.title,
       short: s.lede || s.tagline || '',
       available: true,
+      heroImage: s.heroImage,
     }))
 
   const procedures = cms.procedures
