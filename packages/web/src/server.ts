@@ -38,8 +38,33 @@ function extractTopics(text: string): string[] {
     .map(([topic]) => topic)
 }
 
+// Production-only singletons — initialised once at startup, reused per request.
+let _prodTemplate: string | null = null
+let _prodRender: ((url: string, cms?: unknown) => { html: string; status: number }) | null = null
+let _preloadHints = ''
+
 async function createServer() {
   const app = express()
+
+  // In production: cache template + render function + extract modulepreload hints
+  // at startup so each request never touches disk or re-imports the module.
+  // Also pre-warm the CMS cache so the very first user request is served fast.
+  if (isProduction) {
+    _prodTemplate = await fs.readFile(path.resolve(root, 'dist/client/index.html'), 'utf-8')
+    const serverEntry = await import(path.resolve(root, 'dist/server/entry-server.js'))
+    _prodRender = serverEntry.render
+
+    const jsMatch = _prodTemplate.match(/src="(\/assets\/index-[^"]+\.js)"/)
+    if (jsMatch) {
+      _preloadHints = `<link rel="modulepreload" crossorigin href="${jsMatch[1]}">\n`
+    }
+
+    console.log('[cosmedic-web] pre-warming CMS cache...')
+    await loadCmsCache().catch((err) =>
+      console.warn('[cosmedic-web] pre-warm failed (will retry on first request):', err),
+    )
+    console.log('[cosmedic-web] CMS cache ready')
+  }
 
   let vite: import('vite').ViteDevServer | undefined
 
@@ -288,9 +313,9 @@ async function createServer() {
         template = await vite.transformIndexHtml(req.originalUrl, template)
         render = (await vite.ssrLoadModule('/src/entry-server.tsx')).render
       } else {
-        template = await fs.readFile(path.resolve(root, 'dist/client/index.html'), 'utf-8')
-        const serverEntry = await import(path.resolve(root, 'dist/server/entry-server.js'))
-        render = serverEntry.render
+        // Use startup-cached template and render — no disk I/O per request.
+        template = _prodTemplate!
+        render = _prodRender!
       }
 
       const { html: appHtml, status } = render(pathname, cms)
@@ -299,7 +324,7 @@ async function createServer() {
       const analyticsHtml = renderAnalytics()
       const html = template
         .replace('<!--ssr-outlet-->', appHtml)
-        .replace('<!--seo-outlet-->', seoHtml)
+        .replace('<!--seo-outlet-->', _preloadHints + seoHtml)
         .replace('<!--analytics-outlet-->', analyticsHtml)
       res
         .status(status)
