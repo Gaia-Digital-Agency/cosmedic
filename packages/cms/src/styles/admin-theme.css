@@ -167,3 +167,67 @@ code,
 .nav__wrap .nav-group__content .nav__link.active::before {
   opacity: 1;
 }
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Nav separator lines — darker brand-brown hairline.
+ * CosmedicNavLabels.tsx sets border-top via inline <style>; !important
+ * overrides that specificity so the brand brown shows through.
+ * ─────────────────────────────────────────────────────────────────── */
+.cosmedic-nav-sep {
+  border-top-color: rgba(83, 62, 39, 0.45) !important;
+}
+
+[data-theme='dark'] .cosmedic-nav-sep {
+  border-top-color: rgba(166, 124, 82, 0.4) !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Alternating warm tint on even nav bucket groups in the sidebar.
+ * Subtle banded effect across the 9 admin buckets.
+ * ─────────────────────────────────────────────────────────────────── */
+.nav__wrap .nav-group:nth-child(even) {
+  background: rgba(166, 124, 82, 0.07);
+  border-radius: 4px;
+  margin-inline: -8px;
+  padding-inline: 8px;
+}
+
+[data-theme='dark'] .nav__wrap .nav-group:nth-child(even) {
+  background: rgba(166, 124, 82, 0.10);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Main area collection cards — compact sizing.
+ * Default Payload card is padding:16px / min-height:80px which feels
+ * large at this scale. Tighten to a denser list feel.
+ * ─────────────────────────────────────────────────────────────────── */
+.collections__card-list .card {
+  padding: 9px 12px;
+  min-height: 44px;
+  gap: 10px;
+  background: #d9ccb8;
+}
+
+.collections__card-list {
+  gap: 6px !important;
+}
+
+.collections__wrap {
+  gap: 20px !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Alternating brown bands on even bucket groups in the main content
+ * area dashboard (collections__group inside collections__wrap).
+ * Slightly darker than nav to read on the lighter paper background.
+ * ─────────────────────────────────────────────────────────────────── */
+.collections__wrap .collections__group:nth-child(even) {
+  background: rgba(83, 62, 39, 0.06);
+  border-radius: 6px;
+  margin-inline: -16px;
+  padding: 8px 16px 12px;
+}
+
+[data-theme='dark'] .collections__wrap .collections__group:nth-child(even) {
+  background: rgba(166, 124, 82, 0.12);
+}
