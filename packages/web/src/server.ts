@@ -18,6 +18,26 @@ const root = path.resolve(__dirname, '..')
 const isProduction = process.env.NODE_ENV === 'production'
 const port = Number(process.env.PORT) || 3007
 
+const TOPIC_KEYWORDS: [string, string[]][] = [
+  ['face',           ['face', 'facial', 'facelift', 'rhinoplasty', 'nose job', 'eyelid', 'blepharoplasty', 'otoplasty', 'ear reshap', 'jawline', 'jaw', 'chin', 'cheek', 'brow lift', 'forehead lift']],
+  ['breast',         ['breast', 'augmentation', 'implant', 'mastopexy', 'nipple', 'areola', 'tram flap', 'diep', 'breast lift', 'breast reduction', 'breast recon']],
+  ['body',           ['body', 'liposuction', 'lipo', 'tummy tuck', 'abdominoplasty', 'labia', 'arm lift', 'thigh lift', 'brachioplasty', 'mommy makeover']],
+  ['reconstructive', ['reconstruct', 'scar revision', 'keloid', 'burn', 'cleft', 'craniofacial', 'trauma', 'orbital', 'microtia', 'skin graft', 'flap']],
+  ['injectables',    ['botox', 'botulinum', 'filler', 'injectable', 'toxin', 'hyaluronic', 'dysport', 'juvederm', 'sculptra', 'radiesse', 'anti-wrinkle']],
+  ['laser',          ['laser', 'resurfacing', 'picosecond', 'pico', 'fraxel', 'ipl', 'co2 laser', 'ablative', 'non-ablative', 'tattoo removal']],
+  ['skin',           ['skin', 'chemical peel', 'hydrafacial', 'microneedling', 'prp', 'polynucleotide', 'mesotherapy', 'acne', 'pigment', 'melasma', 'rosacea']],
+  ['hair',           ['hair', 'fue', 'dhi', 'hair transplant', 'alopecia', 'scalp', 'beard restoration', 'eyebrow restoration', 'follicle', 'thinning hair', 'hair loss']],
+  ['dental',         ['dental', 'veneer', 'teeth', 'whitening', 'alignment', 'invisalign', 'clearcorrect', 'smile', 'porcelain', 'composite bonding', 'retainer', 'orthodontic']],
+  ['weight-loss',    ['weight', 'bariatric', 'gastric bypass', 'gastric sleeve', 'bypass', 'sleeve gastrectomy', 'obesity', 'ozempic', 'semaglutide', 'tirzepatide', 'mounjaro', 'wegovy', 'glp-1', 'glp1', 'balloon', 'intragastric', 'endoscopic sleeve']],
+]
+
+function extractTopics(text: string): string[] {
+  const lower = text.toLowerCase()
+  return TOPIC_KEYWORDS
+    .filter(([, keywords]) => keywords.some((kw) => lower.includes(kw)))
+    .map(([topic]) => topic)
+}
+
 async function createServer() {
   const app = express()
 
@@ -157,15 +177,19 @@ async function createServer() {
       // Fire-and-forget: log question to Analytics collection in CMS.
       const geo = geoip.lookup(ip)
       const payloadUrl = process.env.PAYLOAD_URL || 'http://127.0.0.1:4007'
+      const topics = extractTopics(message)
+      const wordCount = message.trim().split(/\s+/).filter(Boolean).length
       fetch(`${payloadUrl}/api/analytics`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           question: message,
+          topics: topics.length > 0 ? topics : undefined,
+          wordCount,
           askedAt: new Date().toISOString(),
           ip,
           country: geo?.country || undefined,
-          city: geo?.city || undefined,
+          city: geo?.city || (geo?.timezone ? geo.timezone.split('/').pop()?.replace(/_/g, ' ') : undefined),
           timezone: geo?.timezone || undefined,
           userAgent: (req.headers['user-agent'] as string | undefined)?.slice(0, 500),
         }),

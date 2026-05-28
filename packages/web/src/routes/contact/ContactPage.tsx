@@ -464,6 +464,7 @@ export const ContactPage: React.FC = () => {
                   fallbackLabel={visit.mapImageLabel || 'NUSA DUA · BALI'}
                   fallbackHue={visit.mapImageHue ?? 4}
                   alt=""
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
               </div>
               <div className="contact-hours-grid">

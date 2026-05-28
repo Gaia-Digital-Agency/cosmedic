@@ -221,6 +221,15 @@ const TREATMENT_IMAGES: Record<string, string> = {
 
 export const TREATMENT_IMG = (slug: string): string => TREATMENT_IMAGES[slug] || ''
 
+const SUBCATEGORY_IMAGES: Record<string, string> = {
+  'reconstructive/breast': '/assets/treatments/recon-breast.webp',
+  'reconstructive/trauma': '/assets/treatments/recon-trauma.webp',
+  'reconstructive/craniofacial': '/assets/treatments/recon-craniofacial.webp',
+}
+
+export const SUBCATEGORY_IMG = (disciplineSlug: string, subSlug: string): string =>
+  SUBCATEGORY_IMAGES[`${disciplineSlug}/${subSlug}`] || ''
+
 const SURGEON_PORTRAITS: Record<string, string> = {
   suka: '/assets/surgeons/suka.png',
   astri: '/assets/surgeons/astri.png',
