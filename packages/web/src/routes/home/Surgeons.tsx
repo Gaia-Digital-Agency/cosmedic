@@ -1,9 +1,8 @@
 import React from 'react'
 import { Reveal } from '@/components/primitives/Reveal'
 import { Img } from '@/components/primitives/Img'
-import { Mono, Eyebrow } from '@/components/primitives/Mono'
+import { Mono } from '@/components/primitives/Mono'
 import { Btn } from '@/components/primitives/Btn'
-import { SURGEON_LIST, SURGEON_IMG } from '@/content/seed'
 import { useCms } from '@/lib/cms-context'
 import { mediaUrl } from '@/lib/cms.media'
 
@@ -12,132 +11,60 @@ const TEAM_PLACEHOLDER = '/assets/surgeons/team-placeholder.webp'
 export const Surgeons: React.FC = () => {
   const cms = useCms()
   const g = cms?.homeSurgeonsView
-  const eyebrow = g?.eyebrow || 'Meet the Surgeons'
-  const leadSurgeonEyebrow = g?.leadSurgeonEyebrow || 'Lead Surgeon'
-  const leadBodyDefault = (
-    <>
-      ISAPS-member plastic surgeon with seven years of practice in Bali, fellowship-trained in
-      maxillofacial surgery in Japan, specializing in{' '}
-      <em>facial aesthetics, body contouring and breast surgery</em>. Cited by patients for a
-      conservative, natural-result approach.
-    </>
-  )
-  const leadStat1Label = g?.leadStat1Label || 'Trained'
-  const leadStat1Value = g?.leadStat1Value || 'Indonesia · Japan'
-  const leadStat2Label = g?.leadStat2Label || 'Specialty'
-  const leadStat2Value = g?.leadStat2Value || 'Facial Aesthetics'
-  const leadStat3Label = g?.leadStat3Label || 'Society'
-  const leadStat3Value = g?.leadStat3Value || 'ISAPS Member'
-  const leadCtaLabel = g?.leadCtaLabel || 'Read the full profile'
-  const associatesEyebrow = g?.associatesEyebrow || 'Associate Surgeons & Aestheticians'
-  const teamCaption = g?.teamCaption || 'The Cosmedic Team'
+
+  const eyebrow = g?.eyebrow || '8 Specialists'
+  const teamCaption = g?.teamCaption || 'One team, one standard.'
+  const leadBody = typeof g?.leadBody === 'string'
+    ? g.leadBody
+    : 'Our plastic and aesthetic doctors work side by side under one ACHSI-accredited roof.'
+  const leadCtaLabel = g?.leadCtaLabel || 'Meet all the doctors'
 
   const groupPhotoSrc = mediaUrl(g?.groupPhoto, TEAM_PLACEHOLDER) || TEAM_PLACEHOLDER
   const groupPhotoAlt =
-    g?.groupPhotoAlt ||
     (g?.groupPhoto && typeof g.groupPhoto === 'object' ? g.groupPhoto.alt : undefined) ||
-    associatesEyebrow
+    g?.groupPhotoAlt ||
+    'The Cosmedic surgical team'
 
-  const lead = SURGEON_LIST[0]
-  const leadFirstNames = lead.name.split(' ').slice(0, -1).join(' ')
-  const leadLastName = lead.name.split(' ').slice(-1)[0]
+  // Split teamCaption into two lines on comma if present
+  const captionParts = teamCaption.split(',')
+  const captionLine1 = captionParts[0] ? captionParts[0].trim() + ',' : teamCaption
+  const captionLine2 = captionParts[1] ? captionParts[1].trim() : null
 
   return (
-    <section className="surgeons" id="surgeons">
+    <section className="surgeons-banner" id="surgeons">
       <Reveal>
-        <Eyebrow>{eyebrow}</Eyebrow>
-      </Reveal>
-      <div className="surgeons-feature">
-        <Reveal delay={120}>
-          <div className="surgeons-feature-img" data-surgeon={lead.slug}>
-            <Img
-              media={lead.portrait}
-              src={SURGEON_IMG(lead.slug)}
-              fallbackLabel={`DR. ${lead.common.toUpperCase()}`}
-              fallbackHue={lead.hue}
-              alt={`Portrait of ${lead.title} ${lead.common}`}
-              sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 600px"
-            />
-          </div>
-        </Reveal>
-        <Reveal delay={240} style={{ paddingTop: 32 }}>
-          <Mono>{leadSurgeonEyebrow}</Mono>
-          <h2 className="surgeon-name">
-            <span>
-              {lead.title} {leadFirstNames}
-            </span>
-            <br />
-            <span className="italic">{leadLastName}</span>
-          </h2>
-          <p className="surgeon-credentials">{lead.cred}</p>
-          <p className="surgeon-body">
-            {g?.leadBody ?? leadBodyDefault}
-          </p>
-          <div className="surgeon-stats">
+        <div className="surgeons-banner-img-wrap">
+          {/* Image */}
+          <Img
+            src={groupPhotoSrc}
+            alt={groupPhotoAlt}
+            sizes="(max-width: 700px) 100vw, (max-width: 1200px) 92vw, 1400px"
+          />
+          {/* Tile — text overlay */}
+          <div className="surgeons-banner-tile">
+            {/* Eyebrow */}
+            <Mono className="surgeons-banner-eyebrow">{eyebrow}</Mono>
+            {/* Heading */}
+            <h2 className="surgeons-banner-heading">
+              {captionLine2 ? (
+                <>
+                  {captionLine1}
+                  <br />
+                  <em>{captionLine2}</em>
+                </>
+              ) : (
+                teamCaption
+              )}
+            </h2>
+            {/* Body text */}
+            <p className="surgeons-banner-body">{leadBody}</p>
+            {/* CTA */}
             <div>
-              <Mono>{leadStat1Label}</Mono>
-              <span>{leadStat1Value}</span>
-            </div>
-            <div>
-              <Mono>{leadStat2Label}</Mono>
-              <span>{leadStat2Value}</span>
-            </div>
-            <div>
-              <Mono>{leadStat3Label}</Mono>
-              <span>{leadStat3Value}</span>
+              <Btn kind="accent" as="a" href="/surgeons">
+                {leadCtaLabel}&nbsp;→
+              </Btn>
             </div>
           </div>
-          <Btn kind="ghost" as="a" href={`/surgeons/${lead.slug}`}>
-            {leadCtaLabel}
-          </Btn>
-        </Reveal>
-      </div>
-
-      <div
-        style={{
-          marginTop: 80,
-          display: 'flex',
-          justifyContent: 'flex-end',
-          alignItems: 'baseline',
-          borderBottom: '1px solid var(--ink-20)',
-          paddingBottom: 18,
-        }}
-      >
-        <Mono>{teamCaption}</Mono>
-      </div>
-      <Reveal delay={80}>
-        <div style={{ position: 'relative', marginTop: 32 }}>
-          <div className="surgeons-team-photo">
-            <Img
-              src={groupPhotoSrc}
-              alt={groupPhotoAlt}
-              sizes="(max-width: 700px) 100vw, (max-width: 1100px) 92vw, 1200px"
-            />
-          </div>
-          <a
-            href="/surgeons"
-            style={{
-              position: 'absolute',
-              bottom: 20,
-              right: 20,
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-              padding: '10px 20px',
-              background: 'var(--ink-100)',
-              color: 'rgba(255,255,255,0.92)',
-              fontFamily: 'var(--font-mono)',
-              fontSize: 11,
-              letterSpacing: '0.20em',
-              textTransform: 'uppercase',
-              textDecoration: 'none',
-              transition: 'background .25s ease',
-            }}
-            onMouseEnter={e => (e.currentTarget.style.background = 'var(--accent-deep)')}
-            onMouseLeave={e => (e.currentTarget.style.background = 'var(--ink-100)')}
-          >
-            Experts&nbsp;→
-          </a>
         </div>
       </Reveal>
     </section>

@@ -308,6 +308,58 @@
   /* ============================================
      SURGEONS
      ============================================ */
+  .surgeons-banner {
+    padding: 80px var(--page-x);
+    background: var(--paper-warm);
+    border-bottom: 1px solid var(--ink-20);
+  }
+  .surgeons-banner-img-wrap {
+    position: relative;
+    aspect-ratio: 21 / 8;
+    overflow: hidden;
+    background: var(--ink-100);
+  }
+  .surgeons-banner-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: saturate(0.88) brightness(0.9);
+    transition: transform 1.2s cubic-bezier(.2,.7,.2,1);
+  }
+  .surgeons-banner-img-wrap:hover img { transform: scale(1.02); }
+  .surgeons-banner-tile {
+    position: absolute;
+    inset: 0;
+    padding: clamp(28px, 4vw, 56px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    background: linear-gradient(to right, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.38) 55%, transparent 80%);
+    max-width: 60%;
+  }
+  .surgeons-banner-eyebrow {
+    color: rgba(255,255,255,0.72);
+    margin-bottom: 14px;
+  }
+  .surgeons-banner-heading {
+    font-family: var(--font-serif);
+    font-size: clamp(32px, 3.8vw, 58px);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: #fff;
+    margin: 0 0 18px;
+  }
+  .surgeons-banner-heading em { font-style: italic; color: #fff; }
+  .surgeons-banner-body {
+    color: rgba(255,255,255,0.80);
+    font-size: 15px;
+    line-height: 1.65;
+    margin: 0 0 28px;
+    max-width: 380px;
+  }
+  /* keep old .surgeons class for backwards compat with interior pages */
   .surgeons {
     padding: 140px var(--page-x);
     background: var(--paper-warm);
