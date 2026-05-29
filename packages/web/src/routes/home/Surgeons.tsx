@@ -61,7 +61,7 @@ export const Surgeons: React.FC = () => {
             {/* CTA */}
             <div>
               <Btn kind="accent" as="a" href="/experts">
-                {leadCtaLabel}&nbsp;→
+                {leadCtaLabel}
               </Btn>
             </div>
           </div>

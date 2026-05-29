@@ -81,8 +81,8 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
   }, [mobileOpen])
 
   const surgeonCols = [
-    { key: 'surgical', label: 'Surgical Experts', group: 'Plastic Surgery', anchor: 'surgical' },
-    { key: 'aesthetic', label: 'Aesthetic Experts', group: 'Aesthetic Medicine', anchor: 'aesthetic' },
+    { key: 'surgical', label: 'Surgical Doctors', group: 'Plastic Surgery', anchor: 'surgical' },
+    { key: 'aesthetic', label: 'Aesthetic Doctors', group: 'Aesthetic Medicine', anchor: 'aesthetic' },
   ] as const
 
   return (
@@ -104,7 +104,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
               href="/procedures"
               className={activePage.startsWith('treatment') ? 'active' : ''}
             >
-              Treatments
+              Procedures
             </a>
             <div className="dropdown-panel dropdown-panel-wide">
               <div className="dropdown-panel-grid">
@@ -258,13 +258,13 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
               className={`mobile-menu-head ${mobileTreatmentsOpen ? 'open' : ''}`}
               onClick={() => setMobileTreatmentsOpen((o) => !o)}
             >
-              <span>Treatments</span>
+              <span>Procedures</span>
               <span className="mobile-chev">{mobileTreatmentsOpen ? '−' : '+'}</span>
             </button>
             {mobileTreatmentsOpen && (
               <div className="mobile-submenu">
                 <a href="/procedures" className="mobile-submenu-all">
-                  All treatments →
+                  All procedures →
                 </a>
                 {TREATMENT_LIST.map((t) => {
                   const subs = SUBCATEGORIES_BY_DISCIPLINE[t.slug] || []

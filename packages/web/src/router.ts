@@ -101,6 +101,7 @@ const LEGACY_SUB_REDIRECTS: Record<string, string> = {
   // 'breast' has TWO parents — surgical and reconstructive. Map to surgical (original behaviour).
   'breast':                        '/procedures/surgical/surgical-breast',
   // 25.16: short prod-era slugs that no longer exist in the CMS
+  'rhinoplasty':                   '/procedures/surgical/rhinoplasty',
   'face':                          '/procedures/surgical/face-neck',
   'body':                          '/procedures/surgical/surgical-body',
   'fue':                           '/procedures/hair/hair-fue',
