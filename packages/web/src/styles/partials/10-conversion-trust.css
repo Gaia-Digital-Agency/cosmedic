@@ -334,7 +334,7 @@ a.price-row:hover .pr-name { color: var(--accent-deep); }
 .lead-magnet-cover-photo {
   position: absolute;
   inset: 0;
-  opacity: 1;
+  opacity: 0;
   transition: opacity 0.65s cubic-bezier(.4,0,.2,1);
   pointer-events: none;
 }
@@ -343,7 +343,7 @@ a.price-row:hover .pr-name { color: var(--accent-deep); }
   object-fit: cover;
   display: block;
 }
-.lead-magnet-cover:hover .lead-magnet-cover-photo { opacity: 0; }
+.lead-magnet-cover:hover .lead-magnet-cover-photo { opacity: 1; }
 /* legacy — kept for backwards compat */
 .lead-magnet-cover-img {
   padding: 0;
