@@ -185,14 +185,23 @@ code,
  * Alternating warm tint on even nav bucket groups in the sidebar.
  * Subtle banded effect across the 9 admin buckets.
  * ─────────────────────────────────────────────────────────────────── */
-.nav__wrap .nav-group:nth-child(even) {
+/* Band on VISUALLY-even nav buckets. :nth-child follows DOM order, not the
+ * flex order applied below, so target the even-position buckets by anchor id:
+ * 2 Treatments, 4 Results, 6 Publications, 8 Users. Keep in sync with order block. */
+.nav__wrap > .nav-group:has(#nav-disciplines),
+.nav__wrap > .nav-group:has(#nav-before-after-cases),
+.nav__wrap > .nav-group:has(#nav-blog-posts),
+.nav__wrap > .nav-group:has(#nav-users) {
   background: rgba(166, 124, 82, 0.07);
   border-radius: 4px;
   margin-inline: -8px;
   padding-inline: 8px;
 }
 
-[data-theme='dark'] .nav__wrap .nav-group:nth-child(even) {
+[data-theme='dark'] .nav__wrap > .nav-group:has(#nav-disciplines),
+[data-theme='dark'] .nav__wrap > .nav-group:has(#nav-before-after-cases),
+[data-theme='dark'] .nav__wrap > .nav-group:has(#nav-blog-posts),
+[data-theme='dark'] .nav__wrap > .nav-group:has(#nav-users) {
   background: rgba(166, 124, 82, 0.10);
 }
 

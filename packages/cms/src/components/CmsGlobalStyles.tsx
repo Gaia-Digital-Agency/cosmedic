@@ -134,6 +134,20 @@ function injectBucketCrumb(bucket: string | null) {
 export default function CmsGlobalStyles({ children }: { children?: React.ReactNode }) {
   const pathname = usePathname()
 
+  // Default theme = LIGHT (not OS-auto). Payload's theme provider falls back to
+  // prefers-color-scheme when no theme cookie exists; seed 'light' so first load
+  // is light. Toggle still works (it overwrites this cookie). Runs once.
+  useEffect(() => {
+    const hasThemeCookie = document.cookie
+      .split('; ')
+      .some((row) => row.startsWith('payload-theme=light') || row.startsWith('payload-theme=dark'))
+    if (!hasThemeCookie) {
+      const d = new Date(); d.setTime(d.getTime() + 365 * 864e5)
+      document.cookie = `payload-theme=light;expires=${d.toUTCString()};path=/`
+      document.documentElement.setAttribute('data-theme', 'light')
+    }
+  }, [])
+
   useEffect(() => {
     const bucket = getBucket(pathname ?? '')
 
