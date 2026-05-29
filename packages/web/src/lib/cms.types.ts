@@ -788,6 +788,15 @@ export type LibraryCtaGlobal = {
   body?: string
   buttonLabel?: string
   buttonHref?: string
+  share?: {
+    eyebrow?: string
+    headingPre?: string
+    headingItalic?: string
+    headingPost?: string
+    body?: string
+    buttonLabel?: string
+    buttonHref?: string
+  }
 }
 
 export type ShareCtaGlobal = {
