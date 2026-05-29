@@ -240,3 +240,17 @@ Cumulative hidden: ~88% of all fields
 | C2 | Hero globals: title.a+title.b → title (newline) | ⏳ pending approval |
 | C3 | Lead Magnet: coverLine1+2+3 → coverTitle | ⏳ pending approval |
 | C4 | Lead Magnet: coverFoot1+2 → coverFooter | ⏳ pending approval |
+
+---
+
+## Fix — audToIdrRate + roundIdrTo restored (2026-05-29)
+
+Both fields were incorrectly hidden in iteration 4 Group B.
+Exchange rate is operational — admin updates it when AUD/IDR moves.
+
+| Bucket | Item | Field | Action |
+|--------|------|-------|--------|
+| Homepage | Settings | audToIdrRate | Restored to visible |
+| Homepage | Settings | roundIdrTo | Restored to visible |
+
+**Location in admin:** Homepage → Settings → AUD → IDR conversion rate

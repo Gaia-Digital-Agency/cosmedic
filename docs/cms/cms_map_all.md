@@ -1,5 +1,7 @@
 # Cosmedic CMS — Complete Field Map
 
+> **ITERATION 4 APPLIED (2026-05-29):** 8 items newly hidden (Groups A), ~110 fields newly hidden (Group B), C1 surgeon name merge, C3/C4 lead magnet cover merge. audToIdrRate + roundIdrTo restored. See cms_optional.md for full change log. The field listing below is accurate for all hidden flags as of this date.
+>
 > Full inventory of every field across all 19 collections (18 + Analytics) and 63 globals.
 > 63 globals = 10 top-level + 21 pages/ + 10 home/ + 5 doctors/ + 7 pricing/ + 5 results/ + 5 treatments/.
 > Format: dot-notation for group sub-fields (`heading.a`). Arrays shown as `items (field, field)`.
