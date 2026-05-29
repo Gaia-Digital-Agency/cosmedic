@@ -35,7 +35,7 @@ export const Footer: React.FC = () => {
   const treatmentLinks = (cms?.disciplines || [])
     .slice()
     .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
-    .map((d) => ({ label: d.title, href: `/treatments/${d.slug}` }))
+    .map((d) => ({ label: d.title, href: `/procedures/${d.slug}` }))
 
   const cmsCols = Array.isArray(fg?.linkColumns) ? fg!.linkColumns : []
   const useCmsCols = cmsCols.length > 0
@@ -90,7 +90,7 @@ export const Footer: React.FC = () => {
         <div className="footer-col">
           <Mono>{treatmentsHeading}</Mono>
           <ul>
-            {(treatmentLinks.length > 0 ? treatmentLinks : TREATMENT_LIST.map((t) => ({ label: t.t, href: `/treatments/${t.slug}` }))).map((link) => (
+            {(treatmentLinks.length > 0 ? treatmentLinks : TREATMENT_LIST.map((t) => ({ label: t.t, href: `/procedures/${t.slug}` }))).map((link) => (
               <li key={link.href}>
                 <a href={link.href}>{link.label}</a>
               </li>
@@ -133,7 +133,7 @@ export const Footer: React.FC = () => {
             <div className="footer-col">
               <Mono>About</Mono>
               <ul>
-                <li><a href="/surgeons">Experts</a></li>
+                <li><a href="/experts">Experts</a></li>
                 <li><a href="/journey">Your Journey</a></li>
                 <li><a href="/results">Results</a></li>
                 <li><a href="/pricing">Pricing</a></li>

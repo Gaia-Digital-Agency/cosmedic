@@ -247,8 +247,8 @@ async function createServer() {
     const base = (cms.seoDefaults?.sitemapBaseUrl || '').trim() || 'https://cosmedic.gaiada.online'
     const staticRoutes = [
       '/',
-      '/treatments',
-      '/surgeons',
+      '/procedures',
+      '/experts',
       '/journey',
       '/gallery',
       '/results',
@@ -263,17 +263,17 @@ async function createServer() {
     ]
     const dynamic: string[] = []
     for (const d of cms.disciplines || []) {
-      dynamic.push(`/treatments/${d.slug}`)
+      dynamic.push(`/procedures/${d.slug}`)
     }
     for (const sc of cms.subCategories || []) {
       const parent = sc.parent
       const parentSlug =
         parent && typeof parent === 'object' ? parent.slug : undefined
       if (!parentSlug) continue
-      dynamic.push(`/treatments/${parentSlug}/${sc.slug}`)
+      dynamic.push(`/procedures/${parentSlug}/${sc.slug}`)
     }
     for (const s of cms.surgeons || []) {
-      dynamic.push(`/surgeons/${s.slug}`)
+      dynamic.push(`/experts/${s.slug}`)
     }
     for (const bp of cms.blogPosts || []) {
       dynamic.push(`/blog/${bp.slug}`)

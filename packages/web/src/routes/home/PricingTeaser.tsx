@@ -60,7 +60,7 @@ export const PricingTeaser: React.FC = () => {
         {PRICE_TEASER.map((p, i) => (
           <Reveal key={p.name + i} delay={i * 50} y={20}>
             <a
-              href={`/treatments/${p.parent}/${p.slug}`}
+              href={`/procedures/${p.parent}/${p.slug}`}
               className="price-row"
               style={{
                 color: 'inherit',

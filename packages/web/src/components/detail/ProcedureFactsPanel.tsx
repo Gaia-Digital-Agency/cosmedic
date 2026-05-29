@@ -81,7 +81,7 @@ const ProcedureCard: React.FC<{ p: Procedure }> = ({ p }) => {
                       {portraitUrl ? (
                         <img src={portraitUrl} alt="" style={{ width: 32, height: 32, borderRadius: '50%', objectFit: 'cover' }} />
                       ) : null}
-                      <a href={`/surgeons/${s.slug}`} style={{ color: 'var(--ink-100)', textDecoration: 'none', fontFamily: 'var(--font-serif)', fontSize: 14 }}>
+                      <a href={`/experts/${s.slug}`} style={{ color: 'var(--ink-100)', textDecoration: 'none', fontFamily: 'var(--font-serif)', fontSize: 14 }}>
                         {s.title || 'dr.'} {s.commonName || s.name}
                       </a>
                     </li>

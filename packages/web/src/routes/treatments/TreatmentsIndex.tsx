@@ -84,7 +84,7 @@ export const TreatmentsIndex: React.FC = () => {
         <div className="treatment-index">
           {TREATMENT_LIST.map((t, i) => (
             <Reveal key={t.slug} delay={i * 60} y={20}>
-              <a href={`/treatments/${t.slug}`} className="treatment-row" style={{ color: 'inherit' }}>
+              <a href={`/procedures/${t.slug}`} className="treatment-row" style={{ color: 'inherit' }}>
                 <div className="ti-image">
                   <Img media={t.heroImage} src={TREATMENT_IMG(t.slug)} fallbackLabel={t.t.toUpperCase()} fallbackHue={t.hue} alt="" />
                 </div>

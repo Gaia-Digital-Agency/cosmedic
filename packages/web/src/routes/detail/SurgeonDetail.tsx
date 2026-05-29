@@ -20,9 +20,9 @@ const TFB = {
   heroLeadLabel: 'Lead Surgeon',
   heroSpecialistLabel: 'Specialist',
   heroCtaConsultLabel: 'Request a consultation',
-  heroCtaTreatmentsLabelFallback: 'Treatments',
+  heroCtaTreatmentsLabelFallback: 'Procedures',
   breadcrumbHomeLabel: 'BIMC CosMedic',
-  breadcrumbSurgeonsLabel: 'Surgeons',
+  breadcrumbSurgeonsLabel: 'Experts',
   statLabelYears: 'Years in practice',
   statLabelDistinction: 'Distinction',
   statLabelSpecialty: 'Specialty',
@@ -156,7 +156,7 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
               <Btn kind="primary" as="a" href="/contact">
                 {t?.heroCtaConsultLabel || TFB.heroCtaConsultLabel}
               </Btn>
-              <Btn kind="ghost" as="a" href={`/treatments/${relSlug}`}>
+              <Btn kind="ghost" as="a" href={`/procedures/${relSlug}`}>
                 {relTreatment?.t || (t?.heroCtaTreatmentsLabelFallback || TFB.heroCtaTreatmentsLabelFallback)}
               </Btn>
             </div>
@@ -167,7 +167,7 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
       <nav className="page-breadcrumb page-breadcrumb--cream" aria-label="Breadcrumb">
         <a href="/">{t?.breadcrumbHomeLabel || TFB.breadcrumbHomeLabel}</a>
         <span className="sep">/</span>
-        <a href="/surgeons">{t?.breadcrumbSurgeonsLabel || TFB.breadcrumbSurgeonsLabel}</a>
+        <a href="/experts">{t?.breadcrumbSurgeonsLabel || TFB.breadcrumbSurgeonsLabel}</a>
         <span className="sep">/</span>
         <span>Dr. {s.common}</span>
       </nav>
@@ -341,7 +341,7 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
             .map((other, i) => (
               <Reveal key={other.slug} delay={i * 60}>
                 <a
-                  href={`/surgeons/${other.slug}`}
+                  href={`/experts/${other.slug}`}
                   style={{ color: 'inherit', display: 'block' }}
                 >
                   <div className="surgeon-card" data-surgeon={other.slug}>

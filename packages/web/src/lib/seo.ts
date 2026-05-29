@@ -86,7 +86,7 @@ export function seoFor(pathname: string, cms: CmsCache): SeoFields {
   }
 
   // Surgeon page
-  const surgeonMatch = pathname.match(/^\/surgeons\/([a-z0-9-]+)$/)
+  const surgeonMatch = pathname.match(/^\/experts\/([a-z0-9-]+)$/)
   if (surgeonMatch) {
     const s = (cms.surgeons || []).find((x) => x.slug === surgeonMatch[1])
     if (s) {
@@ -114,7 +114,7 @@ export function seoFor(pathname: string, cms: CmsCache): SeoFields {
   }
 
   // Discipline / sub-category page
-  const treatmentMatch = pathname.match(/^\/treatments\/([a-z0-9-]+)$/)
+  const treatmentMatch = pathname.match(/^\/procedures\/([a-z0-9-]+)$/)
   if (treatmentMatch) {
     const slug = treatmentMatch[1]
     const d = (cms.disciplines || []).find((x) => x.slug === slug)

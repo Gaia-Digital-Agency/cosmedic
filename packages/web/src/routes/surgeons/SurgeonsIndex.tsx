@@ -47,7 +47,7 @@ const FB = {
 
 const SurgeonCard: React.FC<{ s: Surgeon; idx: number }> = ({ s, idx }) => (
   <Reveal delay={idx * 60} y={20}>
-    <a href={`/surgeons/${s.slug}`} style={{ color: 'inherit', display: 'block' }}>
+    <a href={`/experts/${s.slug}`} style={{ color: 'inherit', display: 'block' }}>
       <div className="surgeon-card" data-surgeon={s.slug}>
         <div className="surgeon-card-img" style={{ aspectRatio: '4 / 5' }}>
           <Img
@@ -183,7 +183,7 @@ export const SurgeonsIndex: React.FC = () => {
               <span>{lead.proc}</span>
             </div>
           </div>
-          <Btn kind="ghost" as="a" href={`/surgeons/${lead.slug}`}>
+          <Btn kind="ghost" as="a" href={`/experts/${lead.slug}`}>
             {leadCms?.ctaLabel || FB.lead.ctaLabel}
           </Btn>
         </Reveal>

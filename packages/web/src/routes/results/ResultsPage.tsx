@@ -207,7 +207,7 @@ export const ResultsPage: React.FC = () => {
                     Surgeon ·{' '}
                     {c.surgeonSlug ? (
                       <a
-                        href={`/surgeons/${c.surgeonSlug}`}
+                        href={`/experts/${c.surgeonSlug}`}
                         style={{ color: 'var(--accent-deep)', textDecoration: 'underline' }}
                       >
                         {c.surgeonName}

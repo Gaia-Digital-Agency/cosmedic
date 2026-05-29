@@ -101,7 +101,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
             onBlur={scheduleClose}
           >
             <a
-              href="/treatments"
+              href="/procedures"
               className={activePage.startsWith('treatment') ? 'active' : ''}
             >
               Treatments
@@ -113,7 +113,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
                   return (
                     <div key={t.slug} className="dropdown-discipline">
                       <a
-                        href={`/treatments/${t.slug}`}
+                        href={`/procedures/${t.slug}`}
                         className={`dropdown-discipline-head ${
                           activePage === `treatment-${t.slug}` ? 'active' : ''
                         }`}
@@ -124,7 +124,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
                         {subs.map(([slug, title]) => (
                           <li key={slug}>
                             <a
-                              href={`/treatments/${t.slug}/${slug}`}
+                              href={`/procedures/${t.slug}/${slug}`}
                               className={activePage === `treatment-${slug}` ? 'active' : ''}
                             >
                               {title}
@@ -146,7 +146,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
             onBlur={scheduleClose}
           >
             <a
-              href="/surgeons"
+              href="/experts"
               className={activePage.startsWith('surgeon') ? 'active' : ''}
             >
               Experts
@@ -155,14 +155,14 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
               <div className="dropdown-panel-grid dropdown-panel-grid-2col">
                 {surgeonCols.map((col) => (
                   <div key={col.key} className="dropdown-discipline">
-                    <a href={`/surgeons#${col.anchor}`} className="dropdown-discipline-head">
+                    <a href={`/experts#${col.anchor}`} className="dropdown-discipline-head">
                       <span>{col.label}</span>
                     </a>
                     <ul className="dropdown-sublist">
                       {SURGEON_LIST.filter((s) => s.group === col.group).map((s) => (
                         <li key={s.slug}>
                           <a
-                            href={`/surgeons/${s.slug}`}
+                            href={`/experts/${s.slug}`}
                             className={activePage === `surgeon-${s.slug}` ? 'active' : ''}
                           >
                             {s.title} {s.name}
@@ -263,7 +263,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
             </button>
             {mobileTreatmentsOpen && (
               <div className="mobile-submenu">
-                <a href="/treatments" className="mobile-submenu-all">
+                <a href="/procedures" className="mobile-submenu-all">
                   All treatments →
                 </a>
                 {TREATMENT_LIST.map((t) => {
@@ -271,7 +271,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
                   return (
                     <div key={t.slug} className="mobile-discipline">
                       <a
-                        href={`/treatments/${t.slug}`}
+                        href={`/procedures/${t.slug}`}
                         className={`mobile-discipline-head ${
                           activePage === `treatment-${t.slug}` ? 'active' : ''
                         }`}
@@ -283,7 +283,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
                           {subs.map(([slug, title]) => (
                             <li key={slug}>
                               <a
-                                href={`/treatments/${t.slug}/${slug}`}
+                                href={`/procedures/${t.slug}/${slug}`}
                                 className={activePage === `treatment-${slug}` ? 'active' : ''}
                               >
                                 {title}
@@ -310,19 +310,19 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
             </button>
             {mobileSurgeonsOpen && (
               <div className="mobile-submenu">
-                <a href="/surgeons" className="mobile-submenu-all">
+                <a href="/experts" className="mobile-submenu-all">
                   All doctors →
                 </a>
                 {surgeonCols.map((col) => (
                   <div key={col.group} className="mobile-discipline">
-                    <a href={`/surgeons#${col.anchor}`} className="mobile-discipline-head">
+                    <a href={`/experts#${col.anchor}`} className="mobile-discipline-head">
                       {col.label}
                     </a>
                     <ul className="mobile-sublist">
                       {SURGEON_LIST.filter((s) => s.group === col.group).map((s) => (
                         <li key={s.slug}>
                           <a
-                            href={`/surgeons/${s.slug}`}
+                            href={`/experts/${s.slug}`}
                             className={activePage === `surgeon-${s.slug}` ? 'active' : ''}
                           >
                             {s.title} {s.name}

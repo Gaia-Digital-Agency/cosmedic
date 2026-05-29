@@ -35,7 +35,7 @@ export const Treatments: React.FC = () => {
     <div className="treatments-grid">
       {TREATMENT_LIST.map((t, i) => (
         <Reveal key={t.slug} delay={i * 80} y={32}>
-          <a href={`/treatments/${t.slug}`} style={{ display: 'block', color: 'inherit' }}>
+          <a href={`/procedures/${t.slug}`} style={{ display: 'block', color: 'inherit' }}>
             <article className="treatment-card">
               <div className="treatment-image">
                 <Img

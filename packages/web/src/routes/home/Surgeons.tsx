@@ -6,7 +6,7 @@ import { Btn } from '@/components/primitives/Btn'
 import { useCms } from '@/lib/cms-context'
 import { mediaUrl } from '@/lib/cms.media'
 
-const TEAM_PLACEHOLDER = '/assets/surgeons/team-placeholder.webp'
+const TEAM_PLACEHOLDER = '/assets/experts/team-placeholder.webp'
 
 export const Surgeons: React.FC = () => {
   const cms = useCms()
@@ -60,7 +60,7 @@ export const Surgeons: React.FC = () => {
             <p className="surgeons-banner-body">{leadBody}</p>
             {/* CTA */}
             <div>
-              <Btn kind="accent" as="a" href="/surgeons">
+              <Btn kind="accent" as="a" href="/experts">
                 {leadCtaLabel}&nbsp;→
               </Btn>
             </div>

@@ -77,7 +77,7 @@ export const BlogPost: React.FC<Props> = ({ slug }) => {
           <div className="blog-byline-inner">
             <div className="blog-byline-author">
               <a
-                href={`/surgeons/${author.slug}`}
+                href={`/experts/${author.slug}`}
                 className="blog-byline-portrait"
                 data-surgeon={author.slug}
               >
@@ -96,7 +96,7 @@ export const BlogPost: React.FC<Props> = ({ slug }) => {
                 <span className="blog-byline-role">{author.group}</span>
                 {linkedSurgeonSlug ? (
                   <a
-                    href={`/surgeons/${linkedSurgeonSlug}`}
+                    href={`/experts/${linkedSurgeonSlug}`}
                     style={{
                       display: 'inline-block',
                       marginTop: 6,
@@ -173,7 +173,7 @@ export const BlogPost: React.FC<Props> = ({ slug }) => {
         <Reveal>
           <div className="blog-author-callout">
             <a
-              href={`/surgeons/${author.slug}`}
+              href={`/experts/${author.slug}`}
               className="blog-author-portrait"
               data-surgeon={author.slug}
             >
@@ -195,7 +195,7 @@ export const BlogPost: React.FC<Props> = ({ slug }) => {
               <p className="blog-author-cred">{author.cred}</p>
               <p className="blog-author-bio">{author.bio}</p>
               <div style={{ display: 'flex', gap: 16, marginTop: 20, flexWrap: 'wrap' }}>
-                <Btn kind="primary" as="a" href={`/surgeons/${author.slug}`}>
+                <Btn kind="primary" as="a" href={`/experts/${author.slug}`}>
                   {readFullProfileCta}
                 </Btn>
                 <Btn kind="ghost" as="a" href="/contact">

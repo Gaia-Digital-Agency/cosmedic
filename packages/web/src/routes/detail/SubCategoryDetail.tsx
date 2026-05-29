@@ -23,7 +23,7 @@ const FB = {
   toc: {
     onThisPageLabel: 'On this page',
     overviewLabel: 'Overview',
-    treatmentsLabel: 'Treatments',
+    treatmentsLabel: 'Procedures',
     faqsLabel: 'FAQs',
   },
   takeAStep: {
@@ -91,8 +91,8 @@ export const SubCategoryDetail: React.FC<Props> = ({ disciplineSlug, slug }) => 
         imageLabel={s.title.toUpperCase()}
         breadcrumbs={[
           { label: 'BIMC CosMedic', href: '/' },
-          { label: 'Treatments', href: '/treatments' },
-          { label: parent?.t || 'Treatments', href: `/treatments/${s.parent}` },
+          { label: 'Procedures', href: '/procedures' },
+          { label: parent?.t || 'Treatments', href: `/procedures/${s.parent}` },
           { label: s.title },
         ]}
       />
