@@ -62,7 +62,7 @@ export function seoFor(pathname: string, cms: CmsCache): SeoFields {
   // is the suffix when we render page-name-prefixed titles below.
   const titlePattern = seoDefaults.titlePattern || `{page} — ${siteName}`
   const fallbackTitleSuffix = titlePattern.includes('{page}')
-    ? titlePattern.replace('{page}', '').trim()
+    ? titlePattern.replace("{page}", "").trimEnd()
     : ` — ${siteName}`
   const fallbackDescription = cmsDescription || DEFAULT_DESCRIPTION
   const fallbackOgUrl = (settings.defaultOgImage as { url?: string } | undefined)?.url
