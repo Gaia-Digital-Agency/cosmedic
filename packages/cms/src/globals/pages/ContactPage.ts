@@ -7,6 +7,7 @@ export const ContactPage: GlobalConfig = {
   slug: 'contact-page',
   label: 'Main',
   admin: {
+    hidden: true,
     group: 'Contact',
     description: 'Page meta + SEO + extra block sections for /contact. The hero is edited in Hero, the enquiry section in Enquiry Section, and the visit section in Visit Section. Use the sections block-array here only for additional editor-defined content blocks.',
   },

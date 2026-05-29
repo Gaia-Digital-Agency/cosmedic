@@ -4,7 +4,7 @@ import { revalidateGlobalAfterChange } from '../../lib/revalidate'
 
 export const PricingHero: GlobalConfig = {
   slug: 'pricing-hero',
-  label: 'Pricing: Hero',
+  label: 'Hero',
   admin: {
     group: 'Treatments',
     description:

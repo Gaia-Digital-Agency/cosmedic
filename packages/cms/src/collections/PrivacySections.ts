@@ -6,8 +6,8 @@ import { sortOrderField } from '../lib/seo'
 export const PrivacySections: CollectionConfig = {
   slug: 'privacy-sections',
   labels: {
-    singular: 'Privacy Section',
-    plural: 'Privacy Sections',
+    singular: 'Privacy',
+    plural: 'Privacy',
   },
   admin: {
     useAsTitle: 'title',

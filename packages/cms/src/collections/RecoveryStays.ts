@@ -5,7 +5,7 @@ import { seoGroup, sortOrderField } from '../lib/seo'
 
 export const RecoveryStays: CollectionConfig = {
   slug: 'recovery-stays',
-  labels: { singular: 'Villa', plural: 'Villas' },
+  labels: { singular: 'Recovery Stay', plural: 'Recovery Stays — Villas' },
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'location', 'bedrooms', 'priceFromIdrPerNight', 'sortOrder'],
