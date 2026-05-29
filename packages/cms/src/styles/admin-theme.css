@@ -249,21 +249,36 @@ code,
  * routes globals at /admin/globals/{slug}.
  * ─────────────────────────────────────────────────────────────────── */
 
-.collections__card-list a[href*='/globals/'],
-.collections__card-list a[href*='/globals/'] span {
-  background: var(--cs-brown) !important;
-  color: var(--cs-paper) !important;
-  border-radius: 4px;
+/* Global cards — target the .card container (not the overlay link) so the
+ * whole card colours and the .card__title text turns white. */
+.collections__card-list .card:has(a[href*='/globals/']) {
+  background: #7a5033 !important;
 }
-.collections__card-list a[href*='/globals/']:hover {
-  background: #3d2e1c !important;
-  color: var(--cs-paper) !important;
+.collections__card-list .card:has(a[href*='/globals/']) .card__title {
+  color: #ffffff !important;
 }
-[data-theme='dark'] .collections__card-list a[href*='/globals/'],
-[data-theme='dark'] .collections__card-list a[href*='/globals/'] span {
-  background: #2a1f13 !important;
-  color: var(--cs-cream) !important;
+.collections__card-list .card:has(a[href*='/globals/']):hover {
+  background: #8a5e3c !important;
 }
-[data-theme='dark'] .collections__card-list a[href*='/globals/']:hover {
-  background: var(--cs-brown) !important;
+[data-theme='dark'] .collections__card-list .card:has(a[href*='/globals/']) {
+  background: #5e3c26 !important;
 }
+[data-theme='dark'] .collections__card-list .card:has(a[href*='/globals/']) .card__title {
+  color: #ffffff !important;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Nav bucket order — pure CSS flex order (no JS, no DOM moves, no loop).
+ * .nav-group's and .nav__controls are flex children of nav.nav__wrap.
+ * Selector targets each group by an anchor link id it contains.
+ * ─────────────────────────────────────────────────────────────────── */
+.nav__wrap > .nav-group:has(#nav-global-home-hero)   { order: 1; }
+.nav__wrap > .nav-group:has(#nav-disciplines)        { order: 2; }
+.nav__wrap > .nav-group:has(#nav-surgeons)           { order: 3; }
+.nav__wrap > .nav-group:has(#nav-before-after-cases) { order: 4; }
+.nav__wrap > .nav-group:has(#nav-recovery-stays)     { order: 5; }
+.nav__wrap > .nav-group:has(#nav-blog-posts)         { order: 6; }
+.nav__wrap > .nav-group:has(#nav-enquiries)          { order: 7; }
+.nav__wrap > .nav-group:has(#nav-users)              { order: 8; }
+.nav__wrap > .nav__controls                          { order: 99; }

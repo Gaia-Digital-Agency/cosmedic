@@ -124,6 +124,8 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  // Hide the global "Browse by Folder" nav button (keeps collection folders).
+  folders: { browseByFolder: false },
   admin: {
     user: Users.slug,
     theme: 'all',
