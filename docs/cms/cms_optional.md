@@ -94,24 +94,24 @@
 
 ---
 
-¹ Rendered as fallback (`priceIdr2026 ?? priceIdr2025`). Currently kept hidden by user decision — revisit if 2025 prices still active.  
+¹ Rendered as fallback (`priceIdr2026 ?? priceIdr2025`). Currently kept hidden by user decision — revisit if 2025 prices still active.
 ² Rendered as right-most meta cell on villa cards. Verified from field description; not grep-confirmed.
 
 ---
 
 ## change09 — Hidden by simplification (2026-05-29)
 
-> Items and fields hidden from editor-role users as part of CMS simplification pass 2.
-> All remain accessible to admin-role users. Move back to `cms_map_simple.md` if re-exposure needed.
-> Risk: 🟢 = `admin.hidden` only · 🟡 = global merged away · 🔴 = field merged (migration required)
+> Items and fields hidden from editor-role sidebar as part of CMS simplification pass 2.
+> All remain accessible to admin-role users.
+> Risk: 🟢 = `admin.hidden: true` only · 🟡 = global merged/restructured · 🔴 = field merge (migration required)
 
-### Entire sidebar items hidden (🟢)
+### Entire sidebar items hidden (🟢) — all done ✅
 
 | Bucket | Item | Reason |
 |---|---|---|
 | Homepage | Home Intro | UI chrome — pull-quote fragments, brand-authored |
 | Homepage | Home Treatments View | UI chrome — heading only |
-| Homepage | Home Surgeons View | UI chrome — group photo + section labels |
+| Homepage | Home Surgeons View *(restored as "Surgeons")* | Re-exposed for banner editing |
 | Homepage | Home Gallery View | UI chrome — heading only |
 | Homepage | Home Stories View | UI chrome — heading only |
 | Homepage | Home Pricing View | UI chrome — heading only |
@@ -126,46 +126,59 @@
 | Experts | Surgeons Lead View | UI chrome label only |
 | Experts | Surgeons Plastic View | UI chrome — section heading only |
 | Experts | Surgeons Aesthetic View | UI chrome — section heading only |
-| Results | Gallery Page | title only — absorbed into Results Hero |
-| Results | Stories Page | title only — absorbed into Results Hero |
+| Results | Gallery Page | title only — page-global |
+| Results | Stories Page | title only — page-global |
 | Results | Featured Cases View | UI chrome |
 | Results | Stories View | UI chrome |
 | Journey | Journey Stats | UI chrome |
-| Journey | Journey Steps | UI chrome / rarely changed by editors |
+| Journey | Journey Steps | UI chrome / rarely changed |
 | Contact | Form Defaults | Technical — error/success messages |
 | Contact | Email Templates | Technical — MJML templates |
-| Contact | Video Consult Page | Merged into Contact bucket (admin access retained) |
-| About | Blog Page | Merged into Blog Posts item |
-| About | Blog Tags | Inline on Blog Posts; hidden top-level |
-| About | Privacy Page | Merged into Privacy item |
+| Contact | Video Consult Page | Page-global — routing/SEO only |
+| About | Blog Page | Page-global — routing/SEO only |
+| About | Blog Tags | Inline on Blog Posts; 0 rows in DB |
+| About | Privacy Page | Page-global — routing/SEO only |
 | About | Not Found Page | Admin-only |
+| About | Authors | 0 rows in DB |
 
-### Fields hidden within visible items (🟢)
+### Page globals hidden (🟢) — all done ✅
+
+| Removed from sidebar | Note |
+|---|---|
+| Home Page | Routing/SEO — admin access retained |
+| Treatments Page | Routing/SEO — admin access retained |
+| Surgeons Page | Routing/SEO — admin access retained |
+| Results Page | Routing/SEO — admin access retained |
+| Gallery Page | Routing/SEO — admin access retained |
+| Stories Page | Routing/SEO — admin access retained |
+| Pricing Page | Routing/SEO — admin access retained |
+| Journey Page | Routing/SEO — admin access retained |
+| Contact Page | Routing/SEO — admin access retained |
+| Video Consult Page | Routing/SEO — admin access retained |
+| Blog Page | Routing/SEO — admin access retained |
+| Privacy Page | Routing/SEO — admin access retained |
+
+### Fields hidden within visible items (🟢) — done ✅
 
 | Bucket | Item | Fields hidden |
 |---|---|---|
-| Journey | Recovery Stays Page | portfolioSection.headingPre, inclusionsSection.headingPre, inclusions.title, inclusions.body |
+| Journey | Recovery Stays — Page | portfolioSection.headingPre, inclusionsSection.headingPre, inclusions.title, inclusions.body |
+| Homepage | Surgeons | leadSurgeonEyebrow, leadStat1–3 Label/Value, associatesEyebrow |
 
-### Items merged away — global removed (🟡)
+### Items merged (🟡) — done ✅
 
-| Removed item | Merged into | Status |
-|---|---|---|
-| Home Page | Home Hero | ⏳ pending 09.5 |
-| Treatments Page | Treatments Hero | ⏳ pending 09.5 |
-| Surgeons Page | Surgeons Hero | ⏳ pending 09.5 |
-| Results Page | Results Hero | ⏳ pending 09.5 |
-| Gallery Page | Results Hero | ⏳ pending 09.5 |
-| Stories Page | Results Hero | ⏳ pending 09.5 |
-| Pricing Page | Pricing Hero | ⏳ pending 09.5 |
-| Journey Page | Journey Hero | ⏳ pending 09.5 |
-| Contact Page | Contact Hero | ⏳ pending 09.5 |
-| Video Consult Page | Contact Hero | ⏳ pending 09.5 |
-| Blog Page | Blog Posts | ⏳ pending 09.5 |
-| Privacy Page | Privacy | ⏳ pending 09.5 |
+| Change | Detail |
+|---|---|
+| Library CTA + Share CTA → CTAs | Share CTA fields merged into library-cta global as `share.*` group. DB migrated. |
+| HomeSurgeonsView restructured | Unhidden as "Surgeons"; new banner fields surfaced; legacy stat fields hidden |
+| PrivacySections → "Privacy" | Label rename only |
+| RecoveryStaysPage → "Recovery Stays — Page" | Label rename only |
+| RecoveryStays → "Recovery Stays — Villas" | Label rename only |
+| PricingHero → "Pricing Hero" | Disambiguates from Treatments Hero in same bucket |
 
-### Fields merged — migration required (🔴)
+### Fields merged — migration required (🔴) — pending
 
 | Bucket | Item | Before | After | Status |
 |---|---|---|---|---|
-| All Hero globals | titleA + titleB / title.a + title.b | two fields | single `title` | ⏳ pending 09.7 — confirm before executing |
-| Homepage view sections | heading.a + heading.b | two fields | single `heading` | ⏳ pending 09.7 |
+| All Hero globals | titleA + titleB / title.a + title.b | two fields | single `title` | ⏳ step 09.7 — confirm before executing |
+| Homepage view sections | heading.a + heading.b | two fields | single `heading` | ⏳ step 09.7 |
