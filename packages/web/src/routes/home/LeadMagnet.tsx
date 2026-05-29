@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Reveal } from '@/components/primitives/Reveal'
-import { Mono, Eyebrow } from '@/components/primitives/Mono'
+import { Eyebrow } from '@/components/primitives/Mono'
 import { Img } from '@/components/primitives/Img'
 import { useCms } from '@/lib/cms-context'
 import { mediaUrl } from '@/lib/cms'
@@ -36,27 +36,28 @@ export const LeadMagnet: React.FC = () => {
   return (
     <section className="lead-magnet">
       <Reveal>
-        {coverImageUrl ? (
-          <div className="lead-magnet-cover lead-magnet-cover-img">
-            <Img media={coverImage} src={coverImageUrl} alt="The Bali Recovery Guide" />
+        {/* Card: typographic cover by default; hover reveals the photo */}
+        <div className="lead-magnet-cover">
+          <span className="cover-eyebrow">{coverEyebrow}</span>
+          <h3 className="cover-title">
+            <span>{coverLine1}</span>
+            <br />
+            <span className="italic">{coverLine2}</span>
+            <br />
+            <span>{coverLine3}</span>
+          </h3>
+          <div className="cover-spacer" />
+          <div className="cover-foot">
+            <span>{coverFoot1}</span>
+            <span>{coverFoot2}</span>
           </div>
-        ) : (
-          <div className="lead-magnet-cover">
-            <span className="cover-eyebrow">{coverEyebrow}</span>
-            <h3 className="cover-title">
-              <span>{coverLine1}</span>
-              <br />
-              <span className="italic">{coverLine2}</span>
-              <br />
-              <span>{coverLine3}</span>
-            </h3>
-            <div className="cover-spacer" />
-            <div className="cover-foot">
-              <span>{coverFoot1}</span>
-              <span>{coverFoot2}</span>
+          {/* Photo overlay — fades in on hover */}
+          {coverImageUrl && (
+            <div className="lead-magnet-cover-photo">
+              <Img media={coverImage} src={coverImageUrl} alt="Recovery stay" />
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </Reveal>
       <Reveal delay={140}>
         <div className="lead-magnet-body">
@@ -75,7 +76,7 @@ export const LeadMagnet: React.FC = () => {
                 background: 'var(--paper)',
               }}
             >
-              <Mono style={{ color: 'var(--accent-deep)' }}>{successHeading}</Mono>
+              <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--accent-deep)', fontSize: 11, letterSpacing: '0.2em' }}>{successHeading}</span>
               <p style={{ margin: '10px 0 0', fontSize: 16 }}>{successBody}</p>
             </div>
           ) : (
