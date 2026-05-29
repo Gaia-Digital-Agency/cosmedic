@@ -16,7 +16,7 @@ export const HomeHero: GlobalConfig = {
     { name: 'breadcrumbLabel', type: 'text', defaultValue: 'Home',
       admin: { description: 'Last segment in the breadcrumb trail (reserved — / does not currently render a breadcrumb).', hidden: true } },
     { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'A sanctuary in Nusa Dua · Est. 1998',
-      admin: { description: 'Small-caps eyebrow above the hero title.' } },
+      admin: { description: 'Small-caps eyebrow above the hero title.', hidden: true } },
     {
       name: 'title', type: 'group',
       admin: { description: 'Two-line hero headline. Line A renders roman on the first line; line B renders italic on the second.' },
@@ -30,17 +30,17 @@ export const HomeHero: GlobalConfig = {
     { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         "Performed inside Indonesia's first ACHSI-accredited international hospital, with private villa recovery and twelve months of telehealth follow-up included. Procedures from Rp 18,900,000 (≈ AUD 1,800).",
-      admin: { description: 'Intro paragraph beneath the title.' } },
+      admin: { description: 'Intro paragraph beneath the title.', hidden: true } },
     { name: 'primaryCtaLabel', type: 'text', defaultValue: 'Plan Your Treatment',
       admin: { description: 'Filled-pill CTA beneath the headline.' } },
     { name: 'secondaryCtaLabel', type: 'text', defaultValue: 'View Pricing',
       admin: { description: 'Ghost CTA beneath the headline.' } },
     { name: 'secondaryCtaHref', type: 'text', defaultValue: '/pricing',
-      admin: { description: 'Where the ghost CTA links.' } },
+      admin: { description: 'Where the ghost CTA links.', hidden: true } },
     {
       name: 'quickEnquiry',
       type: 'group',
-      admin: { description: 'Chrome strings on the right-side quick-enquiry card. Field labels + placeholders + the four submit-button states.' },
+      admin: { description: 'Chrome strings on the right-side quick-enquiry card. Field labels + placeholders + the four submit-button states.', hidden: true },
       fields: [
         { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Begin · No commitment' },
         { name: 'heading', type: 'text', defaultValue: 'Get a private price estimate within 24 hours.' },

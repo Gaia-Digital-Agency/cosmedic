@@ -14,7 +14,7 @@ export const TreatmentsHero: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     { name: 'chapter', type: 'text', defaultValue: 'Chapter II — The Repertoire',
-      admin: { description: 'Small-caps eyebrow above the hero title, e.g. "Chapter II — The Repertoire".' } },
+      admin: { description: 'Small-caps eyebrow above the hero title, e.g. "Chapter II — The Repertoire".', hidden: true } },
     { name: 'titleA', type: 'text', defaultValue: 'Six disciplines,',
       admin: { description: 'First line of the two-line headline (roman).' } },
     { name: 'titleB', type: 'text', defaultValue: 'one sanctuary.',
@@ -22,14 +22,14 @@ export const TreatmentsHero: GlobalConfig = {
     { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         'A complete repertoire of cosmetic medicine practiced under one roof — surgical, non-surgical, restorative, and the careful coordination that holds it all together.',
-      admin: { description: 'Intro paragraph beneath the title.' } },
+      admin: { description: 'Intro paragraph beneath the title.', hidden: true } },
     { name: 'heroImage', type: 'upload', relationTo: 'media',
       admin: { description: 'Hero image displayed alongside the title block. Recommended ~1600×1200, JPEG/WebP. Falls back to the painted-SVG when blank.' } },
     { name: 'imageHue', type: 'number', min: 0, max: 6, defaultValue: 1,
-      admin: { description: 'Painted-SVG fallback hue when no image is uploaded (0–6, brand palette).' } },
+      admin: { description: 'Painted-SVG fallback hue when no image is uploaded (0–6, brand palette).', hidden: true } },
     { name: 'imageLabel', type: 'text', defaultValue: 'THE REPERTOIRE',
-      admin: { description: 'Caption shown over the painted-SVG fallback / image card.' } },
+      admin: { description: 'Caption shown over the painted-SVG fallback / image card.', hidden: true } },
     { name: 'breadcrumbLabel', type: 'text', defaultValue: 'Treatments',
-      admin: { description: 'Last segment in the breadcrumb trail.' } },
+      admin: { description: 'Last segment in the breadcrumb trail.', hidden: true } },
   ],
 }

@@ -15,7 +15,7 @@ export const Header: GlobalConfig = {
     {
       name: 'navItems',
       type: 'array',
-      admin: { description: 'Top-level primary nav items rendered left-to-right after the logo. Each item can have an optional mega-menu dropdown.' },
+      admin: { description: 'Top-level primary nav items rendered left-to-right after the logo. Each item can have an optional mega-menu dropdown.', hidden: true },
       fields: [
         { name: 'label', type: 'text', required: true,
           admin: { description: 'Display text shown in the nav bar.' } },
@@ -43,7 +43,7 @@ export const Header: GlobalConfig = {
     {
       name: 'localeSwitcher',
       type: 'group',
-      admin: { description: 'Top-right EN | ID switcher (between primary nav and the "Plan Your Treatment" CTA). Currently visible-but-disabled until Phase 9 ID locale ships.' },
+      admin: { description: 'Top-right EN | ID switcher (between primary nav and the "Plan Your Treatment" CTA). Currently visible-but-disabled until Phase 9 ID locale ships.', hidden: true },
       fields: [
         { name: 'enabled', type: 'checkbox', defaultValue: true,
           admin: { description: 'Toggle the switcher off entirely to hide it from every page.' } },

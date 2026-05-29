@@ -14,7 +14,7 @@ export const HomePlace: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Recovery in Bali',
-      admin: { description: 'Section eyebrow.' } },
+      admin: { description: 'Section eyebrow.', hidden: true } },
     {
       name: 'heading', type: 'group',
       admin: { description: 'Two-part heading. Part A renders roman; part B renders italic.' },
@@ -32,7 +32,7 @@ export const HomePlace: GlobalConfig = {
     {
       name: 'rows',
       type: 'array',
-      admin: { description: '4 lettered rows below the body. Letter = "A.", text = the descriptor.' },
+      admin: { description: '4 lettered rows below the body. Letter = "A.", text = the descriptor.', hidden: true },
       fields: [
         { name: 'letter', type: 'text', required: true,
           admin: { description: 'Mono letter (e.g. "A.").' } },
@@ -43,7 +43,7 @@ export const HomePlace: GlobalConfig = {
     { name: 'ctaLabel', type: 'text', defaultValue: 'View recovery stays',
       admin: { description: 'Bottom CTA label.' } },
     { name: 'ctaHref', type: 'text', defaultValue: '/recovery-stays',
-      admin: { description: 'Where the bottom CTA links.' } },
+      admin: { description: 'Where the bottom CTA links.', hidden: true } },
     { name: 'image', type: 'upload', relationTo: 'media',
       admin: { description: 'Lead image for the "Recover in paradise" section (left column). 1200×1500 portrait orientation works best. Falls back to a placeholder when empty.' } },
   ],

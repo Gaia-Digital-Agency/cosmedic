@@ -29,7 +29,7 @@ export const SubCategories: CollectionConfig = {
     {
       name: 'chapterTitle',
       type: 'group',
-      admin: { description: 'Two-line hero headline on /treatments/{slug}. Split between roman first line and italic accent second line.' },
+      admin: { description: 'Two-line hero headline on /treatments/{slug}. Split between roman first line and italic accent second line.', hidden: true },
       fields: [
         { name: 'a', type: 'text', admin: { description: 'First line (roman type).' } },
         { name: 'b', type: 'text', admin: { description: 'Second line (italic accent).' } },
@@ -40,15 +40,15 @@ export const SubCategories: CollectionConfig = {
     { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       admin: { description: 'Lede paragraph rendered under the hero title on this sub-category page.' } },
     { name: 'intro', type: 'richText',
-      admin: { description: 'Rich-text intro paragraph rendered above the body sections.' } },
+      admin: { description: 'Rich-text intro paragraph rendered above the body sections.', hidden: true } },
     { name: 'overview', type: 'richText',
-      admin: { description: 'Long-form overview rich-text block rendered as the body content of /treatments/{slug}.' } },
+      admin: { description: 'Long-form overview rich-text block rendered as the body content of /treatments/{slug}.', hidden: true } },
     { name: 'leadSurgeon', type: 'relationship', relationTo: 'surgeons',
       admin: { description: 'The single lead surgeon for this sub-category. Rendered as the "Lead surgeon" mini-card in the sub-category page sidebar.' } },
     {
       name: 'sections',
       type: 'array',
-      admin: { description: 'Body sections rendered in order on /treatments/{slug}. Each section gets a heading + anchor link in the sticky-TOC sidebar.' },
+      admin: { description: 'Body sections rendered in order on /treatments/{slug}. Each section gets a heading + anchor link in the sticky-TOC sidebar.', hidden: true },
       fields: [
         { name: 'anchorId', type: 'text', required: true,
           admin: { description: 'URL-safe anchor id used in the TOC link and href, e.g. "overview" → /treatments/X#overview.' } },
@@ -61,7 +61,7 @@ export const SubCategories: CollectionConfig = {
     {
       name: 'faqs',
       type: 'array',
-      admin: { description: 'Frequently-asked-questions accordion at the bottom of /treatments/{slug}.' },
+      admin: { description: 'Frequently-asked-questions accordion at the bottom of /treatments/{slug}.', hidden: true },
       fields: [
         { name: 'q', type: 'text', required: true,
           admin: { description: 'Question shown as the accordion header.' } },

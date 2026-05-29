@@ -14,7 +14,7 @@ export const PricingHero: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     { name: 'chapter', type: 'text', defaultValue: 'Chapter X — Pricing',
-      admin: { description: 'Small-caps eyebrow above the hero title, e.g. "Chapter X — Pricing".' } },
+      admin: { description: 'Small-caps eyebrow above the hero title, e.g. "Chapter X — Pricing".', hidden: true } },
     { name: 'titleA', type: 'text', defaultValue: 'Every treatment,',
       admin: { description: 'First line of the two-line headline (roman).' } },
     { name: 'titleB', type: 'text', defaultValue: 'every price.',
@@ -22,14 +22,14 @@ export const PricingHero: GlobalConfig = {
     { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         'The complete pricing index, organised by discipline. Prices are starting figures in IDR with an Australian-dollar equivalent. Every plan is quoted precisely after a private consultation; what we quote is what you pay.',
-      admin: { description: 'Intro paragraph beneath the title (≈2 sentences).' } },
+      admin: { description: 'Intro paragraph beneath the title (≈2 sentences).', hidden: true } },
     { name: 'heroImage', type: 'upload', relationTo: 'media',
       admin: { description: 'Hero image displayed on the right of the title block. Recommended ~1600×1200, JPEG/WebP.' } },
     { name: 'imageHue', type: 'number', min: 0, max: 6, defaultValue: 2,
-      admin: { description: 'Painted-SVG fallback hue when no image is uploaded (0–6, brand palette).' } },
+      admin: { description: 'Painted-SVG fallback hue when no image is uploaded (0–6, brand palette).', hidden: true } },
     { name: 'imageLabel', type: 'text', defaultValue: 'PRICING',
-      admin: { description: 'Caption shown over the painted-SVG fallback / image card.' } },
+      admin: { description: 'Caption shown over the painted-SVG fallback / image card.', hidden: true } },
     { name: 'breadcrumbLabel', type: 'text', defaultValue: 'Pricing',
-      admin: { description: 'Last segment in the breadcrumb trail.' } },
+      admin: { description: 'Last segment in the breadcrumb trail.', hidden: true } },
   ],
 }

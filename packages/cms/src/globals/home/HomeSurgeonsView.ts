@@ -14,7 +14,7 @@ export const HomeSurgeonsView: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     { name: 'eyebrow', label: 'Eyebrow', type: 'text', defaultValue: '8 Specialists',
-      admin: { description: 'Small-caps line above the heading, e.g. "8 Specialists".' } },
+      admin: { description: 'Small-caps line above the heading, e.g. "8 Specialists".', hidden: true } },
     { name: 'teamCaption', label: 'Heading', type: 'text', defaultValue: 'One team, one standard.',
       admin: { description: 'Two-line banner heading. Use a comma to split: the text before the comma is line 1 (roman), after the comma is line 2 (italic). e.g. "One team, one standard."' } },
     { name: 'leadBody', label: 'Body text', type: 'textarea',

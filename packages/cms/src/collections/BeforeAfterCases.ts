@@ -36,7 +36,7 @@ export const BeforeAfterCases: CollectionConfig = {
     { name: 'description', type: 'richText' },
     { name: 'year', type: 'number' },
     { name: 'patientAge', type: 'number',
-      admin: { description: 'Patient age at the time of procedure. Shown on the B&A card on /results, /gallery, and the homepage Gallery teaser.' } },
+      admin: { description: 'Patient age at the time of procedure. Shown on the B&A card on /results, /gallery, and the homepage Gallery teaser.', hidden: true } },
     { name: 'recoveryDuration', type: 'text',
       admin: { description: 'Free-text recovery duration (e.g. "4 months", "6 weeks"). Shown alongside Age on the B&A card.' } },
     { name: 'isFeatured', type: 'checkbox', defaultValue: false,

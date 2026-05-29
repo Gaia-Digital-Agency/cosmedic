@@ -13,7 +13,7 @@ export const ContactHero: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     { name: 'breadcrumbLabel', type: 'text', defaultValue: 'Plan Your Journey',
-      admin: { description: 'Label for the current page in the breadcrumb (the "Home → <this>" trail).' } },
+      admin: { description: 'Label for the current page in the breadcrumb (the "Home → <this>" trail).', hidden: true } },
     {
       name: 'title', type: 'group',
       admin: { description: 'Two-line hero title. Line A is roman; line B renders italic-friendly.' },
@@ -26,7 +26,7 @@ export const ContactHero: GlobalConfig = {
     },
     { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue: 'Write to us in your own time, in your own words. A concierge will reply within twenty-four hours, in English or Bahasa Indonesia. There is no obligation — and no pressure — to proceed.',
-      admin: { description: 'Intro paragraph beneath the title.' } },
+      admin: { description: 'Intro paragraph beneath the title.', hidden: true } },
     { name: 'heroImage', type: 'upload', relationTo: 'media',
       admin: { description: 'Hero image displayed on the right of the title block. Recommended ~1600×1200, JPEG/WebP.' } },
     { name: 'imageHue', type: 'number', defaultValue: 3,
@@ -34,6 +34,6 @@ export const ContactHero: GlobalConfig = {
     { name: 'imageLabel', type: 'text', defaultValue: 'PLAN YOUR JOURNEY',
       admin: { description: 'Caption label shown over the painted-SVG fallback if no hero image is uploaded.' } },
     { name: 'chapter', type: 'text', defaultValue: 'Chapter VIII — Plan Your Journey',
-      admin: { description: 'Small caps eyebrow above the hero title, e.g. "Chapter VIII — Plan Your Journey".' } },
+      admin: { description: 'Small caps eyebrow above the hero title, e.g. "Chapter VIII — Plan Your Journey".', hidden: true } },
   ],
 }

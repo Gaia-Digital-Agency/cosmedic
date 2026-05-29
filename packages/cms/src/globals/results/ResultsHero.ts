@@ -14,7 +14,7 @@ export const ResultsHero: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     { name: 'breadcrumbLabel', type: 'text', defaultValue: 'Results & Stories',
-      admin: { description: 'Last segment in the breadcrumb trail.' } },
+      admin: { description: 'Last segment in the breadcrumb trail.', hidden: true } },
     {
       name: 'title', type: 'group',
       admin: { description: 'Two-line headline. Line A renders roman; line B renders italic.' },
@@ -28,7 +28,7 @@ export const ResultsHero: GlobalConfig = {
     { name: 'lede', label: 'Intro paragraph', type: 'textarea',
       defaultValue:
         'A small selection of consented results paired with the stories behind them. Our complete library — over two hundred cases — is shared during private consultation.',
-      admin: { description: 'Intro paragraph beneath the title (≈2 sentences).' } },
+      admin: { description: 'Intro paragraph beneath the title (≈2 sentences).', hidden: true } },
     { name: 'heroImage', type: 'upload', relationTo: 'media',
       admin: { description: 'Hero image. Recommended ~1600×1200, JPEG/WebP.' } },
     { name: 'imageHue', type: 'number', min: 0, max: 6, defaultValue: 1,
@@ -36,6 +36,6 @@ export const ResultsHero: GlobalConfig = {
     { name: 'imageLabel', type: 'text', defaultValue: 'RESULTS & STORIES',
       admin: { description: 'Caption shown over the painted-SVG fallback / image card.' } },
     { name: 'chapter', type: 'text', defaultValue: 'Chapter IV — Results & Stories',
-      admin: { description: 'Small-caps eyebrow above the hero title.' } },
+      admin: { description: 'Small-caps eyebrow above the hero title.', hidden: true } },
   ],
 }

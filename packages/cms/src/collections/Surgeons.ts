@@ -29,7 +29,7 @@ export const Surgeons: CollectionConfig = {
     { name: 'commonName', type: 'text',
       admin: { description: 'Short/familiar first name used in the mega-menu and breadcrumbs. e.g. "Suka".' } },
     { name: 'suffix', type: 'text',
-      admin: { description: 'Post-nominals shown after the name on the bio page. e.g. "SpBP-RE (K)".' } },
+      admin: { description: 'Post-nominals shown after the name on the bio page. e.g. "SpBP-RE (K)".', hidden: true } },
     { name: 'spec', type: 'text',
       admin: { description: 'One-line specialty headline shown on the surgeon\'s grid card and as the eyebrow on /surgeons/{slug}. e.g. "Facial Aesthetics".' } },
     { name: 'train', type: 'text',
@@ -59,7 +59,7 @@ export const Surgeons: CollectionConfig = {
     {
       name: 'availabilitySchedule',
       type: 'array',
-      admin: { description: 'Renders as the "Availability" line in the bio sidebar of /surgeons/{slug}. Each row = one weekday + time window. Sourced from clinic pricelist Further Info.' },
+      admin: { description: 'Renders as the "Availability" line in the bio sidebar of /surgeons/{slug}. Each row = one weekday + time window. Sourced from clinic pricelist Further Info.', hidden: true },
       fields: [
         { name: 'day', type: 'select', required: true,
           admin: { description: 'Weekday this row applies to.' },

@@ -56,7 +56,7 @@ export const Disciplines: CollectionConfig = {
     {
       name: 'faqs',
       type: 'array',
-      admin: { description: 'Frequently-asked-questions section at the bottom of /treatments/{slug}.' },
+      admin: { description: 'Frequently-asked-questions section at the bottom of /treatments/{slug}.', hidden: true },
       fields: [
         { name: 'q', type: 'text', required: true,
           admin: { description: 'The question shown as the accordion header.' } },

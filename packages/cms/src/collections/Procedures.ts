@@ -114,7 +114,7 @@ export const Procedures: CollectionConfig = {
     { name: 'parentSubCategory', type: 'relationship', relationTo: 'sub-categories',
       admin: { description: 'Which sub-category this procedure renders under. Drives which /treatments/{sub-slug} page lists this procedure in its accordion.', hidden: true } },
     { name: 'description', type: 'richText',
-      admin: { description: 'Top-of-record description shown when the procedure expands in the sub-category accordion.' } },
+      admin: { description: 'Top-of-record description shown when the procedure expands in the sub-category accordion.', hidden: true } },
     {
       name: 'sections',
       type: 'array',
@@ -131,7 +131,7 @@ export const Procedures: CollectionConfig = {
     {
       name: 'faqs',
       type: 'array',
-      admin: { description: 'Procedure-specific FAQ accordion items.' },
+      admin: { description: 'Procedure-specific FAQ accordion items.', hidden: true },
       fields: [
         { name: 'q', type: 'text', required: true },
         { name: 'a', type: 'textarea', required: true },
