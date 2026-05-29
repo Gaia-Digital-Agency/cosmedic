@@ -12,7 +12,7 @@ export const PrivacySections: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'sortOrder'],
-    group: 'About',
+    group: 'Publications',
     hidden: true,
     description:
       'The numbered legal sections on /privacy. One row per section (Summary, Who we are, What we collect, …). `slug` is the URL anchor (e.g. "summary" → /privacy#summary). Lower sortOrder renders first.',

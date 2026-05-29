@@ -1,100 +1,197 @@
 'use client'
 
 /**
- * CosmedicNavLabels — injects "COLLECTIONS" and "GLOBALS" sub-labels into
- * each bucket group in the Payload admin sidebar.
+ * CosmedicNavLabels — three jobs:
  *
- * Why client-side DOM injection? Payload 3.x nav is rendered by DefaultNavClient
- * (a 'use client' React component). The only extension points that run INSIDE
- * the nav wrapper are beforeNavLinks / afterNavLinks — but both are outside the
- * individual group markup. To place separators *within* a group (between the
- * last collection link and the first global link), we have to manipulate the
- * existing DOM nodes post-mount.
+ * 1. Reorder nav bucket groups to the canonical sequence:
+ *    Homepage · Treatments · Experts · Results · Journey · About · Contact
  *
- * The first global in every multi-type bucket is well-known (it's always the
- * "Main" page global, registered right after the bucket's collections in
- * payload.config.ts). We target it by id and prepend a separator element.
+ * 2. Inject "COLLECTIONS" / "GLOBALS" sub-labels within each multi-type group.
  *
- * Registered as admin.components.afterNavLinks so it mounts alongside the nav.
+ * 3. Apply dark-brown / cream styling to global nav items so editors can
+ *    instantly distinguish site-wide settings (globals) from record lists
+ *    (collections).
+ *
+ * All three jobs use post-mount DOM manipulation: Payload 3.x renders the nav
+ * client-side via DefaultNavClient, so CSS-only or SSR approaches can't reach
+ * the nav tree. A MutationObserver re-runs after any nav DOM change.
+ * All functions are idempotent to prevent observer feedback loops.
  */
 
 import React, { useEffect } from 'react'
 
-/**
- * IDs of the first global link in each bucket that also has collections.
- * Nav link id pattern: `nav-global-{global-slug}`.
- * Homepage has no collections → no separator needed there.
- */
+// ── 1. Bucket reorder ────────────────────────────────────────────────────────
+
+const DESIRED_ORDER = [
+  'Homepage', 'Treatments', 'Experts', 'Results', 'Journey', 'Publications', 'Contact',
+]
+
+/** One known selector per bucket — used to find the group's container. */
+const BUCKET_ANCHORS: Array<{ bucket: string; id: string }> = [
+  { bucket: 'Homepage',   id: 'nav-global-home-hero' },
+  { bucket: 'Treatments', id: 'nav-disciplines' },
+  { bucket: 'Experts',    id: 'nav-surgeons' },
+  { bucket: 'Results',    id: 'nav-before-after-cases' },
+  { bucket: 'Journey',    id: 'nav-journey-steps' },
+  { bucket: 'Publications',      id: 'nav-blog-posts' },
+  { bucket: 'Contact',    id: 'nav-enquiries' },
+]
+
+let reordering = false  // guard against MutationObserver feedback loop
+
+function findGroupEl(itemId: string): Element | null {
+  const item = document.getElementById(itemId)
+  if (!item) return null
+  // Walk up to the .nav-group ancestor
+  let el: Element | null = item
+  while (el && !el.classList.contains('nav-group')) {
+    el = el.parentElement
+  }
+  return el
+}
+
+function reorderBuckets() {
+  if (reordering) return
+
+  const groups: Array<{ bucket: string; el: Element }> = []
+  for (const { bucket, id } of BUCKET_ANCHORS) {
+    const el = findGroupEl(id)
+    if (el) groups.push({ bucket, el })
+  }
+  if (groups.length < 2) return
+
+  const parent = groups[0].el.parentElement
+  if (!parent) return
+
+  // Idempotency: check if order is already correct
+  const children = Array.from(parent.children)
+  let lastIdx = -1
+  let needsReorder = false
+  for (const { el } of groups) {
+    const idx = children.indexOf(el)
+    if (idx <= lastIdx) { needsReorder = true; break }
+    lastIdx = idx
+  }
+  if (!needsReorder) return
+
+  reordering = true
+  // Move bucket groups into desired order (other children — e.g. ungrouped Users — stay)
+  groups.forEach(({ el }) => parent.appendChild(el))
+  reordering = false
+}
+
+// ── 2. Collection / Global sub-labels ───────────────────────────────────────
+
 const FIRST_GLOBALS = [
-  'treatments-page',  // Treatments bucket (after Disciplines / SubCategories / Procedures)
-  'surgeons-page',    // Doctors bucket    (after Surgeons)
-  'results-page',     // Results bucket    (after BeforeAfterCases / Stories)
-  'pricing-page',     // Pricing page (now in Treatments bucket — changes08)
-  'journey-page',     // Journey bucket    (after JourneySteps / RecoveryStays)
-  'contact-page',     // Contact bucket    (after Enquiries)
-  'blog-page',        // About bucket      (after BlogPosts / BlogTags / Authors / PressMentions / Awards / PrivacySections)
+  'treatments-page',
+  'surgeons-page',
+  'results-page',
+  'pricing-page',
+  'journey-page',
+  'contact-page',
+  'blog-page',
 ] as const
 
-/**
- * IDs of the first nav link in each bucket that HAS collections.
- * Nav link id pattern: `nav-{collection-slug}`.
- */
 const FIRST_COLLECTIONS = [
-  'disciplines',            // Treatments bucket
-  'surgeons',               // Doctors bucket
-  'before-after-cases',     // Results bucket
-  'clinic-catalogue-items', // Pricing bucket
-  'journey-steps',          // Journey bucket
-  'enquiries',              // Contact bucket (Payload pluralises to "enquiries")
-  'blog-posts',             // About bucket
+  'disciplines',
+  'surgeons',
+  'before-after-cases',
+  'clinic-catalogue-items',
+  'journey-steps',
+  'enquiries',
+  'blog-posts',
 ] as const
 
 const SEP_CLASS = 'cosmedic-nav-sep'
 
 function injectSeparators() {
-  // Remove any previously injected separators to avoid duplicates on re-runs.
-  document.querySelectorAll(`.${SEP_CLASS}`).forEach((el) => el.remove())
+  document.querySelectorAll(`.${SEP_CLASS}`).forEach(el => el.remove())
 
-  // "GLOBALS" separator — insert before the first global in each multi-type group.
   for (const slug of FIRST_GLOBALS) {
     const el = document.getElementById(`nav-global-${slug}`)
     if (!el?.parentNode) continue
-    const sep = makeSep('Globals')
-    el.parentNode.insertBefore(sep, el)
+    el.parentNode.insertBefore(makeSep('Globals'), el)
   }
 
-  // "COLLECTIONS" label — insert before the first collection in each such group.
   for (const slug of FIRST_COLLECTIONS) {
     const el = document.getElementById(`nav-${slug}`)
     if (!el?.parentNode) continue
-    const sep = makeSep('Collections')
-    el.parentNode.insertBefore(sep, el)
+    el.parentNode.insertBefore(makeSep('Collections'), el)
   }
 }
 
 function makeSep(text: string): HTMLElement {
-  const el = document.createElement('div')
-  el.className = SEP_CLASS
-  el.setAttribute('aria-hidden', 'true')
-  el.textContent = text
-  return el
+  const div = document.createElement('div')
+  div.className = SEP_CLASS
+  div.setAttribute('aria-hidden', 'true')
+  div.textContent = text
+  return div
 }
+
+// ── 3. Dark-brown global styling ─────────────────────────────────────────────
+
+const GLOBAL_STYLED = 'cosmedic-global-styled'
+
+function styleGlobals() {
+  document.querySelectorAll('[id^="nav-global-"]').forEach(node => {
+    if (!(node instanceof HTMLElement)) return
+    if (node.classList.contains(GLOBAL_STYLED)) return  // already done
+
+    node.classList.add(GLOBAL_STYLED)
+
+    // Apply inline styles so they survive Payload's CSS resets.
+    // We style the node itself AND scan for inner <a>/<span> to ensure
+    // text colour applies regardless of whether the ID is on the link
+    // container or on the anchor itself.
+    const applyStyles = (el: HTMLElement) => {
+      el.style.setProperty('background-color', '#533e27', 'important')
+      el.style.setProperty('color', '#f4efe6', 'important')
+      el.style.setProperty('border-radius', '4px')
+      el.style.setProperty('margin-bottom', '1px')
+    }
+    applyStyles(node)
+    node.querySelectorAll('a, span, svg').forEach(child => {
+      if (child instanceof HTMLElement) {
+        child.style.setProperty('color', '#f4efe6', 'important')
+      }
+    })
+
+    // Hover handling via pointer events
+    node.addEventListener('mouseenter', () => {
+      node.style.setProperty('background-color', '#3d2e1c', 'important')
+    })
+    node.addEventListener('mouseleave', () => {
+      node.style.setProperty('background-color', '#533e27', 'important')
+    })
+  })
+}
+
+// ── Main orchestrator ────────────────────────────────────────────────────────
+
+function runAll() {
+  if (reordering) return
+  reorderBuckets()
+  injectSeparators()
+  styleGlobals()
+}
+
+// ── Component ────────────────────────────────────────────────────────────────
 
 const CosmedicNavLabels: React.FC = () => {
   useEffect(() => {
-    injectSeparators()
+    runAll()
 
-    // Re-inject after any nav DOM changes (group collapse/expand, route changes).
     const nav = document.querySelector('.nav__wrap') ?? document.querySelector('[class*="nav"]')
     if (!nav) return
-    const observer = new MutationObserver(() => injectSeparators())
+
+    const observer = new MutationObserver(() => { if (!reordering) runAll() })
     observer.observe(nav, { childList: true, subtree: true })
     return () => observer.disconnect()
   }, [])
 
-  // The style tag is inert during SSR; it activates when the client hydrates.
   return (
     <style>{`
+      /* Sub-labels */
       .cosmedic-nav-sep {
         padding: 0.2rem 0.75rem 0.1rem;
         margin-top: 0.45rem;
@@ -108,11 +205,15 @@ const CosmedicNavLabels: React.FC = () => {
         pointer-events: none;
         user-select: none;
       }
-      /* No top border on the very first label inside a group */
       .nav-group__content > .cosmedic-nav-sep:first-child {
         border-top: none;
         margin-top: 0;
       }
+      /* CSS fallback for global brown styling (covers cases where the ID
+         is on a container element rather than the link itself) */
+      [id^='nav-global-'] { background-color: #533e27 !important; border-radius: 4px; }
+      [id^='nav-global-'], [id^='nav-global-'] a, [id^='nav-global-'] span { color: #f4efe6 !important; }
+      [id^='nav-global-']:hover { background-color: #3d2e1c !important; }
     `}</style>
   )
 }

@@ -63,8 +63,8 @@ const GLOBAL_BUCKET: Record<string, string> = {
   'form-defaults': 'Contact', 'email-templates': 'Contact',
   'video-consult-page': 'Contact',
   // About
-  'blog-page': 'About', 'blog-post-template': 'About',
-  'press-page': 'About', 'privacy-page': 'About', 'not-found-page': 'About',
+  'blog-page': 'Publications', 'blog-post-template': 'Publications',
+  'press-page': 'Publications', 'privacy-page': 'Publications', 'not-found-page': 'Publications',
 }
 
 const COLLECTION_BUCKET: Record<string, string> = {
@@ -75,8 +75,8 @@ const COLLECTION_BUCKET: Record<string, string> = {
   'injection-items': 'Pricing', 'btl-items': 'Pricing',
   'journey-steps': 'Journey', 'recovery-stays': 'Journey',
   'enquiries': 'Contact', 'analytics': 'Contact',
-  'blog-posts': 'About', 'blog-tags': 'About', 'authors': 'About',
-  'press-mentions': 'About', 'awards': 'About', 'privacy-sections': 'About',
+  'blog-posts': 'Publications', 'blog-tags': 'Publications', 'authors': 'Publications',
+  'press-mentions': 'Publications', 'awards': 'Publications', 'privacy-sections': 'Publications',
   'media': 'Media Library',
 }
 
