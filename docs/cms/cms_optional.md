@@ -96,3 +96,76 @@
 
 ¹ Rendered as fallback (`priceIdr2026 ?? priceIdr2025`). Currently kept hidden by user decision — revisit if 2025 prices still active.  
 ² Rendered as right-most meta cell on villa cards. Verified from field description; not grep-confirmed.
+
+---
+
+## change09 — Hidden by simplification (2026-05-29)
+
+> Items and fields hidden from editor-role users as part of CMS simplification pass 2.
+> All remain accessible to admin-role users. Move back to `cms_map_simple.md` if re-exposure needed.
+> Risk: 🟢 = `admin.hidden` only · 🟡 = global merged away · 🔴 = field merged (migration required)
+
+### Entire sidebar items hidden (🟢)
+
+| Bucket | Item | Reason |
+|---|---|---|
+| Homepage | Home Intro | UI chrome — pull-quote fragments, brand-authored |
+| Homepage | Home Treatments View | UI chrome — heading only |
+| Homepage | Home Surgeons View | UI chrome — group photo + section labels |
+| Homepage | Home Gallery View | UI chrome — heading only |
+| Homepage | Home Stories View | UI chrome — heading only |
+| Homepage | Home Pricing View | UI chrome — heading only |
+| Homepage | Home Journey View | UI chrome — heading only |
+| Homepage | Brand Stats | Rarely changed; unlock for admin if needed |
+| Homepage | Floating Chrome | CTA pill label — rarely changed |
+| Treatments | Treatments Stats | UI chrome |
+| Treatments | Pricing Footnote | Rarely changed small print |
+| Treatments | Pricing Insurance | Rarely changed |
+| Treatments | Pricing Payment | Rarely changed |
+| Treatments | Pricing Catalogue View | Pure UI chrome |
+| Experts | Surgeons Lead View | UI chrome label only |
+| Experts | Surgeons Plastic View | UI chrome — section heading only |
+| Experts | Surgeons Aesthetic View | UI chrome — section heading only |
+| Results | Gallery Page | title only — absorbed into Results Hero |
+| Results | Stories Page | title only — absorbed into Results Hero |
+| Results | Featured Cases View | UI chrome |
+| Results | Stories View | UI chrome |
+| Journey | Journey Stats | UI chrome |
+| Journey | Journey Steps | UI chrome / rarely changed by editors |
+| Contact | Form Defaults | Technical — error/success messages |
+| Contact | Email Templates | Technical — MJML templates |
+| Contact | Video Consult Page | Merged into Contact bucket (admin access retained) |
+| About | Blog Page | Merged into Blog Posts item |
+| About | Blog Tags | Inline on Blog Posts; hidden top-level |
+| About | Privacy Page | Merged into Privacy item |
+| About | Not Found Page | Admin-only |
+
+### Fields hidden within visible items (🟢)
+
+| Bucket | Item | Fields hidden |
+|---|---|---|
+| Journey | Recovery Stays Page | portfolioSection.headingPre, inclusionsSection.headingPre, inclusions.title, inclusions.body |
+
+### Items merged away — global removed (🟡)
+
+| Removed item | Merged into | Status |
+|---|---|---|
+| Home Page | Home Hero | ⏳ pending 09.5 |
+| Treatments Page | Treatments Hero | ⏳ pending 09.5 |
+| Surgeons Page | Surgeons Hero | ⏳ pending 09.5 |
+| Results Page | Results Hero | ⏳ pending 09.5 |
+| Gallery Page | Results Hero | ⏳ pending 09.5 |
+| Stories Page | Results Hero | ⏳ pending 09.5 |
+| Pricing Page | Pricing Hero | ⏳ pending 09.5 |
+| Journey Page | Journey Hero | ⏳ pending 09.5 |
+| Contact Page | Contact Hero | ⏳ pending 09.5 |
+| Video Consult Page | Contact Hero | ⏳ pending 09.5 |
+| Blog Page | Blog Posts | ⏳ pending 09.5 |
+| Privacy Page | Privacy | ⏳ pending 09.5 |
+
+### Fields merged — migration required (🔴)
+
+| Bucket | Item | Before | After | Status |
+|---|---|---|---|---|
+| All Hero globals | titleA + titleB / title.a + title.b | two fields | single `title` | ⏳ pending 09.7 — confirm before executing |
+| Homepage view sections | heading.a + heading.b | two fields | single `heading` | ⏳ pending 09.7 |
