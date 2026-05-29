@@ -141,3 +141,20 @@ Items remain in DB and are accessible to admin role via direct URL.
 | **Total visible fields** | **~270** | **~162** | **−108 (−40%)** |
 | Total fields in system | ~884 | ~884 | — |
 | Hidden % | 69% | 82% | +13pp |
+
+---
+
+## 4. Field count — Iteration 4 (2026-05-29)
+
+| | After change09 | After iteration 4 | Change |
+|---|:---:|:---:|:---:|
+| Sidebar items | **36** | **26** | −10 (−28%) |
+| Visible fields | **~240** | **~130** | −110 (−46%) |
+| Cumulative hidden % | 82% | **~88%** | +6pp |
+| Items hidden this pass | — | 8 | — |
+| Fields hidden this pass | — | ~110 | — |
+
+**Key changes:** All eyebrow fields hidden. quickEnquiry group (18 sub-fields) hidden.
+All hero chapter/lede/imageHue/imageLabel/breadcrumbLabel hidden.
+All collection richText body/overview fields hidden (dev territory, > 1 min to update).
+**Rule established:** image upload fields keep items visible. Benchmark: < 1 min per field.

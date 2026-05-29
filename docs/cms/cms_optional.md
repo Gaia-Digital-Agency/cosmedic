@@ -182,3 +182,61 @@
 |---|---|---|---|---|
 | All Hero globals | titleA + titleB / title.a + title.b | two fields | single `title` | ⏳ step 09.7 — confirm before executing |
 | Homepage view sections | heading.a + heading.b | two fields | single `heading` | ⏳ step 09.7 |
+
+---
+
+## cms_iteration4 — Hidden by simplification Pass 4 (2026-05-29)
+
+### Naming levels established
+Bucket > Item > Field > Detail > Data
+Operational benchmark: < 1 min to update any visible field with data.
+Rule: if an item has an image field (upload type) → item must stay visible.
+
+### Items hidden entirely (Group A — 🟢 admin.hidden: true)
+
+| Bucket | Item | Fields removed |
+|--------|------|:---:|
+| Treatments | Treatments Index | −1 |
+| Treatments | Pricing Overview | −2 |
+| Treatments | Consultation Policy | −2 |
+| Results | CTAs / Library CTA | −11 |
+| Contact | Contact Enquiry Section | −2 |
+| About | Press Page (global) | −3 |
+| About | Authors | −2 |
+| About | Privacy Sections | −3 |
+
+### Fields hidden within visible items (Group B — 🟢 admin.hidden: true)
+
+| Item | Fields hidden |
+|------|--------------|
+| Home Hero | eyebrow · lede · secondaryCtaHref · quickEnquiry (entire group, 18 sub-fields) |
+| Home Surgeons View | eyebrow |
+| Home Lead Magnet | coverEyebrow · bodyEyebrow · successHeading · successBody · fineprint |
+| Home Place | eyebrow · rows · ctaHref |
+| Settings | siteTagline · audToIdrRate · roundIdrTo · clinicEnquiryEmail · pressEmail · postalCode · country · defaultLocale · defaultOgImage · defaultMetaDescription |
+| Header | navItems (array) · localeSwitcher (group) |
+| Footer | treatmentsHeading · linkColumns · footerBottomLines · enquirySummary · addressBlock · copyrightTemplate |
+| Treatments Hero | chapter · lede · imageHue · imageLabel · breadcrumbLabel |
+| Pricing Hero | chapter · lede · imageHue · imageLabel · breadcrumbLabel |
+| Surgeons Hero | chapter · breadcrumbLabel · lede · imageHue · imageLabel |
+| Results Hero | chapter · lede · imageHue · imageLabel · breadcrumbLabel |
+| Journey Hero | lede |
+| Contact Hero | chapter · lede · imageHue · imageLabel · breadcrumbLabel |
+| Contact Visit Section | eyebrow · body · mapImageLabel · mapImageHue · openInMapsLabel · getDirectionsLabel · clinicHoursLabel · conciergeHoursLabel |
+| Disciplines | lede · body · overview · faqs |
+| Sub Categories | chapterTitle (group) · intro · overview · sections · faqs |
+| Procedures | description · faqs |
+| Surgeons | suffix · train · proc · bio · specAreas · availabilitySchedule · languages · sortOrder |
+| Before/After Cases | description |
+
+### Result
+36 items → 26 items · ~240 visible fields → ~130 visible fields (−46%)
+Cumulative hidden: ~88% of all fields
+
+### Pending — Group C (🔴 DB migrations, deferred)
+| ID | Change | Status |
+|----|--------|--------|
+| C1 | Surgeons: designation+name → name | ⏳ pending approval |
+| C2 | Hero globals: title.a+title.b → title (newline) | ⏳ pending approval |
+| C3 | Lead Magnet: coverLine1+2+3 → coverTitle | ⏳ pending approval |
+| C4 | Lead Magnet: coverFoot1+2 → coverFooter | ⏳ pending approval |
