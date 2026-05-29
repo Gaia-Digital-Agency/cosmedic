@@ -61,7 +61,7 @@ const SurgeonCard: React.FC<{ s: Surgeon; idx: number }> = ({ s, idx }) => (
         </div>
         <div className="surgeon-card-meta" style={{ paddingTop: 20 }}>
           <h4 style={{ fontSize: 22, marginTop: 6 }}>
-            {s.title} {s.name}
+            {s.name}
           </h4>
           {s.suffix && (
             <span className="surgeon-train" style={{ fontSize: 14, marginTop: 2 }}>
@@ -162,7 +162,7 @@ export const SurgeonsIndex: React.FC = () => {
           <Mono>{leadCms?.blockEyebrow || FB.lead.blockEyebrow}</Mono>
           <h2 className="surgeon-name">
             <span>
-              {lead.title} {lead.name.split(' ').slice(0, -1).join(' ')}
+              {lead.name.split(' ').slice(0, -1).join(' ')}
             </span>
             <br />
             <span className="italic">{lead.name.split(' ').slice(-1)[0]}</span>

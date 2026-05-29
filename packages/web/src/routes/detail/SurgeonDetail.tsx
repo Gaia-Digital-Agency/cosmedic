@@ -145,7 +145,7 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
             </Eyebrow>
             <h1 className="surgeon-hero-name">
               <span>
-                {s.title} {restName}
+                {restName}
               </span>
               <span className="italic">{lastWord}</span>
             </h1>
@@ -357,7 +357,7 @@ export const SurgeonDetail: React.FC<Props> = ({ slug }) => {
                     </div>
                     <div className="surgeon-card-meta">
                       <h4>
-                        {other.title} {other.name}
+                        {other.name}
                       </h4>
                       <Mono>{other.spec}</Mono>
                     </div>

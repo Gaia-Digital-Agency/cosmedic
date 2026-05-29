@@ -165,7 +165,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
                             href={`/experts/${s.slug}`}
                             className={activePage === `surgeon-${s.slug}` ? 'active' : ''}
                           >
-                            {s.title} {s.name}
+                            {s.name}
                           </a>
                         </li>
                       ))}
@@ -325,7 +325,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
                             href={`/experts/${s.slug}`}
                             className={activePage === `surgeon-${s.slug}` ? 'active' : ''}
                           >
-                            {s.title} {s.name}
+                            {s.name}
                           </a>
                         </li>
                       ))}

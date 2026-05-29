@@ -22,8 +22,6 @@ export const Surgeons: CollectionConfig = {
   fields: [
     { name: 'slug', type: 'text', required: true, unique: true, index: true,
       admin: { description: 'URL fragment for the doctor\'s page. "suka" → https://cosmedic.gaiada.online/surgeons/suka. Lowercase, hyphens only.', hidden: true } },
-    { name: 'designation', type: 'text', defaultValue: 'dr.',
-      admin: { description: 'Honorific prefix shown before the name (e.g. "dr.", "drg."). Default "dr.". Renamed from `title` (D2) to avoid collision with the admin useAsTitle field.' } },
     { name: 'name', type: 'text', required: true,
       admin: { description: 'Full formal name including credentials. Rendered as the page heading on /surgeons/{slug} and the byline on cards. e.g. "dr. I Made Suka Adnyana, SpBP-RE (K)".' } },
     { name: 'commonName', type: 'text',
