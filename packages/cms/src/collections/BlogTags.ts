@@ -7,6 +7,7 @@ export const BlogTags: CollectionConfig = {
   slug: 'blog-tags',
   labels: { singular: 'Blog Tag', plural: 'Blog Tags' },
   admin: {
+    hidden: true,
     useAsTitle: 'name',
     group: 'About',
     description: 'Topic tags applied to blog posts. Rendered as filter chips on /blog and as the "Filed under" label on each post page.',

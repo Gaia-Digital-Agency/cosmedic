@@ -54,7 +54,7 @@ export const RecoveryStaysPage: GlobalConfig = {
       admin: { description: '"The portfolio" section heading. Villa cards are edited in the Villas collection, not here.' },
       fields: [
         { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'The portfolio' },
-        { name: 'headingPre', type: 'text', defaultValue: '' },
+        { name: 'headingPre', type: 'text', defaultValue: '', admin: { hidden: true } },
         { name: 'headingItalic', type: 'text', defaultValue: 'Six' },
         { name: 'headingPost', type: 'text', defaultValue: ' places to recover.' },
         { name: 'lede', label: 'Intro paragraph', type: 'textarea' },
@@ -66,7 +66,7 @@ export const RecoveryStaysPage: GlobalConfig = {
       admin: { description: '"What\'s included" section. Edit heading + intro paragraph here; edit each inclusion in the Villas list below.' },
       fields: [
         { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: "What's included" },
-        { name: 'headingPre', type: 'text', defaultValue: 'Every stay, ' },
+        { name: 'headingPre', type: 'text', defaultValue: 'Every stay, ', admin: { hidden: true } },
         { name: 'headingItalic', type: 'text', defaultValue: 'considered.' },
         { name: 'headingPost', type: 'text', defaultValue: '' },
         { name: 'lede', label: 'Intro paragraph', type: 'textarea' },
@@ -78,8 +78,8 @@ export const RecoveryStaysPage: GlobalConfig = {
       admin: { description: 'Each row renders as one inclusion card (letter, title, body). Order here = display order.' },
       fields: [
         { name: 'letter', type: 'text', required: true, admin: { description: 'Single uppercase letter shown above the title, e.g. "A".' } },
-        { name: 'title', type: 'text', required: true, admin: { description: 'e.g. "Welcome provisioning".' } },
-        { name: 'body', type: 'textarea', required: true, admin: { description: 'One short sentence.' } },
+        { name: 'title', type: 'text', required: true, admin: { hidden: true, description: 'e.g. "Welcome provisioning".' } },
+        { name: 'body', type: 'textarea', required: true, admin: { hidden: true, description: 'One short sentence.' } },
       ],
     },
   ],

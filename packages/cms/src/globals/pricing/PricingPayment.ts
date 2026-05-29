@@ -6,6 +6,7 @@ export const PricingPayment: GlobalConfig = {
   slug: 'pricing-payment',
   label: 'Payment',
   admin: {
+    hidden: true,
     group: 'Treatments',
     description:
       'Right column of the two-column section at the bottom of /pricing — payment heading + key/value terms list.',

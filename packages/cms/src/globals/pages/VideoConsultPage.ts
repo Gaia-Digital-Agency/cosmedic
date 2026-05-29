@@ -8,6 +8,7 @@ export const VideoConsultPage: GlobalConfig = {
   dbName: 'vid_consult_pg',
   label: 'Video Consult',
   admin: {
+    hidden: true,
     group: 'Contact',
     description: 'Editorial content for /video-consult: hero + body. Pre-travel encrypted video consultation landing page.',
   },

@@ -7,6 +7,7 @@ export const JourneySteps: CollectionConfig = {
   slug: 'journey-steps',
   labels: { singular: 'Step', plural: 'Steps' },
   admin: {
+    hidden: true,
     useAsTitle: 'title',
     defaultColumns: ['number', 'title', 'order', 'sortOrder'],
     group: 'Journey',

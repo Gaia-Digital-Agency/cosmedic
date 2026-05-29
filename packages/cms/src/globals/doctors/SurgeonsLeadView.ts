@@ -6,6 +6,7 @@ export const SurgeonsLeadView: GlobalConfig = {
   slug: 'surgeons-lead-view',
   label: 'Lead View',
   admin: {
+    hidden: true,
     group: 'Experts',
     description:
       'Section chrome for the Lead Plastic Surgeon panel on /surgeons. The surgeon shown is NOT edited here — that comes from **c. Surgeons** (the first record by sortOrder). This item controls only the eyebrow / block eyebrow / stat labels / CTA label.',

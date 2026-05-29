@@ -6,6 +6,7 @@ export const ResultsStoriesView: GlobalConfig = {
   slug: 'results-stories-view',
   label: 'Stories View',
   admin: {
+    hidden: true,
     group: 'Results',
     description:
       'Section chrome for the "Stories, not slogans." view on /results. The patient-quote rows are NOT edited here — source: **h. Patient-Stories** (same Bucket). This item controls only the eyebrow, heading, and lede.',

@@ -7,6 +7,7 @@ export const GalleryPage: GlobalConfig = {
   slug: 'gallery-page',
   label: 'Gallery',
   admin: {
+    hidden: true,
     group: 'Results',
     description:
       'Chrome fields for /gallery: filter-bar labels + the shared Library-Cta block at the bottom (edited in c. Library-Cta). The before/after card grid is rendered from **g. Before-After-Cases**. Hero title is hardcoded; edit imageHue / imageLabel / breadcrumbLabel / filterBarLabel / countFormat here.',

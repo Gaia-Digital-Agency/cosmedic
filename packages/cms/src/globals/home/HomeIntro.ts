@@ -6,6 +6,7 @@ export const HomeIntro: GlobalConfig = {
   slug: 'home-intro',
   label: 'Intro',
   admin: {
+    hidden: true,
     group: 'Homepage',
     description:
       'Intro / "Our Approach" section on /. One eyebrow, an italic-accent pull quote (split into three parts so the italic word is editable independently), and the two-column body paragraphs below.',
