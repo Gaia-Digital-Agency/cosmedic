@@ -40,7 +40,7 @@ The **Users** list is the team who can log in:
 # 📋 Sections, item by item
 Sidebar order: **Homepage · Treatments · Experts · Results · Journey · Publications · Contact**. One row per editable field. *(Media Library + rarely-used technical settings are hidden to keep it simple.)*
 
-## 🏠 Homepage
+## 🏠 Homepage — Part 1 (page sections)
 | Item | Field | Detail (what to put / what it controls) |
 |------|-------|------------------------------------------|
 | Home Hero | title (line a) | Big headline, line 1 (roman) |
@@ -60,6 +60,10 @@ Sidebar order: **Homepage · Treatments · Experts · Results · Journey · Publ
 | Lead Magnet | intro | Paragraph describing the guide |
 | Lead Magnet | form placeholder | Email box hint text |
 | Lead Magnet | submit label | Form button text |
+
+## 🏠 Homepage — Part 2 (settings, footer & press)
+| Item | Field | Detail (what to put / what it controls) |
+|------|-------|------------------------------------------|
 | Settings | site name | Brand name in title bar / share cards |
 | Settings | AUD→IDR rate | Exchange rate driving every AUD price (e.g. 12800) |
 | Settings | round IDR to | Rounding for converted prices (e.g. 50000) |
