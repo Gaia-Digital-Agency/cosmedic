@@ -237,3 +237,48 @@ code,
 [data-theme='dark'] .collections__wrap .collections__group:nth-child(even) {
   background: rgba(166, 124, 82, 0.12);
 }
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Global sidebar cards — dark brown pill, white title.
+ * Visual cue: dark card = global (site-wide setting),
+ *              light card = collection (individual records).
+ *
+ * Payload assigns id=nav-global-{slug} to every global nav link
+ * and id=nav-{slug} (no global) to collections.
+ * ─────────────────────────────────────────────────────────────────── */
+
+[id^='nav-global-'] a,
+[id^='nav-global-'] button {
+  background: var(--cs-brown) !important;
+  color: var(--cs-paper) !important;
+  border-radius: 4px;
+}
+
+[id^='nav-global-'] a *,
+[id^='nav-global-'] button * {
+  color: var(--cs-paper) !important;
+}
+
+[id^='nav-global-'] a:hover,
+[id^='nav-global-'] button:hover {
+  background: #3d2e1c !important;
+  color: var(--cs-paper) !important;
+}
+
+[id^='nav-global-'] a.nav-group__link--active,
+[id^='nav-global-'] a[aria-current],
+[id^='nav-global-'] a.active {
+  background: #2a1f13 !important;
+  color: var(--cs-paper) !important;
+}
+
+[data-theme='dark'] [id^='nav-global-'] a,
+[data-theme='dark'] [id^='nav-global-'] button {
+  background: #2a1f13 !important;
+  color: var(--cs-cream) !important;
+}
+
+[data-theme='dark'] [id^='nav-global-'] a:hover,
+[data-theme='dark'] [id^='nav-global-'] button:hover {
+  background: var(--cs-brown) !important;
+}
