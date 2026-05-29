@@ -227,14 +227,24 @@ code,
  * area dashboard (collections__group inside collections__wrap).
  * Slightly darker than nav to read on the lighter paper background.
  * ─────────────────────────────────────────────────────────────────── */
-.collections__wrap .collections__group:nth-child(even) {
+/* Band on VISUALLY-even buckets. :nth-child follows DOM order (not flex
+ * order), so we target the even-position buckets explicitly by card id
+ * to match the deployed visual order (2 Treatments, 4 Results, 6
+ * Publications, 8 Users). Keep in sync with the order block below. */
+.collections__wrap > .collections__group:has(#card-disciplines),
+.collections__wrap > .collections__group:has(#card-before-after-cases),
+.collections__wrap > .collections__group:has(#card-blog-posts),
+.collections__wrap > .collections__group:has(#card-users) {
   background: rgba(83, 62, 39, 0.06);
   border-radius: 6px;
   margin-inline: -16px;
   padding: 8px 16px 12px;
 }
 
-[data-theme='dark'] .collections__wrap .collections__group:nth-child(even) {
+[data-theme='dark'] .collections__wrap > .collections__group:has(#card-disciplines),
+[data-theme='dark'] .collections__wrap > .collections__group:has(#card-before-after-cases),
+[data-theme='dark'] .collections__wrap > .collections__group:has(#card-blog-posts),
+[data-theme='dark'] .collections__wrap > .collections__group:has(#card-users) {
   background: rgba(166, 124, 82, 0.12);
 }
 
@@ -282,3 +292,20 @@ code,
 .nav__wrap > .nav-group:has(#nav-enquiries)          { order: 7; }
 .nav__wrap > .nav-group:has(#nav-users)              { order: 8; }
 .nav__wrap > .nav__controls                          { order: 99; }
+
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Dashboard bucket order (main content area) — pure CSS flex order.
+ * Same desired sequence as the nav. .collections__wrap is a flex column;
+ * each .collections__group is targeted by a visible card id it contains
+ * (card-{slug}). Media Library + JourneySteps are admin-hidden so no group
+ * renders for them. Users (ungrouped "Collections" group) pushed to end.
+ * ─────────────────────────────────────────────────────────────────── */
+.collections__wrap > .collections__group:has(#card-home-hero)          { order: 1; }
+.collections__wrap > .collections__group:has(#card-disciplines)        { order: 2; }
+.collections__wrap > .collections__group:has(#card-surgeons)           { order: 3; }
+.collections__wrap > .collections__group:has(#card-before-after-cases) { order: 4; }
+.collections__wrap > .collections__group:has(#card-recovery-stays)     { order: 5; }
+.collections__wrap > .collections__group:has(#card-blog-posts)         { order: 6; }
+.collections__wrap > .collections__group:has(#card-enquiries)          { order: 7; }
+.collections__wrap > .collections__group:has(#card-users)              { order: 8; }
