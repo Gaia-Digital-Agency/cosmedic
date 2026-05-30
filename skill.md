@@ -266,3 +266,28 @@ Key learnings:
 4. **Hidden arrays kept via legacy path:** inclusions array kept hidden by design. The web still reads from `cms.recoveryStaysPage.inclusions` — so `recoveryStaysPage` stays in the cache return object pointing to the old global (not hidden from cache, only from admin).
 
 **Result:** editors open one JOURNEY card covering both pages. /journey and /recovery-stays both return 200.
+
+### Experts (surgeons-hero) — already correct structure, fixes only
+
+Two pages → two cards already existed (Experts + Detail Template). No merge needed. Hidden globals were already returning `Promise.resolve({})` in cache — a prior merge had been done at schema level but data path was broken.
+
+Key learnings:
+1. **Already-merged but broken:** SurgeonsHero already had the `sections` group with lead/plastic/aesthetic sub-groups, and the cache already returned `{}` for the 3 hidden globals. But the web read `heading?.a` (nested group) while the schema had flat `headingA`. Data existed in DB but was never rendered.
+2. **Check the cache assembly, not just the schema:** the fact that the hidden globals returned `{}` was the clue that a prior merge had been attempted. Always trace the full fetch chain — source globals, cache, and web access path.
+3. **Empty string ≠ NULL for COALESCE:** seeding with `COALESCE(field, 'default')` won't fill an existing empty string `''`. Use `WHERE field IS NULL OR field = ''` when the DB may have empty strings rather than NULLs.
+4. **Template globals:** SurgeonDetailTemplate covers all `/experts/[slug]` pages (×8). One CMS record → shared chrome across every individual page of the same type. Same pattern as Blog Post Template for `/blog/[slug]`.
+
+**Result:** heading data now reads from CMS instead of hardcoded fallbacks. Breadcrumb exposed.
+
+### Publications — hidden → visible, hardcoded → CMS
+
+4 globals: BlogPage, PressPage, PrivacyPage (all hidden) + BlogPostTemplate (visible). Pages accessed via `findPageBySlug` not direct CMS keys.
+
+Key learnings:
+1. **`findPageBySlug` pattern:** BlogPage, PressPage, PrivacyPage are fetched into a `pages` array in the cache and looked up by slug. Different from the direct `cms.globalKey` pattern used by all other buckets. Data is in `blog_page`, `press_page`, `privacy_page` DB tables.
+2. **`pageFields` factory does NOT include imageLabel or breadcrumbLabel:** the shared `pageFields({ hideHero: true })` provides title, slug, route, chapterTitle, tagline, lede, heroImage, sections, SEO. Any additional page-specific fields (imageLabel, breadcrumbLabel, stats) must be added explicitly to each page global.
+3. **Exposing hidden globals = just removing `hidden: true`:** when columns already exist and data is already there, no migration needed. The simplest case of the full reorg.
+4. **Hardcoded arrays need their own table:** the Press stats row (4 tiles) was fully hardcoded — no CMS global or DB table. Adding a `topStats` array required creating `press_page_top_stats` table and seeding it with the current hardcoded values. Always seed immediately so editors see real data, not empty fields.
+5. **Template globals (Blog Post Template, Surgeon Detail Template):** one CMS record controls shared chrome across all pages of the same type. Never merge these — they are correctly separate cards by design.
+
+**Result:** Publications 4 cards, all at 95%. Blog imageLabel/breadcrumb, Press stats row + imageLabel/breadcrumb, Privacy breadcrumb — all now CMS-editable.
