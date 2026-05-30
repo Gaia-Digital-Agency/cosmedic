@@ -11,31 +11,28 @@ Marketing site for **BIMC CosMedic** — Bali International Medical Centre's pla
 
 | Doc | What |
 |---|---|
-| [CLAUDE.md](./CLAUDE.md) | Guide for Claude Code sessions in this folder |
+| [CLAUDE.md](./CLAUDE.md) | Guide for Claude Code sessions — read before every session |
 | [docs/architecture/architecture_info.md](./docs/architecture/architecture_info.md) | Runtime topology, stack, deployment |
 | [docs/architecture/file_structure.md](./docs/architecture/file_structure.md) | End-state directory tree + renames |
 | [docs/architecture/sitemap.md](./docs/architecture/sitemap.md) | Every page · subpage · CTA · button · mega-menu |
-| [docs/architecture/site_features.md](./docs/architecture/site_features.md) | Visitor walkthrough + every site feature, primitive, and interaction |
-| [docs/db/db_schema.md](./docs/db/db_schema.md) | Full Payload CMS collection + global schema (WHAT) |
-| [docs/db/db_ops.md](./docs/db/db_ops.md) | Postgres provisioning, migrations, backup, restore, perf (HOW) |
-| [docs/cms/cms_info.md](./docs/cms/cms_info.md) | Cosmedic CMS white-label spec (LOOK) |
-| [docs/cms/cms_ops.md](./docs/cms/cms_ops.md) | Payload init, hooks, access, drafts, media, seed, email (HOW) |
-| [docs/cms/cms_schema.md](./docs/cms/cms_schema.md) | UI ↔ CMS coverage matrix — every page surface mapped to its CMS entity |
-| [docs/cms/CMS_structure.md](./docs/cms/CMS_structure.md) | **Source of truth** — locked CMS sidebar structure (buckets · entities · fields) the code aligns to |
-| [docs/cms/editor_cheatsheet.md](./docs/cms/editor_cheatsheet.md) | Clinic-editor quick reference for the CMS |
-| [docs/planning/plan.md](./docs/planning/plan.md) | Full 14-phase execution plan + locked architecture decisions + Appendix A |
-| [docs/planning/all_todo.md](./docs/planning/all_todo.md) | **Single TODO file** — Phases M/N/P/Q(✅ 19/19) complete; CR25May 38/48 closed; R3/R5 pending |
-| [docs/changes/app_map.md](./docs/changes/app_map.md) | Admin bucket → site page mapping — complete entity list with bucket assignments |
-| [docs/db/db_info.md](./docs/db/db_info.md) | **DB reference** — main tables, column names, FK map, orphan legacy tables, common query patterns |
-| [docs/changes/changerequest_21May.md](./docs/changes/changerequest_21May.md) | Phase Q ordered tracker — 19 q-items (all shipped) |
-| [docs/changes/change_request_may25.md](./docs/changes/change_request_may25.md) | **Active CR — 48 items, 38 closed, 3 launch-blocking open** (25.3 SMTP · 25.32 visual QA · 25.38 form E2E) |
-| [docs/changes/changes5-collections.md](./docs/changes/changes5-collections.md) | CMS field rearrangement plan. Phase 1 + Phase 3 ✅ shipped. Phase 2 (DB migrations) pending. |
-| [docs/changes/changes7-db.md](./docs/changes/changes7-db.md) | DB operations reference. |
-| [docs/image_inventory.md](./docs/image_inventory.md) | **Image inventory** — every CMS image slot, media ID, filename, AI-generated/real/placeholder status. Last audited 2026-05-27. |
-| [docs/planning/phase-m-signoff.md](./docs/planning/phase-m-signoff.md) | Phase M mobile-responsive audit · sign-off (2026-05-23) |
-| [docs/planning/commit_list.md](./docs/planning/commit_list.md) | Commit-level tracker for the Phases D/C/P/N/Q/M work plan |
-| [docs/assets/brand-guidelines.pdf](./docs/assets/brand-guidelines.pdf) | BIMC CosMedic Brand Guidelines v1.0 (canonical brand source) |
-| [docs/assets/pricelist.xlsx](./docs/assets/pricelist.xlsx) | Clinic's price + procedure catalogue (CMS seed source) |
+| [docs/db/db_schema.md](./docs/db/db_schema.md) | Full Payload CMS collection + global schema |
+| [docs/db/db_ops.md](./docs/db/db_ops.md) | Postgres provisioning, migrations, backup, restore |
+| [docs/cms/cms_info.md](./docs/cms/cms_info.md) | Cosmedic CMS white-label spec |
+| [docs/cms/cms_ops.md](./docs/cms/cms_ops.md) | Payload hooks, access, seed, email |
+| [docs/cms/cms_map_simple.md](./docs/cms/cms_map_simple.md) | **Current visible CMS map** — 15 cards, all fields listed |
+| [docs/cms/cms_map_all.md](./docs/cms/cms_map_all.md) | Full schema inventory (all globals + collections) |
+| [docs/cms/cms_optional.md](./docs/cms/cms_optional.md) | Conflict log — fields visible on web but hidden in CMS (all resolved) |
+| [docs/cms/editor_cheatsheet.md](./docs/cms/editor_cheatsheet.md) | Clinic-editor quick reference |
+| [docs/maps/sweep_map.md](./docs/maps/sweep_map.md) | 52-route × 10-level CMS visibility sweep map |
+| [docs/maps/app_map.md](./docs/maps/app_map.md) | Admin bucket → site page mapping |
+| [docs/maps/remap.md](./docs/maps/remap.md) | Phase R Admin IA Remap reference |
+| [docs/language/enid_plan.md](./docs/language/enid_plan.md) | EN/ID i18n implementation plan (Phase A+A2 complete) |
+| [docs/language/enid.md](./docs/language/enid.md) | EN/ID architecture rationale |
+| [docs/planning/plan.md](./docs/planning/plan.md) | 14-phase execution plan + locked decisions |
+| [docs/planning/all_todo.md](./docs/planning/all_todo.md) | Single TODO file |
+| [docs/changes/change_request_may25.md](./docs/changes/change_request_may25.md) | CR25May — 48 items, 3 launch-blocking open |
+| [docs/assets/brand-guidelines.pdf](./docs/assets/brand-guidelines.pdf) | BIMC CosMedic Brand Guidelines (canonical) |
+| [docs/assets/pricelist.xlsx](./docs/assets/pricelist.xlsx) | Clinic price + procedure catalogue (seed source) |
 | [design/](./design/) | Original Claude Design source (READ-ONLY) |
 
 ## Stack at a glance
@@ -44,49 +41,38 @@ Marketing site for **BIMC CosMedic** — Bali International Medical Centre's pla
 |---|---|
 | Web framework | Vite 6 SSR + React 19 |
 | Styling | Tailwind 3 + brand-driven theme |
-| CMS | Payload 3 (Next.js host) |
+| CMS | Payload 3.84.1 (Next.js 15 host) |
 | Database | PostgreSQL 15+ (local on `gda-s01`) |
-| Process manager | pm2 (`cosmedic-cms` + `cosmedic-web`) |
+| Process manager | pm2 (`cosmedic-cms` · `cosmedic-web`) |
 | Reverse proxy | nginx |
 | TLS | Let's Encrypt via certbot |
 | Forms | react-hook-form + Zod |
-| Email | nodemailer (SMTP provider TBD) |
-| Images | Sharp + AVIF/WebP via Payload Media · Vertex AI Imagen 3 for AI-generated heroes |
-| Testing | Vitest + Playwright + visual regression |
+| Email | nodemailer (SMTP TBD) |
+| AI translation | Vertex AI gemini-2.5-flash (auto-translate hook, silent until Phase F) |
+| Exchange rate | open.er-api.com (auto-updated daily ±5% threshold) |
 
-Internal abbreviation for this stack across Gaia infra: **VRTPN**.
+Internal abbreviation: **VRTPN**.
 
 ## Dev (server-first on `gda-s01`)
-
-Development happens directly on `/var/www/cosmedic/` on the `gda-s01` server (user chose server-first; departs from sibling sites' laptop-first pattern).
 
 ```bash
 cd /var/www/cosmedic
 pnpm install
-pnpm dev          # concurrently: cms (4007) + web (3007)
-```
-
-## Build + deploy
-
-```bash
 pnpm build
 pm2 restart cosmedic-cms cosmedic-web
 ```
 
-nginx config lives in `/etc/nginx/sites-enabled/subdomains.gaiada.online`. Always `sudo nginx -t` before reloading. **Never restart nginx.**
+nginx config: `/etc/nginx/sites-enabled/subdomains.gaiada.online`. Always `sudo nginx -t` before reloading.
 
 ## ⚠️ Multisite safety
 
-This server hosts ~10 sibling production sites (`christos`, `dashboard`, `flowstep`, `rhproperties`, `templatebase`, `templategen`, `valuations`, `whatsnewasia`, `wteindo`, `zenbali`). They are managed independently. Cosmedic operations must not affect them:
+This server hosts ~10 sibling production sites. Cosmedic operations must not affect them:
 
-- ❌ **Never** `pm2 restart all`. Only restart `cosmedic-cms` / `cosmedic-web`.
-- ❌ **Never** restart nginx. Reload only, after `nginx -t` passes.
+- ❌ **Never** `pm2 restart all`. Only `cosmedic-cms` / `cosmedic-web`.
+- ❌ **Never** restart nginx. Reload only, after `nginx -t`.
 - ❌ **Never** reuse another site's Postgres role or DB.
-- ❌ **Never** share or rename Let's Encrypt certs.
-- ❌ **Never** run `pnpm install` from `/var/www/`. Always from inside `/var/www/cosmedic/`.
 - ✅ Ports `3007` (web) + `4007` (cms) are reserved.
-- ✅ Cosmedic Postgres `role` + `db` are isolated.
-- ✅ Cosmedic SSL cert is dedicated; sibling certs untouched.
+- ✅ Cosmedic Postgres role + db are isolated.
 
 ## License
 
