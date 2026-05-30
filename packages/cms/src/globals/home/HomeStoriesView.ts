@@ -7,6 +7,7 @@ export const HomeStoriesView: GlobalConfig = {
   label: 'Stories',
   admin: {
     group: 'Homepage',
+    hidden: true,
     description:
       'Section chrome for the Stories teaser on / (3 testimonial cards). The patient stories themselves are NOT edited here — source: **d. Results → h. Patient-Stories** (rows where isFeatured=true). This item controls only the eyebrow, heading, lede, and CTA. lede may contain inline HTML for the "full stories page" link.',
   },
