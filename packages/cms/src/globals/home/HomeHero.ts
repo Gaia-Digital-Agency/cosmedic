@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../../lib/access'
 import { revalidateGlobalAfterChange } from '../../lib/revalidate'
+import { makeGlobalTranslateHook, T, A } from '../../hooks/autoTranslate'
 
 export const HomeHero: GlobalConfig = {
   slug: 'home-hero',
@@ -11,7 +12,21 @@ export const HomeHero: GlobalConfig = {
       'Hero at the top of / — eyebrow, two-line title, lede, hero image, plus chrome strings for the right-side quick-enquiry card and the two primary CTAs beneath the headline.',
   },
   access: { read: readPublic, update: isAuthenticated },
-  hooks: revalidateGlobalAfterChange(),
+  hooks: {
+    ...revalidateGlobalAfterChange(),
+    afterChange: [makeGlobalTranslateHook([
+      T('eyebrow'), T('title.a'), T('title.b'), T('lede'),
+      T('primaryCtaLabel'), T('secondaryCtaLabel'),
+      T('quickEnquiry.eyebrow'), T('quickEnquiry.heading'), T('quickEnquiry.intro'),
+      T('quickEnquiry.nameLabel'), T('quickEnquiry.namePlaceholder'),
+      T('quickEnquiry.emailLabel'), T('quickEnquiry.emailPlaceholder'),
+      T('quickEnquiry.interestLabel'), T('quickEnquiry.interestOptionalLabel'),
+      T('quickEnquiry.interestPlaceholder'), T('quickEnquiry.revealInterestLabel'),
+      T('quickEnquiry.submitLabel'), T('quickEnquiry.submittingLabel'),
+      T('quickEnquiry.successLabel'), T('quickEnquiry.successFine'),
+      T('quickEnquiry.errorFine'), T('quickEnquiry.fineprint'),
+    ])],
+  },
   fields: [
     { name: 'breadcrumbLabel', type: 'text', localized: true, defaultValue: 'Home',
       admin: { description: 'Last segment in the breadcrumb trail (reserved — / does not currently render a breadcrumb).', hidden: true } },

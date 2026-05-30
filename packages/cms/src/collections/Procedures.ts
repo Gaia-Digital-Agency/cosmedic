@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
 import { seoGroup } from '../lib/seo'
+import { makeCollectionTranslateHook, T, R, A, SEO_SPECS } from '../hooks/autoTranslate'
 
 export const Procedures: CollectionConfig = {
   slug: 'procedures',
@@ -49,6 +50,14 @@ export const Procedures: CollectionConfig = {
         return data
       },
     ],
+    afterChange: [makeCollectionTranslateHook([
+      T('name'), T('shortName'), R('description'),
+      A('sections', [T('t'), R('body')]),
+      A('faqs', [T('q'), T('a')]),
+      T('pricing.priceNotes'), T('detail.duration'), T('detail.recovery'),
+      A('detail.included', [T('value')]),
+      ...SEO_SPECS,
+    ])],
   },
   fields: [
     { name: 'slug', type: 'text', required: true, unique: true, index: true,

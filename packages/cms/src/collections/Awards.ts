@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
 import { sortOrderField } from '../lib/seo'
+import { makeCollectionTranslateHook, T } from '../hooks/autoTranslate'
 
 export const Awards: CollectionConfig = {
   slug: 'awards',
@@ -18,7 +19,7 @@ export const Awards: CollectionConfig = {
     update: isAuthenticated,
     delete: isAuthenticated,
   },
-  hooks: revalidationHooks(),
+  hooks: { ...revalidationHooks(), afterChange: [makeCollectionTranslateHook([T('name'), T('issuer'), T('summary')])] },
   fields: [
     { name: 'slug', type: 'text', required: true, unique: true, index: true,
       admin: { hidden: true } },

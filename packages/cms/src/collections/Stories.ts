@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
 import { seoGroup, sortOrderField, publishStatusField } from '../lib/seo'
+import { makeCollectionTranslateHook, T, R, SEO_SPECS } from '../hooks/autoTranslate'
 
 export const Stories: CollectionConfig = {
   slug: 'stories',
@@ -18,7 +19,7 @@ export const Stories: CollectionConfig = {
     update: isAuthenticated,
     delete: isAuthenticated,
   },
-  hooks: revalidationHooks(),
+  hooks: { ...revalidationHooks(), afterChange: [makeCollectionTranslateHook([T('quote'), R('body'), ...SEO_SPECS])] },
   fields: [
     { name: 'slug', type: 'text', required: true, unique: true, index: true,
       admin: { hidden: true } },

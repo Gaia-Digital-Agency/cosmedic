@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated, publishedOrAuthed, isAuthenticated as canMutate } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
 import { seoGroup, publishStatusField, sortOrderField } from '../lib/seo'
+import { makeCollectionTranslateHook, T, R, SEO_SPECS } from '../hooks/autoTranslate'
 
 export const BlogPosts: CollectionConfig = {
   slug: 'blog-posts',
@@ -18,7 +19,7 @@ export const BlogPosts: CollectionConfig = {
     update: canMutate,
     delete: isAuthenticated,
   },
-  hooks: revalidationHooks(),
+  hooks: { ...revalidationHooks(), afterChange: [makeCollectionTranslateHook([T('title'), T('lede'), R('body'), ...SEO_SPECS])] },
   fields: [
     { name: 'slug', type: 'text', required: true, unique: true, index: true,
       admin: { hidden: true } },

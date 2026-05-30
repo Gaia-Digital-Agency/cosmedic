@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
 import { sortOrderField } from '../lib/seo'
+import { makeCollectionTranslateHook, T, R, A } from '../hooks/autoTranslate'
 
 export const JourneySteps: CollectionConfig = {
   slug: 'journey-steps',
@@ -20,7 +21,7 @@ export const JourneySteps: CollectionConfig = {
     update: isAuthenticated,
     delete: isAuthenticated,
   },
-  hooks: revalidationHooks(),
+  hooks: { ...revalidationHooks(), afterChange: [makeCollectionTranslateHook([T('title'), R('body'), A('bullets', [T('text')])])] },
   fields: [
     { name: 'slug', type: 'text', required: true, unique: true, index: true,
       admin: { hidden: true } },

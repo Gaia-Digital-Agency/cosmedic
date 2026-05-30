@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
 import { seoGroup, sortOrderField } from '../lib/seo'
+import { makeCollectionTranslateHook, T, R, A, SEO_SPECS } from '../hooks/autoTranslate'
 
 export const Surgeons: CollectionConfig = {
   slug: 'surgeons',
@@ -18,7 +19,14 @@ export const Surgeons: CollectionConfig = {
     update: isAuthenticated,
     delete: isAuthenticated,
   },
-  hooks: revalidationHooks(),
+  hooks: {
+    ...revalidationHooks(),
+    afterChange: [makeCollectionTranslateHook([
+      T('spec'), T('train'), T('proc'), R('bio'),
+      A('specAreas', [T('value')]),
+      ...SEO_SPECS,
+    ])],
+  },
   fields: [
     { name: 'slug', type: 'text', required: true, unique: true, index: true,
       admin: { description: 'URL fragment for the doctor\'s page. "suka" → https://cosmedic.gaiada.online/surgeons/suka. Lowercase, hyphens only.', hidden: true } },

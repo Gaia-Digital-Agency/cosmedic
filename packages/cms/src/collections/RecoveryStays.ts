@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
 import { seoGroup, sortOrderField } from '../lib/seo'
+import { makeCollectionTranslateHook, T, A, SEO_SPECS } from '../hooks/autoTranslate'
 
 export const RecoveryStays: CollectionConfig = {
   slug: 'recovery-stays',
@@ -19,7 +20,7 @@ export const RecoveryStays: CollectionConfig = {
     update: isAuthenticated,
     delete: isAuthenticated,
   },
-  hooks: revalidationHooks(),
+  hooks: { ...revalidationHooks(), afterChange: [makeCollectionTranslateHook([T('name'), T('body'), A('amenities', [T('value')]), ...SEO_SPECS])] },
   fields: [
     { name: 'slug', type: 'text', required: true, unique: true, index: true,
       admin: { hidden: true } },

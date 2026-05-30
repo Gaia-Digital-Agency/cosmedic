@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { isAuthenticated, readPublic } from '../lib/access'
 import { revalidationHooks } from '../lib/revalidate'
 import { seoGroup, sortOrderField } from '../lib/seo'
+import { makeCollectionTranslateHook, T, R, A, SEO_SPECS } from '../hooks/autoTranslate'
 
 export const SubCategories: CollectionConfig = {
   slug: 'sub-categories',
@@ -18,7 +19,16 @@ export const SubCategories: CollectionConfig = {
     update: isAuthenticated,
     delete: isAuthenticated,
   },
-  hooks: revalidationHooks(),
+  hooks: {
+    ...revalidationHooks(),
+    afterChange: [makeCollectionTranslateHook([
+      T('title'), T('chapterTitle.a'), T('chapterTitle.b'), T('tagline'), T('lede'),
+      R('intro'), R('overview'),
+      A('sections', [T('t'), R('body')]),
+      A('faqs', [T('q'), T('a')]),
+      ...SEO_SPECS,
+    ])],
+  },
   fields: [
     { name: 'slug', type: 'text', required: true, index: true,
       admin: { description: 'URL fragment scoped to the parent discipline. Two sub-categories may share a slug (e.g. "breast" under Surgical and Reconstructive) — uniqueness is enforced per (parent, slug). Renders at /treatments/{discipline-slug}/{slug}.', hidden: true } },
