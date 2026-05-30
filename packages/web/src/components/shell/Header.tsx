@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { TREATMENT_LIST, SUBCATEGORIES_BY_DISCIPLINE, SURGEON_LIST } from '@/content/seed'
 import { useCms } from '@/lib/cms-context'
 import { mediaUrl, mediaAlt } from '@/lib/cms'
+import { localeFromPath, withLocale, type Locale } from '@/i18n'
 
 type Props = {
   activePage?: string
@@ -29,7 +30,9 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
   // touching the data.
 
   const [scrolled, setScrolled] = useState(false)
-  const [lang, setLang] = useState<'EN' | 'ID'>('EN')
+  // D4: active locale derived from URL after mount (avoids SSR/hydration mismatch).
+  const [activeLocale, setActiveLocale] = useState<Locale>('en')
+  useEffect(() => { setActiveLocale(localeFromPath(window.location.pathname)) }, [])
   const [mobileOpen, setMobileOpen] = useState(false)
   const [mobileTreatmentsOpen, setMobileTreatmentsOpen] = useState(false)
   const [mobileSurgeonsOpen, setMobileSurgeonsOpen] = useState(false)
@@ -197,36 +200,31 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
         </nav>
         <div className="header-right">
           {localeSwitcher?.enabled !== false ? (
-            // EN | ID switcher — visually present, functionally disabled
-            // until Phase 9 lengthy ships (Payload localization + /id/*
-            // SSR routing + ID editorial content). Keeping the chrome in
-            // place so the header layout matches design + the position is
-            // ready when the locale wiring lands.
-            <div
-              className="lang-switcher"
-              role="group"
-              aria-label="Language"
-              title="Indonesian locale coming soon"
-              style={{ opacity: 0.55, cursor: 'not-allowed' }}
-            >
-              {(
-                [
-                  ['en', labelEn],
-                  ['id', labelId],
-                ] as const
-              ).map(([code, label]) => {
-                const active = code === 'en'
+            // D1–D4: EN | ID switcher — fully active (Phase D).
+            // Clicking navigates to the /id equivalent of the current URL,
+            // sets a locale_pref cookie (read by server.ts for subsequent
+            // requests), and updates the active-state pill styling.
+            <div className="lang-switcher" role="group" aria-label="Language">
+              {(['en', 'id'] as const).map((code) => {
+                const label = code === 'en' ? labelEn : labelId
+                const active = activeLocale === code
+                const href = withLocale(typeof window !== 'undefined' ? window.location.pathname : '/', code)
                 return (
-                  <span
+                  <a
                     key={code}
+                    href={href}
                     className={`lang-pill ${active ? 'active' : ''}`}
-                    aria-disabled="true"
                     aria-current={active ? 'true' : undefined}
                     lang={code}
-                    style={{ pointerEvents: 'none', userSelect: 'none' }}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      const age = 365 * 24 * 3600
+                      document.cookie = `locale_pref=${code}; path=/; max-age=${age}; SameSite=Lax`
+                      window.location.href = href
+                    }}
                   >
                     {label}
-                  </span>
+                  </a>
                 )
               })}
             </div>
@@ -363,21 +361,26 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
 
           {localeSwitcher?.enabled !== false ? (
             <div className="mobile-menu-lang">
-              {(
-                [
-                  ['EN', labelEn],
-                  ['ID', labelId],
-                ] as const
-              ).map(([code, label]) => (
-                <button
-                  key={code}
-                  type="button"
-                  className={`mobile-lang-pill ${lang === code ? 'active' : ''}`}
-                  onClick={() => setLang(code)}
-                >
-                  {label}
-                </button>
-              ))}
+              {(['en', 'id'] as const).map((code) => {
+                const label = code === 'en' ? labelEn : labelId
+                const href = withLocale(typeof window !== 'undefined' ? window.location.pathname : '/', code)
+                return (
+                  <a
+                    key={code}
+                    href={href}
+                    className={`mobile-lang-pill ${activeLocale === code ? 'active' : ''}`}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      const age = 365 * 24 * 3600
+                      document.cookie = `locale_pref=${code}; path=/; max-age=${age}; SameSite=Lax`
+                      setMobileOpen(false)
+                      window.location.href = href
+                    }}
+                  >
+                    {label}
+                  </a>
+                )
+              })}
             </div>
           ) : null}
 
