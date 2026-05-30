@@ -222,7 +222,7 @@ async function doLoad(locale?: string): Promise<CmsCache> {
       fetchGlobal<PricingOverviewGlobal>('pricing-overview', 1, locale).catch(() => ({})),
       fetchGlobal<PricingFootnoteGlobal>('pricing-footnote', 1, locale).catch(() => ({})),
       fetchGlobal<PricingInsuranceGlobal>('pricing-insurance', 1, locale).catch(() => ({})),
-      fetchGlobal<PricingPaymentGlobal>('pricing-payment', 1, locale).catch(() => ({})),
+      Promise.resolve({}), // pricing-payment merged into pricing-insurance.payment
       fetchGlobal<PricingDisciplineListViewGlobal>('pricing-discipline-list-view', 1, locale).catch(() => ({})),
       fetchGlobal<PricingCatalogueViewGlobal>('pricing-catalogue-view', 1, locale).catch(() => ({})),
       fetchGlobal<ResultsHeroGlobal>('results-hero', 1, locale).catch(() => ({} as ResultsHeroGlobal)),
