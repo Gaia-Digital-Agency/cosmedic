@@ -166,11 +166,8 @@ export default function CmsGlobalStyles({ children }: { children?: React.ReactNo
     <>
       <style>{`
         /* ── Hide Payload built-in API tab ─────────────────────────────── */
-        .doc-controls__tabs a[href$="/api"],
-        .doc-controls__tabs a[href*="/api?"],
-        .doc-controls__tab--api,
-        [class*="doc-controls"] a[aria-label="API"],
-        [class*="doc-controls"] button[aria-label="API"] {
+        a[href$="/api"],
+        a[href*="/api?"] {
           display: none !important;
         }
 
