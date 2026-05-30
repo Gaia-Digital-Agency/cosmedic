@@ -230,7 +230,11 @@
 | Portfolio | Two Line — TitleB | rec_stays_pg.portfolioSection | locales: portfolio_section_heading_italic | yes | move |
 | Portfolio | Title C (roman tail) | rec_stays_pg.portfolioSection | locales: portfolio_section_heading_post | yes | move |
 | Portfolio | Paragraph | rec_stays_pg.portfolioSection | locales: portfolio_section_lede | yes | move |
-| What's Included | — | rec_stays_pg.inclusionsSection | locales | yes | keep hidden by design |
+| What's Included | Eyebrow | rec_stays_pg.inclusionsSection | locales: inclusions_section_eyebrow | yes | move + expose |
+| What's Included | Two Line — TitleA | rec_stays_pg.inclusionsSection | locales: inclusions_section_heading_pre | yes | move + expose |
+| What's Included | Two Line — TitleB | rec_stays_pg.inclusionsSection | locales: inclusions_section_heading_italic | yes | move + expose |
+| What's Included | Title C (roman tail) | rec_stays_pg.inclusionsSection | locales: inclusions_section_heading_post | yes | move + expose |
+| What's Included | Paragraph | rec_stays_pg.inclusionsSection | locales: inclusions_section_lede | yes | move + expose |
 | Inclusions grid | — | rec_stays_pg.inclusions | rec_stays_pg_inclusions | array | keep hidden by design |
 | Villa cards | — | RecoveryStays collection | collection | — | collection — no change |
 
