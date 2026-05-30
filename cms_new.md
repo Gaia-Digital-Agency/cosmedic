@@ -197,3 +197,51 @@
 **Hidden by design:** chapter, imageHue, all buttonHref fields.
 
 **After:** results-featured-cases-view → hidden. results-stories-view → hidden. library-cta → hidden. share-cta → hidden. One RESULTS card.
+
+---
+
+## JOURNEY bucket — 1 card (PENDING)
+
+**Pattern:** Single JOURNEY card (journey-hero) covering both /journey and /recovery-stays. Web page order top to bottom, /journey first then /recovery-stays.
+
+**Also:** ContactHero.ts label rename `'Contact'` → `'Hero'`.
+
+### Card 1 — JOURNEY (journey-hero)
+
+| Section | Field | Source global | Source DB | Localized | Action |
+|---|---|---|---|---|---|
+| **— /journey —** | | | | | |
+| Breadcrumb | Page Label | journey-hero | locales: breadcrumb_label | yes | expose (hidden) |
+| Hero Image | Two Line — TitleA | journey-hero | locales: title_a | yes | visible ✓ + fix web path (hero?.title?.a → hero?.titleA) |
+| Hero Image | Two Line — TitleB | journey-hero | locales: title_b | yes | visible ✓ + fix web path |
+| Hero Image | Paragraph | journey-hero | locales: lede | yes | visible ✓ |
+| Hero Image | Image | journey-hero | main: hero_image_id | no (FK) | visible ✓ |
+| Hero Image | Image Label | journey-hero | locales: image_label | yes | visible ✓ |
+| Journey Steps | — | JourneySteps collection | collection | — | collection — no change |
+| Stats | Rows (number, label, italic) | journey-stats.stats | journey_stats_stats + locales | array | move → journey-hero.stats |
+| **— /recovery-stays —** | | | | | |
+| Breadcrumb | Page Label | rec_stays_pg.hero | locales: hero_breadcrumb_label | yes | move → journey-hero.recoveryStays.hero |
+| Hero Image | Two Line — TitleA | rec_stays_pg.hero.title.a | locales: hero_title_a | yes | move |
+| Hero Image | Two Line — TitleB | rec_stays_pg.hero.title.b | locales: hero_title_b | yes | move |
+| Hero Image | Paragraph | rec_stays_pg.hero.lede | locales: hero_lede | yes | move |
+| Hero Image | Image | rec_stays_pg.hero.heroImage | main: hero_hero_image_id | no (FK) | move |
+| Hero Image | Image Label | rec_stays_pg.hero.imageLabel | locales: hero_image_label | yes | move |
+| Top Stats | Rows (number, label, italic) | rec_stays_pg.topStats | rec_stays_pg_top_stats + locales | array | move → journey-hero.recoveryStays.topStats |
+| Portfolio | Eyebrow | rec_stays_pg.portfolioSection | locales: portfolio_section_eyebrow | yes | move |
+| Portfolio | Two Line — TitleA | rec_stays_pg.portfolioSection | locales: portfolio_section_heading_pre | yes | move |
+| Portfolio | Two Line — TitleB | rec_stays_pg.portfolioSection | locales: portfolio_section_heading_italic | yes | move |
+| Portfolio | Title C (roman tail) | rec_stays_pg.portfolioSection | locales: portfolio_section_heading_post | yes | move |
+| Portfolio | Paragraph | rec_stays_pg.portfolioSection | locales: portfolio_section_lede | yes | move |
+| What's Included | Eyebrow | rec_stays_pg.inclusionsSection | locales: inclusions_section_eyebrow | yes | move + expose |
+| What's Included | Two Line — TitleA | rec_stays_pg.inclusionsSection | locales: inclusions_section_heading_pre | yes | move + expose |
+| What's Included | Two Line — TitleB | rec_stays_pg.inclusionsSection | locales: inclusions_section_heading_italic | yes | move + expose |
+| What's Included | Title C (roman tail) | rec_stays_pg.inclusionsSection | locales: inclusions_section_heading_post | yes | move + expose |
+| What's Included | Paragraph | rec_stays_pg.inclusionsSection | locales: inclusions_section_lede | yes | move + expose |
+| Inclusions grid | Letter, Title, Body | rec_stays_pg.inclusions | rec_stays_pg_inclusions + locales | array | move + expose |
+| Villa cards | — | RecoveryStays collection | collection | — | collection — no change |
+
+**Hidden by design:** chapter (both), imageHue (both), all buttonHref fields.
+
+**Web path fix:** JourneyPage.tsx reads `hero?.title?.a` — CMS has flat `titleA`. Fix web path after merge.
+
+**After:** journey-stats → hidden. recovery-stays-page → hidden. journey-page → already hidden. One JOURNEY card.
