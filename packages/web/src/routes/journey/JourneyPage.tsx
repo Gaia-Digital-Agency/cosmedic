@@ -170,8 +170,8 @@ export const JourneyPage: React.FC = () => {
   // Hero.
   const hero = cms?.journeyHero
   const chapter = hero?.chapter || 'Chapter V — Your Journey'
-  const titleA = hero?.title?.a || 'From enquiry,'
-  const titleB = hero?.title?.b || 'to homecoming.'
+  const titleA = hero?.titleA || 'From enquiry,'
+  const titleB = hero?.titleB || 'to homecoming.'
   const lede =
     hero?.lede ||
     'Seven steps, designed to feel less like medical tourism and more like being looked after by family. We hold your hand from first email to twelfth-month follow-up.'
@@ -183,8 +183,8 @@ export const JourneyPage: React.FC = () => {
 
   // Stats.
   const statsRows =
-    cms?.journeyStats?.stats && cms.journeyStats.stats.length > 0
-      ? cms.journeyStats.stats
+    (hero as any)?.stats && (hero as any).stats.length > 0
+      ? (hero as any).stats
       : FALLBACK_STATS
 
   return (

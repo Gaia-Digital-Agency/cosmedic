@@ -9,8 +9,9 @@ export const RecoveryStaysPage: GlobalConfig = {
   label: 'Page',
   admin: {
     group: 'Journey',
+    hidden: true, // merged into journey-hero.recoveryStays
     description:
-      'Whole /recovery-stays editorial: hero, the 4-tile top stats row, "The portfolio" section heading (cards come from f. Villas), and "What\'s included" section heading + inclusions list. The legacy chapterTitle / tagline / lede / sections fields above remain available for the optional CmsExtraBlocks slot — the new groups below are what actually render the page.',
+      'Whole /recovery-stays editorial: hero, the 4-tile top stats row, "The portfolio" section heading (cards come from f. Villas), and "What\'s included" section heading + inclusions list.',
   },
   access: { read: publishedOrAuthed, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),

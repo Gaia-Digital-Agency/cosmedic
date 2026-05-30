@@ -550,12 +550,34 @@ export type EmailTemplatesGlobal = {
 
 export type JourneyHeroGlobal = {
   chapter?: string
-  title?: { a?: string; b?: string }
+  titleA?: string
+  titleB?: string
   lede?: string
   heroImage?: CmsMedia | number | null
   imageHue?: number
   imageLabel?: string
   breadcrumbLabel?: string
+  stats?: Array<{ number: string; label: string; italic?: boolean }>
+  recoveryStays?: {
+    breadcrumbLabel?: string
+    hero?: {
+      title?: { a?: string; b?: string }
+      lede?: string
+      heroImage?: CmsMedia | number | null
+      imageHue?: number
+      imageLabel?: string
+      chapter?: string
+    }
+    topStats?: Array<{ number: string; label: string; italic?: boolean }>
+    portfolioSection?: {
+      eyebrow?: string; headingPre?: string; headingItalic?: string
+      headingPost?: string; lede?: string
+    }
+    inclusionsSection?: {
+      eyebrow?: string; headingPre?: string; headingItalic?: string
+      headingPost?: string; lede?: string
+    }
+  }
 }
 
 export type JourneyStatsGlobal = {
