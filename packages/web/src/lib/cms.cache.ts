@@ -229,16 +229,16 @@ async function doLoad(locale?: string): Promise<CmsCache> {
       fetchGlobal<ResultsFeaturedCasesViewGlobal>('results-featured-cases-view', 1, locale).catch(() => ({})),
       fetchGlobal<ResultsStoriesViewGlobal>('results-stories-view', 1, locale).catch(() => ({})),
       fetchGlobal<LibraryCtaGlobal>('library-cta', 1, locale).catch(() => ({})),
-      fetchGlobal<HomeHeroGlobal>('home-hero', 1, locale).catch(() => ({})),
+      fetchGlobal<HomeHeroGlobal>('home-hero', 2, locale).catch(() => ({})),
       fetchGlobal<HomeIntroGlobal>('home-intro', 1, locale).catch(() => ({})),
-      fetchGlobal<HomeLeadMagnetGlobal>('home-lead-magnet', 1, locale).catch(() => ({})),
-      fetchGlobal<HomePlaceGlobal>('home-place', 1, locale).catch(() => ({})),
-      fetchGlobal<HomeTreatmentsViewGlobal>('home-treatments-view', 1, locale).catch(() => ({})), // now 'Sections'
-      Promise.resolve({}), // home-pricing-view merged into home-treatments-view.pricing
-      fetchGlobal<HomeSurgeonsViewGlobal>('home-surgeons-view', 1, locale).catch(() => ({})),
-      Promise.resolve({}), // home-gallery-view merged into home-treatments-view.gallery
+      Promise.resolve({}), // home-lead-magnet merged into home-hero.leadMagnet
+      Promise.resolve({}), // home-place merged into home-hero.place
+      Promise.resolve({}), // home-treatments-view merged into home-hero.treatments/pricing/gallery/stories
+      Promise.resolve({}), // home-pricing-view merged into home-hero.pricing
+      Promise.resolve({}), // home-surgeons-view merged into home-hero.surgeons
+      Promise.resolve({}), // home-gallery-view merged into home-hero.gallery
       Promise.resolve({}), // home-journey-view merged into home-intro.journey
-      Promise.resolve({}), // home-stories-view merged into home-treatments-view.stories
+      Promise.resolve({}), // home-stories-view merged into home-hero.stories
       fetchGlobal<NotFoundPageGlobal>('not-found-page', 1, locale).catch(() => ({})),
     ])
     // changes08-B: clinicCatalogueItems derived from procedures (single source of truth).

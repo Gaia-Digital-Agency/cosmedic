@@ -38,7 +38,7 @@ const STORIES = [
 
 export const Stories: React.FC = () => {
   const cms = useCms()
-  const g = (cms?.homeTreatmentsView as any)?.stories ?? cms?.homeStoriesView
+  const g = cms?.homeHero?.stories
   const eyebrow = g?.eyebrow || 'Verified Patient Stories'
   const headingItalic = g?.heading?.a || 'Stories,'
   const headingPart2 = g?.heading?.b || 'not slogans.'

@@ -7,6 +7,7 @@ export const HomeSurgeonsView: GlobalConfig = {
   label: 'Surgeons',
   admin: {
     group: 'Homepage',
+    hidden: true,
     description:
       'Full-width Surgeons banner on /. Controls the eyebrow, two-line heading (split on comma), body text, CTA label, and the group photo.',
   },

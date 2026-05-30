@@ -11,7 +11,7 @@ export const LeadMagnet: React.FC = () => {
   const [submitting, setSubmitting] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
   const cms = useCms()
-  const g = cms?.homeLeadMagnet
+  const g = cms?.homeHero?.leadMagnet
 
   const coverImage = g?.cover?.image
   const coverImageUrl = coverImage && typeof coverImage === 'object' ? mediaUrl(coverImage) : undefined

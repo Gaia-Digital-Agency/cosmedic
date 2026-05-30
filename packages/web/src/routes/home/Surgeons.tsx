@@ -10,7 +10,7 @@ const TEAM_PLACEHOLDER = '/assets/experts/team-placeholder.webp'
 
 export const Surgeons: React.FC = () => {
   const cms = useCms()
-  const g = cms?.homeSurgeonsView
+  const g = cms?.homeHero?.surgeons
 
   const eyebrow = g?.eyebrow || '8 Specialists'
   const teamCaption = g?.team?.caption || 'One team, one standard.'

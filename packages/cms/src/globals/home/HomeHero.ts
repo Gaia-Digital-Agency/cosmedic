@@ -83,5 +83,129 @@ export const HomeHero: GlobalConfig = {
     },
     { name: 'heroImage', type: 'upload', relationTo: 'media',
       admin: { description: 'Hero background image. If unset, the vignette + dark background carry the section.' } },
+
+    // ── Treatments section ───────────────────────────────────────────────────
+    { name: 'treatments', label: 'Treatments', type: 'group',
+      admin: { description: 'Treatments section on /.' },
+      fields: [
+        { name: 'eyebrow', label: 'Label above heading', type: 'text', localized: true, defaultValue: 'Treatments' },
+        { name: 'heading', type: 'group', fields: [
+          { name: 'a', type: 'text', localized: true, defaultValue: 'Six disciplines,' },
+          { name: 'b', type: 'text', localized: true, defaultValue: 'one sanctuary.' },
+        ] },
+        { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true,
+          defaultValue: 'A complete repertoire under one roof, sequenced into a single journey. Treatments may be combined; recovery is always private.' },
+      ],
+    },
+
+    // ── Pricing section ──────────────────────────────────────────────────────
+    { name: 'pricing', label: 'Pricing', type: 'group',
+      admin: { description: 'Pricing teaser section on /.' },
+      fields: [
+        { name: 'eyebrow', label: 'Label above heading', type: 'text', localized: true, defaultValue: 'Pricing · Starting From' },
+        { name: 'heading', type: 'group', fields: [
+          { name: 'a', type: 'text', localized: true, defaultValue: 'Transparent' },
+          { name: 'b', type: 'text', localized: true, defaultValue: 'pricing.' },
+        ] },
+        { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true,
+          defaultValue: 'Indicative starting prices in IDR (with AUD equivalent). Final quotes are tailored after consultation. Travel, accommodation and concierge can be packaged.' },
+        { name: 'footnote', label: 'Footnote', type: 'textarea', localized: true,
+          defaultValue: 'Prices indicative for international patients. AUD shown at 1 AUD ≈ Rp 12,500 (May 2026). Recovery stays, transfers and 12-month telehealth follow-up included on most surgical packages.' },
+        { name: 'viewAllLabel', label: 'CTA Button', type: 'text', localized: true, defaultValue: 'View full pricing' },
+      ],
+    },
+
+    // ── Team Card section ────────────────────────────────────────────────────
+    { name: 'surgeons', label: 'Team Card', type: 'group',
+      admin: { description: 'Full-width Surgeons banner on /.' },
+      fields: [
+        { name: 'team', label: 'Team Heading', type: 'group', fields: [
+          { name: 'caption', label: 'Title', type: 'text', localized: true, defaultValue: 'One team, one standard.' },
+        ] },
+        { name: 'lead', label: 'Body & CTA', type: 'group', fields: [
+          { name: 'body', label: 'Intro paragraph', type: 'textarea', localized: true,
+            defaultValue: 'Our plastic and aesthetic doctors work side by side under one ACHSI-accredited roof.' },
+          { name: 'ctaLabel', label: 'CTA Button', type: 'text', localized: true, defaultValue: 'Meet all the doctors' },
+        ] },
+        { name: 'group', label: 'Photo', type: 'group', fields: [
+          { name: 'photo', label: 'Image', type: 'upload', relationTo: 'media' },
+          { name: 'photoAlt', label: 'Photo alt text', type: 'text', localized: true },
+        ] },
+      ],
+    },
+
+    // ── Gallery section ──────────────────────────────────────────────────────
+    { name: 'gallery', label: 'Gallery', type: 'group',
+      admin: { description: 'Before & After gallery teaser section on /.' },
+      fields: [
+        { name: 'eyebrow', label: 'Label above heading', type: 'text', localized: true, defaultValue: 'Before & After Results' },
+        { name: 'heading', type: 'group', fields: [
+          { name: 'a', type: 'text', localized: true, defaultValue: 'Quietly' },
+          { name: 'b', type: 'text', localized: true, defaultValue: 'transformative.' },
+        ] },
+        { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true,
+          defaultValue: 'Three signature results from our facial repertoire.' },
+        { name: 'ctaLabel', label: 'CTA Button', type: 'text', localized: true, defaultValue: 'View the full gallery' },
+      ],
+    },
+
+    // ── Lead Magnet section ──────────────────────────────────────────────────
+    { name: 'leadMagnet', label: 'Lead Magnet', type: 'group',
+      admin: { description: 'Lead-magnet section on /.' },
+      fields: [
+        { name: 'cover', label: 'Cover', type: 'group', fields: [
+          { name: 'image', label: 'Image', type: 'upload', relationTo: 'media' },
+          { name: 'title', label: 'Cover TitleA', type: 'textarea', localized: true,
+            defaultValue: 'The Bali\nRecovery\nGuide.' },
+          { name: 'footer', label: 'Cover TitleB', type: 'text', localized: true,
+            defaultValue: 'BIMC CosMedic · MMXXVI' },
+        ] },
+        { name: 'heading', type: 'group', fields: [
+          { name: 'a', label: 'Two Line — TitleA', type: 'text', localized: true, defaultValue: 'What to expect from' },
+          { name: 'b', label: 'Two Line — TitleB', type: 'text', localized: true, defaultValue: 'recovery in Bali.' },
+        ] },
+        { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true,
+          defaultValue: 'A 24-page editorial guide written by our concierge team — covering recovery timelines for the ten most-requested procedures, what to pack, what villas suit which surgeries, and the pace of a typical fortnight in Nusa Dua.' },
+        { name: 'formPlaceholder', label: 'Form Placeholder', type: 'text', localized: true, defaultValue: 'Your email address' },
+        { name: 'submitLabel', label: 'Submit Button', type: 'text', localized: true, defaultValue: 'Send Guide →' },
+      ],
+    },
+
+    // ── Stories section ──────────────────────────────────────────────────────
+    { name: 'stories', label: 'Stories', type: 'group',
+      admin: { description: 'Patient stories teaser section on /.' },
+      fields: [
+        { name: 'eyebrow', label: 'Label above heading', type: 'text', localized: true, defaultValue: 'Verified Patient Stories' },
+        { name: 'heading', type: 'group', fields: [
+          { name: 'a', type: 'text', localized: true, defaultValue: 'Stories,' },
+          { name: 'b', type: 'text', localized: true, defaultValue: 'not slogans.' },
+        ] },
+        { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true,
+          defaultValue: 'Verified reviews from international patients. Video testimonials and Google reviews on our full stories page.' },
+        { name: 'ctaLabel', label: 'CTA Button', type: 'text', localized: true, defaultValue: 'Read more stories' },
+      ],
+    },
+
+    // ── Place section ────────────────────────────────────────────────────────
+    { name: 'place', label: 'Place', type: 'group',
+      admin: { description: '"Recover in paradise" section on /.' },
+      fields: [
+        { name: 'heading', type: 'group', fields: [
+          { name: 'a', label: 'Two Line — TitleA', type: 'text', localized: true, defaultValue: 'Recover' },
+          { name: 'b', label: 'Two Line — TitleB', type: 'text', localized: true, defaultValue: 'in paradise.' },
+        ] },
+        { name: 'body', label: 'Intro paragraph', type: 'textarea', localized: true,
+          defaultValue: 'Nusa Dua sits on the southernmost reach of Bali — quiet beaches, soft afternoons, and the kind of warm, careful hospitality that has made the island synonymous with rest. We work with a small portfolio of villas and resorts, hand-selected for privacy and post-operative comfort.' },
+        { name: 'rows', label: 'Rows', type: 'array',
+          admin: { description: '4 lettered rows below the body.' },
+          fields: [
+            { name: 'letter', type: 'text', required: true },
+            { name: 'text', type: 'text', required: true, localized: true },
+          ],
+        },
+        { name: 'ctaLabel', label: 'CTA Button', type: 'text', localized: true, defaultValue: 'View recovery stays' },
+        { name: 'image', label: 'Image', type: 'upload', relationTo: 'media' },
+      ],
+    },
   ],
 }

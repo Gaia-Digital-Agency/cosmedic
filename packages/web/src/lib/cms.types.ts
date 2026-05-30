@@ -887,6 +887,29 @@ export type HomeHeroGlobal = {
     errorFine?: string
     fineprint?: string
   }
+  treatments?: { eyebrow?: string; heading?: { a?: string; b?: string }; lede?: string }
+  pricing?: { eyebrow?: string; heading?: { a?: string; b?: string }; lede?: string; footnote?: string; viewAllLabel?: string }
+  surgeons?: {
+    team?: { caption?: string }
+    lead?: { body?: string; ctaLabel?: string }
+    group?: { photo?: CmsMedia | number | null; photoAlt?: string }
+  }
+  gallery?: { eyebrow?: string; heading?: { a?: string; b?: string }; lede?: string; ctaLabel?: string }
+  leadMagnet?: {
+    cover?: { image?: CmsMedia | number | null; title?: string; footer?: string }
+    heading?: { a?: string; b?: string }
+    lede?: string
+    formPlaceholder?: string
+    submitLabel?: string
+  }
+  stories?: { eyebrow?: string; heading?: { a?: string; b?: string }; lede?: string; ctaLabel?: string }
+  place?: {
+    heading?: { a?: string; b?: string }
+    body?: string
+    rows?: Array<{ letter: string; text: string }>
+    ctaLabel?: string
+    image?: CmsMedia | number | null
+  }
 }
 
 export type HomeIntroGlobal = {

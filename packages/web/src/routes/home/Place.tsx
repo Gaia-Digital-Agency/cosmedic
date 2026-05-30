@@ -16,7 +16,7 @@ const DEFAULT_ROWS: [string, string][] = [
 
 export const Place: React.FC = () => {
   const cms = useCms()
-  const g = cms?.homePlace
+  const g = cms?.homeHero?.place
   const eyebrow = g?.eyebrow || 'Recovery in Bali'
   const headingPart1 = g?.heading?.a || 'Recover'
   const headingAccent = g?.heading?.b || 'in paradise.'

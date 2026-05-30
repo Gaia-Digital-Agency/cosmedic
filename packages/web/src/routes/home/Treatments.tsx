@@ -7,7 +7,7 @@ import { useCms } from '@/lib/cms-context'
 
 export const Treatments: React.FC = () => {
   const cms = useCms()
-  const g = (cms?.homeTreatmentsView as any)?.treatments ?? cms?.homeTreatmentsView
+  const g = cms?.homeHero?.treatments
   const eyebrow = g?.eyebrow || 'Treatments'
   const headingPart1 = g?.heading?.a || 'Six disciplines,'
   const headingPart2 = g?.heading?.b || 'one sanctuary.'

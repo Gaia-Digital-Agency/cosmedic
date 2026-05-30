@@ -8,7 +8,7 @@ import { useCms } from '@/lib/cms-context'
 
 export const Gallery: React.FC = () => {
   const cms = useCms()
-  const g = (cms?.homeTreatmentsView as any)?.gallery ?? cms?.homeGalleryView
+  const g = cms?.homeHero?.gallery
   const eyebrow = g?.eyebrow || 'Before & After Results'
   const headingItalic = g?.heading?.a || 'Quietly'
   const headingPart2 = g?.heading?.b || 'transformative.'

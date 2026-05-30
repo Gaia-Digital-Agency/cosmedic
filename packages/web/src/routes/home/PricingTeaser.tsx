@@ -22,7 +22,7 @@ const PRICE_TEASER = [
 
 export const PricingTeaser: React.FC = () => {
   const cms = useCms()
-  const g = (cms?.homeTreatmentsView as any)?.pricing ?? cms?.homePricingView
+  const g = cms?.homeHero?.pricing
   const rate = cms?.settings?.audToIdrRate || DEFAULT_AUD_TO_IDR
   const roundTo = cms?.settings?.roundIdrTo || DEFAULT_ROUND_IDR_TO
   const eyebrow = g?.eyebrow || 'Pricing · Starting From'

@@ -7,6 +7,7 @@ export const HomeLeadMagnet: GlobalConfig = {
   label: 'Lead Magnet',
   admin: {
     group: 'Homepage',
+    hidden: true,
     description:
       'Lead-magnet section on / (The Bali Recovery Guide). Editable cover-card strings, body eyebrow / heading / lede, the email-capture form labels, and the success + fineprint copy. Form posts to /api/enquiry with sourceCta=lead-magnet-newsletter.',
   },
