@@ -16,6 +16,7 @@ export const SurgeonsPlasticView: GlobalConfig = {
     // ── Lead Surgeon section ──────────────────────────────────────────────
     {
       name: 'lead',
+      label: 'Lead Surgeon',
       type: 'group',
       admin: { description: 'Lead Surgeon panel on /experts.' },
       fields: [
@@ -32,6 +33,7 @@ export const SurgeonsPlasticView: GlobalConfig = {
     // ── Plastic Surgery section ───────────────────────────────────────────
     {
       name: 'plasticSurgery',
+      label: 'Plastic Surgery',
       type: 'group',
       admin: { description: 'Plastic Surgery section on /experts.' },
       fields: [
@@ -40,7 +42,7 @@ export const SurgeonsPlasticView: GlobalConfig = {
         { name: 'eyebrow', label: 'Label above heading', type: 'text', required: true, localized: true,
           admin: { description: 'Section eyebrow, e.g. "Plastic Surgery".' } },
         {
-          name: 'heading', type: 'group',
+          name: 'heading', label: 'Heading', type: 'group',
           admin: { description: 'Section heading (roman prefix + italic word + roman suffix).' },
           fields: [
             { name: 'a', type: 'text', localized: true,
@@ -56,6 +58,7 @@ export const SurgeonsPlasticView: GlobalConfig = {
     // ── Aesthetic Medicine section ────────────────────────────────────────
     {
       name: 'aestheticMedicine',
+      label: 'Aesthetic Medicine',
       type: 'group',
       admin: { description: 'Aesthetic Medicine section on /experts.' },
       fields: [
@@ -64,7 +67,7 @@ export const SurgeonsPlasticView: GlobalConfig = {
         { name: 'eyebrow', label: 'Label above heading', type: 'text', required: true, localized: true,
           admin: { description: 'Section eyebrow, e.g. "Aesthetic Medicine".' } },
         {
-          name: 'heading', type: 'group',
+          name: 'heading', label: 'Heading', type: 'group',
           admin: { description: 'Section heading (roman prefix + italic word + roman suffix).' },
           fields: [
             { name: 'a', type: 'text', localized: true,

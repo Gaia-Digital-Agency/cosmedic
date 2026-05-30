@@ -214,7 +214,7 @@ export default buildConfig({
     HomeLeadMagnet,     // Lead Magnet
     HomeStoriesView,    // Stories
     HomePlace,          // Place
-    Settings,           // Settings
+    Settings,           // Settings (last visible card)
     Header,             // Header (hidden)
     Footer,             // Footer (hidden)
     HomeIntro,          // Intro (hidden)

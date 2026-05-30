@@ -26,7 +26,7 @@ export const HomeLeadMagnet: GlobalConfig = {
     { name: 'bodyEyebrow', type: 'text', defaultValue: 'Free Guide',
       admin: { description: 'Eyebrow on the right-side body column.', hidden: true } },
     {
-      name: 'heading', type: 'group',
+      name: 'heading', label: 'Heading', type: 'group',
       admin: { description: 'Two-part body heading. Part A renders roman; part B renders italic.' },
       fields: [
         { name: 'a', type: 'text', localized: true, defaultValue: 'What to expect from',

@@ -15,6 +15,7 @@ export const DisciplineDetailTemplate: GlobalConfig = {
   fields: [
     {
       name: 'toc',
+      label: 'Table of Contents',
       type: 'group',
       admin: { description: 'Sticky table-of-contents labels in the left sidebar.' },
       fields: [
@@ -32,6 +33,7 @@ export const DisciplineDetailTemplate: GlobalConfig = {
     },
     {
       name: 'overview',
+      label: 'Overview',
       type: 'group',
       admin: { description: 'In-page Overview section.' },
       fields: [
@@ -41,6 +43,7 @@ export const DisciplineDetailTemplate: GlobalConfig = {
     },
     {
       name: 'chooseAFocus',
+      label: 'Choose a Focus',
       type: 'group',
       admin: { description: '"Choose a focus" section that lists the sub-categories under a discipline.' },
       fields: [
@@ -58,6 +61,7 @@ export const DisciplineDetailTemplate: GlobalConfig = {
     },
     {
       name: 'procedures',
+      label: 'Procedures',
       type: 'group',
       admin: { description: 'In-page Procedures section (rendered only when the discipline has procedures and no sub-categories).' },
       fields: [
@@ -71,6 +75,7 @@ export const DisciplineDetailTemplate: GlobalConfig = {
     },
     {
       name: 'faqs',
+      label: 'FAQs',
       type: 'group',
       admin: { description: 'In-page FAQs section. The questions themselves come from Disciplines → faqs.' },
       fields: [
@@ -80,6 +85,7 @@ export const DisciplineDetailTemplate: GlobalConfig = {
     },
     {
       name: 'related',
+      label: 'Related',
       type: 'group',
       admin: { description: '"Related" cross-discipline carousel at the bottom of each /treatments/<discipline> page.' },
       fields: [

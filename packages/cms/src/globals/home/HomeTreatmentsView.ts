@@ -16,13 +16,14 @@ export const HomeTreatmentsView: GlobalConfig = {
     // ── Treatments ────────────────────────────────────────────────────────────
     {
       name: 'treatments',
+      label: 'Treatments',
       type: 'group',
       admin: { description: 'Treatments section on /.' },
       fields: [
         { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true,
           defaultValue: 'A complete repertoire under one roof, sequenced into a single journey. Treatments may be combined; recovery is always private.' },
         { name: 'eyebrow', label: 'Label above heading', type: 'text', localized: true, defaultValue: 'Treatments' },
-        { name: 'heading', type: 'group', fields: [
+        { name: 'heading', label: 'Heading', type: 'group', fields: [
           { name: 'a', type: 'text', localized: true, defaultValue: 'Six disciplines,' },
           { name: 'b', type: 'text', localized: true, defaultValue: 'one sanctuary.' },
         ] },
@@ -31,13 +32,14 @@ export const HomeTreatmentsView: GlobalConfig = {
     // ── Pricing ───────────────────────────────────────────────────────────────
     {
       name: 'pricing',
+      label: 'Pricing',
       type: 'group',
       admin: { description: 'Pricing teaser section on /.' },
       fields: [
         { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true,
           defaultValue: 'Indicative starting prices in IDR (with AUD equivalent). Final quotes are tailored after consultation. Travel, accommodation and concierge can be packaged.' },
         { name: 'eyebrow', label: 'Label above heading', type: 'text', localized: true, defaultValue: 'Pricing · Starting From' },
-        { name: 'heading', type: 'group', fields: [
+        { name: 'heading', label: 'Heading', type: 'group', fields: [
           { name: 'a', type: 'text', localized: true, defaultValue: 'Transparent' },
           { name: 'b', type: 'text', localized: true, defaultValue: 'pricing.' },
         ] },
@@ -49,13 +51,14 @@ export const HomeTreatmentsView: GlobalConfig = {
     // ── Gallery ───────────────────────────────────────────────────────────────
     {
       name: 'gallery',
+      label: 'Gallery',
       type: 'group',
       admin: { description: 'Before & After gallery teaser section on /.' },
       fields: [
         { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true,
           defaultValue: 'Three signature results from our facial repertoire.' },
         { name: 'eyebrow', label: 'Label above heading', type: 'text', localized: true, defaultValue: 'Before & After Results' },
-        { name: 'heading', type: 'group', fields: [
+        { name: 'heading', label: 'Heading', type: 'group', fields: [
           { name: 'a', type: 'text', localized: true, defaultValue: 'Quietly' },
           { name: 'b', type: 'text', localized: true, defaultValue: 'transformative.' },
         ] },
@@ -65,13 +68,14 @@ export const HomeTreatmentsView: GlobalConfig = {
     // ── Stories ───────────────────────────────────────────────────────────────
     {
       name: 'stories',
+      label: 'Stories',
       type: 'group',
       admin: { description: 'Patient stories teaser section on /.' },
       fields: [
         { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true,
           defaultValue: 'Verified reviews from international patients. Video testimonials and Google reviews on our full stories page.' },
         { name: 'eyebrow', label: 'Label above heading', type: 'text', localized: true, defaultValue: 'Verified Patient Stories' },
-        { name: 'heading', type: 'group', fields: [
+        { name: 'heading', label: 'Heading', type: 'group', fields: [
           { name: 'a', type: 'text', localized: true, defaultValue: 'Stories,' },
           { name: 'b', type: 'text', localized: true, defaultValue: 'not slogans.' },
         ] },

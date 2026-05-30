@@ -54,6 +54,7 @@ export const HomeHero: GlobalConfig = {
       admin: { description: 'Where the ghost CTA links.', hidden: true } },
     {
       name: 'quickEnquiry',
+      label: 'Quick Enquiry',
       type: 'group',
       admin: { description: 'Chrome strings on the right-side quick-enquiry card. Field labels + placeholders + the four submit-button states.', hidden: true },
       fields: [

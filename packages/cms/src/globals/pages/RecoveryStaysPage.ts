@@ -18,6 +18,7 @@ export const RecoveryStaysPage: GlobalConfig = {
     ...pageFields({ hideHero: true }),
     {
       name: 'hero',
+      label: 'Hero',
       type: 'group',
       admin: { description: 'ChapterOpener at the top of /recovery-stays.' },
       fields: [
@@ -50,6 +51,7 @@ export const RecoveryStaysPage: GlobalConfig = {
     },
     {
       name: 'portfolioSection',
+      label: 'Portfolio Section',
       type: 'group',
       admin: { description: '"The portfolio" section heading. Villa cards are edited in the Villas collection, not here.' },
       fields: [
@@ -62,6 +64,7 @@ export const RecoveryStaysPage: GlobalConfig = {
     },
     {
       name: 'inclusionsSection',
+      label: "What's Included",
       type: 'group',
       admin: { hidden: true, description: '"What\'s included" section. Edit heading + intro paragraph here; edit each inclusion in the Villas list below.' },
       fields: [

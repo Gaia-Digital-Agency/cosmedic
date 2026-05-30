@@ -16,6 +16,7 @@ export const TreatmentsHero: GlobalConfig = {
     // ── /treatments hero ──────────────────────────────────────────────────
     {
       name: 'treatments',
+      label: 'Treatments',
       type: 'group',
       admin: { description: 'Hero for the /treatments index page.' },
       fields: [
@@ -33,6 +34,7 @@ export const TreatmentsHero: GlobalConfig = {
     // ── /pricing hero ─────────────────────────────────────────────────────
     {
       name: 'pricing',
+      label: 'Pricing',
       type: 'group',
       admin: { description: 'Hero for the /pricing page.' },
       fields: [

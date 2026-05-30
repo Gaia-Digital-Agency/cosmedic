@@ -16,6 +16,7 @@ export const PricingInsurance: GlobalConfig = {
     // ── Insurance (left column) ───────────────────────────────────────────
     {
       name: 'insurance',
+      label: 'Insurance',
       type: 'group',
       admin: { description: 'Left column — insurance copy.' },
       fields: [
@@ -34,6 +35,7 @@ export const PricingInsurance: GlobalConfig = {
     // ── Payment (right column) ────────────────────────────────────────────
     {
       name: 'payment',
+      label: 'Payment',
       type: 'group',
       admin: { description: 'Right column — payment terms.' },
       fields: [
@@ -52,6 +54,7 @@ export const PricingInsurance: GlobalConfig = {
     // ── Consultation ──────────────────────────────────────────────────────
     {
       name: 'consultation',
+      label: 'Consultation',
       type: 'group',
       admin: { description: 'Consultation fee callout at the bottom of /pricing.' },
       fields: [

@@ -16,7 +16,7 @@ export const HomePlace: GlobalConfig = {
     { name: 'eyebrow', label: 'Label above heading', type: 'text', localized: true, defaultValue: 'Recovery in Bali',
       admin: { description: 'Section eyebrow.', hidden: true } },
     {
-      name: 'heading', type: 'group',
+      name: 'heading', label: 'Heading', type: 'group',
       admin: { description: 'Two-part heading. Part A renders roman; part B renders italic.' },
       fields: [
         { name: 'a', type: 'text', localized: true, defaultValue: 'Recover',
