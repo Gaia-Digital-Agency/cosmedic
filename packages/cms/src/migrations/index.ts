@@ -21,6 +21,7 @@ import * as migration_20260528_090000_analytics_topics_wordcount from './2026052
 import * as migration_20260528_120000_analytics_topics_id_trigger from './20260528_120000_analytics_topics_id_trigger';
 import * as migration_20260530_011415_add_localization from './20260530_011415_add_localization';
 import * as migration_20260530_034550_merge_contact_visit_into_hero from './20260530_034550_merge_contact_visit_into_hero';
+import * as migration_20260530_055548_merge_plastic_aesthetic from './20260530_055548_merge_plastic_aesthetic';
 
 export const migrations = [
   {
@@ -136,6 +137,11 @@ export const migrations = [
   {
     up: migration_20260530_034550_merge_contact_visit_into_hero.up,
     down: migration_20260530_034550_merge_contact_visit_into_hero.down,
-    name: '20260530_034550_merge_contact_visit_into_hero'
+    name: '20260530_034550_merge_contact_visit_into_hero',
+  },
+  {
+    up: migration_20260530_055548_merge_plastic_aesthetic.up,
+    down: migration_20260530_055548_merge_plastic_aesthetic.down,
+    name: '20260530_055548_merge_plastic_aesthetic'
   },
 ];

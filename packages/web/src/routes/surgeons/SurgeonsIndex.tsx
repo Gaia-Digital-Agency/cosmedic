@@ -91,8 +91,8 @@ export const SurgeonsIndex: React.FC = () => {
   const cms = useCms()
   const heroCms = cms?.surgeonsHero
   const leadCms = cms?.surgeonsLeadView
-  const plasticCms = cms?.surgeonsPlasticView
-  const aestheticCms = cms?.surgeonsAestheticView
+  const plasticCms = (cms?.surgeonsPlasticView as any)?.plasticSurgery ?? cms?.surgeonsPlasticView
+  const aestheticCms = (cms?.surgeonsPlasticView as any)?.aestheticMedicine ?? cms?.surgeonsAestheticView
 
   // Resolved values (CMS-or-fallback). Each line is "global || fallback string"
   // so a partially-empty global degrades to a literal — never undefined.

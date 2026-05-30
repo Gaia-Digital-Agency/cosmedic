@@ -215,7 +215,7 @@ async function doLoad(locale?: string): Promise<CmsCache> {
       fetchGlobal<SurgeonsHeroGlobal>('surgeons-hero', 1, locale).catch(() => ({})),
       fetchGlobal<SurgeonsLeadViewGlobal>('surgeons-lead-view', 1, locale).catch(() => ({})),
       fetchGlobal<SurgeonsSectionViewGlobal>('surgeons-plastic-view', 1, locale).catch(() => ({})),
-      fetchGlobal<SurgeonsSectionViewGlobal>('surgeons-aesthetic-view', 1, locale).catch(() => ({})),
+      Promise.resolve({}), // surgeons-aesthetic-view merged into surgeons-plastic-view.aestheticMedicine
       fetchGlobal<SurgeonDetailTemplateGlobal>('surgeon-detail-template', 1, locale).catch(() => ({})),
       fetchGlobal<BlogPostTemplateGlobal>('blog-post-template', 1, locale).catch(() => ({})),
       fetchGlobal<PricingHeroGlobal>('pricing-hero', 1, locale).catch(() => ({} as PricingHeroGlobal)),
