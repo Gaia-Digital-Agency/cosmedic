@@ -72,15 +72,15 @@ const FB = {
 export const ResultsPage: React.FC = () => {
   const cms = useCms()
   const heroCms = cms?.resultsHero
-  const featuredCms = cms?.resultsFeaturedCasesView
-  const storiesViewCms = cms?.resultsStoriesView
-  const libraryCms = cms?.libraryCta
-  const shareCms = cms?.shareCta
+  const featuredCms = (cms?.resultsHero as any)?.featuredCases
+  const storiesViewCms = (cms?.resultsHero as any)?.storiesView
+  const libraryCms = (cms?.resultsHero as any)?.libraryCta
+  const shareCms = (cms?.resultsHero as any)?.share
 
   const hero = {
     chapter: heroCms?.chapter || FB.hero.chapter,
-    titleA: heroCms?.titleA || heroCms?.title?.a || FB.hero.title.a,
-    titleB: heroCms?.titleB || heroCms?.title?.b || FB.hero.title.b,
+    titleA: heroCms?.titleA || FB.hero.title.a,
+    titleB: heroCms?.titleB || FB.hero.title.b,
     lede: heroCms?.lede || FB.hero.lede,
     image: mediaUrl(heroCms?.heroImage) || IMG.texture,
     imageHue: heroCms?.imageHue ?? FB.hero.imageHue,

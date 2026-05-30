@@ -784,12 +784,26 @@ export type PricingCatalogueViewGlobal = {
 
 export type ResultsHeroGlobal = {
   chapter?: string
-  title?: { a?: string; b?: string }
+  titleA?: string
+  titleB?: string
   lede?: string
   heroImage?: number | CmsMedia | null
   imageHue?: number
   imageLabel?: string
   breadcrumbLabel?: string
+  featuredCases?: {
+    headingPre?: string; headingItalic?: string; lede?: string
+    filterBarLabel?: string; countFormat?: string
+  }
+  libraryCta?: {
+    eyebrow?: string; headingPre?: string; headingItalic?: string
+    body?: string; buttonLabel?: string; buttonHref?: string
+  }
+  storiesView?: { headingPre?: string; headingItalic?: string; lede?: string }
+  share?: {
+    eyebrow?: string; headingPre?: string; headingItalic?: string
+    headingPost?: string; body?: string; buttonLabel?: string; buttonHref?: string
+  }
 }
 
 export type ResultsFeaturedCasesViewGlobal = {

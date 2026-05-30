@@ -226,9 +226,9 @@ async function doLoad(locale?: string): Promise<CmsCache> {
       fetchGlobal<PricingDisciplineListViewGlobal>('pricing-discipline-list-view', 1, locale).catch(() => ({})),
       fetchGlobal<PricingCatalogueViewGlobal>('pricing-catalogue-view', 1, locale).catch(() => ({})),
       fetchGlobal<ResultsHeroGlobal>('results-hero', 1, locale).catch(() => ({} as ResultsHeroGlobal)),
-      fetchGlobal<ResultsFeaturedCasesViewGlobal>('results-featured-cases-view', 1, locale).catch(() => ({})),
-      fetchGlobal<ResultsStoriesViewGlobal>('results-stories-view', 1, locale).catch(() => ({})),
-      fetchGlobal<LibraryCtaGlobal>('library-cta', 1, locale).catch(() => ({})),
+      Promise.resolve({}), // results-featured-cases-view merged into results-hero.featuredCases
+      Promise.resolve({}), // results-stories-view merged into results-hero.storiesView
+      Promise.resolve({}), // library-cta merged into results-hero.libraryCta
       fetchGlobal<HomeHeroGlobal>('home-hero', 2, locale).catch(() => ({})),
       fetchGlobal<HomeIntroGlobal>('home-intro', 1, locale).catch(() => ({})),
       Promise.resolve({}), // home-lead-magnet merged into home-hero.leadMagnet
@@ -298,8 +298,8 @@ async function doLoad(locale?: string): Promise<CmsCache> {
       pricingInsurance, pricingPayment,
       pricingDisciplineListView, pricingCatalogueView,
       resultsHero, resultsFeaturedCasesView, resultsStoriesView,
-      libraryCta,
-      shareCta: libraryCta.share ?? {},
+      libraryCta: (resultsHero as any).libraryCta ?? {},
+      shareCta: (resultsHero as any).share ?? {},
       homeHero, homeIntro, homeLeadMagnet, homePlace,
       homeTreatmentsView, homePricingView, homeSurgeonsView,
       homeGalleryView, homeJourneyView, homeStoriesView,
