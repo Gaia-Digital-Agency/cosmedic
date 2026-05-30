@@ -29,7 +29,7 @@ export const JourneyHero: GlobalConfig = {
         { name: 'b', type: 'text', localized: true, admin: { description: 'Second line, e.g. "to homecoming.".' } },
       ],
     },
-    { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true, admin: { description: 'Sub-paragraph under the title.', hidden: true } },
+    { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true, admin: { description: 'Sub-paragraph under the title.' } },
     {
       name: 'heroImage',
       type: 'upload',

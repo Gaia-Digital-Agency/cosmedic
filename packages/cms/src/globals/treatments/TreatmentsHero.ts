@@ -22,7 +22,7 @@ export const TreatmentsHero: GlobalConfig = {
     { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true,
       defaultValue:
         'A complete repertoire of cosmetic medicine practiced under one roof — surgical, non-surgical, restorative, and the careful coordination that holds it all together.',
-      admin: { description: 'Intro paragraph beneath the title.', hidden: true } },
+      admin: { description: 'Intro paragraph beneath the title.' } },
     { name: 'heroImage', type: 'upload', relationTo: 'media',
       admin: { description: 'Hero image displayed alongside the title block. Recommended ~1600×1200, JPEG/WebP. Falls back to the painted-SVG when blank.' } },
     { name: 'imageHue', type: 'number', min: 0, max: 6, defaultValue: 1,

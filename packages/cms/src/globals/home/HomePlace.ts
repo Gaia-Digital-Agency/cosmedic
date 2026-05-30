@@ -32,7 +32,7 @@ export const HomePlace: GlobalConfig = {
     {
       name: 'rows',
       type: 'array',
-      admin: { description: '4 lettered rows below the body. Letter = "A.", text = the descriptor.', hidden: true },
+      admin: { description: '4 lettered rows below the body. Letter = "A.", text = the descriptor.' },
       fields: [
         { name: 'letter', type: 'text', required: true,
           admin: { description: 'Mono letter (e.g. "A.").' } },

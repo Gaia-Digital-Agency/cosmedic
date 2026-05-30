@@ -4,9 +4,8 @@ import { revalidateGlobalAfterChange } from '../../lib/revalidate'
 
 export const HomeGalleryView: GlobalConfig = {
   slug: 'home-gallery-view',
-  label: 'Gallery View',
+  label: 'Gallery',
   admin: {
-    hidden: true,
     group: 'Homepage',
     description:
       'Section chrome for the Before & After teaser on /. The before/after cards themselves are NOT edited here — source: **d. Results → g. Before-After-Cases** (rows where isFeatured=true). This item controls only the eyebrow, heading, lede, and view-all CTA.',

@@ -28,7 +28,7 @@ export const ResultsHero: GlobalConfig = {
     { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true,
       defaultValue:
         'A small selection of consented results paired with the stories behind them. Our complete library — over two hundred cases — is shared during private consultation.',
-      admin: { description: 'Intro paragraph beneath the title (≈2 sentences).', hidden: true } },
+      admin: { description: 'Intro paragraph beneath the title (≈2 sentences).' } },
     { name: 'heroImage', type: 'upload', relationTo: 'media',
       admin: { description: 'Hero image. Recommended ~1600×1200, JPEG/WebP.' } },
     { name: 'imageHue', type: 'number', min: 0, max: 6, defaultValue: 1,
