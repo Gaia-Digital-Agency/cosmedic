@@ -20,7 +20,6 @@ export const PricingPage: GlobalConfig = {
   slug: 'pricing-page',
   label: 'Pricing: Page',
   admin: {
-    hidden: true,
     group: 'Procedures',
     description:
       'Page-level metadata for /pricing — title, slug, route, SEO, publishStatus, and a CmsExtraBlocks slot. Hero / Overview / Footnote / Insurance / Payment are edited via the dedicated Pricing globals in this bucket.',

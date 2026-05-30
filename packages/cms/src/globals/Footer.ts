@@ -7,7 +7,6 @@ export const Footer: GlobalConfig = {
   label: 'Footer',
   admin: {
     group: 'Homepage',
-    hidden: true,
     description: 'Footer at the bottom of every page: white-on-dark logo, three link columns (Treatments / About / Connect), enquiry summary, address, copyright line.',
   },
   access: { read: readPublic, update: isAuthenticated },
@@ -18,11 +17,11 @@ export const Footer: GlobalConfig = {
       admin: { description: 'Mono-small-caps line under the footer logo. Editorial reinforcement of the "Managed by BIMC Hospital" endorsement; matches the header logo alt text.' } },
     { name: 'treatmentsHeading', type: 'text', localized: true,
       defaultValue: 'Treatments',
-      admin: { description: 'Heading above the auto-derived Treatments column (the list itself comes from Disciplines collection — q8). Editable here if the clinic wants a different label.', hidden: true } },
+      admin: { description: 'Heading above the auto-derived Treatments column (the list itself comes from Disciplines collection — q8). Editable here if the clinic wants a different label.' } },
     {
       name: 'linkColumns',
       type: 'array',
-      admin: { description: 'The two columns to the right of Treatments (default: About / Connect). Each column = one heading + a list of links. The Treatments column is always rendered separately from Disciplines and is excluded from this array.', hidden: true },
+      admin: { description: 'The two columns to the right of Treatments (default: About / Connect). Each column = one heading + a list of links. The Treatments column is always rendered separately from Disciplines and is excluded from this array.' },
       fields: [
         { name: 'heading', type: 'text', required: true, localized: true,
           admin: { description: 'Column heading shown above the links.' } },
@@ -62,15 +61,15 @@ export const Footer: GlobalConfig = {
     {
       name: 'footerBottomLines',
       type: 'array',
-      admin: { description: 'Bottom row of the footer (below the divider). Order = display order, left to right. The first entry is the copyright line and uses `{year}` substitution; the rest are static text.', hidden: true },
+      admin: { description: 'Bottom row of the footer (below the divider). Order = display order, left to right. The first entry is the copyright line and uses `{year}` substitution; the rest are static text.' },
       fields: [
         { name: 'text', type: 'text', required: true },
       ],
     },
     { name: 'enquirySummary', type: 'richText',
-      admin: { description: 'Short rich-text block above the footer newsletter signup. Currently optional/unused — reserved for future "Want a personal estimate?" copy.', hidden: true } },
+      admin: { description: 'Short rich-text block above the footer newsletter signup. Currently optional/unused — reserved for future "Want a personal estimate?" copy.' } },
     { name: 'addressBlock', type: 'richText',
-      admin: { description: 'Rich-text variant of the footer address block. Currently uses Settings.addressLine1/2/city/postalCode/country directly; this field is a free-form override.', hidden: true } },
+      admin: { description: 'Rich-text variant of the footer address block. Currently uses Settings.addressLine1/2/city/postalCode/country directly; this field is a free-form override.' } },
     { name: 'copyrightTemplate', type: 'text',
       defaultValue: '© {year} BIMC CosMedic Centre',
       admin: { description: 'DEPRECATED — kept for backwards-compat. Use footerBottomLines[0] instead (the first bottom line is now the copyright with `{year}` substitution). This field still works as a fallback if footerBottomLines is empty.', hidden: true } },

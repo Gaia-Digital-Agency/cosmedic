@@ -7,7 +7,6 @@ export const PricingOverview: GlobalConfig = {
   label: 'Overview',
   admin: {
     group: 'Procedures',
-    hidden: true,
     description:
       'Optional editorial overview between the chapter opener and the discipline price list. Leave every field blank and the section will not render.',
   },

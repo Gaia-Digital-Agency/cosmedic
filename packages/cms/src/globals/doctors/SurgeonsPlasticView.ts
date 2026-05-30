@@ -6,7 +6,6 @@ export const SurgeonsPlasticView: GlobalConfig = {
   slug: 'surgeons-plastic-view',
   label: 'Plastic Surgery View',
   admin: {
-    hidden: true,
     group: 'Experts',
     description:
       'Section chrome for the Plastic Surgery grid on /surgeons (the non-lead plastic-surgery doctors). The cards are NOT edited here — they come from **c. Surgeons** filtered to group=plastic-surgery, excluding the lead. This item controls only the eyebrow / heading / lede.',

@@ -7,7 +7,6 @@ export const Header: GlobalConfig = {
   label: 'Header',
   admin: {
     group: 'Homepage',
-    hidden: true,
     description: 'Top navigation bar on every page: logo, primary nav items (Treatments, Doctors, Results, Pricing, Your Journey, Contact), mega-menu columns, EN|ID switcher.',
   },
   access: { read: readPublic, update: isAuthenticated },
@@ -16,7 +15,7 @@ export const Header: GlobalConfig = {
     {
       name: 'navItems',
       type: 'array',
-      admin: { description: 'Top-level primary nav items rendered left-to-right after the logo. Each item can have an optional mega-menu dropdown.', hidden: true },
+      admin: { description: 'Top-level primary nav items rendered left-to-right after the logo. Each item can have an optional mega-menu dropdown.' },
       fields: [
         { name: 'label', type: 'text', required: true, localized: true,
           admin: { description: 'Display text shown in the nav bar.' } },

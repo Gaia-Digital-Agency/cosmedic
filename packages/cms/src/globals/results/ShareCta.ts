@@ -6,7 +6,6 @@ export const ShareCta: GlobalConfig = {
   slug: 'share-cta',
   label: 'Share CTA',
   admin: {
-    hidden: true,
     group: 'Results',
     description:
       '"Sharing your story / Have a story to share?" CTA shown at the bottom of /results and /stories. Edit once — applies to BOTH pages.',

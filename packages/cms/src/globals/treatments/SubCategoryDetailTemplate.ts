@@ -7,7 +7,6 @@ export const SubCategoryDetailTemplate: GlobalConfig = {
   label: 'Sub-Category Template',
   admin: {
     group: 'Procedures',
-    hidden: true,
     description:
       'Template-level strings shared across every /treatments/<sub-category> page (22 routes). Per-sub-category data (chapter, title, lede, sections, faqs, treatments list) lives on the row in f. Sub-Categories. Procedure rows come from g. Procedures. This global controls only the chrome that repeats on every sub-category detail page.',
   },

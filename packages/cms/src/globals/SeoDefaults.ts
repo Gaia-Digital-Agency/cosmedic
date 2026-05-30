@@ -7,7 +7,6 @@ export const SeoDefaults: GlobalConfig = {
   label: 'SEO Defaults',
   admin: {
     group: 'Homepage',
-    hidden: true,
     description: 'Search-engine + crawler defaults: the title pattern used on every <title> tag, the /robots.txt content, the sitemap.xml base URL, and the homepage JSON-LD organization schema.',
   },
   access: { read: readPublic, update: isAuthenticated },

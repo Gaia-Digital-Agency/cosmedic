@@ -6,7 +6,6 @@ export const PricingCatalogueView: GlobalConfig = {
   slug: 'pricing-catalogue-view',
   label: 'Catalogue View',
   admin: {
-    hidden: true,
     group: 'Procedures',
     description:
       'Chrome for the full clinic catalogue table on /pricing. The rows themselves are NOT edited here — they are sourced from b. Treatments → g. Procedures (filtered by catalogueGroup). This item controls only the section eyebrow / heading / intro template and the sheet, hair-zone, and injectable-category labels.',

@@ -20,7 +20,7 @@ export const ContactVisitSection: GlobalConfig = {
       admin: { description: 'Second part of the heading rendered in italic serif.' } },
     { name: 'body', type: 'textarea', localized: true,
       defaultValue: 'Within the BIMC Hospital Nusa Dua, on the southernmost reach of Bali. Twelve minutes from Ngurah Rai International Airport.',
-      admin: { description: 'Body paragraph above the address block.', hidden: true } },
+      admin: { description: 'Body paragraph above the address block.' } },
     { name: 'mapImage', type: 'upload', relationTo: 'media',
       admin: { description: 'Photo / map shown on the right side of the Visit section. Recommended ~1600×1200, 4:3 aspect.' } },
     { name: 'mapImageLabel', type: 'text', defaultValue: 'NUSA DUA · BALI',

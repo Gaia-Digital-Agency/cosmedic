@@ -6,7 +6,6 @@ export const HomeJourneyView: GlobalConfig = {
   slug: 'home-journey-view',
   label: 'Journey View',
   admin: {
-    hidden: true,
     group: 'Homepage',
     description:
       'Section chrome for the Journey teaser on / (5-step preview). The 5 steps themselves are NOT edited here — source: **f. Journey → Journey Steps** (order, number, title, body). This item controls only the eyebrow, heading, and CTA.',

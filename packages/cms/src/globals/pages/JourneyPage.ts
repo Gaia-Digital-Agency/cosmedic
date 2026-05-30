@@ -7,7 +7,6 @@ export const JourneyPage: GlobalConfig = {
   slug: 'journey-page',
   label: 'Main',
   admin: {
-    hidden: true,
     group: 'Journey',
     description:
       'Page meta + SEO + optional CmsExtraBlocks slot for /journey. The hero, the 7 patient-journey steps, and the bottom 3 stat tiles live in b. Hero / c. Steps / d. Stats — edit them there.',

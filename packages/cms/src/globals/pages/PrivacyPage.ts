@@ -7,7 +7,6 @@ export const PrivacyPage: GlobalConfig = {
   slug: 'privacy-page',
   label: 'Privacy',
   admin: {
-    hidden: true,
     group: 'Publications',
     description:
       'Editorial content for /privacy: hero, the three metadata lines (last updated / version / reading time), and the optional intro paragraph. The 10 numbered legal sections are edited in i. Privacy-Sections.',
