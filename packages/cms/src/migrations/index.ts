@@ -20,6 +20,7 @@ import * as migration_20260525_080000_r2_home_globals from './20260525_080000_r2
 import * as migration_20260528_090000_analytics_topics_wordcount from './20260528_090000_analytics_topics_wordcount';
 import * as migration_20260528_120000_analytics_topics_id_trigger from './20260528_120000_analytics_topics_id_trigger';
 import * as migration_20260530_011415_add_localization from './20260530_011415_add_localization';
+import * as migration_20260530_034550_merge_contact_visit_into_hero from './20260530_034550_merge_contact_visit_into_hero';
 
 export const migrations = [
   {
@@ -130,6 +131,11 @@ export const migrations = [
   {
     up: migration_20260530_011415_add_localization.up,
     down: migration_20260530_011415_add_localization.down,
-    name: '20260530_011415_add_localization'
+    name: '20260530_011415_add_localization',
+  },
+  {
+    up: migration_20260530_034550_merge_contact_visit_into_hero.up,
+    down: migration_20260530_034550_merge_contact_visit_into_hero.down,
+    name: '20260530_034550_merge_contact_visit_into_hero'
   },
 ];

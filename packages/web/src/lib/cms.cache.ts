@@ -102,7 +102,7 @@ export const EMPTY_CACHE: CmsCache = {
   seoDefaults: {},
   contactHero: {},
   contactEnquirySection: {},
-  contactVisitSection: {},
+  contactVisitSection: {}, // kept for compat — data now lives in contactHero.visitSection
   journeyHero: {},
   journeyStats: {},
   recoveryStaysPage: {},
@@ -201,7 +201,7 @@ async function doLoad(): Promise<CmsCache> {
       fetchGlobal<SeoDefaultsGlobal>('seo-defaults'),
       fetchGlobal<ContactHeroGlobal>('contact-hero').catch(() => ({})),
       fetchGlobal<ContactEnquirySectionGlobal>('contact-enquiry-section').catch(() => ({})),
-      fetchGlobal<ContactVisitSectionGlobal>('contact-visit-section').catch(() => ({})),
+      Promise.resolve({}), // contact-visit-section merged into contact-hero.visitSection
       fetchGlobal<JourneyHeroGlobal>('journey-hero').catch(() => ({})),
       fetchGlobal<JourneyStatsGlobal>('journey-stats').catch(() => ({})),
       fetchGlobal<RecoveryStaysPageGlobal>('recovery-stays-page').catch(() => ({})),

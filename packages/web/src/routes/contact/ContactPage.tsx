@@ -48,7 +48,7 @@ export const ContactPage: React.FC = () => {
   const cms = useCms()
   const hero = cms?.contactHero ?? {}
   const enquiry = cms?.contactEnquirySection ?? {}
-  const visit = cms?.contactVisitSection ?? {}
+  const visit = (cms?.contactHero as any)?.visitSection ?? cms?.contactVisitSection ?? {}
   const settings = cms?.settings ?? {}
   const directLines = enquiry.directLines ?? {}
   const fl = enquiry.formLabels ?? {}
