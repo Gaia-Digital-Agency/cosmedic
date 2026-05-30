@@ -119,6 +119,8 @@ export const HomeHero: GlobalConfig = {
     { name: 'surgeons', label: 'Team Card', type: 'group',
       admin: { description: 'Full-width Surgeons banner on /.' },
       fields: [
+        { name: 'eyebrow', label: 'Eyebrow', type: 'text', defaultValue: '8 Specialists',
+          admin: { description: 'Small-caps label above the banner heading.' } },
         { name: 'team', label: 'Team Heading', type: 'group', fields: [
           { name: 'caption', label: 'Title', type: 'text', localized: true, defaultValue: 'One team, one standard.' },
         ] },
@@ -153,6 +155,8 @@ export const HomeHero: GlobalConfig = {
     { name: 'leadMagnet', label: 'Lead Magnet', type: 'group',
       admin: { description: 'Lead-magnet section on /.' },
       fields: [
+        { name: 'coverEyebrow', label: 'Cover Eyebrow', type: 'text', defaultValue: 'A guide · 24 pages · PDF',
+          admin: { description: 'Small-caps label at the top of the cover card.' } },
         { name: 'cover', label: 'Cover', type: 'group', fields: [
           { name: 'image', label: 'Image', type: 'upload', relationTo: 'media' },
           { name: 'title', label: 'Cover TitleA', type: 'textarea', localized: true,
@@ -160,6 +164,8 @@ export const HomeHero: GlobalConfig = {
           { name: 'footer', label: 'Cover TitleB', type: 'text', localized: true,
             defaultValue: 'BIMC CosMedic · MMXXVI' },
         ] },
+        { name: 'bodyEyebrow', label: 'Body Eyebrow', type: 'text', defaultValue: 'Free Guide',
+          admin: { description: 'Small-caps label above the body heading.' } },
         { name: 'heading', type: 'group', fields: [
           { name: 'a', label: 'Two Line — TitleA', type: 'text', localized: true, defaultValue: 'What to expect from' },
           { name: 'b', label: 'Two Line — TitleB', type: 'text', localized: true, defaultValue: 'recovery in Bali.' },
@@ -168,6 +174,11 @@ export const HomeHero: GlobalConfig = {
           defaultValue: 'A 24-page editorial guide written by our concierge team — covering recovery timelines for the ten most-requested procedures, what to pack, what villas suit which surgeries, and the pace of a typical fortnight in Nusa Dua.' },
         { name: 'formPlaceholder', label: 'Form Placeholder', type: 'text', localized: true, defaultValue: 'Your email address' },
         { name: 'submitLabel', label: 'Submit Button', type: 'text', localized: true, defaultValue: 'Send Guide →' },
+        { name: 'successHeading', label: 'Success Heading', type: 'text', localized: true, defaultValue: '✓ Sent' },
+        { name: 'successBody', label: 'Success Body', type: 'text', localized: true,
+          defaultValue: 'Check your inbox — the guide is on its way.' },
+        { name: 'fineprint', label: 'Fineprint', type: 'text', localized: true,
+          defaultValue: 'One email. No marketing list. Unsubscribe anytime.' },
       ],
     },
 
