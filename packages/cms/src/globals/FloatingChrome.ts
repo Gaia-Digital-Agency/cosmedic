@@ -7,6 +7,7 @@ export const FloatingChrome: GlobalConfig = {
   label: 'Floating CTA',
   admin: {
     group: 'Homepage',
+    hidden: true,
     description: 'Floating UI shown bottom-right on every page: the brown "Plan Your Treatment" CTA pill and the green WhatsApp/chat bubble next to it.',
   },
   access: { read: readPublic, update: isAuthenticated },

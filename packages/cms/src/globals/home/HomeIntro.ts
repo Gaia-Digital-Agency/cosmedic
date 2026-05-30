@@ -7,6 +7,7 @@ export const HomeIntro: GlobalConfig = {
   label: 'Editorial',
   admin: {
     group: 'Homepage',
+    hidden: true,
     description:
       'Editorial content for the Intro pull-quote, Journey teaser, and Trust Strip stat tiles on /.',
   },
