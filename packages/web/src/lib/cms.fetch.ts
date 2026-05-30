@@ -9,8 +9,9 @@ import type { CmsPage } from './cms.pages.types'
 
 export const PAYLOAD_URL = process.env.PAYLOAD_URL || 'http://127.0.0.1:4007'
 
-export async function fetchAll<T>(collection: string, limit = 500, depth = 1): Promise<T[]> {
-  const url = `${PAYLOAD_URL}/api/${collection}?limit=${limit}&depth=${depth}&draft=false`
+export async function fetchAll<T>(collection: string, limit = 500, depth = 1, locale?: string): Promise<T[]> {
+  const loc = locale ? `&locale=${locale}` : ''
+  const url = `${PAYLOAD_URL}/api/${collection}?limit=${limit}&depth=${depth}&draft=false${loc}`
   const res = await fetch(url, { headers: { Accept: 'application/json' } })
   if (!res.ok) {
     throw new Error(`[cms] failed to fetch ${collection}: ${res.status} ${res.statusText}`)
@@ -19,8 +20,9 @@ export async function fetchAll<T>(collection: string, limit = 500, depth = 1): P
   return json.docs || []
 }
 
-export async function fetchGlobal<T>(slug: string, depth = 1): Promise<T> {
-  const url = `${PAYLOAD_URL}/api/globals/${slug}?depth=${depth}`
+export async function fetchGlobal<T>(slug: string, depth = 1, locale?: string): Promise<T> {
+  const loc = locale ? `&locale=${locale}` : ''
+  const url = `${PAYLOAD_URL}/api/globals/${slug}?depth=${depth}${loc}`
   const res = await fetch(url, { headers: { Accept: 'application/json' } })
   if (!res.ok) {
     throw new Error(`[cms] failed to fetch global ${slug}: ${res.status} ${res.statusText}`)
@@ -53,10 +55,10 @@ export const PAGE_GLOBAL_SLUGS = [
   'blog-page',
 ] as const
 
-export async function fetchAllPageGlobals(): Promise<CmsPage[]> {
+export async function fetchAllPageGlobals(locale?: string): Promise<CmsPage[]> {
   const results = await Promise.all(
     PAGE_GLOBAL_SLUGS.map((slug) =>
-      fetchGlobal<CmsPage>(slug, 1).catch((err) => {
+      fetchGlobal<CmsPage>(slug, 1, locale).catch((err) => {
         console.warn(`[cms] page global ${slug} failed:`, (err as Error)?.message)
         return null
       }),

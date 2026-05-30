@@ -71,6 +71,7 @@ import type {
   HomeStoriesViewGlobal,
   NotFoundPageGlobal,
 } from './cms.types'
+import type { Locale } from '../i18n'
 import { fetchAll, fetchGlobal, fetchAllPageGlobals } from './cms.fetch'
 
 export const EMPTY_CACHE: CmsCache = {
@@ -142,10 +143,11 @@ export const EMPTY_CACHE: CmsCache = {
   notFoundPage: {},
 }
 
-let cache: CmsCache = EMPTY_CACHE
-let inflight: Promise<CmsCache> | null = null
+// Per-locale cache map — keyed by Locale ('en' | 'id').
+const caches: Record<string, CmsCache> = { en: EMPTY_CACHE }
+const inflights: Record<string, Promise<CmsCache> | null> = {}
 
-async function doLoad(): Promise<CmsCache> {
+async function doLoad(locale?: string): Promise<CmsCache> {
   try {
     const [
       surgeons, disciplines, subCategories, procedures,
@@ -170,74 +172,74 @@ async function doLoad(): Promise<CmsCache> {
       homeGalleryView, homeJourneyView, homeStoriesView,
       notFoundPage,
     ] = await Promise.all([
-      fetchAll<Surgeon>('surgeons', 100, 1),
-      fetchAll<Discipline>('disciplines'),
-      fetchAll<SubCategory>('sub-categories'),
-      fetchAll<Procedure>('procedures', 500, 2),
+      fetchAll<Surgeon>('surgeons', 100, 1, locale),
+      fetchAll<Discipline>('disciplines', 500, 1, locale),
+      fetchAll<SubCategory>('sub-categories', 500, 1, locale),
+      fetchAll<Procedure>('procedures', 500, 2, locale),
       // clinicCatalogueItems derived from procedures after await (see below)
 
 
 
 
 
-      fetchAll<BeforeAfterCase>('before-after-cases'),
-      fetchAll<Story>('stories'),
-      fetchAll<PressMention>('press-mentions'),
-      fetchAll<Award>('awards'),
-      fetchAll<RecoveryStay>('recovery-stays'),
-      fetchAll<BlogPost>('blog-posts', 100, 2),
-      fetchAll<Author>('authors', 100, 1),
-      fetchAll<JourneyStep>('journey-steps'),
-      fetchAll<PrivacySection>('privacy-sections').catch(() => []),
-      fetchAllPageGlobals(),
-      fetchGlobal<Settings>('settings'),
-      fetchGlobal<HeaderGlobal>('header'),
-      fetchGlobal<FooterGlobal>('footer'),
-      fetchGlobal<FloatingChromeGlobal>('floating-chrome'),
-      fetchGlobal<BrandStatsGlobal>('brand-stats'),
-      fetchGlobal<EndorsementMarkGlobal>('endorsement-mark'),
-      fetchGlobal<ConsultationPolicy>('consultation-policy'),
-      fetchGlobal<FormDefaults>('form-defaults'),
-      fetchGlobal<SeoDefaultsGlobal>('seo-defaults'),
-      fetchGlobal<ContactHeroGlobal>('contact-hero').catch(() => ({})),
-      fetchGlobal<ContactEnquirySectionGlobal>('contact-enquiry-section').catch(() => ({})),
+      fetchAll<BeforeAfterCase>('before-after-cases', 500, 1, locale),
+      fetchAll<Story>('stories', 500, 1, locale),
+      fetchAll<PressMention>('press-mentions', 500, 1, locale),
+      fetchAll<Award>('awards', 500, 1, locale),
+      fetchAll<RecoveryStay>('recovery-stays', 500, 1, locale),
+      fetchAll<BlogPost>('blog-posts', 100, 2, locale),
+      fetchAll<Author>('authors', 100, 1, locale),
+      fetchAll<JourneyStep>('journey-steps', 500, 1, locale),
+      fetchAll<PrivacySection>('privacy-sections', 500, 1, locale).catch(() => []),
+      fetchAllPageGlobals(locale),
+      fetchGlobal<Settings>('settings', 1, locale),
+      fetchGlobal<HeaderGlobal>('header', 1, locale),
+      fetchGlobal<FooterGlobal>('footer', 1, locale),
+      fetchGlobal<FloatingChromeGlobal>('floating-chrome', 1, locale),
+      fetchGlobal<BrandStatsGlobal>('brand-stats', 1, locale),
+      fetchGlobal<EndorsementMarkGlobal>('endorsement-mark', 1, locale),
+      fetchGlobal<ConsultationPolicy>('consultation-policy', 1, locale),
+      fetchGlobal<FormDefaults>('form-defaults', 1, locale),
+      fetchGlobal<SeoDefaultsGlobal>('seo-defaults', 1, locale),
+      fetchGlobal<ContactHeroGlobal>('contact-hero', 1, locale).catch(() => ({})),
+      fetchGlobal<ContactEnquirySectionGlobal>('contact-enquiry-section', 1, locale).catch(() => ({})),
       Promise.resolve({}), // contact-visit-section merged into contact-hero.visitSection
-      fetchGlobal<JourneyHeroGlobal>('journey-hero').catch(() => ({})),
-      fetchGlobal<JourneyStatsGlobal>('journey-stats').catch(() => ({})),
-      fetchGlobal<RecoveryStaysPageGlobal>('recovery-stays-page').catch(() => ({})),
-      fetchGlobal<TreatmentsHeroGlobal>('treatments-hero').catch(() => ({})),
-      fetchGlobal<TreatmentsIndexSectionGlobal>('treatments-index-section').catch(() => ({})),
-      fetchGlobal<TreatmentsStatsGlobal>('treatments-stats').catch(() => ({})),
-      fetchGlobal<DisciplineDetailTemplateGlobal>('discipline-detail-template').catch(() => ({})),
-      fetchGlobal<SubCategoryDetailTemplateGlobal>('sub-category-detail-template').catch(() => ({})),
-      fetchGlobal<SurgeonsHeroGlobal>('surgeons-hero').catch(() => ({})),
-      fetchGlobal<SurgeonsLeadViewGlobal>('surgeons-lead-view').catch(() => ({})),
-      fetchGlobal<SurgeonsSectionViewGlobal>('surgeons-plastic-view').catch(() => ({})),
-      fetchGlobal<SurgeonsSectionViewGlobal>('surgeons-aesthetic-view').catch(() => ({})),
-      fetchGlobal<SurgeonDetailTemplateGlobal>('surgeon-detail-template').catch(() => ({})),
-      fetchGlobal<BlogPostTemplateGlobal>('blog-post-template').catch(() => ({})),
-      fetchGlobal<PricingHeroGlobal>('pricing-hero').catch(() => ({} as PricingHeroGlobal)),
-      fetchGlobal<PricingOverviewGlobal>('pricing-overview').catch(() => ({})),
-      fetchGlobal<PricingFootnoteGlobal>('pricing-footnote').catch(() => ({})),
-      fetchGlobal<PricingInsuranceGlobal>('pricing-insurance').catch(() => ({})),
-      fetchGlobal<PricingPaymentGlobal>('pricing-payment').catch(() => ({})),
-      fetchGlobal<PricingDisciplineListViewGlobal>('pricing-discipline-list-view').catch(() => ({})),
-      fetchGlobal<PricingCatalogueViewGlobal>('pricing-catalogue-view').catch(() => ({})),
-      fetchGlobal<ResultsHeroGlobal>('results-hero').catch(() => ({} as ResultsHeroGlobal)),
-      fetchGlobal<ResultsFeaturedCasesViewGlobal>('results-featured-cases-view').catch(() => ({})),
-      fetchGlobal<ResultsStoriesViewGlobal>('results-stories-view').catch(() => ({})),
-      fetchGlobal<LibraryCtaGlobal>('library-cta').catch(() => ({})),
-      fetchGlobal<HomeHeroGlobal>('home-hero').catch(() => ({})),
-      fetchGlobal<HomeIntroGlobal>('home-intro').catch(() => ({})),
-      fetchGlobal<HomeLeadMagnetGlobal>('home-lead-magnet').catch(() => ({})),
-      fetchGlobal<HomePlaceGlobal>('home-place').catch(() => ({})),
-      fetchGlobal<HomeTreatmentsViewGlobal>('home-treatments-view').catch(() => ({})),
-      fetchGlobal<HomePricingViewGlobal>('home-pricing-view').catch(() => ({})),
-      fetchGlobal<HomeSurgeonsViewGlobal>('home-surgeons-view').catch(() => ({})),
-      fetchGlobal<HomeGalleryViewGlobal>('home-gallery-view').catch(() => ({})),
-      fetchGlobal<HomeJourneyViewGlobal>('home-journey-view').catch(() => ({})),
-      fetchGlobal<HomeStoriesViewGlobal>('home-stories-view').catch(() => ({})),
-      fetchGlobal<NotFoundPageGlobal>('not-found-page').catch(() => ({})),
+      fetchGlobal<JourneyHeroGlobal>('journey-hero', 1, locale).catch(() => ({})),
+      fetchGlobal<JourneyStatsGlobal>('journey-stats', 1, locale).catch(() => ({})),
+      fetchGlobal<RecoveryStaysPageGlobal>('recovery-stays-page', 1, locale).catch(() => ({})),
+      fetchGlobal<TreatmentsHeroGlobal>('treatments-hero', 1, locale).catch(() => ({})),
+      fetchGlobal<TreatmentsIndexSectionGlobal>('treatments-index-section', 1, locale).catch(() => ({})),
+      fetchGlobal<TreatmentsStatsGlobal>('treatments-stats', 1, locale).catch(() => ({})),
+      fetchGlobal<DisciplineDetailTemplateGlobal>('discipline-detail-template', 1, locale).catch(() => ({})),
+      fetchGlobal<SubCategoryDetailTemplateGlobal>('sub-category-detail-template', 1, locale).catch(() => ({})),
+      fetchGlobal<SurgeonsHeroGlobal>('surgeons-hero', 1, locale).catch(() => ({})),
+      fetchGlobal<SurgeonsLeadViewGlobal>('surgeons-lead-view', 1, locale).catch(() => ({})),
+      fetchGlobal<SurgeonsSectionViewGlobal>('surgeons-plastic-view', 1, locale).catch(() => ({})),
+      fetchGlobal<SurgeonsSectionViewGlobal>('surgeons-aesthetic-view', 1, locale).catch(() => ({})),
+      fetchGlobal<SurgeonDetailTemplateGlobal>('surgeon-detail-template', 1, locale).catch(() => ({})),
+      fetchGlobal<BlogPostTemplateGlobal>('blog-post-template', 1, locale).catch(() => ({})),
+      fetchGlobal<PricingHeroGlobal>('pricing-hero', 1, locale).catch(() => ({} as PricingHeroGlobal)),
+      fetchGlobal<PricingOverviewGlobal>('pricing-overview', 1, locale).catch(() => ({})),
+      fetchGlobal<PricingFootnoteGlobal>('pricing-footnote', 1, locale).catch(() => ({})),
+      fetchGlobal<PricingInsuranceGlobal>('pricing-insurance', 1, locale).catch(() => ({})),
+      fetchGlobal<PricingPaymentGlobal>('pricing-payment', 1, locale).catch(() => ({})),
+      fetchGlobal<PricingDisciplineListViewGlobal>('pricing-discipline-list-view', 1, locale).catch(() => ({})),
+      fetchGlobal<PricingCatalogueViewGlobal>('pricing-catalogue-view', 1, locale).catch(() => ({})),
+      fetchGlobal<ResultsHeroGlobal>('results-hero', 1, locale).catch(() => ({} as ResultsHeroGlobal)),
+      fetchGlobal<ResultsFeaturedCasesViewGlobal>('results-featured-cases-view', 1, locale).catch(() => ({})),
+      fetchGlobal<ResultsStoriesViewGlobal>('results-stories-view', 1, locale).catch(() => ({})),
+      fetchGlobal<LibraryCtaGlobal>('library-cta', 1, locale).catch(() => ({})),
+      fetchGlobal<HomeHeroGlobal>('home-hero', 1, locale).catch(() => ({})),
+      fetchGlobal<HomeIntroGlobal>('home-intro', 1, locale).catch(() => ({})),
+      fetchGlobal<HomeLeadMagnetGlobal>('home-lead-magnet', 1, locale).catch(() => ({})),
+      fetchGlobal<HomePlaceGlobal>('home-place', 1, locale).catch(() => ({})),
+      fetchGlobal<HomeTreatmentsViewGlobal>('home-treatments-view', 1, locale).catch(() => ({})),
+      fetchGlobal<HomePricingViewGlobal>('home-pricing-view', 1, locale).catch(() => ({})),
+      fetchGlobal<HomeSurgeonsViewGlobal>('home-surgeons-view', 1, locale).catch(() => ({})),
+      fetchGlobal<HomeGalleryViewGlobal>('home-gallery-view', 1, locale).catch(() => ({})),
+      fetchGlobal<HomeJourneyViewGlobal>('home-journey-view', 1, locale).catch(() => ({})),
+      fetchGlobal<HomeStoriesViewGlobal>('home-stories-view', 1, locale).catch(() => ({})),
+      fetchGlobal<NotFoundPageGlobal>('not-found-page', 1, locale).catch(() => ({})),
     ])
     // changes08-B: clinicCatalogueItems derived from procedures (single source of truth).
     // Surgical/Machine/Injection/BTL collections removed — Procedures covers all.
@@ -311,23 +313,24 @@ async function doLoad(): Promise<CmsCache> {
 
 const CACHE_TTL_MS = 60_000  // 60s — keeps SSR fast while picking up CMS edits.
 
-export async function loadCmsCache(force = false): Promise<CmsCache> {
-  if (!force && cache.loaded && Date.now() - cache.loadedAt < CACHE_TTL_MS) {
-    return cache
+export async function loadCmsCache(force = false, locale: Locale = 'en'): Promise<CmsCache> {
+  const current = caches[locale] ?? EMPTY_CACHE
+  if (!force && current.loaded && Date.now() - current.loadedAt < CACHE_TTL_MS) {
+    return current
   }
-  if (inflight) return inflight
-  inflight = doLoad().then((next) => {
-    cache = next
-    inflight = null
+  if (inflights[locale]) return inflights[locale]!
+  inflights[locale] = doLoad(locale).then((next) => {
+    caches[locale] = next
+    inflights[locale] = null
     return next
   })
-  return inflight
+  return inflights[locale]!
 }
 
-export function getCmsCacheSync(): CmsCache {
-  return cache
+export function getCmsCacheSync(locale: Locale = 'en'): CmsCache {
+  return caches[locale] ?? EMPTY_CACHE
 }
 
-export function setCmsCacheSync(next: CmsCache): void {
-  cache = next
+export function setCmsCacheSync(next: CmsCache, locale: Locale = 'en'): void {
+  caches[locale] = next
 }
