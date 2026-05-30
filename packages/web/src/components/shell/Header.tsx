@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { TREATMENT_LIST, SUBCATEGORIES_BY_DISCIPLINE, SURGEON_LIST } from '@/content/seed'
 import { useCms } from '@/lib/cms-context'
 import { mediaUrl, mediaAlt } from '@/lib/cms'
-import { localeFromPath, withLocale, type Locale } from '@/i18n'
+import { useLocale, withLocale } from '@/i18n'
 
 type Props = {
   activePage?: string
@@ -30,9 +30,9 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
   // touching the data.
 
   const [scrolled, setScrolled] = useState(false)
-  // D4: active locale derived from URL after mount (avoids SSR/hydration mismatch).
-  const [activeLocale, setActiveLocale] = useState<Locale>('en')
-  useEffect(() => { setActiveLocale(localeFromPath(window.location.pathname)) }, [])
+  // Locale derived from path during SSR (via setSSRLocale) and from window on client.
+  // Both resolve the same value so there is no hydration mismatch.
+  const activeLocale = useLocale()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [mobileTreatmentsOpen, setMobileTreatmentsOpen] = useState(false)
   const [mobileSurgeonsOpen, setMobileSurgeonsOpen] = useState(false)
@@ -91,7 +91,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
   return (
     <header className={`site-header ${scrolled ? 'scrolled' : ''}`}>
       <div className="header-inner">
-        <a href="/" className="logo">
+        <a href={withLocale('/', activeLocale)} className="logo">
           <img src={logoLightSrc} alt={logoAlt} className="logo-img logo-img-light" />
           <img src={logoDarkSrc} alt={logoAlt} className="logo-img logo-img-dark" />
         </a>
@@ -104,7 +104,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
             onBlur={scheduleClose}
           >
             <a
-              href="/procedures"
+              href={withLocale('/procedures', activeLocale)}
               className={activePage.startsWith('treatment') ? 'active' : ''}
             >
               Procedures
@@ -116,7 +116,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
                   return (
                     <div key={t.slug} className="dropdown-discipline">
                       <a
-                        href={`/procedures/${t.slug}`}
+                        href={withLocale(`/procedures/${t.slug}`, activeLocale)}
                         className={`dropdown-discipline-head ${
                           activePage === `treatment-${t.slug}` ? 'active' : ''
                         }`}
@@ -127,7 +127,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
                         {subs.map(([slug, title]) => (
                           <li key={slug}>
                             <a
-                              href={`/procedures/${t.slug}/${slug}`}
+                              href={withLocale(`/procedures/${t.slug}/${slug}`, activeLocale)}
                               className={activePage === `treatment-${slug}` ? 'active' : ''}
                             >
                               {title}
@@ -149,7 +149,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
             onBlur={scheduleClose}
           >
             <a
-              href="/experts"
+              href={withLocale('/experts', activeLocale)}
               className={activePage.startsWith('surgeon') ? 'active' : ''}
             >
               Experts
@@ -158,14 +158,14 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
               <div className="dropdown-panel-grid dropdown-panel-grid-2col">
                 {surgeonCols.map((col) => (
                   <div key={col.key} className="dropdown-discipline">
-                    <a href={`/experts#${col.anchor}`} className="dropdown-discipline-head">
+                    <a href={withLocale(`/experts#${col.anchor}`, activeLocale)} className="dropdown-discipline-head">
                       <span>{col.label}</span>
                     </a>
                     <ul className="dropdown-sublist">
                       {SURGEON_LIST.filter((s) => s.group === col.group).map((s) => (
                         <li key={s.slug}>
                           <a
-                            href={`/experts/${s.slug}`}
+                            href={withLocale(`/experts/${s.slug}`, activeLocale)}
                             className={activePage === `surgeon-${s.slug}` ? 'active' : ''}
                           >
                             {s.name}
@@ -179,7 +179,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
             </div>
           </div>
           <a
-            href="/results"
+            href={withLocale('/results', activeLocale)}
             className={
               activePage === 'gallery' || activePage === 'stories' || activePage === 'results'
                 ? 'active'
@@ -188,13 +188,13 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
           >
             Results
           </a>
-          <a href="/pricing" className={activePage === 'pricing' ? 'active' : ''}>
+          <a href={withLocale('/pricing', activeLocale)} className={activePage === 'pricing' ? 'active' : ''}>
             Pricing
           </a>
-          <a href="/journey" className={activePage === 'journey' ? 'active' : ''}>
+          <a href={withLocale('/journey', activeLocale)} className={activePage === 'journey' ? 'active' : ''}>
             Your Journey
           </a>
-          <a href="/contact" className={activePage === 'contact' ? 'active' : ''}>
+          <a href={withLocale('/contact', activeLocale)} className={activePage === 'contact' ? 'active' : ''}>
             Contact
           </a>
         </nav>
@@ -229,7 +229,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
               })}
             </div>
           ) : null}
-          <a href={ctaHref} className="header-cta">
+          <a href={withLocale(ctaHref, activeLocale)} className="header-cta">
             <span>{ctaLabel}</span>
             <span className="btn-arrow">→</span>
           </a>
@@ -261,7 +261,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
             </button>
             {mobileTreatmentsOpen && (
               <div className="mobile-submenu">
-                <a href="/procedures" className="mobile-submenu-all">
+                <a href={withLocale('/procedures', activeLocale)} className="mobile-submenu-all">
                   All procedures →
                 </a>
                 {TREATMENT_LIST.map((t) => {
@@ -269,7 +269,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
                   return (
                     <div key={t.slug} className="mobile-discipline">
                       <a
-                        href={`/procedures/${t.slug}`}
+                        href={withLocale(`/procedures/${t.slug}`, activeLocale)}
                         className={`mobile-discipline-head ${
                           activePage === `treatment-${t.slug}` ? 'active' : ''
                         }`}
@@ -281,7 +281,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
                           {subs.map(([slug, title]) => (
                             <li key={slug}>
                               <a
-                                href={`/procedures/${t.slug}/${slug}`}
+                                href={withLocale(`/procedures/${t.slug}/${slug}`, activeLocale)}
                                 className={activePage === `treatment-${slug}` ? 'active' : ''}
                               >
                                 {title}
@@ -308,19 +308,19 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
             </button>
             {mobileSurgeonsOpen && (
               <div className="mobile-submenu">
-                <a href="/experts" className="mobile-submenu-all">
+                <a href={withLocale('/experts', activeLocale)} className="mobile-submenu-all">
                   All doctors →
                 </a>
                 {surgeonCols.map((col) => (
                   <div key={col.group} className="mobile-discipline">
-                    <a href={`/experts#${col.anchor}`} className="mobile-discipline-head">
+                    <a href={withLocale(`/experts#${col.anchor}`, activeLocale)} className="mobile-discipline-head">
                       {col.label}
                     </a>
                     <ul className="mobile-sublist">
                       {SURGEON_LIST.filter((s) => s.group === col.group).map((s) => (
                         <li key={s.slug}>
                           <a
-                            href={`/experts/${s.slug}`}
+                            href={withLocale(`/experts/${s.slug}`, activeLocale)}
                             className={activePage === `surgeon-${s.slug}` ? 'active' : ''}
                           >
                             {s.name}
@@ -336,7 +336,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
 
           <div className="mobile-menu-links">
             <a
-              href="/results"
+              href={withLocale('/results', activeLocale)}
               className={
                 activePage === 'gallery' || activePage === 'stories' || activePage === 'results'
                   ? 'active'
@@ -348,13 +348,13 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
           </div>
 
           <div className="mobile-menu-links">
-            <a href="/pricing" className={activePage === 'pricing' ? 'active' : ''}>
+            <a href={withLocale('/pricing', activeLocale)} className={activePage === 'pricing' ? 'active' : ''}>
               Pricing
             </a>
-            <a href="/journey" className={activePage === 'journey' ? 'active' : ''}>
+            <a href={withLocale('/journey', activeLocale)} className={activePage === 'journey' ? 'active' : ''}>
               Your Journey
             </a>
-            <a href="/contact" className={activePage === 'contact' ? 'active' : ''}>
+            <a href={withLocale('/contact', activeLocale)} className={activePage === 'contact' ? 'active' : ''}>
               Contact
             </a>
           </div>
@@ -385,7 +385,7 @@ export const Header: React.FC<Props> = ({ activePage = '' }) => {
           ) : null}
 
           <a
-            href={ctaHref}
+            href={withLocale(ctaHref, activeLocale)}
             className="btn btn-accent"
             style={{ width: '100%', justifyContent: 'center', marginTop: 24 }}
           >

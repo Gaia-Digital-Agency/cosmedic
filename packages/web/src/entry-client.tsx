@@ -12,9 +12,13 @@ declare global {
 }
 
 // Restore the SSR cache into the right locale slot so the first client render matches.
+// Also always populate 'en' slot: lazy proxies (TREATMENT_LIST, SURGEON_LIST etc.) call
+// getCmsCacheSync() with no arg which defaults to 'en'. Without this, the header nav
+// dropdowns render empty on ID pages causing hydration mismatch and missing sections.
 if (typeof window !== 'undefined' && window.__COSMEDIC_CMS__) {
   const loc = (window.__COSMEDIC_LOCALE__ || 'en') as Locale
   setCmsCacheSync(window.__COSMEDIC_CMS__, loc)
+  if (loc !== 'en') setCmsCacheSync(window.__COSMEDIC_CMS__, 'en')
 }
 
 hydrateRoot(

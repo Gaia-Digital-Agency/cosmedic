@@ -18,6 +18,11 @@ import idJson from './id.json'
 
 export type Locale = 'en' | 'id'
 
+// Set by entry-server.tsx before each renderToString call (sync, no interleaving).
+// Allows useLocale() to return the correct locale during SSR without window.
+let _ssrLocale: Locale | null = null
+export function setSSRLocale(locale: Locale | null): void { _ssrLocale = locale }
+
 const dicts: Record<Locale, Record<string, unknown>> = {
   en: enJson as Record<string, unknown>,
   id: idJson as Record<string, unknown>,
@@ -62,5 +67,6 @@ export function withLocale(pathname: string, locale: Locale): string {
 /** Hook-friendly wrapper for components that already know the locale. */
 export function useLocale(currentPath?: string): Locale {
   if (typeof window !== 'undefined') return localeFromPath(window.location.pathname)
+  if (_ssrLocale) return _ssrLocale
   return localeFromPath(currentPath || '/')
 }
