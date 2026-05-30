@@ -1,12 +1,11 @@
 # Cosmedic CMS — Complete Field Map
 
-> **ITERATION 4 APPLIED (2026-05-29):** 8 items newly hidden (Groups A), ~110 fields newly hidden (Group B), C1 surgeon name merge, C3/C4 lead magnet cover merge. audToIdrRate + roundIdrTo restored. See cms_optional.md for full change log. The field listing below is accurate for all hidden flags as of this date.
+> **SWEEP APPLIED (2026-05-30):** Full L1–L10 visibility sweep. All 46 globally-hidden globals unhidden. All field-level Lede/Para/Image/Title/Body/Array violations fixed. `[hidden]` flags below are now STALE — only structural fields (slugs, hrefs, hues, breadcrumbs, chapter eyebrows, CTA hrefs, success/error states) remain hidden.
 >
-> Full inventory of every field across all 19 collections (18 + Analytics) and 63 globals.
-> 63 globals = 10 top-level + 21 pages/ + 10 home/ + 5 doctors/ + 7 pricing/ + 5 results/ + 5 treatments/.
+> Full inventory of every field across all 19 collections (18 + Analytics) and ~72 globals.
 > Format: dot-notation for group sub-fields (`heading.a`). Arrays shown as `items (field, field)`.
-> **`[hidden]`** = `admin.hidden: true` applied (change09, 2026-05-29). Item still in DB; admin role can access via direct URL.
-> Last updated: 2026-05-29 (change09 applied). Source: `packages/cms/src/{collections,globals}/`.
+> **`[hidden]`** = was `admin.hidden: true` as of 2026-05-29. Most have been REMOVED by 2026-05-30 sweep.
+> Last updated: 2026-05-30 (sweep applied). For current visible state see `cms_map_simple.md`. Source: `packages/cms/src/{collections,globals}/`.
 
 ---
 
