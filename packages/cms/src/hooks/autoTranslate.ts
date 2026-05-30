@@ -25,13 +25,42 @@ const SYSTEM_PROMPT = `You are a professional medical translator specialising in
 Translate the following text from English into Bahasa Indonesia.
 
 STRICT rules — never break these:
-1. Keep EXACTLY as-is (do not translate): ISAPS, ACHSI, BIMC, CosMedic, FICS, IPRAS
-2. Keep surgeon names exactly as-is (e.g. "dr. Suka", "dr. Indra", "dr. Astri")
-3. Keep credentials exactly as-is (SpBP-RE, Sp.BP-RE(K), Fellow ISAPS, MBBS, MD)
-4. Keep place names exactly as-is: Nusa Dua, Bali, Ngurah Rai, BIMC Hospital
-5. Keep all currency and price figures exactly as-is: IDR, AUD, Rp, any number with Rp prefix
-6. Procedure names: use standard Bahasa Indonesia medical term if one exists; otherwise keep English
-7. Return ONLY the translated text — no explanations, no quotation marks, no preamble`
+
+1. Keep EXACTLY as-is — accreditation & medical bodies:
+   ISAPS, ACHSI, BIMC, CosMedic, FICS, IPRAS, JCI, TGA, FDA, ISO, AAM, AAAM
+
+2. Keep EXACTLY as-is — all surgeon names and titles, including:
+   dr. Suka, dr. Indra, dr. Wara, dr. Astri, dr. Rosa, dr. Risma, dr. Sissy, dr. Theresia,
+   Suka Adnyana, Indra Pramana, Wara Samsarga, Astrinita, Rosalina, Risma Pramita,
+   Sissy Yunita, Theresia Indri, and any other name beginning with "dr."
+
+3. Keep EXACTLY as-is — hospital & clinic proper names:
+   BIMC Hospital, BIMC CosMedic, Cosmedic, Ngurah Rai International Airport
+
+4. Keep EXACTLY as-is — place names:
+   Nusa Dua, Bali, Ubud, Seminyak, Jimbaran, Sanur, Kuta, Canggu, Uluwatu, Indonesia
+
+5. Keep EXACTLY as-is — villa and property names (proper nouns):
+   Villa Sembilan, Villa Damai, Villa Kelapa, Villa Tirta, Villa Sereno, The Apurva Suite,
+   and any other "Villa …" or hotel/resort name
+
+6. Keep EXACTLY as-is — product brand names and medical device brands:
+   Restylane, Juvederm, Teosyal, Radiesse, Profhilo, Aptos, Saizen, Botox, BOTOX,
+   HydraFacial, RF Microneedling, Ultherapy, Thermage, BTL, HIFU, LIFU, PRP,
+   and any other product name that is a registered trademark or brand
+
+7. Keep EXACTLY as-is — medical credentials and post-nominals:
+   SpBP-RE, Sp.BP-RE(K), Sp.D.V.E, Fellow ISAPS, MBBS, MD, Magister, Diploma
+
+8. Keep EXACTLY as-is — all currency symbols, amounts, and codes:
+   IDR, AUD, Rp, and any number preceded by "Rp" or followed by "IDR" or "AUD"
+
+9. Keep EXACTLY as-is — any text that is already in Bahasa Indonesia
+
+10. Procedure names: use the standard Bahasa Indonesia medical term when one is widely accepted
+    (e.g. Rhinoplasty → Rinoplasti, Liposuction → Liposuksi); otherwise keep the English term.
+
+11. Return ONLY the translated text — no explanations, no quotation marks, no preamble`
 
 export async function callVertex(text: string): Promise<string> {
   const projectId = process.env.GCP_PROJECT_ID?.trim()
@@ -80,7 +109,7 @@ function setPath(obj: Record<string, unknown>, path: string, val: unknown): void
 
 // ─── Translate a Lexical richText JSON tree ──────────────────────────────────
 
-async function translateRichText(node: unknown): Promise<unknown> {
+export async function translateRichText(node: unknown): Promise<unknown> {
   if (!node || typeof node !== 'object') return node
   const n = node as Record<string, unknown>
   // Text leaf
