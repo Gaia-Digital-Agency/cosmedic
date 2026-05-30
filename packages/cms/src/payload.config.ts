@@ -231,6 +231,7 @@ export default buildConfig({
     TreatmentsIndexSection,   // Index
     TreatmentsStats,          // Stats
     DisciplineDetailTemplate,    // Discipline Template
+    PricingCatalogueView,        // Catalogue View
     SubCategoryDetailTemplate,   // Sub-Category Template
 
     // ── c. Doctors ────────────────────────────────────────────────
@@ -258,11 +259,10 @@ export default buildConfig({
     PricingHero,               // Hero
     PricingOverview,           // Overview
     PricingFootnote,           // Footnote
-    PricingInsurance,          // Insurance
-    PricingPayment,            // Payment
+    PricingInsurance,          // Insurance & Payment
+    PricingPayment,            // Payment (hidden — merged into Insurance)
     ConsultationPolicy,        // Consultation
     PricingDisciplineListView, // Discipline List View
-    PricingCatalogueView,      // Catalogue View
 
     // ── f. Journey ────────────────────────────────────────────────
     // Collections (JourneySteps / RecoveryStays) always first.
