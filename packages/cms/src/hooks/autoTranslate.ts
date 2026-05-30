@@ -33,7 +33,7 @@ STRICT rules — never break these:
 6. Procedure names: use standard Bahasa Indonesia medical term if one exists; otherwise keep English
 7. Return ONLY the translated text — no explanations, no quotation marks, no preamble`
 
-async function callVertex(text: string): Promise<string> {
+export async function callVertex(text: string): Promise<string> {
   const projectId = process.env.GCP_PROJECT_ID?.trim()
   const location = process.env.GCP_VERTEX_LOCATION?.trim() || 'asia-southeast1'
   const model = process.env.GCP_VERTEX_MODEL?.trim() || 'gemini-2.5-flash'

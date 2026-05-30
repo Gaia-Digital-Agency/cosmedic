@@ -128,11 +128,16 @@ async function main() {
       try {
         const translated = await translateDoc(doc as Record<string, unknown>, null, specs, noop)
         if (Object.keys(translated).length > 0) {
+          // Strip `id` from array items to avoid PK conflict when Payload INSERTs
+          // locale-specific rows into array tables that share a global `id` column.
+          const sanitised = JSON.parse(JSON.stringify(translated), (k, v) =>
+            k === 'id' && typeof v === 'string' && v.length > 20 ? undefined : v,
+          )
           await payload.update({
             collection: slug as any,
             id,
             locale: 'id' as any,
-            data: translated as any,
+            data: sanitised as any,
           })
           console.log(`  ✓ ${label}`)
           totalTranslated++
@@ -166,7 +171,10 @@ async function main() {
     try {
       const translated = await translateDoc(enDoc as Record<string, unknown>, null, specs, noop)
       if (Object.keys(translated).length > 0) {
-        await payload.updateGlobal({ slug: gslug as any, locale: 'id' as any, data: translated as any })
+        const sanitised = JSON.parse(JSON.stringify(translated), (k, v) =>
+        k === 'id' && typeof v === 'string' && v.length > 20 ? undefined : v,
+      )
+      await payload.updateGlobal({ slug: gslug as any, locale: 'id' as any, data: sanitised as any })
         console.log(`  ✓ ${gslug}`)
         totalTranslated++
       } else {
