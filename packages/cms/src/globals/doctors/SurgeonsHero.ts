@@ -16,7 +16,7 @@ export const SurgeonsHero: GlobalConfig = {
     { name: 'breadcrumbLabel', type: 'text', defaultValue: 'Surgeons',
       admin: { description: 'Last segment in the breadcrumb trail. e.g. "Surgeons".', hidden: true } },
     {
-      name: 'title', type: 'group',
+      name: 'title', label: 'Title', type: 'group',
       admin: { description: 'Two-line headline. Line A renders roman; line B renders italic.' },
       fields: [
         { name: 'a', type: 'text', required: true, localized: true,
@@ -30,7 +30,7 @@ export const SurgeonsHero: GlobalConfig = {
     { name: 'heroImage', type: 'upload', relationTo: 'media',
       admin: { description: 'Right-side image in the ChapterOpener. ~1200×1500 portrait crop preferred.' } },
     { name: 'imageHue', type: 'number', min: 0, max: 5, defaultValue: 2,
-      admin: { description: 'Brand-palette colour token (0–5) used as the placeholder gradient when the image fails to load.' } },
+      admin: { description: 'Brand-palette colour token.', hidden: true } },
     { name: 'imageLabel', type: 'text', localized: true,
       admin: { description: 'Caption shown on the image card (uppercase mono), e.g. "THE PRACTITIONERS".' } },
     { name: 'chapter', type: 'text', required: true, localized: true,

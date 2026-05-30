@@ -28,6 +28,7 @@ export const PricingCatalogueView: GlobalConfig = {
       } },
     {
       name: 'sheetLabels',
+      label: 'Sheet Titles',
       type: 'group',
       admin: { description: 'Titles + subtitles for each of the 4 sheet sections.' },
       fields: [
@@ -43,6 +44,7 @@ export const PricingCatalogueView: GlobalConfig = {
     },
     {
       name: 'hairZoneLabels',
+      label: 'Hair Zone Labels',
       type: 'group',
       admin: { description: 'Section headings under the BTL sheet (one per bodyZone value on a Procedure).' },
       fields: [
@@ -55,6 +57,7 @@ export const PricingCatalogueView: GlobalConfig = {
     },
     {
       name: 'injectableCategoryLabels',
+      label: 'Injectable Category Labels',
       type: 'group',
       admin: { description: 'Section headings under the Injectable sheet (one per mainCategory value on a Procedure).' },
       fields: [

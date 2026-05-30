@@ -30,7 +30,7 @@ export const ContactHero: GlobalConfig = {
     { name: 'heroImage', type: 'upload', relationTo: 'media',
       admin: { description: 'Hero image displayed on the right of the title block. Recommended ~1600×1200, JPEG/WebP.' } },
     { name: 'imageHue', type: 'number', defaultValue: 3,
-      admin: { description: 'Painted-SVG fallback hue when no image is uploaded (0–6, brand palette). 3 = deep accent.' } },
+      admin: { description: 'Painted-SVG fallback hue.', hidden: true } },
     { name: 'imageLabel', type: 'text', localized: true, defaultValue: 'PLAN YOUR JOURNEY',
       admin: { description: 'Caption label shown over the painted-SVG fallback if no hero image is uploaded.' } },
     { name: 'chapter', type: 'text', localized: true, defaultValue: 'Chapter VIII — Plan Your Journey',
