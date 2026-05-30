@@ -7,6 +7,7 @@ export const HomeTreatmentsView: GlobalConfig = {
   label: 'Sections',
   admin: {
     group: 'Homepage',
+    hidden: true,
     description:
       'Section headings and intro paragraphs for the four content sections on /: Treatments, Pricing, Gallery, and Stories.',
   },
