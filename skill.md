@@ -38,6 +38,12 @@ Open the web route component (e.g. `ContactPage.tsx`). Walk the render from top 
 - Whether any fallbacks are hardcoded strings (Rule 3 violation)
 - Whether any fields are NOT used at all (Rule 2 violation)
 
+**Also grep for every source global key across ALL web files** — a global consumed by the primary route may also feed secondary routes. Changing the source breaks them silently:
+```bash
+grep -rn "cms?\.libraryCta\|cms?\.shareCta" packages/web/src/ --include="*.tsx"
+```
+Every consumer must still receive the data after the merge.
+
 ### Step 2 — Read all current CMS globals for the bucket
 
 Read every global file in `packages/cms/src/globals/` for that bucket. Note which are visible (`hidden: true` absent) vs hidden. List all visible fields per global.
@@ -99,14 +105,20 @@ COMMIT;
 
 **c. Copy data from source globals**
 
-For localized fields:
+For localized fields (source in `_locales` table):
 ```sql
 UPDATE dest_locales d SET dest_field = s.source_field
 FROM source_locales s WHERE d._locale = s._locale;
 ```
-For non-localized:
+For non-localized fields (source in main table):
 ```sql
 UPDATE dest SET dest_field = (SELECT source_field FROM source LIMIT 1);
+```
+For non-localized source → localized destination (source was never i18n'd, destination should be):
+```sql
+-- Copy the single value into the 'en' locale row only
+UPDATE dest_locales SET dest_field = (SELECT source_field FROM source LIMIT 1)
+WHERE _locale = 'en';
 ```
 For arrays:
 ```sql
@@ -131,6 +143,15 @@ Rule: use `COALESCE` not plain assignment — never overwrite real editor data.
 - `cms.cache.ts`: replace source fetch with `Promise.resolve({})` + comment explaining the merge
 - `cms.types.ts`: extend destination type with new sub-group shape; use `depth=2` if global contains arrays
 - Fix any field path mismatches: e.g. web reads `hero.title?.a` but CMS has `titleA` → update web path
+
+**Multi-page globals — cache assembly pattern:**
+If the source global feeds multiple pages (e.g. `libraryCta` used on both /results and /gallery), don't change every consumer. Instead, re-assemble the old cache key from the new merged location:
+```ts
+// In cms.cache.ts return object:
+libraryCta: (resultsHero as any).libraryCta ?? {},
+shareCta:   (resultsHero as any).share ?? {},
+```
+Secondary pages (`GalleryPage`, `StoriesPage`) keep reading `cms?.libraryCta` unchanged. Only the primary route needs updating.
 
 **f. Hide source globals**
 ```ts
@@ -180,6 +201,9 @@ admin: {
 | Non-localized group field missing | `mapImageLabel`, `eyebrow` etc. without `localized:true` go in main table | Add `ALTER TABLE <dest> ADD COLUMN` for non-localized fields |
 | Transaction rollback on `CREATE TABLE` | Sequence referenced before creation | Create sequence first, then table, then `OWNED BY` |
 | Locales table `UNIQUE` conflict on copy | Source has multiple locale rows, dest only has 'en' | Use `WHERE _locale = 'en'` and add 'id' locale separately |
+| Secondary page breaks silently | Source global fed multiple pages — only primary route updated | Grep ALL web files for every source key; use cache assembly pattern for secondary consumers |
+| Ghost groups in source | Source global had a sub-group that was never read by web (e.g. LibraryCta.share) | Verify every group/field in source against web reads before planning; drop ghost groups |
+| Cache assembled from wrong source | Cache built `shareCta` from `libraryCta.share` (never the active source) | Always trace the cache return object, not just the fetch calls — verify which key the web actually reads |
 
 ---
 
@@ -206,3 +230,17 @@ ContactEnquirySection absorbed into ContactHero.enquiry (27 localized fields). C
 Key gap found: source globals were hidden and never explicitly saved — all locales tables had NULLs. After copying NULLs, seeded all 27+ fields with COALESCE defaults matching schema.
 
 **Result:** editors open one CONTACT card with all editable content in page order and real data visible.
+
+### Results (results-hero) — 5 globals → 1 card
+
+Web sections in order: Breadcrumb → Hero Image → Featured Cases → Library CTA → Stories → Share Story.
+
+ResultsFeaturedCasesView, ResultsStoriesView, LibraryCta, ShareCta absorbed into ResultsHero as sub-groups. All 4 source globals were already `hidden: true`. 19 new localized columns in results_hero_locales, 2 non-localized in results_hero. All source data was real (no NULL seeding needed).
+
+Key learnings:
+1. **Multi-page globals:** `libraryCta` was consumed by GalleryPage and `shareCta` by StoriesPage — not just ResultsPage. Grepping all web files caught this before it broke.
+2. **Cache assembly pattern used:** `libraryCta: (resultsHero as any).libraryCta ?? {}` and `shareCta: (resultsHero as any).share ?? {}` preserved secondary page reads without changing GalleryPage/StoriesPage.
+3. **Ghost group dropped:** LibraryCta had a `share` sub-group with duplicate share CTA data. The web never read from `libraryCta.share` — it always read from the separate `shareCta` global. Traced via cache return object, not just fetch calls.
+4. **Non-localized source → localized destination:** ShareCta had no `localized: true` fields (data in main table). When merged into ResultsHero as localized fields, copy used `WHERE _locale = 'en'` to insert into locales table.
+
+**Result:** editors open one RESULTS card. GalleryPage and StoriesPage continue to work unchanged via cache assembly.
