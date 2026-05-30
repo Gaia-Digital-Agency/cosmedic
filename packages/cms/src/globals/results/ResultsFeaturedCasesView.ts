@@ -4,9 +4,10 @@ import { revalidateGlobalAfterChange } from '../../lib/revalidate'
 
 export const ResultsFeaturedCasesView: GlobalConfig = {
   slug: 'results-featured-cases-view',
-  label: 'Featured Cases View',
+  label: 'Featured Cases',
   admin: {
     group: 'Results',
+    hidden: true,
     description:
       'Section chrome for the "Four signature cases" view on /results. The before/after cards are NOT edited here — source: **g. Before-After-Cases** (same Bucket). This item controls only the eyebrow, heading, lede, filter-bar label, and count format.',
   },

@@ -7,6 +7,7 @@ export const EmailTemplates: GlobalConfig = {
   label: 'Email',
   admin: {
     group: 'Contact',
+    hidden: true,
     description: 'Outgoing email templates: the clinic-notify email sent to staff when a lead comes in, the auto-responder sent back to the enquirer, and any future transactional emails.',
   },
   access: { read: readPublic, update: isAuthenticated },

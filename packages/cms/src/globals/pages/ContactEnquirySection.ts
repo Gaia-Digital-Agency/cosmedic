@@ -4,8 +4,9 @@ import { revalidateGlobalAfterChange } from '../../lib/revalidate'
 
 export const ContactEnquirySection: GlobalConfig = {
   slug: 'contact-enquiry-section',
-  label: 'Enquiry Section',
+  label: 'Enquiry',
   admin: {
+    hidden: true,
     group: 'Contact',
     description: 'Left column of the /contact "Enquiry" section: section eyebrow, two-line heading, intro paragraph, Direct-Lines block labels, and trust line. The phone / WhatsApp / email / press values rendered under "Direct lines" are NOT edited here — source: Homepage → Settings → contactPhone, whatsappNumber, contactEmail, pressEmail. Edit them once in Settings and they update on /contact, in the footer, and on the floating WhatsApp button.',
   },

@@ -7,6 +7,7 @@ export const LibraryCta: GlobalConfig = {
   label: 'CTAs',
   admin: {
     group: 'Results',
+    hidden: true,
     description:
       'Both result-page CTAs in one place. "Library CTA" appears on /results + /gallery. "Share CTA" appears on /results + /stories.',
   },

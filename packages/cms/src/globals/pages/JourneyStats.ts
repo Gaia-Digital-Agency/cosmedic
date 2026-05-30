@@ -7,6 +7,7 @@ export const JourneyStats: GlobalConfig = {
   label: 'Stats',
   admin: {
     group: 'Journey',
+    hidden: true,
     description:
       'The 3-tile stats row at the bottom of /journey (e.g. "24h Reply to first enquiry · 45min Initial consultation · 12mo Follow-up programme"). Edit rows here; order = display order.',
   },

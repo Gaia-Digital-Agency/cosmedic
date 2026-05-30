@@ -63,7 +63,7 @@ export const RecoveryStaysPage: GlobalConfig = {
     {
       name: 'inclusionsSection',
       type: 'group',
-      admin: { description: '"What\'s included" section. Edit heading + intro paragraph here; edit each inclusion in the Villas list below.' },
+      admin: { hidden: true, description: '"What\'s included" section. Edit heading + intro paragraph here; edit each inclusion in the Villas list below.' },
       fields: [
         { name: 'eyebrow', label: 'Label above heading', type: 'text', localized: true, defaultValue: "What's included" },
         { name: 'headingPre', type: 'text', localized: true, defaultValue: 'Every stay, ' },
@@ -75,7 +75,7 @@ export const RecoveryStaysPage: GlobalConfig = {
     {
       name: 'inclusions',
       type: 'array',
-      admin: { description: 'Each row renders as one inclusion card (letter, title, body). Order here = display order.' },
+      admin: { hidden: true, description: 'Each row renders as one inclusion card (letter, title, body). Order here = display order.' },
       fields: [
         { name: 'letter', type: 'text', required: true, admin: { description: 'Single uppercase letter shown above the title, e.g. "A".' } },
         { name: 'title', type: 'text', required: true, localized: true, admin: { description: 'e.g. "Welcome provisioning".' } },

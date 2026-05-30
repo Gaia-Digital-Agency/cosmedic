@@ -8,6 +8,7 @@ export const StoriesPage: GlobalConfig = {
   label: 'Stories',
   admin: {
     group: 'Results',
+    hidden: true,
     description:
       'Chrome fields for /stories: hero image labels + the shared Share-Cta block at the bottom (edited in d. Share-Cta). Patient-quote rows come from **h. Patient-Stories**. Hero title is hardcoded; edit imageHue / imageLabel / breadcrumbLabel here.',
   },

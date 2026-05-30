@@ -9,6 +9,7 @@ export const VideoConsultPage: GlobalConfig = {
   label: 'Video Consult',
   admin: {
     group: 'Contact',
+    hidden: true,
     description: 'Editorial content for /video-consult: hero + body. Pre-travel encrypted video consultation landing page.',
   },
   access: { read: publishedOrAuthed, update: isAuthenticated },
