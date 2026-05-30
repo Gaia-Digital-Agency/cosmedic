@@ -8,6 +8,7 @@ export const TreatmentsPage: GlobalConfig = {
   label: 'Main',
   admin: {
     group: 'Procedures',
+    hidden: true,
     description:
       'Page meta + SEO + CmsExtraBlocks slot for /treatments. The editorial hero / stats / index chrome lives in the dedicated b. Hero, c. Index, and d. Stats globals; discipline cards render from e. Disciplines.',
   },

@@ -7,6 +7,7 @@ export const TreatmentsStats: GlobalConfig = {
   label: 'Stats',
   admin: {
     group: 'Procedures',
+    hidden: true,
     description:
       'StatsRow at the bottom of /treatments — 4 numbered tiles (number + label). Single source of truth for the /treatments stats strip.',
   },
