@@ -7,6 +7,7 @@ export const Header: GlobalConfig = {
   label: 'Header',
   admin: {
     group: 'Homepage',
+    hidden: true,
     description: 'Top navigation bar on every page: logo, primary nav items (Treatments, Doctors, Results, Pricing, Your Journey, Contact), mega-menu columns, EN|ID switcher.',
   },
   access: { read: readPublic, update: isAuthenticated },
