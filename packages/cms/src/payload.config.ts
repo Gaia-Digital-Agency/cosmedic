@@ -209,6 +209,7 @@ export default buildConfig({
     HomeHero,           // Hero
     Header,             // Header
     Footer,             // Footer
+    HomeSurgeonsView,   // Surgeons View
     HomeIntro,          // Intro
     BrandStats,         // Trust Strip
     HomeLeadMagnet,     // Lead Magnet
@@ -219,7 +220,6 @@ export default buildConfig({
     Settings,           // Settings
     HomeTreatmentsView, // Treatments View
     HomePricingView,    // Pricing View
-    HomeSurgeonsView,   // Surgeons View
     HomeGalleryView,    // Gallery View
     HomeJourneyView,    // Journey View
     HomeStoriesView,    // Stories View

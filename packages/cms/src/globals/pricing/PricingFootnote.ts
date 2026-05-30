@@ -7,7 +7,7 @@ export const PricingFootnote: GlobalConfig = {
   label: 'Footnote',
   admin: {
     hidden: true,
-    group: 'Treatments',
+    group: 'Procedures',
     description:
       'Centred italic footnote rendered between the discipline price list and the full clinic catalogue table.',
   },

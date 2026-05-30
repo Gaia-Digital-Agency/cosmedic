@@ -6,7 +6,7 @@ export const PricingDisciplineListView: GlobalConfig = {
   slug: 'pricing-discipline-list-view',
   label: 'Discipline List View',
   admin: {
-    group: 'Treatments',
+    group: 'Procedures',
     hidden: true,
     description:
       'Chrome for the discipline-grouped price list on /pricing. The rows themselves are NOT edited here — they are sourced from b. Treatments → e. Disciplines + f. Sub-Categories + g. Procedures. This item controls only the "On request" / "Included" / arrow labels.',

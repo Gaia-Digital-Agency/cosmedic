@@ -7,7 +7,7 @@ export const PricingInsurance: GlobalConfig = {
   label: 'Insurance',
   admin: {
     hidden: true,
-    group: 'Treatments',
+    group: 'Procedures',
     description:
       'Left column of the two-column section at the bottom of /pricing — insurance copy.',
   },

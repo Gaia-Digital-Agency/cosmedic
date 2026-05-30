@@ -6,7 +6,7 @@ export const ConsultationPolicy: GlobalConfig = {
   slug: 'consultation-policy',
   label: 'Consultation',
   admin: {
-    group: 'Treatments',
+    group: 'Procedures',
     hidden: true,
     description: 'Consultation fee + waiver callout displayed at the bottom of /pricing (and selectable for /contact + procedure-detail pages). Sourced from pricelist.xlsx "Further Info" sheet.',
   },

@@ -6,7 +6,7 @@ export const TreatmentsHero: GlobalConfig = {
   slug: 'treatments-hero',
   label: 'Hero',
   admin: {
-    group: 'Treatments',
+    group: 'Procedures',
     description:
       'ChapterOpener at the top of /treatments — chapter eyebrow, two-line title, lede, hero image, image hue, image label, breadcrumb label. Single source of truth for the /treatments index hero.',
   },

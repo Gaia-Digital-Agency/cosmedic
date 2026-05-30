@@ -6,11 +6,11 @@ import { makeCollectionTranslateHook, T, R, A, SEO_SPECS } from '../hooks/autoTr
 
 export const Procedures: CollectionConfig = {
   slug: 'procedures',
-  labels: { singular: 'Procedure', plural: 'Procedures' },
+  labels: { singular: '(MIB) Machine · Injectable · BTL', plural: '(MIB) Machine · Injectable · BTL' },
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'catalogueGroup', 'mainCategory', 'parentSubCategory', 'featuredRank', 'sortOrder'],
-    group: 'Treatments',
+    group: 'Procedures',
     description:
       'Single source of truth for ALL pricing (Phase C9). Holds the 41 editorial surgical procedures AND the 101 catalogue line items absorbed from MachineTreatments / InjectableProducts / HairRemovalAreas. Catalogue fields (catalogueGroup, mainCategory, subCategory, brand, productLine, manufacturer, fdaApproved, bodyZone, audienceTier, unit) drive grouping in the /pricing tables; editorial fields (description, sections, faqs, surgeonsCredentialed, etc.) only need to be populated on the editorial procedures. PRICING bucket points back to this collection — pricing edits land here.',
   },

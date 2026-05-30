@@ -6,11 +6,11 @@ import { makeCollectionTranslateHook, T, R, A, SEO_SPECS } from '../hooks/autoTr
 
 export const Disciplines: CollectionConfig = {
   slug: 'disciplines',
-  labels: { singular: 'Category', plural: 'Categories' },
+  labels: { singular: 'Sub Treatment', plural: 'Sub Treatments' },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'sortOrder'],
-    group: 'Treatments',
+    group: 'Procedures',
     description: 'The 6 top-level treatment disciplines (Surgical / Reconstructive / Non-surgical / Hair / Dental / Concierge). Each renders at /treatments/{slug} AND drives the top level of the Treatments mega-menu, the homepage Treatments grid, and the /treatments index cards.',
   },
   access: {
