@@ -22,10 +22,10 @@ export const Awards: CollectionConfig = {
   fields: [
     { name: 'slug', type: 'text', required: true, unique: true, index: true,
       admin: { hidden: true } },
-    { name: 'name', type: 'text', required: true },
+    { name: 'name', type: 'text', required: true, localized: true },
     { name: 'year', type: 'number' },
-    { name: 'issuer', type: 'text' },
-    { name: 'summary', type: 'textarea' },
+    { name: 'issuer', type: 'text', localized: true },
+    { name: 'summary', type: 'textarea', localized: true },
     sortOrderField,
     { name: 'logo', type: 'upload', relationTo: 'media',
       admin: { description: 'Award badge or accreditation logo shown in the awards strip on /press (e.g. ACHSI seal, ISAPS badge). PNG with transparent background preferred.' } },

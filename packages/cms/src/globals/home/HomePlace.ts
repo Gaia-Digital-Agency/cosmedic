@@ -13,19 +13,19 @@ export const HomePlace: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Recovery in Bali',
+    { name: 'eyebrow', label: 'Label above heading', type: 'text', localized: true, defaultValue: 'Recovery in Bali',
       admin: { description: 'Section eyebrow.', hidden: true } },
     {
       name: 'heading', type: 'group',
       admin: { description: 'Two-part heading. Part A renders roman; part B renders italic.' },
       fields: [
-        { name: 'a', type: 'text', defaultValue: 'Recover',
+        { name: 'a', type: 'text', localized: true, defaultValue: 'Recover',
           admin: { description: 'Roman part. e.g. "Recover".' } },
-        { name: 'b', type: 'text', defaultValue: 'in paradise.',
+        { name: 'b', type: 'text', localized: true, defaultValue: 'in paradise.',
           admin: { description: 'Italic accent. e.g. "in paradise.".' } },
       ],
     },
-    { name: 'body', type: 'textarea',
+    { name: 'body', type: 'textarea', localized: true,
       defaultValue:
         'Nusa Dua sits on the southernmost reach of Bali — quiet beaches, soft afternoons, and the kind of warm, careful hospitality that has made the island synonymous with rest. We work with a small portfolio of villas and resorts, hand-selected for privacy and post-operative comfort.',
       admin: { description: 'Body paragraph beneath the heading.' } },
@@ -36,11 +36,11 @@ export const HomePlace: GlobalConfig = {
       fields: [
         { name: 'letter', type: 'text', required: true,
           admin: { description: 'Mono letter (e.g. "A.").' } },
-        { name: 'text', type: 'text', required: true,
+        { name: 'text', type: 'text', required: true, localized: true,
           admin: { description: 'Descriptor text.' } },
       ],
     },
-    { name: 'ctaLabel', type: 'text', defaultValue: 'View recovery stays',
+    { name: 'ctaLabel', type: 'text', localized: true, defaultValue: 'View recovery stays',
       admin: { description: 'Bottom CTA label.' } },
     { name: 'ctaHref', type: 'text', defaultValue: '/recovery-stays',
       admin: { description: 'Where the bottom CTA links.', hidden: true } },

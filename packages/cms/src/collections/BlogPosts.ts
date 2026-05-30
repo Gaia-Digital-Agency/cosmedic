@@ -22,10 +22,10 @@ export const BlogPosts: CollectionConfig = {
   fields: [
     { name: 'slug', type: 'text', required: true, unique: true, index: true,
       admin: { hidden: true } },
-    { name: 'title', type: 'text', required: true },
-    { name: 'lede', label: 'Intro paragraph', type: 'textarea',
+    { name: 'title', type: 'text', required: true, localized: true },
+    { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true,
       admin: { hidden: true } },
-    { name: 'body', type: 'richText' },
+    { name: 'body', type: 'richText', localized: true },
     { name: 'author', type: 'relationship', relationTo: 'authors' },
     { name: 'publishedAt', type: 'date' },
     { name: 'tags', type: 'relationship', relationTo: 'blog-tags', hasMany: true },

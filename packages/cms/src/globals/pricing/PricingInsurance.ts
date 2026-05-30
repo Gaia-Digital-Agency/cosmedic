@@ -14,13 +14,13 @@ export const PricingInsurance: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Insurance',
+    { name: 'eyebrow', label: 'Label above heading', type: 'text', localized: true, defaultValue: 'Insurance',
       admin: { description: 'Small-caps eyebrow above the H2.' } },
-    { name: 'headingRoman', type: 'text', defaultValue: 'Working',
+    { name: 'headingRoman', type: 'text', localized: true, defaultValue: 'Working',
       admin: { description: 'Roman text part of the H2.' } },
-    { name: 'headingItalic', type: 'text', defaultValue: 'with insurers.',
+    { name: 'headingItalic', type: 'text', localized: true, defaultValue: 'with insurers.',
       admin: { description: 'Italic accent text part of the H2.' } },
-    { name: 'body', type: 'textarea',
+    { name: 'body', type: 'textarea', localized: true,
       defaultValue:
         "Cosmetic surgery is rarely covered by health insurance. Reconstructive procedures may be — and where they are, we are happy to support your claim with full documentation, surgeon's reports, and itemised invoicing.\n\nTravel insurance is recommended for every patient, and we work with two specialist medical-travel insurers — details supplied during consultation.",
       admin: { description: 'Body copy. Separate paragraphs with a blank line.' } },

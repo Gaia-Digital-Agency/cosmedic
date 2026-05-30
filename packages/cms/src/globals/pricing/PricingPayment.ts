@@ -14,13 +14,13 @@ export const PricingPayment: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Payment',
+    { name: 'eyebrow', label: 'Label above heading', type: 'text', localized: true, defaultValue: 'Payment',
       admin: { description: 'Small-caps eyebrow above the H2.' } },
-    { name: 'headingRoman', type: 'text', defaultValue: 'Quiet,',
+    { name: 'headingRoman', type: 'text', localized: true, defaultValue: 'Quiet,',
       admin: { description: 'Roman text part of the H2.' } },
-    { name: 'headingItalic', type: 'text', defaultValue: 'considered terms.',
+    { name: 'headingItalic', type: 'text', localized: true, defaultValue: 'considered terms.',
       admin: { description: 'Italic accent text part of the H2.' } },
-    { name: 'termsText', type: 'textarea',
+    { name: 'termsText', type: 'textarea', localized: true,
       defaultValue:
         'Deposit | 20% on confirmation\nBalance | On admission, by transfer\nCurrencies | IDR, AUD, USD, EUR\nCards | Accepted, 1.8% surcharge\nRefunds | Full, until 14 days before\nFinance | Available via partner lender',
       admin: {

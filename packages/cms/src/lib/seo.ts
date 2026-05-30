@@ -8,9 +8,9 @@ export const seoGroup: Field = {
     hidden: true,
   },
   fields: [
-    { name: 'title', type: 'text',
+    { name: 'title', type: 'text', localized: true,
       admin: { description: '<title> tag for this page only. Overrides the global title pattern when set.' } },
-    { name: 'description', type: 'textarea',
+    { name: 'description', type: 'textarea', localized: true,
       admin: { description: '<meta name="description"> for this page only. Used in search-engine snippets and OG/Twitter share previews when set.' } },
     { name: 'ogImage', type: 'upload', relationTo: 'media',
       admin: { description: 'Image used in social-share previews (Facebook, Twitter, LinkedIn, WhatsApp link preview) for this page only.' } },

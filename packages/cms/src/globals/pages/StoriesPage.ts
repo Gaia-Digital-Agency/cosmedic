@@ -18,9 +18,9 @@ export const StoriesPage: GlobalConfig = {
     ...pageFields({ hideHero: true }),
     { name: 'imageHue', type: 'number', min: 0, max: 6, defaultValue: 5,
       admin: { description: 'Painted-SVG fallback hue when no hero image is uploaded (0–6).' } },
-    { name: 'imageLabel', type: 'text', defaultValue: 'STORIES',
+    { name: 'imageLabel', type: 'text', localized: true, defaultValue: 'STORIES',
       admin: { description: 'Caption shown over the painted-SVG fallback / image card.' } },
-    { name: 'breadcrumbLabel', type: 'text', defaultValue: 'Stories',
+    { name: 'breadcrumbLabel', type: 'text', localized: true, defaultValue: 'Stories',
       admin: { description: 'Last segment in the breadcrumb trail.' } },
   ],
 }

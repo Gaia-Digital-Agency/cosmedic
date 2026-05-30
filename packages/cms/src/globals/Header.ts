@@ -17,7 +17,7 @@ export const Header: GlobalConfig = {
       type: 'array',
       admin: { description: 'Top-level primary nav items rendered left-to-right after the logo. Each item can have an optional mega-menu dropdown.', hidden: true },
       fields: [
-        { name: 'label', type: 'text', required: true,
+        { name: 'label', type: 'text', required: true, localized: true,
           admin: { description: 'Display text shown in the nav bar.' } },
         { name: 'href', type: 'text', required: true,
           admin: { description: 'Where the nav item links to, e.g. "/treatments".' } },
@@ -28,12 +28,12 @@ export const Header: GlobalConfig = {
           type: 'array',
           admin: { description: 'Columns shown in the mega-menu dropdown on hover. Each column = one heading + a list of sub-links.' },
           fields: [
-            { name: 'heading', type: 'text', required: true,
+            { name: 'heading', type: 'text', required: true, localized: true,
               admin: { description: 'Column heading shown at the top of the mega-menu column.' } },
             { name: 'items', type: 'array', required: true,
               admin: { description: 'Sub-links listed under the column heading.' },
               fields: [
-                { name: 'label', type: 'text', required: true },
+                { name: 'label', type: 'text', required: true, localized: true },
                 { name: 'href', type: 'text', required: true },
               ] },
           ],

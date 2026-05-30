@@ -29,7 +29,7 @@ export const TreatmentsStats: GlobalConfig = {
       fields: [
         { name: 'number', type: 'text', required: true,
           admin: { description: 'Display number, e.g. "28", "2,400+", "96%".' } },
-        { name: 'label', type: 'text', required: true,
+        { name: 'label', type: 'text', required: true, localized: true,
           admin: { description: 'Caption beneath the number, e.g. "Years in Bali".' } },
       ],
     },

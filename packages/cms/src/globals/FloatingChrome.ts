@@ -18,7 +18,7 @@ export const FloatingChrome: GlobalConfig = {
       type: 'group',
       admin: { description: 'The brown CTA pill rendered bottom-right of every page. Mirrors the "Plan Your Treatment" button in the header.' },
       fields: [
-        { name: 'label', type: 'text', defaultValue: 'Plan your treatment',
+        { name: 'label', type: 'text', localized: true, defaultValue: 'Plan your treatment',
           admin: { description: 'Text shown on the pill button.' } },
         { name: 'href', type: 'text', defaultValue: '/contact',
           admin: { description: 'Where the pill button links to when clicked.' } },

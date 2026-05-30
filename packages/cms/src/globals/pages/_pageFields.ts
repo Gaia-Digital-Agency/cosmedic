@@ -230,12 +230,12 @@ export function pageFields(options: PageFieldsOptions = {}): Field[] {
           name: 'chapterTitle',
           type: 'group',
           fields: [
-            { name: 'a', type: 'text' },
-            { name: 'b', type: 'text' },
+            { name: 'a', type: 'text', localized: true },
+            { name: 'b', type: 'text', localized: true },
           ],
         },
-        { name: 'tagline', type: 'text' },
-        { name: 'lede', label: 'Intro paragraph', type: 'textarea' },
+        { name: 'tagline', type: 'text', localized: true },
+        { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true },
         { name: 'heroImage', type: 'upload', relationTo: 'media',
           admin: { description: 'Hero image for this page. Displayed in the ChapterOpener banner at the top of the page. Recommended 1600×1200px, JPG or WebP.' } },
       ]

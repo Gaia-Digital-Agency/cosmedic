@@ -12,10 +12,10 @@ export const Footer: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    { name: 'brandTagline', type: 'text',
+    { name: 'brandTagline', type: 'text', localized: true,
       defaultValue: 'Managed by BIMC Hospital',
       admin: { description: 'Mono-small-caps line under the footer logo. Editorial reinforcement of the "Managed by BIMC Hospital" endorsement; matches the header logo alt text.' } },
-    { name: 'treatmentsHeading', type: 'text',
+    { name: 'treatmentsHeading', type: 'text', localized: true,
       defaultValue: 'Treatments',
       admin: { description: 'Heading above the auto-derived Treatments column (the list itself comes from Disciplines collection — q8). Editable here if the clinic wants a different label.', hidden: true } },
     {
@@ -23,12 +23,12 @@ export const Footer: GlobalConfig = {
       type: 'array',
       admin: { description: 'The two columns to the right of Treatments (default: About / Connect). Each column = one heading + a list of links. The Treatments column is always rendered separately from Disciplines and is excluded from this array.', hidden: true },
       fields: [
-        { name: 'heading', type: 'text', required: true,
+        { name: 'heading', type: 'text', required: true, localized: true,
           admin: { description: 'Column heading shown above the links.' } },
         { name: 'items', type: 'array', required: true,
           admin: { description: 'Links listed under the column heading.' },
           fields: [
-            { name: 'label', type: 'text', required: true },
+            { name: 'label', type: 'text', required: true, localized: true },
             { name: 'href', type: 'text', required: true },
             { name: 'social', type: 'select',
               admin: { description: 'Optional. If set, the href is auto-derived from Settings.socialLinks[platform=...] at render time, overriding the manual href above. Use for Instagram / Facebook / etc. so the URL stays in one place (Settings).' },
@@ -50,9 +50,9 @@ export const Footer: GlobalConfig = {
       type: 'group',
       admin: { description: 'Newsletter signup widget in the footer brand column.' },
       fields: [
-        { name: 'label', type: 'text', defaultValue: 'Receive our quarterly journal',
+        { name: 'label', type: 'text', localized: true, defaultValue: 'Receive our quarterly journal',
           admin: { description: 'Line above the input field. Mono-small caps style.' } },
-        { name: 'placeholder', type: 'text', defaultValue: 'Your email address',
+        { name: 'placeholder', type: 'text', localized: true, defaultValue: 'Your email address',
           admin: { description: 'Input placeholder text.' } },
         { name: 'buttonLabel', type: 'text', defaultValue: '→',
           admin: { description: 'Submit button label. Single arrow character by default.' } },

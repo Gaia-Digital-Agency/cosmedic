@@ -14,23 +14,23 @@ export const HomeStoriesView: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    { name: 'lede', label: 'Intro paragraph', type: 'textarea',
+    { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true,
       defaultValue:
         'Verified reviews from international patients. Video testimonials and Google reviews on our full stories page.',
       admin: { description: 'Intro paragraph (D8 — lede before eyebrow for section views).' } },
-    { name: 'eyebrow', label: 'Label above heading', type: 'text', defaultValue: 'Verified Patient Stories',
+    { name: 'eyebrow', label: 'Label above heading', type: 'text', localized: true, defaultValue: 'Verified Patient Stories',
       admin: { description: 'Section eyebrow.' } },
     {
       name: 'heading', type: 'group',
       admin: { description: 'Two-part heading. Part A = first word (italic); part B = remainder (roman).' },
       fields: [
-        { name: 'a', type: 'text', defaultValue: 'Stories,',
+        { name: 'a', type: 'text', localized: true, defaultValue: 'Stories,',
           admin: { description: 'First word of the heading (italic). e.g. "Stories,".' } },
-        { name: 'b', type: 'text', defaultValue: 'not slogans.',
+        { name: 'b', type: 'text', localized: true, defaultValue: 'not slogans.',
           admin: { description: 'Remainder of the heading (roman). e.g. "not slogans.".' } },
       ],
     },
-    { name: 'ctaLabel', type: 'text', defaultValue: 'Read more stories',
+    { name: 'ctaLabel', type: 'text', localized: true, defaultValue: 'Read more stories',
       admin: { description: 'Bottom CTA label.' } },
     { name: 'ctaHref', type: 'text', defaultValue: '/results#stories',
       admin: { description: 'Where the bottom CTA links.' } },

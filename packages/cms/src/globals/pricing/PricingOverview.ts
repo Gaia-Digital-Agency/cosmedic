@@ -14,17 +14,17 @@ export const PricingOverview: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    { name: 'eyebrow', label: 'Label above heading', type: 'text',
+    { name: 'eyebrow', label: 'Label above heading', type: 'text', localized: true,
       admin: { description: 'Small-caps eyebrow above the H2.' } },
     {
       name: 'heading', type: 'group',
       admin: { description: 'Two-part H2. Part A renders roman; part B renders italic. D1 merge from headingPart1 + headingPart2.' },
       fields: [
-        { name: 'a', type: 'text', admin: { description: 'Roman part of the H2.' } },
-        { name: 'b', type: 'text', admin: { description: 'Italic accent part of the H2.' } },
+        { name: 'a', type: 'text', localized: true, admin: { description: 'Roman part of the H2.' } },
+        { name: 'b', type: 'text', localized: true, admin: { description: 'Italic accent part of the H2.' } },
       ],
     },
-    { name: 'body', type: 'textarea',
+    { name: 'body', type: 'textarea', localized: true,
       admin: { description: 'Single paragraph body.' } },
   ],
 }

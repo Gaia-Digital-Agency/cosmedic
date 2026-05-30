@@ -20,7 +20,7 @@ export const BrandStats: GlobalConfig = {
       fields: [
         { name: 'number', type: 'text', required: true,
           admin: { description: 'Big serif number/marker shown above the label. e.g. "28", "8", "3,400+", "#1".' } },
-        { name: 'label', type: 'text', required: true,
+        { name: 'label', type: 'text', required: true, localized: true,
           admin: { description: 'Caption under the number (e.g. "years in practice").' } },
         { name: 'sourceNote', type: 'text',
           admin: { description: 'Provenance / source note for editor reference, e.g. "Per brand.pdf §IV". Not rendered on the site.' } },

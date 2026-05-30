@@ -13,7 +13,7 @@ export const EndorsementMark: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    { name: 'endorsementLine', type: 'text', defaultValue: 'Managed by BIMC Hospital · Nusa Dua · Bali',
+    { name: 'endorsementLine', type: 'text', localized: true, defaultValue: 'Managed by BIMC Hospital · Nusa Dua · Bali',
       admin: { description: 'Tiny mono-font caption next to the logo on every page (both header and footer). Falls back to this text when no image lockup is uploaded.' } },
     { name: 'clearspaceUnit', type: 'text', defaultValue: '1X (height of medical cross)',
       admin: { description: 'Brand-guideline clearspace rule (documentation only — not rendered).' } },

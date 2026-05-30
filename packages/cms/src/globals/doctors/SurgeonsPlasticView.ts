@@ -14,21 +14,21 @@ export const SurgeonsPlasticView: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    { name: 'lede', label: 'Intro paragraph', type: 'textarea', required: true,
+    { name: 'lede', label: 'Intro paragraph', type: 'textarea', required: true, localized: true,
       admin: { description: 'Section intro paragraph (D8 — lede before eyebrow).' } },
-    { name: 'eyebrow', label: 'Label above heading', type: 'text', required: true,
+    { name: 'eyebrow', label: 'Label above heading', type: 'text', required: true, localized: true,
       admin: { description: 'Section eyebrow, e.g. "Plastic Surgery".' } },
     {
       name: 'heading', type: 'group',
       admin: { description: 'Roman portion of the section heading (the non-italic parts combined). headingA + headingB merged into one field per D1.' },
       fields: [
-        { name: 'a', type: 'text',
+        { name: 'a', type: 'text', localized: true,
           admin: { description: 'Roman prefix before the italic word. Leave blank if heading starts with the italic word.' } },
-        { name: 'b', type: 'text', required: true,
+        { name: 'b', type: 'text', required: true, localized: true,
           admin: { description: 'Roman suffix after the italic word. e.g. " & aesthetic.".' } },
       ],
     },
-    { name: 'headingItalic', type: 'text', required: true,
+    { name: 'headingItalic', type: 'text', required: true, localized: true,
       admin: { description: 'The italic word(s) inserted into the heading. e.g. "Reconstructive".' } },
   ],
 }

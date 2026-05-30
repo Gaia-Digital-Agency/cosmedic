@@ -23,7 +23,7 @@ export const RecoveryStays: CollectionConfig = {
   fields: [
     { name: 'slug', type: 'text', required: true, unique: true, index: true,
       admin: { hidden: true } },
-    { name: 'name', type: 'text', required: true, admin: { description: 'Villa or suite name, e.g. "Villa Sembilan".' } },
+    { name: 'name', type: 'text', required: true, localized: true, admin: { description: 'Villa or suite name, e.g. "Villa Sembilan".' } },
     { name: 'location', type: 'text', admin: { description: 'Suburb / area, e.g. "Nusa Dua", "Ubud", "Sanur", "Jimbaran".' } },
     {
       name: 'bedrooms',
@@ -46,6 +46,7 @@ export const RecoveryStays: CollectionConfig = {
     {
       name: 'body',
       type: 'textarea',
+      localized: true,
       admin: { description: 'Short paragraph (~2 sentences) shown under the meta-row.' },
     },
     {
@@ -69,7 +70,7 @@ export const RecoveryStays: CollectionConfig = {
       type: 'richText',
       admin: { description: 'LEGACY — long-form descriptor (currently unused on /recovery-stays).', hidden: true },
     },
-    { name: 'amenities', type: 'array', fields: [{ name: 'value', type: 'text', required: true }] },
+    { name: 'amenities', type: 'array', fields: [{ name: 'value', type: 'text', required: true, localized: true }] },
     {
       name: 'priceFromAudPerNight',
       type: 'number',

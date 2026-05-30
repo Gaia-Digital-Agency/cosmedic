@@ -30,6 +30,7 @@ export const JourneyStats: GlobalConfig = {
           name: 'label',
           type: 'text',
           required: true,
+          localized: true,
           admin: { description: 'Caption under the number, e.g. "Reply to first enquiry".' },
         },
         {

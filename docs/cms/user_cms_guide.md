@@ -4,8 +4,6 @@
 
 > The CMS is where you edit everything on the website — text, images, prices, doctors, blog. Changes go live within ~1 minute. You never touch code.
 
----
-
 ## 🔑 Log In
 1. Go to **https://cosmedic.gaiada.online/admin**
 2. Enter your **email** and **password**.
@@ -35,7 +33,7 @@ The **Users** list is the team who can log in:
 | **avatar** | Profile picture shown in the sidebar |
 > The **Theme toggle is NOT here** — it's on your **Account** page (click your avatar).
 
----
+<div style="page-break-after: always;"></div>
 
 # 📋 Sections, item by item
 Sidebar order: **Homepage · Treatments · Experts · Results · Journey · Publications · Contact**. One row per editable field. *(Media Library + rarely-used technical settings are hidden to keep it simple.)*
@@ -60,6 +58,8 @@ Sidebar order: **Homepage · Treatments · Experts · Results · Journey · Publ
 | Lead Magnet | intro | Paragraph describing the guide |
 | Lead Magnet | form placeholder | Email box hint text |
 | Lead Magnet | submit label | Form button text |
+
+<div style="page-break-after: always;"></div>
 
 ## 🏠 Homepage — Part 2 (settings, footer & press)
 | Item | Field | Detail (what to put / what it controls) |
@@ -93,6 +93,8 @@ Sidebar order: **Homepage · Treatments · Experts · Results · Journey · Publ
 | Awards | summary | Short description |
 | Awards | logo | Award logo |
 
+<div style="page-break-after: always;"></div>
+
 ## 💉 Treatments
 | Item | Field | Detail |
 |------|-------|--------|
@@ -117,6 +119,8 @@ Sidebar order: **Homepage · Treatments · Experts · Results · Journey · Publ
 | Procedures | recovery | e.g. "7–10 nights" |
 | Procedures | featured rank | 1/2/3 to feature on the sub-category page |
 | Procedures | hero image | Procedure image (optional) |
+
+<div style="page-break-after: always;"></div>
 
 ## 🩺 Experts
 | Item | Field | Detail |
@@ -166,6 +170,8 @@ Sidebar order: **Homepage · Treatments · Experts · Results · Journey · Publ
 | Recovery Stays — Villas | amenities | List of amenities |
 | Recovery Stays — Villas | partner URL | Booking link |
 
+<div style="page-break-after: always;"></div>
+
 ## 📰 Publications
 | Item | Field | Detail |
 |------|-------|--------|
@@ -188,7 +194,7 @@ Sidebar order: **Homepage · Treatments · Experts · Results · Journey · Publ
 | Enquiries | status | Mark New / In-progress / Closed |
 | Enquiries | internal notes | Private team notes (not public) |
 
----
+<div style="page-break-after: always;"></div>
 
 ## 💡 Quick tips
 - **Images:** click an image field → upload or pick from the Media Library. Always add **alt text** (describe the image) for accessibility.

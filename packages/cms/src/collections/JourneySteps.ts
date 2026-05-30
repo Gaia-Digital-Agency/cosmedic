@@ -39,10 +39,11 @@ export const JourneySteps: CollectionConfig = {
           'Display number shown above the title, e.g. "01", "02". Two-digit format; leave blank to use the order field zero-padded.',
       },
     },
-    { name: 'title', type: 'text', required: true, admin: { description: 'Single-word section title, e.g. "Enquiry", "Consult".' } },
+    { name: 'title', type: 'text', required: true, localized: true, admin: { description: 'Single-word section title, e.g. "Enquiry", "Consult".' } },
     {
       name: 'body',
       type: 'richText',
+      localized: true,
       admin: { description: 'Body paragraph(s) under the title. Plain prose; one or two short paragraphs.' },
     },
     {
@@ -54,7 +55,7 @@ export const JourneySteps: CollectionConfig = {
       },
       fields: [
         { name: 'letter', type: 'text', required: true, admin: { description: 'Single letter, e.g. "A".' } },
-        { name: 'text', type: 'text', required: true, admin: { description: 'Short bullet sentence.' } },
+        { name: 'text', type: 'text', required: true, localized: true, admin: { description: 'Short bullet sentence.' } },
       ],
     },
     {

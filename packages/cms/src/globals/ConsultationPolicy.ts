@@ -15,7 +15,7 @@ export const ConsultationPolicy: GlobalConfig = {
   fields: [
     { name: 'feeIdr', type: 'number', defaultValue: 150000,
       admin: { description: 'Consultation fee in IDR. Shown as the bold number in the /pricing consultation-policy callout. AUD equivalent is computed at render-time from Settings.audToIdrRate.' } },
-    { name: 'waiverConditionText', type: 'textarea',
+    { name: 'waiverConditionText', type: 'textarea', localized: true,
       defaultValue: 'Consultation fee is waived if treatment is performed the same day.',
       admin: { description: 'Plain-text waiver explanation rendered after the fee amount.' } },
     {

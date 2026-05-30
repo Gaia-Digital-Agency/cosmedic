@@ -119,11 +119,17 @@ import { HomeStoriesView } from './globals/home/HomeStoriesView'
 
 import { seedSuperAdmin } from './seed/admin'
 import { emailAdapter } from './lib/email-adapter'
+import { fetchLiveAudToIdr, maybeUpdateRate } from './lib/exchangeRate'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  localization: {
+    locales: ['en', 'id'],
+    defaultLocale: 'en',
+    fallback: true,
+  },
   // Hide the global "Browse by Folder" nav button (keeps collection folders).
   folders: { browseByFolder: false },
   admin: {
@@ -283,6 +289,30 @@ export default buildConfig({
     BlogPostTemplate,  // Blog Post Template
     NotFoundPage,      // 404 Page
   ],
+  endpoints: [
+    {
+      path: '/exchange-rate',
+      method: 'post',
+      handler: async (req) => {
+        if (!req.user) return Response.json({ error: 'Unauthorized' }, { status: 401 })
+        const mode = (req.query as Record<string, string>)?.mode ?? 'check'
+        if (mode === 'check') {
+          const liveRate = await fetchLiveAudToIdr()
+          const settings = await req.payload.findGlobal({ slug: 'settings' }) as any
+          return Response.json({ liveRate, currentRate: settings.audToIdrRate ?? 12800 })
+        }
+        // mode === 'apply' — force-apply regardless of threshold
+        const liveRate = await fetchLiveAudToIdr()
+        const settings = await req.payload.findGlobal({ slug: 'settings' }) as any
+        const rateSource = `open.er-api.com · ${new Date().toISOString().slice(0, 16).replace('T', ' ')} UTC`
+        await req.payload.updateGlobal({
+          slug: 'settings',
+          data: { audToIdrRate: liveRate, rateLastFetchedAt: new Date().toISOString(), rateSource },
+        } as any)
+        return Response.json({ liveRate, oldRate: settings.audToIdrRate, applied: true })
+      },
+    },
+  ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -298,5 +328,14 @@ export default buildConfig({
   plugins: [],
   onInit: async (payload) => {
     await seedSuperAdmin(payload)
+
+    // Daily AUD→IDR rate check: once 60s after startup, then every 24h.
+    const runRateCheck = () => {
+      maybeUpdateRate(payload)
+        .then((r) => payload.logger.info(r, 'exchange-rate check'))
+        .catch((err) => payload.logger.error({ err }, 'exchange-rate fetch failed'))
+    }
+    setTimeout(runRateCheck, 60_000)
+    setInterval(runRateCheck, 24 * 60 * 60 * 1_000)
   },
 })

@@ -14,10 +14,21 @@ export const Settings: GlobalConfig = {
   fields: [
     { name: 'siteName', type: 'text', defaultValue: 'BIMC CosMedic',
       admin: { description: 'Used in <title> tags, OG meta, footer copyright, header logo alt-text. Visible on every page.' } },
-    { name: 'siteTagline', type: 'text',
+    { name: 'siteTagline', type: 'text', localized: true,
       admin: { description: 'Short tagline used in SEO meta + share previews. Not currently rendered on-screen.', hidden: true } },
     { name: 'audToIdrRate', type: 'number', defaultValue: 12800,
-      admin: { description: 'AUD → IDR conversion rate. Editing this re-pegs every AUD figure across the entire site. Live default = 12,800 (May 2026).' } },
+      admin: { description: 'AUD → IDR conversion rate. Editing this re-pegs every AUD figure across the entire site. Auto-updated daily (±5% threshold). Use the "Fetch live rate" button below to check + apply the current rate on demand.' } },
+    {
+      type: 'ui',
+      name: 'liveRateWidget',
+      admin: { components: { Field: '@/components/LiveRateButton' } },
+    },
+    { name: 'rateLockedManually', type: 'checkbox', defaultValue: false,
+      admin: { description: 'When checked, the daily auto-fetch will not overwrite the rate above. Uncheck to resume auto-updates.' } },
+    { name: 'rateLastFetchedAt', type: 'text',
+      admin: { description: 'Set automatically. Timestamp of the last rate check (auto or manual).', readOnly: true } },
+    { name: 'rateSource', type: 'text',
+      admin: { description: 'Set automatically. Source and timestamp of the last fetch.', readOnly: true } },
     { name: 'roundIdrTo', type: 'number', defaultValue: 50000,
       admin: { description: 'Round computed IDR to nearest N when converting from AUD. Default 50,000.' } },
     { name: 'contactEmail', type: 'text', defaultValue: 'cosmedic@bimcbali.com',
@@ -71,7 +82,7 @@ export const Settings: GlobalConfig = {
     // read by any consumer.
     { name: 'defaultOgImage', type: 'upload', relationTo: 'media',
       admin: { description: 'Fallback Open Graph image for social-share previews when a page record has no OG image of its own.', hidden: true } },
-    { name: 'defaultMetaDescription', type: 'textarea',
+    { name: 'defaultMetaDescription', type: 'textarea', localized: true,
       admin: { description: 'Fallback SEO description used when a page record has no description of its own.', hidden: true } },
   ],
 }
