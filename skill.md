@@ -50,12 +50,17 @@ Read every global file in `packages/cms/src/globals/` for that bucket. Note whic
 
 ### Step 3 — Check the DB structure
 
-For each source global, inspect the actual table schema:
+For each source global, inspect **both** the main table AND the locales table — some globals have fields spread across both:
 ```bash
 PGPASSWORD=... psql -h 127.0.0.1 -U cosmedic -d cosmedic -c "\d <table_name>"
 PGPASSWORD=... psql -h 127.0.0.1 -U cosmedic -d cosmedic -c "\d <table_name>_locales"
 ```
 Understand: which fields are localized (in `_locales` table) vs non-localized (in main table). This determines where new columns go and how data copies.
+
+**Also check the actual row data** — not just the schema. A column can exist in the schema with a `defaultValue` but have NULL in the DB if the global was never saved:
+```bash
+PGPASSWORD=... psql -h 127.0.0.1 -U cosmedic -d cosmedic -tA -c "SELECT field1, field2 FROM <table>_locales WHERE _locale='en';"
+```
 
 ### Step 4 — Build the mapping table
 
@@ -197,13 +202,16 @@ admin: {
 | API returns "Something went wrong" | Column in schema not yet in DB | Check error log for the missing column name, add it |
 | `depth=1` returns empty arrays | Array needs depth=2 to hydrate | Set `depth=2` in `cms.cache.ts` fetch call |
 | Web shows fallback text after migration | Field path mismatch: web reads `hero.title?.a`, CMS has `titleA` | Fix the web path to match actual API response key |
+| CMS data exists but web always shows fallback | Web path references a nested group that no longer exists in schema (e.g. `hero?.title?.a` but schema now has flat `titleA`) | Verify API response shape with `curl` — fix web to match actual returned keys |
 | Source array was never saved | Hidden globals never get explicit DB rows | Seed with direct INSERT using schema default values |
 | Non-localized group field missing | `mapImageLabel`, `eyebrow` etc. without `localized:true` go in main table | Add `ALTER TABLE <dest> ADD COLUMN` for non-localized fields |
+| Mixed localized/non-localized in same global | Some fields in main table, some in locales — easy to miss if only checking one | Always run `\d` on BOTH main and locales tables in Step 3 |
 | Transaction rollback on `CREATE TABLE` | Sequence referenced before creation | Create sequence first, then table, then `OWNED BY` |
 | Locales table `UNIQUE` conflict on copy | Source has multiple locale rows, dest only has 'en' | Use `WHERE _locale = 'en'` and add 'id' locale separately |
 | Secondary page breaks silently | Source global fed multiple pages — only primary route updated | Grep ALL web files for every source key; use cache assembly pattern for secondary consumers |
 | Ghost groups in source | Source global had a sub-group that was never read by web (e.g. LibraryCta.share) | Verify every group/field in source against web reads before planning; drop ghost groups |
 | Cache assembled from wrong source | Cache built `shareCta` from `libraryCta.share` (never the active source) | Always trace the cache return object, not just the fetch calls — verify which key the web actually reads |
+| Hidden-by-design arrays still needed | Array content (e.g. inclusions) kept hidden but still rendered via fallback | Keep reading from legacy global key in cache; don't break the fallback path |
 
 ---
 
@@ -244,3 +252,17 @@ Key learnings:
 4. **Non-localized source → localized destination:** ShareCta had no `localized: true` fields (data in main table). When merged into ResultsHero as localized fields, copy used `WHERE _locale = 'en'` to insert into locales table.
 
 **Result:** editors open one RESULTS card. GalleryPage and StoriesPage continue to work unchanged via cache assembly.
+
+### Journey (journey-hero) — 3 globals → 1 card, 2 pages
+
+Web pages covered: `/journey` and `/recovery-stays`. Sections in order: /journey Breadcrumb → Hero → Stats / /recovery-stays Breadcrumb → Hero → Top Stats → Portfolio → What's Included.
+
+JourneyStats absorbed into journey-hero.stats (array). RecoveryStaysPage absorbed into journey-hero.recoveryStays group. JourneyStats was already hidden; RecoveryStaysPage hidden after merge. 6 non-localized + 14 localized columns added. 2 new array tables (stats, recoveryStays.topStats).
+
+Key learnings:
+1. **Multi-page single card:** when a bucket covers two web pages, one card can hold both. Use a top-level group per page (`recoveryStays`) to keep the sections clearly separated within the same card.
+2. **Flat field vs nested group path mismatch (silent):** JourneyHero had flat `titleA`/`titleB` fields but the web read `hero?.title?.a`. The CMS had real data but the web always showed hardcoded fallback text because the path was wrong. Caught only by verifying the API response shape with `curl` — not visible from schema alone.
+3. **Mixed localized/non-localized in same source global:** `rec_stays_pg` had some fields (e.g. `portfolio_section_heading_pre`) in the main table and others in the locales table. Always run `\d` on BOTH tables in Step 3.
+4. **Hidden arrays kept via legacy path:** inclusions array kept hidden by design. The web still reads from `cms.recoveryStaysPage.inclusions` — so `recoveryStaysPage` stays in the cache return object pointing to the old global (not hidden from cache, only from admin).
+
+**Result:** editors open one JOURNEY card covering both pages. /journey and /recovery-stays both return 200.
