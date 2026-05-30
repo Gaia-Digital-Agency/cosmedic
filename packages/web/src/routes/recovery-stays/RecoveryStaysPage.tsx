@@ -83,8 +83,8 @@ export const RecoveryStaysPage: React.FC = () => {
   const cms = useCms()
 
   // Hero.
-  const rs = (cms?.journeyHero as any)?.recoveryStays
-  const hero = rs?.hero
+  const page = cms?.recoveryStaysPage
+  const hero = page?.hero
   const chapter = hero?.chapter || 'Chapter VII — Recovery Stays'
   const titleA = hero?.title?.a || 'A villa, a'
   const titleB = hero?.title?.b || 'quiet recovery.'
@@ -95,14 +95,14 @@ export const RecoveryStaysPage: React.FC = () => {
   const heroImg = heroImage || IMG.villa1
   const heroHue = hero?.imageHue ?? 4
   const heroLabel = hero?.imageLabel || 'RECOVERY STAYS'
-  const breadcrumbLabel = rs?.breadcrumbLabel || 'Recovery Stays'
+  const breadcrumbLabel = hero?.breadcrumbLabel || 'Recovery Stays'
 
   // Top stats.
   const topStats =
-    rs?.topStats && rs.topStats.length > 0 ? rs.topStats : FALLBACK_TOP_STATS
+    page?.topStats && page.topStats.length > 0 ? page.topStats : FALLBACK_TOP_STATS
 
   // Portfolio section.
-  const portfolio = rs?.portfolioSection
+  const portfolio = page?.portfolioSection
   const portfolioEyebrow = portfolio?.eyebrow || 'The portfolio'
   const portfolioHeadingPre = portfolio?.headingPre ?? ''
   const portfolioHeadingItalic = portfolio?.headingItalic ?? 'Six'
@@ -136,7 +136,7 @@ export const RecoveryStaysPage: React.FC = () => {
       : FALLBACK_VILLAS
 
   // Inclusions section.
-  const inclusionsSec = rs?.inclusionsSection
+  const inclusionsSec = page?.inclusionsSection
   const inclusionsEyebrow = inclusionsSec?.eyebrow || "What's included"
   const inclusionsHeadingPre = inclusionsSec?.headingPre ?? 'Every stay, '
   const inclusionsHeadingItalic = inclusionsSec?.headingItalic ?? 'considered.'
@@ -146,9 +146,7 @@ export const RecoveryStaysPage: React.FC = () => {
     'All villa stays include the small kindnesses that make recovery feel less clinical. Add-ons are available; few are necessary.'
 
   const inclusions =
-    (cms?.recoveryStaysPage as any)?.inclusions?.length > 0
-      ? (cms?.recoveryStaysPage as any).inclusions
-      : FALLBACK_INCLUSIONS
+    page?.inclusions && page.inclusions.length > 0 ? page.inclusions : FALLBACK_INCLUSIONS
 
   return (
     <PageShell activePage="recovery-stays">

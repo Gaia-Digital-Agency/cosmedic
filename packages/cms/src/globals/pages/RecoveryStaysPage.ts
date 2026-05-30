@@ -9,9 +9,8 @@ export const RecoveryStaysPage: GlobalConfig = {
   label: 'Page',
   admin: {
     group: 'Journey',
-    hidden: true, // merged into journey-hero.recoveryStays
     description:
-      'Whole /recovery-stays editorial: hero, the 4-tile top stats row, "The portfolio" section heading (cards come from f. Villas), and "What\'s included" section heading + inclusions list.',
+      'All content for /recovery-stays — breadcrumb, hero, top stats, portfolio section, what\'s included heading. Villa cards come from the Villas collection.',
   },
   access: { read: publishedOrAuthed, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
