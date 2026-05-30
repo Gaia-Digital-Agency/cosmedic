@@ -14,6 +14,7 @@
  * to their nested equivalent via `LEGACY_SUB_REDIRECTS`.
  */
 
+import type { Locale } from './i18n'
 import { TREATMENT_LIST, SURGEON_LIST } from './content/seed'
 import { SUBCATEGORY_DATA } from './content/subcategory-data'
 import { BLOG_POST_BODIES } from './content/blog-data'
@@ -197,4 +198,19 @@ export function resolveRoute(pathname: string): Route {
   }
 
   return { kind: 'notfound' }
+}
+
+/**
+ * Strip the /id locale prefix from a pathname.
+ * `/id/...` or `/id` → { locale: 'id', canonicalPath: '/...' }
+ * Anything else   → { locale: 'en', canonicalPath: pathname }
+ *
+ * Used by server.ts before calling resolveRoute so the route table stays
+ * unaware of the locale prefix.
+ */
+export function stripLocalePrefix(pathname: string): { locale: Locale; canonicalPath: string } {
+  if (pathname === '/id' || pathname.startsWith('/id/')) {
+    return { locale: 'id', canonicalPath: pathname.slice(3) || '/' }
+  }
+  return { locale: 'en', canonicalPath: pathname }
 }

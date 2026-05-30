@@ -9,7 +9,8 @@ import { checkAskRateLimit } from './lib/ask-rate-limit'
 import { validateMessage, callVertex } from './lib/vertex'
 import geoip from 'geoip-lite'
 import { seoFor, renderSeoTags, renderAnalytics } from './lib/seo'
-import { resolveRoute } from './router'
+import { resolveRoute, stripLocalePrefix } from './router'
+import type { Locale } from './i18n'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -40,8 +41,16 @@ function extractTopics(text: string): string[] {
 
 // Production-only singletons — initialised once at startup, reused per request.
 let _prodTemplate: string | null = null
-let _prodRender: ((url: string, cms?: unknown) => { html: string; status: number }) | null = null
+let _prodRender: ((url: string, cms?: unknown, locale?: string) => { html: string; status: number }) | null = null
 let _preloadHints = ''
+
+/** Extract locale preference from Cookie header (set by the EN|ID switcher in Phase D). */
+function getCookieLocale(req: express.Request): Locale | null {
+  const cookie = req.headers.cookie || ''
+  const match = cookie.split(';').map((s) => s.trim()).find((s) => s.startsWith('locale_pref='))
+  const val = match?.split('=')[1]
+  return val === 'id' ? 'id' : null
+}
 
 async function createServer() {
   const app = express()
@@ -280,14 +289,22 @@ async function createServer() {
     }
     const all = [...staticRoutes, ...dynamic]
     const now = new Date().toISOString()
-    const urlEntries = all
-      .map(
-        (path) =>
-          `  <url>\n    <loc>${base}${path}</loc>\n    <lastmod>${now}</lastmod>\n  </url>`,
-      )
-      .join('\n')
+    // C7: emit both /{path} and /id/{path} for every route; each carries hreflang alternates.
+    const urlEntries = all.flatMap((p) => {
+      const enLoc = `${base}${p}`
+      const idLoc = `${base}/id${p}`
+      const alternates = [
+        `    <xhtml:link rel="alternate" hreflang="en" href="${enLoc}"/>`,
+        `    <xhtml:link rel="alternate" hreflang="id" href="${idLoc}"/>`,
+        `    <xhtml:link rel="alternate" hreflang="x-default" href="${enLoc}"/>`,
+      ].join('\n')
+      return [
+        `  <url>\n    <loc>${enLoc}</loc>\n    <lastmod>${now}</lastmod>\n${alternates}\n  </url>`,
+        `  <url>\n    <loc>${idLoc}</loc>\n    <lastmod>${now}</lastmod>\n${alternates}\n  </url>`,
+      ]
+    }).join('\n')
     res.type('application/xml').send(
-      `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urlEntries}\n</urlset>\n`,
+      `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urlEntries}\n</urlset>\n`,
     )
   })
 
@@ -295,18 +312,29 @@ async function createServer() {
     try {
       const pathname = (req.originalUrl || '/').split('?')[0]
 
-      // 301-redirect legacy slug URLs before paying the SSR cost.
-      const preroute = resolveRoute(pathname)
+      // C1/C8: determine locale.
+      // Order: URL /id prefix (wins) → cookie locale_pref → 'en'.
+      const { locale: urlLocale, canonicalPath } = stripLocalePrefix(pathname)
+      const locale: Locale = urlLocale === 'id'
+        ? 'id'
+        : (getCookieLocale(req) ?? 'en')
+
+      // C9: 301-redirect legacy slug URLs before paying the SSR cost.
+      // For /id/* requests, prefix the redirect target with /id.
+      const preroute = resolveRoute(canonicalPath)
       if (preroute.kind === 'redirect') {
-        res.redirect(preroute.status, preroute.to)
+        const to = locale === 'id' ? `/id${preroute.to}` : preroute.to
+        res.redirect(preroute.status, to)
         return
       }
 
-      // Refresh CMS cache (TTL'd in lib/cms; effectively no-op when warm).
-      const cms = await loadCmsCache()
+      // Load the locale-correct CMS cache.
+      // Falls back to EN values automatically via Payload fallback:true
+      // until Phase F populates the ID locale content.
+      const cms = await loadCmsCache(false, locale)
 
       let template: string
-      let render: (url: string, cms?: unknown) => { html: string; status: number }
+      let render: (url: string, cms?: unknown, locale?: string) => { html: string; status: number }
 
       if (!isProduction && vite) {
         template = await fs.readFile(path.resolve(root, 'index.html'), 'utf-8')
@@ -318,11 +346,13 @@ async function createServer() {
         render = _prodRender!
       }
 
-      const { html: appHtml, status } = render(pathname, cms)
-      const seo = seoFor(pathname, cms)
+      const { html: appHtml, status } = render(canonicalPath, cms, locale)
+      const seo = seoFor(canonicalPath, cms, locale)
       const seoHtml = renderSeoTags(seo)
       const analyticsHtml = renderAnalytics()
+      // C3: inject html lang attribute; replace <!--html-lang--> marker.
       const html = template
+        .replace('<!--html-lang-->', locale)
         .replace('<!--ssr-outlet-->', appHtml)
         .replace('<!--seo-outlet-->', _preloadHints + seoHtml)
         .replace('<!--analytics-outlet-->', analyticsHtml)

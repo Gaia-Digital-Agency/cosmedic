@@ -7,6 +7,7 @@
  * record / Blog post / etc.) with sensible fallbacks from SeoDefaults.
  */
 
+import type { Locale } from '../i18n'
 import type { CmsCache } from './cms'
 
 const SITE_ORIGIN = 'https://cosmedic.gaiada.online'
@@ -21,6 +22,9 @@ type SeoFields = {
   canonical: string
   ogImage: string
   siteName: string
+  locale: Locale
+  hreflangEn: string
+  hreflangId: string
   jsonLd?: object
   noindex?: boolean
 }
@@ -45,7 +49,14 @@ function clampDescription(s: string): string {
   return clean.slice(0, 155).trimEnd() + '…'
 }
 
-export function seoFor(pathname: string, cms: CmsCache): SeoFields {
+/**
+ * Build per-route SEO fields.
+ * @param canonicalPath  The route path WITHOUT any /id locale prefix.
+ * @param cms            The warmed CmsCache for this locale.
+ * @param locale         Active locale — 'en' (default) or 'id'.
+ */
+export function seoFor(canonicalPath: string, cms: CmsCache, locale: Locale = 'en'): SeoFields {
+  const pathname = canonicalPath // internal alias kept for the route-match logic below
   // Pull from SeoDefaults global (titlePattern, organizationSchema) and
   // Settings global (defaultOgImage, siteName). Both are warmed into the
   // CMS cache during SSR boot.
@@ -183,17 +194,30 @@ export function seoFor(pathname: string, cms: CmsCache): SeoFields {
         }
   }
 
-  const canonical = `${SITE_ORIGIN}${pathname === '/' ? '' : pathname}`
-  return { title, description, canonical, ogImage, siteName, jsonLd }
+  // Canonical and hreflang — locale-aware.
+  // canonicalPath is always the path WITHOUT /id prefix.
+  const pathSuffix = canonicalPath === '/' ? '' : canonicalPath
+  const hreflangEn = `${SITE_ORIGIN}${pathSuffix}`
+  const hreflangId = `${SITE_ORIGIN}/id${pathSuffix}`
+  const canonical = locale === 'id' ? hreflangId : hreflangEn
+  return { title, description, canonical, ogImage, siteName, locale, hreflangEn, hreflangId, jsonLd }
 }
 
 /** Renders the chunk of HTML injected into <head> via <!--seo-outlet-->. */
 export function renderSeoTags(seo: SeoFields): string {
+  const ogLocale = seo.locale === 'id' ? 'id_ID' : 'en_US'
+  const ogLocaleAlt = seo.locale === 'id' ? 'en_US' : 'id_ID'
   const tags: string[] = []
   tags.push(`<title>${esc(seo.title)}</title>`)
   tags.push(`<meta name="description" content="${esc(seo.description)}" />`)
   tags.push(`<link rel="canonical" href="${esc(seo.canonical)}" />`)
+  // hreflang alternates (C5)
+  tags.push(`<link rel="alternate" hreflang="en" href="${esc(seo.hreflangEn)}" />`)
+  tags.push(`<link rel="alternate" hreflang="id" href="${esc(seo.hreflangId)}" />`)
+  tags.push(`<link rel="alternate" hreflang="x-default" href="${esc(seo.hreflangEn)}" />`)
   tags.push(`<meta property="og:type" content="website" />`)
+  tags.push(`<meta property="og:locale" content="${ogLocale}" />`)
+  tags.push(`<meta property="og:locale:alternate" content="${ogLocaleAlt}" />`)
   tags.push(`<meta property="og:title" content="${esc(seo.title)}" />`)
   tags.push(`<meta property="og:description" content="${esc(seo.description)}" />`)
   tags.push(`<meta property="og:url" content="${esc(seo.canonical)}" />`)
