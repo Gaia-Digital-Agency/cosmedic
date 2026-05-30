@@ -107,7 +107,7 @@ type FieldSpec =
 
 // ─── Translate a document given a list of field specs ────────────────────────
 
-async function translateDoc(
+export async function translateDoc(
   doc: Record<string, unknown>,
   prev: Record<string, unknown> | null,
   specs: FieldSpec[],

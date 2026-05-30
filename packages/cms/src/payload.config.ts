@@ -205,24 +205,24 @@ export default buildConfig({
     // ── a. Homepage ───────────────────────────────────────────────
     // Collections in this bucket: none. All 18 items are globals.
     // Registration order controls sidebar order within the group.
-    HomePage,           // Main
+    HomePage,           // Main (hidden)
     HomeHero,           // Hero
-    Header,             // Header
-    Footer,             // Footer
-    HomeSurgeonsView,   // Surgeons View
-    HomeIntro,          // Intro
-    BrandStats,         // Trust Strip
+    HomeTreatmentsView, // Treatments
+    HomePricingView,    // Pricing
+    HomeSurgeonsView,   // Surgeons
+    HomeGalleryView,    // Gallery
     HomeLeadMagnet,     // Lead Magnet
+    HomeStoriesView,    // Stories
     HomePlace,          // Place
-    FloatingChrome,     // Floating CTA
-    EndorsementMark,    // Endorsement
-    SeoDefaults,        // SEO Defaults
     Settings,           // Settings
-    HomeTreatmentsView, // Treatments View
-    HomePricingView,    // Pricing View
-    HomeGalleryView,    // Gallery View
-    HomeJourneyView,    // Journey View
-    HomeStoriesView,    // Stories View
+    Header,             // Header (hidden)
+    Footer,             // Footer (hidden)
+    HomeIntro,          // Intro (hidden)
+    BrandStats,         // Trust Strip (hidden)
+    FloatingChrome,     // Floating CTA (hidden)
+    EndorsementMark,    // Endorsement (hidden)
+    SeoDefaults,        // SEO Defaults (hidden)
+    HomeJourneyView,    // Journey View (hidden)
 
     // ── b. Treatments ─────────────────────────────────────────────
     // Collections (Disciplines / SubCategories / Procedures) always first.
