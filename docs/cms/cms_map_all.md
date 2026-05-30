@@ -1,11 +1,15 @@
 # Cosmedic CMS — Complete Field Map
 
-> **SWEEP APPLIED (2026-05-30):** Full L1–L10 visibility sweep. All 46 globally-hidden globals unhidden. All field-level Lede/Para/Image/Title/Body/Array violations fixed. `[hidden]` flags below are now STALE — only structural fields (slugs, hrefs, hues, breadcrumbs, chapter eyebrows, CTA hrefs, success/error states) remain hidden.
+> **HERO MERGE PASS APPLIED (2026-05-30):** Full Hero merge — Visit→ContactHero, Sections→SurgeonsHero, PricingTerms→TreatmentsHero.pricing. 15 visible globals, ~320 editorial fields accessible.
 >
-> Full inventory of every field across all 19 collections (18 + Analytics) and ~72 globals.
-> Format: dot-notation for group sub-fields (`heading.a`). Arrays shown as `items (field, field)`.
-> **`[hidden]`** = was `admin.hidden: true` as of 2026-05-29. Most have been REMOVED by 2026-05-30 sweep.
-> Last updated: 2026-05-30 (sweep applied). For current visible state see `cms_map_simple.md`. Source: `packages/cms/src/{collections,globals}/`.
+> **For current visible state see `cms_map_simple.md`** (accurate as of 2026-05-30).
+> This file is a full schema inventory — many items are now hidden. `[hidden]` = hidden in admin sidebar but still in DB and accessible via direct URL.
+> Last updated: 2026-05-30. Source: `packages/cms/src/{collections,globals}/`.
+>
+> **Architecture pattern (2026-05-30):**
+> Each bucket has one Hero card that absorbs related section globals as labeled sub-groups.
+> Group label = section title in admin form. 15 cards cover all editor-facing content.
+> Hidden globals remain queryable — schema must always match DB (no orphaned column references).
 
 ---
 
