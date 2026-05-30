@@ -8,9 +8,8 @@ export const PrivacyPage: GlobalConfig = {
   label: 'Privacy',
   admin: {
     group: 'Publications',
-    hidden: true,
     description:
-      'Editorial content for /privacy: hero, the three metadata lines (last updated / version / reading time), and the optional intro paragraph. The 10 numbered legal sections are edited in i. Privacy-Sections.',
+      'All content for /privacy — hero, metadata lines, intro paragraph, DPO contact section. Legal sections come from the Privacy Sections collection.',
   },
   access: { read: publishedOrAuthed, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),

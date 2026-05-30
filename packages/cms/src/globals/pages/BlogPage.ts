@@ -8,9 +8,8 @@ export const BlogPage: GlobalConfig = {
   label: 'Blog',
   admin: {
     group: 'Publications',
-    hidden: true,
     description:
-      'Editorial content for /blog (post index): hero, "This issue" featured callout label, and "The archive" filter section chrome. Posts and tags are managed in the BlogPosts / BlogTags collections.',
+      'All content for /blog — hero, "This issue" featured callout, archive section. Posts and tags come from the BlogPosts / BlogTags collections.',
   },
   access: { read: publishedOrAuthed, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
