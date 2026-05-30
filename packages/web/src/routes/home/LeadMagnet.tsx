@@ -13,14 +13,14 @@ export const LeadMagnet: React.FC = () => {
   const cms = useCms()
   const g = cms?.homeLeadMagnet
 
-  const coverImage = g?.coverImage
+  const coverImage = g?.cover?.image
   const coverImageUrl = coverImage && typeof coverImage === 'object' ? mediaUrl(coverImage) : undefined
   const coverEyebrow = g?.coverEyebrow || 'A guide · 24 pages · PDF'
-  const _coverTitleLines = (g?.coverTitle || 'The Bali\nRecovery\nGuide.').split('\n')
+  const _coverTitleLines = (g?.cover?.title || 'The Bali\nRecovery\nGuide.').split('\n')
   const coverLine1 = _coverTitleLines[0] || 'The Bali'
   const coverLine2 = _coverTitleLines[1] || 'Recovery'
   const coverLine3 = _coverTitleLines[2] || 'Guide.'
-  const _coverFooterParts = (g?.coverFooter || 'BIMC CosMedic · MMXXVI').split(' · ')
+  const _coverFooterParts = (g?.cover?.footer || 'BIMC CosMedic · MMXXVI').split(' · ')
   const coverFoot1 = _coverFooterParts[0] || 'BIMC CosMedic'
   const coverFoot2 = _coverFooterParts[1] || 'MMXXVI'
   const bodyEyebrow = g?.bodyEyebrow || 'Free Guide'

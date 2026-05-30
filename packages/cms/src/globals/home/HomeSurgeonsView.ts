@@ -13,19 +13,40 @@ export const HomeSurgeonsView: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    { name: 'eyebrow', label: 'Eyebrow', type: 'text', defaultValue: '8 Specialists',
-      admin: { description: 'Small-caps line above the heading, e.g. "8 Specialists".', hidden: true } },
-    { name: 'teamCaption', label: 'Heading', type: 'text', localized: true, defaultValue: 'One team, one standard.',
-      admin: { description: 'Two-line banner heading. Use a comma to split: the text before the comma is line 1 (roman), after the comma is line 2 (italic). e.g. "One team, one standard."' } },
-    { name: 'leadBody', label: 'Body text', type: 'textarea', localized: true,
-      defaultValue: 'Our plastic and aesthetic doctors work side by side under one ACHSI-accredited roof.',
-      admin: { description: 'Short body paragraph below the heading.' } },
-    { name: 'leadCtaLabel', label: 'CTA label', type: 'text', localized: true, defaultValue: 'Meet all the doctors',
-      admin: { description: 'Button label linking to /surgeons.' } },
-    { name: 'groupPhoto', label: 'Group photo', type: 'upload', relationTo: 'media',
-      admin: { description: 'Wide group photo of the surgical team. Falls back to /assets/surgeons/team-placeholder.webp.' } },
-    { name: 'groupPhotoAlt', label: 'Photo alt text', type: 'text', localized: true,
-      admin: { description: 'Accessibility alt text for the group photo.' } },
+    // ── Team Heading ─────────────────────────────────────────────────────────
+    {
+      name: 'team', label: 'Team Heading', type: 'group',
+      admin: { description: 'The main heading line on the Surgeons banner.' },
+      fields: [
+        { name: 'caption', label: 'Heading', type: 'text', localized: true, defaultValue: 'One team, one standard.',
+          admin: { description: 'Two-line banner heading. Split on comma: before = roman, after = italic.' } },
+      ],
+    },
+    // ── Body & CTA ───────────────────────────────────────────────────────────
+    {
+      name: 'lead', label: 'Body & CTA', type: 'group',
+      admin: { description: 'Body paragraph and button below the heading.' },
+      fields: [
+        { name: 'body', label: 'Body text', type: 'textarea', localized: true,
+          defaultValue: 'Our plastic and aesthetic doctors work side by side under one ACHSI-accredited roof.',
+          admin: { description: 'Short body paragraph below the heading.' } },
+        { name: 'ctaLabel', label: 'CTA label', type: 'text', localized: true, defaultValue: 'Meet all the doctors',
+          admin: { description: 'Button label linking to /surgeons.' } },
+      ],
+    },
+    // ── Photo ────────────────────────────────────────────────────────────────
+    {
+      name: 'group', label: 'Photo', type: 'group',
+      admin: { description: 'Group photo of the surgical team.' },
+      fields: [
+        { name: 'photo', label: 'Group photo', type: 'upload', relationTo: 'media',
+          admin: { description: 'Wide group photo of the surgical team.' } },
+        { name: 'photoAlt', label: 'Photo alt text', type: 'text', localized: true,
+          admin: { description: 'Accessibility alt text for the group photo.' } },
+      ],
+    },
+    // Legacy fields (not rendered) ────────────────────────────────────────────
+    { name: 'eyebrow', type: 'text', defaultValue: '8 Specialists', admin: { hidden: true } },
     // Legacy fields — no longer rendered in the banner. Hidden from editors.
     { name: 'leadSurgeonEyebrow', type: 'text', defaultValue: 'Lead Surgeon', admin: { hidden: true } },
     { name: 'leadStat1Label', type: 'text', defaultValue: 'Trained', admin: { hidden: true } },

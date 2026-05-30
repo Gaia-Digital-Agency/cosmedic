@@ -13,16 +13,16 @@ export const Surgeons: React.FC = () => {
   const g = cms?.homeSurgeonsView
 
   const eyebrow = g?.eyebrow || '8 Specialists'
-  const teamCaption = g?.teamCaption || 'One team, one standard.'
-  const leadBody = typeof g?.leadBody === 'string'
-    ? g.leadBody
+  const teamCaption = g?.team?.caption || 'One team, one standard.'
+  const leadBody = typeof g?.lead?.body === 'string'
+    ? g.lead?.body
     : 'Our plastic and aesthetic doctors work side by side under one ACHSI-accredited roof.'
-  const leadCtaLabel = g?.leadCtaLabel || 'Meet all the doctors'
+  const leadCtaLabel = g?.lead?.ctaLabel || 'Meet all the doctors'
 
-  const groupPhotoSrc = mediaUrl(g?.groupPhoto, TEAM_PLACEHOLDER) || TEAM_PLACEHOLDER
+  const groupPhotoSrc = mediaUrl(g?.group?.photo, TEAM_PLACEHOLDER) || TEAM_PLACEHOLDER
   const groupPhotoAlt =
-    (g?.groupPhoto && typeof g.groupPhoto === 'object' ? g.groupPhoto.alt : undefined) ||
-    g?.groupPhotoAlt ||
+    (g?.group?.photo && typeof g.group?.photo === 'object' ? g.group?.photo.alt : undefined) ||
+    g?.group?.photoAlt ||
     'The Cosmedic surgical team'
 
   // Split teamCaption into two lines on comma if present

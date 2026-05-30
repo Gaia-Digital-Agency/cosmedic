@@ -13,16 +13,23 @@ export const HomeLeadMagnet: GlobalConfig = {
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    { name: 'coverImage', type: 'upload', relationTo: 'media',
-      admin: { description: 'Optional cover image (e.g. PDF cover photo). When set, replaces the CSS text card entirely. Leave blank to keep the default styled cover.' } },
+    // ── Cover ────────────────────────────────────────────────────────────────
+    {
+      name: 'cover', label: 'Cover', type: 'group',
+      admin: { description: 'The left-side cover card (image or styled text).' },
+      fields: [
+        { name: 'image', label: 'Cover image', type: 'upload', relationTo: 'media',
+          admin: { description: 'Optional cover image. When set, replaces the CSS text card.' } },
+        { name: 'title', label: 'Cover title', type: 'textarea', localized: true,
+          defaultValue: 'The Bali\nRecovery\nGuide.',
+          admin: { description: 'Cover card title — one line per row. Line 1 = roman, line 2 = italic, line 3 = roman.' } },
+        { name: 'footer', label: 'Cover footer', type: 'text', localized: true,
+          defaultValue: 'BIMC CosMedic · MMXXVI',
+          admin: { description: 'Footer line on the cover card. Separate two items with · if needed.' } },
+      ],
+    },
     { name: 'coverEyebrow', type: 'text', defaultValue: 'A guide · 24 pages · PDF',
       admin: { description: 'Eyebrow at the top of the cover card.', hidden: true } },
-    { name: 'coverTitle', label: 'Cover title', type: 'textarea', localized: true,
-      defaultValue: 'The Bali\nRecovery\nGuide.',
-      admin: { description: 'Cover card title — one line per row. Line 1 = roman, line 2 = italic, line 3 = roman.' } },
-    { name: 'coverFooter', label: 'Cover footer', type: 'text', localized: true,
-      defaultValue: 'BIMC CosMedic · MMXXVI',
-      admin: { description: 'Footer line on the cover card. Separate two items with · if needed.' } },
     { name: 'bodyEyebrow', type: 'text', defaultValue: 'Free Guide',
       admin: { description: 'Eyebrow on the right-side body column.', hidden: true } },
     {
