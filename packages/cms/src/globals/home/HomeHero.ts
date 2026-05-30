@@ -45,7 +45,7 @@ export const HomeHero: GlobalConfig = {
     { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true,
       defaultValue:
         "Performed inside Indonesia's first ACHSI-accredited international hospital, with private villa recovery and twelve months of telehealth follow-up included. Procedures from Rp 18,900,000 (≈ AUD 1,800).",
-      admin: { description: 'Intro paragraph beneath the title.', hidden: true } },
+      admin: { description: 'Intro paragraph beneath the title.' } },
     { name: 'primaryCtaLabel', type: 'text', localized: true, defaultValue: 'Plan Your Treatment',
       admin: { description: 'Filled-pill CTA beneath the headline.' } },
     { name: 'secondaryCtaLabel', type: 'text', localized: true, defaultValue: 'View Pricing',
