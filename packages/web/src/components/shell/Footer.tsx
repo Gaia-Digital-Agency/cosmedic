@@ -23,6 +23,12 @@ export const Footer: React.FC = () => {
   const fg = cms?.footer
   const settings = cms?.settings
 
+  const resolveSocialUrl = (platform: string | undefined): string | undefined => {
+    if (!platform || platform === 'none') return undefined
+    const entry = (settings?.socialLinks || []).find((s) => s.platform === platform)
+    return entry?.url
+  }
+
   const treatmentLinks = (cms?.disciplines || [])
     .slice()
     .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
@@ -97,7 +103,9 @@ export const Footer: React.FC = () => {
                 <Mono>{col.heading}</Mono>
                 <ul>
                   {col.items.map((item) => {
-                    const href = item.href || (item.social === 'whatsapp' ? waHref : '#')
+                    const socialUrl = resolveSocialUrl(item.social)
+                    const isWa = item.social === 'whatsapp'
+                    const href = socialUrl || (isWa ? waHref : item.href)
                     const external = href.startsWith('http')
                     return (
                       <li key={`${col.heading}-${item.label}`}>
