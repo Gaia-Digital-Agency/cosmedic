@@ -155,3 +155,45 @@
 | **Hours** | Concierge value | contact-hero.visitSection.conciergeHoursValue | already in contact-hero ✓ |
 
 **After:** contact-enquiry-section → hidden. contact-visit-section → hidden. One CONTACT card.
+
+---
+
+## RESULTS bucket — 1 card (PENDING)
+
+**Pattern:** Single RESULTS card (results-hero). Web page order top to bottom.
+
+### Card 1 — RESULTS (results-hero)
+
+| Section | Field | Source global | Source DB | Localized | Action |
+|---|---|---|---|---|---|
+| **Breadcrumb** | Page Label | results-hero | main: breadcrumb_label | no | expose (remove hidden) |
+| **Hero Image** | Two Line — TitleA | results-hero | locales: title_a | yes | already visible |
+| **Hero Image** | Two Line — TitleB | results-hero | locales: title_b | yes | already visible |
+| **Hero Image** | Paragraph | results-hero | locales: lede | yes | already visible |
+| **Hero Image** | Image | results-hero | main: hero_image_id | no (FK) | already visible |
+| **Hero Image** | Image Label | results-hero | locales: image_label | yes | already visible |
+| **Featured Cases** | Two Line — TitleA | results-featured-cases-view | locales: heading_pre | yes | move → results-hero.featuredCases |
+| **Featured Cases** | Two Line — TitleB | results-featured-cases-view | locales: heading_italic | yes | move |
+| **Featured Cases** | Paragraph | results-featured-cases-view | locales: lede | yes | move |
+| **Featured Cases** | Filter Bar Label | results-featured-cases-view | locales: filter_bar_label | yes | move |
+| **Featured Cases** | Count Format | results-featured-cases-view | locales: count_format | yes | move |
+| **Library CTA** | Eyebrow | library-cta | locales: eyebrow | yes | move → results-hero.libraryCta |
+| **Library CTA** | Two Line — TitleA | library-cta | locales: heading_pre | yes | move |
+| **Library CTA** | Two Line — TitleB | library-cta | locales: heading_italic | yes | move |
+| **Library CTA** | Paragraph | library-cta | locales: body | yes | move |
+| **Library CTA** | CTA Button | library-cta | locales: button_label | yes | move |
+| **Stories** | Two Line — TitleA | results-stories-view | locales: heading_pre | yes | move → results-hero.storiesView |
+| **Stories** | Two Line — TitleB | results-stories-view | locales: heading_italic | yes | move |
+| **Stories** | Paragraph | results-stories-view | locales: lede | yes | move |
+| **Share Story** | Eyebrow | share-cta | main: eyebrow | no → make localized | move → results-hero.share |
+| **Share Story** | Two Line — TitleA | share-cta | main: heading_pre | no → make localized | move |
+| **Share Story** | Two Line — TitleB | share-cta | main: heading_italic | no → make localized | move |
+| **Share Story** | Title C (roman tail) | share-cta | main: heading_post | no → make localized | move |
+| **Share Story** | Paragraph | share-cta | main: body | no → make localized | move |
+| **Share Story** | CTA Button | share-cta | main: button_label | no → make localized | move |
+
+**Duplication resolved:** library_cta_locales.share_* columns are ghost data — web reads from share-cta, not libraryCta.share. Drop, not carried forward.
+
+**Hidden by design:** chapter, imageHue, all buttonHref fields.
+
+**After:** results-featured-cases-view → hidden. results-stories-view → hidden. library-cta → hidden. share-cta → hidden. One RESULTS card.
