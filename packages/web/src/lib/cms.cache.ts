@@ -201,8 +201,8 @@ async function doLoad(locale?: string): Promise<CmsCache> {
       Promise.resolve({}), // consultation-policy merged into pricing-insurance.consultation
       fetchGlobal<FormDefaults>('form-defaults', 1, locale),
       fetchGlobal<SeoDefaultsGlobal>('seo-defaults', 1, locale),
-      fetchGlobal<ContactHeroGlobal>('contact-hero', 1, locale).catch(() => ({})),
-      fetchGlobal<ContactEnquirySectionGlobal>('contact-enquiry-section', 1, locale).catch(() => ({})),
+      fetchGlobal<ContactHeroGlobal>('contact-hero', 2, locale).catch(() => ({})),
+      Promise.resolve({}), // contact-enquiry-section merged into contact-hero.enquiry
       Promise.resolve({}), // contact-visit-section merged into contact-hero.visitSection
       fetchGlobal<JourneyHeroGlobal>('journey-hero', 1, locale).catch(() => ({})),
       fetchGlobal<JourneyStatsGlobal>('journey-stats', 1, locale).catch(() => ({})),

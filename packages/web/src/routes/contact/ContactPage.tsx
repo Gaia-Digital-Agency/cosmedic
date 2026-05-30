@@ -47,8 +47,8 @@ const OPTIONAL_LABEL = (
 export const ContactPage: React.FC = () => {
   const cms = useCms()
   const hero = cms?.contactHero ?? {}
-  const enquiry = cms?.contactEnquirySection ?? {}
-  const visit = (cms?.contactHero as any)?.visitSection ?? cms?.contactVisitSection ?? {}
+  const enquiry = (cms?.contactHero as any)?.enquiry ?? {}
+  const visit = (cms?.contactHero as any)?.visitSection ?? {}
   const settings = cms?.settings ?? {}
   const directLines = enquiry.directLines ?? {}
   const fl = enquiry.formLabels ?? {}
@@ -152,7 +152,7 @@ export const ContactPage: React.FC = () => {
 
   const titleLines: [string, string] = intent
     ? [intent.title, '']
-    : [hero.title?.a || 'Begin, when', hero.title?.b || 'you are ready.']
+    : [hero.titleA || 'Begin, when', hero.titleB || 'you are ready.']
   const heroLede = intent
     ? intent.lede
     : hero.lede

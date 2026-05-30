@@ -6,7 +6,7 @@ export const ContactVisitSection: GlobalConfig = {
   slug: 'contact-visit-section',
   label: 'Visit',
   admin: {
-    group: 'Contact',
+    group: 'Contact', // merged into contact-hero.visitSection
     hidden: true,
     description: 'Lower section on /contact: section eyebrow, two-line heading, body paragraph, map image, "Open in Maps" / "Get directions" button labels, and Hours block. The address block, opening hours, and "Get directions" URL VALUES are NOT edited here — source: Homepage → Settings → addressLine1, addressLine2, city, postalCode, country, hoursMonFri, hoursSatSun, googleMapsUrl. Edit them once in Settings and they update on /contact and in the footer.',
   },

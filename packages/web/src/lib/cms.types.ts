@@ -370,12 +370,39 @@ export type Settings = {
 
 export type ContactHeroGlobal = {
   chapter?: string
-  title?: { a?: string; b?: string }
+  titleA?: string
+  titleB?: string
   lede?: string
   heroImage?: CmsMedia | number | null
   imageHue?: number
   imageLabel?: string
   breadcrumbLabel?: string
+  enquiry?: {
+    eyebrow?: string
+    headingPre?: string
+    headingItalic?: string
+    intro?: string
+    directLines?: { sectionLabel?: string; conciergeLabel?: string; whatsappLabel?: string; emailLabel?: string; pressLabel?: string }
+    trustLine?: string
+    intentCopy?: Array<{ slug?: string; eyebrow?: string; title?: string; lede?: string }>
+    formLabels?: {
+      nameLabel?: string; namePlaceholder?: string
+      emailLabel?: string; emailPlaceholder?: string
+      treatmentLabel?: string; treatmentPlaceholder?: string
+      addDetailsLabel?: string
+      countryLabel?: string; countryPlaceholder?: string
+      dateLabel?: string; datePlaceholder?: string
+      messageLabel?: string; messagePlaceholder?: string
+    }
+    submitLabels?: { send?: string; sending?: string; sent?: string; successMessage?: string }
+  }
+  visitSection?: {
+    headingPre?: string; headingItalic?: string; body?: string
+    mapImage?: CmsMedia | number | null
+    clinicHoursLabel?: string; conciergeHoursLabel?: string; conciergeHoursValue?: string
+    openInMapsLabel?: string; getDirectionsLabel?: string
+    eyebrow?: string; mapImageLabel?: string; mapImageHue?: number
+  }
 }
 
 export type ContactEnquirySectionGlobal = {
