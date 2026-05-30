@@ -90,7 +90,7 @@ export const SurgeonsIndex: React.FC = () => {
 
   const cms = useCms()
   const heroCms = cms?.surgeonsHero
-  const leadCms = cms?.surgeonsLeadView
+  const leadCms = (cms?.surgeonsPlasticView as any)?.lead ?? cms?.surgeonsLeadView
   const plasticCms = (cms?.surgeonsPlasticView as any)?.plasticSurgery ?? cms?.surgeonsPlasticView
   const aestheticCms = (cms?.surgeonsPlasticView as any)?.aestheticMedicine ?? cms?.surgeonsAestheticView
 

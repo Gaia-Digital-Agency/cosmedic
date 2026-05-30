@@ -4,15 +4,31 @@ import { revalidateGlobalAfterChange } from '../../lib/revalidate'
 
 export const SurgeonsPlasticView: GlobalConfig = {
   slug: 'surgeons-plastic-view',
-  label: 'Surgery & Aesthetics',
+  label: 'Sections',
   admin: {
     group: 'Experts',
     description:
-      'Section chrome for both surgeon grids on /experts — Plastic Surgery section and Aesthetic Medicine section. Cards come from **Surgeons** collection filtered by group. Edit the heading and intro paragraph for each section here.',
+      'Section chrome for all three editorial sections on /experts: Lead Surgeon panel, Plastic Surgery grid, and Aesthetic Medicine grid.',
   },
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
+    // ── Lead Surgeon section ──────────────────────────────────────────────
+    {
+      name: 'lead',
+      type: 'group',
+      admin: { description: 'Lead Surgeon panel on /experts.' },
+      fields: [
+        { name: 'sectionEyebrow', type: 'text', required: true, localized: true,
+          admin: { description: 'Eyebrow above the section, e.g. "Lead Plastic Surgeon".' } },
+        { name: 'blockEyebrow', type: 'text', required: true, localized: true,
+          admin: { description: 'Eyebrow above the surgeon name inside the block, e.g. "Lead Surgeon".' } },
+        { name: 'statLabelTrained', type: 'text', required: true, localized: true, defaultValue: 'Trained' },
+        { name: 'statLabelSpecialty', type: 'text', required: true, localized: true, defaultValue: 'Specialty' },
+        { name: 'statLabelDistinction', type: 'text', required: true, localized: true, defaultValue: 'Distinction' },
+        { name: 'ctaLabel', type: 'text', required: true, localized: true, defaultValue: 'Read the full profile' },
+      ],
+    },
     // ── Plastic Surgery section ───────────────────────────────────────────
     {
       name: 'plasticSurgery',

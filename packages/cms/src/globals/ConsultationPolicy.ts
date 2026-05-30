@@ -7,6 +7,7 @@ export const ConsultationPolicy: GlobalConfig = {
   label: 'Consultation',
   admin: {
     group: 'Procedures',
+    hidden: true,
     description: 'Consultation fee + waiver callout displayed at the bottom of /pricing (and selectable for /contact + procedure-detail pages). Sourced from pricelist.xlsx "Further Info" sheet.',
   },
   access: { read: readPublic, update: isAuthenticated },

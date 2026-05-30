@@ -198,7 +198,7 @@ async function doLoad(locale?: string): Promise<CmsCache> {
       fetchGlobal<FloatingChromeGlobal>('floating-chrome', 1, locale),
       Promise.resolve({}), // brand-stats merged into home-intro.trustStrip
       fetchGlobal<EndorsementMarkGlobal>('endorsement-mark', 1, locale),
-      fetchGlobal<ConsultationPolicy>('consultation-policy', 1, locale),
+      Promise.resolve({}), // consultation-policy merged into pricing-insurance.consultation
       fetchGlobal<FormDefaults>('form-defaults', 1, locale),
       fetchGlobal<SeoDefaultsGlobal>('seo-defaults', 1, locale),
       fetchGlobal<ContactHeroGlobal>('contact-hero', 1, locale).catch(() => ({})),
@@ -213,12 +213,12 @@ async function doLoad(locale?: string): Promise<CmsCache> {
       fetchGlobal<DisciplineDetailTemplateGlobal>('discipline-detail-template', 1, locale).catch(() => ({})),
       fetchGlobal<SubCategoryDetailTemplateGlobal>('sub-category-detail-template', 1, locale).catch(() => ({})),
       fetchGlobal<SurgeonsHeroGlobal>('surgeons-hero', 1, locale).catch(() => ({})),
-      fetchGlobal<SurgeonsLeadViewGlobal>('surgeons-lead-view', 1, locale).catch(() => ({})),
+      Promise.resolve({}), // surgeons-lead-view merged into surgeons-plastic-view.lead
       fetchGlobal<SurgeonsSectionViewGlobal>('surgeons-plastic-view', 1, locale).catch(() => ({})),
       Promise.resolve({}), // surgeons-aesthetic-view merged into surgeons-plastic-view.aestheticMedicine
       fetchGlobal<SurgeonDetailTemplateGlobal>('surgeon-detail-template', 1, locale).catch(() => ({})),
       fetchGlobal<BlogPostTemplateGlobal>('blog-post-template', 1, locale).catch(() => ({})),
-      fetchGlobal<PricingHeroGlobal>('pricing-hero', 1, locale).catch(() => ({} as PricingHeroGlobal)),
+      Promise.resolve({}), // pricing-hero merged into treatments-hero.pricing
       fetchGlobal<PricingOverviewGlobal>('pricing-overview', 1, locale).catch(() => ({})),
       fetchGlobal<PricingFootnoteGlobal>('pricing-footnote', 1, locale).catch(() => ({})),
       fetchGlobal<PricingInsuranceGlobal>('pricing-insurance', 1, locale).catch(() => ({})),
@@ -254,11 +254,11 @@ async function doLoad(locale?: string): Promise<CmsCache> {
       const pp = pages[pricingPageIdx]
       pages[pricingPageIdx] = {
         ...pp,
-        lede: pp.lede || pricingHero.lede,
-        heroImage: pp.heroImage || pricingHero.heroImage || undefined,
+        lede: pp.lede || (treatmentsHero as any)?.pricing?.lede || pricingHero.lede,
+        heroImage: pp.heroImage || (treatmentsHero as any)?.pricing?.heroImage || pricingHero.heroImage || undefined,
         chapterTitle: pp.chapterTitle || {
-          a: pricingHero.titleA,
-          b: pricingHero.titleB,
+          a: (treatmentsHero as any)?.pricing?.titleA || pricingHero.titleA,
+          b: (treatmentsHero as any)?.pricing?.titleB || pricingHero.titleB,
         },
         tagline: pp.tagline || pricingHero.chapter,
       } as typeof pp

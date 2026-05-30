@@ -7,6 +7,7 @@ export const PricingHero: GlobalConfig = {
   label: 'Pricing Hero',
   admin: {
     group: 'Procedures',
+    hidden: true,
     description:
       'ChapterOpener at the top of /pricing — chapter eyebrow, two-line title, lede, hero image, image hue, image label, breadcrumb label. Single source of truth for the /pricing hero.',
   },

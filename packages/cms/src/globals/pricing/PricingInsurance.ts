@@ -4,11 +4,11 @@ import { revalidateGlobalAfterChange } from '../../lib/revalidate'
 
 export const PricingInsurance: GlobalConfig = {
   slug: 'pricing-insurance',
-  label: 'Insurance & Payment',
+  label: 'Pricing Terms',
   admin: {
     group: 'Procedures',
     description:
-      'Two-column section at the bottom of /pricing — left column (Insurance) and right column (Payment terms).',
+      'Bottom section of /pricing: Insurance (left column), Payment terms (right column), and Consultation fee/waiver.',
   },
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
@@ -47,6 +47,19 @@ export const PricingInsurance: GlobalConfig = {
           defaultValue:
             'Deposit | 20% on confirmation\nBalance | On admission, by transfer\nCurrencies | IDR, AUD, USD, EUR\nCards | Accepted, 1.8% surcharge\nRefunds | Full, until 14 days before\nFinance | Available via partner lender',
           admin: { description: 'One row per line. Format: "Label | Value".' } },
+      ],
+    },
+    // ── Consultation ──────────────────────────────────────────────────────
+    {
+      name: 'consultation',
+      type: 'group',
+      admin: { description: 'Consultation fee callout at the bottom of /pricing.' },
+      fields: [
+        { name: 'feeIdr', type: 'number', defaultValue: 150000,
+          admin: { description: 'Consultation fee in IDR. AUD equivalent computed from Settings.audToIdrRate.' } },
+        { name: 'waiverConditionText', type: 'textarea', localized: true,
+          defaultValue: 'Consultation fee is waived if treatment is performed the same day.',
+          admin: { description: 'Waiver explanation rendered after the fee amount.' } },
       ],
     },
   ],
