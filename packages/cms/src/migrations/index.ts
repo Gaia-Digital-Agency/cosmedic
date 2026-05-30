@@ -22,6 +22,7 @@ import * as migration_20260528_120000_analytics_topics_id_trigger from './202605
 import * as migration_20260530_011415_add_localization from './20260530_011415_add_localization';
 import * as migration_20260530_034550_merge_contact_visit_into_hero from './20260530_034550_merge_contact_visit_into_hero';
 import * as migration_20260530_055548_merge_plastic_aesthetic from './20260530_055548_merge_plastic_aesthetic';
+import * as migration_20260530_062549_homepage_sections_editorial from './20260530_062549_homepage_sections_editorial';
 
 export const migrations = [
   {
@@ -142,6 +143,11 @@ export const migrations = [
   {
     up: migration_20260530_055548_merge_plastic_aesthetic.up,
     down: migration_20260530_055548_merge_plastic_aesthetic.down,
-    name: '20260530_055548_merge_plastic_aesthetic'
+    name: '20260530_055548_merge_plastic_aesthetic',
+  },
+  {
+    up: migration_20260530_062549_homepage_sections_editorial.up,
+    down: migration_20260530_062549_homepage_sections_editorial.down,
+    name: '20260530_062549_homepage_sections_editorial'
   },
 ];

@@ -14,7 +14,7 @@ const STEPS: [string, string, string][] = [
 
 export const Journey: React.FC = () => {
   const cms = useCms()
-  const g = cms?.homeJourneyView
+  const g = (cms?.homeIntro as any)?.journey ?? cms?.homeJourneyView
   const eyebrow = g?.eyebrow || 'Your Journey'
   const headingPart1 = g?.heading?.a || 'From enquiry to'
   const headingAccent = g?.heading?.b || 'homecoming.'

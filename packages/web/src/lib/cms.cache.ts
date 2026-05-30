@@ -196,7 +196,7 @@ async function doLoad(locale?: string): Promise<CmsCache> {
       fetchGlobal<HeaderGlobal>('header', 1, locale),
       fetchGlobal<FooterGlobal>('footer', 1, locale),
       fetchGlobal<FloatingChromeGlobal>('floating-chrome', 1, locale),
-      fetchGlobal<BrandStatsGlobal>('brand-stats', 1, locale),
+      Promise.resolve({}), // brand-stats merged into home-intro.trustStrip
       fetchGlobal<EndorsementMarkGlobal>('endorsement-mark', 1, locale),
       fetchGlobal<ConsultationPolicy>('consultation-policy', 1, locale),
       fetchGlobal<FormDefaults>('form-defaults', 1, locale),
@@ -233,12 +233,12 @@ async function doLoad(locale?: string): Promise<CmsCache> {
       fetchGlobal<HomeIntroGlobal>('home-intro', 1, locale).catch(() => ({})),
       fetchGlobal<HomeLeadMagnetGlobal>('home-lead-magnet', 1, locale).catch(() => ({})),
       fetchGlobal<HomePlaceGlobal>('home-place', 1, locale).catch(() => ({})),
-      fetchGlobal<HomeTreatmentsViewGlobal>('home-treatments-view', 1, locale).catch(() => ({})),
-      fetchGlobal<HomePricingViewGlobal>('home-pricing-view', 1, locale).catch(() => ({})),
+      fetchGlobal<HomeTreatmentsViewGlobal>('home-treatments-view', 1, locale).catch(() => ({})), // now 'Sections'
+      Promise.resolve({}), // home-pricing-view merged into home-treatments-view.pricing
       fetchGlobal<HomeSurgeonsViewGlobal>('home-surgeons-view', 1, locale).catch(() => ({})),
-      fetchGlobal<HomeGalleryViewGlobal>('home-gallery-view', 1, locale).catch(() => ({})),
-      fetchGlobal<HomeJourneyViewGlobal>('home-journey-view', 1, locale).catch(() => ({})),
-      fetchGlobal<HomeStoriesViewGlobal>('home-stories-view', 1, locale).catch(() => ({})),
+      Promise.resolve({}), // home-gallery-view merged into home-treatments-view.gallery
+      Promise.resolve({}), // home-journey-view merged into home-intro.journey
+      Promise.resolve({}), // home-stories-view merged into home-treatments-view.stories
       fetchGlobal<NotFoundPageGlobal>('not-found-page', 1, locale).catch(() => ({})),
     ])
     // changes08-B: clinicCatalogueItems derived from procedures (single source of truth).

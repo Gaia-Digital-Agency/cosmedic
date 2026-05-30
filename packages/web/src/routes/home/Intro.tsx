@@ -5,7 +5,7 @@ import { useCms } from '@/lib/cms-context'
 
 export const Intro: React.FC = () => {
   const cms = useCms()
-  const g = cms?.homeIntro
+  const g = (cms?.homeIntro as any)?.intro ?? cms?.homeIntro
   const eyebrow = g?.eyebrow || 'Our Approach'
   const pqBefore = g?.pullQuoteBefore || 'Aesthetic medicine, considered with the same '
   const pqAccent = g?.pullQuoteAccent || 'care '

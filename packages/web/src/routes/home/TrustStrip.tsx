@@ -11,6 +11,7 @@ const FALLBACK_STATS = [
 
 export const TrustStrip: React.FC = () => {
   const cms = useCms()
-  const stats = cms?.brandStats?.stats?.length ? cms.brandStats.stats : FALLBACK_STATS
+  const trustStripData = (cms?.homeIntro as any)?.trustStrip ?? cms?.brandStats?.stats
+  const stats = trustStripData?.length ? trustStripData : FALLBACK_STATS
   return <StatsRow stats={stats} variant="trust-strip" />
 }
