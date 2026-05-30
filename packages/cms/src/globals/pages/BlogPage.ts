@@ -15,6 +15,10 @@ export const BlogPage: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     ...pageFields({ hideHero: true }),
+    { name: 'breadcrumbLabel', label: 'Breadcrumb — Page Label', type: 'text', defaultValue: 'Journal',
+      admin: { description: 'Second item in the /blog breadcrumb trail.' } },
+    { name: 'imageLabel', label: 'Image Label', type: 'text', defaultValue: 'JOURNAL',
+      admin: { description: 'All-caps label overlaid on the hero image.' } },
     {
       name: 'thisIssueEyebrow',
       type: 'text',

@@ -28,6 +28,7 @@ export const PrivacyPage: React.FC = () => {
   const readingTimeLine = page?.readingTimeLine || 'Read in 6 minutes'
   const intro = page?.introParagraph
   const imageLabel = page?.imageLabel || 'PRIVACY'
+  const breadcrumbLabel = (page as any)?.breadcrumbLabel || 'Privacy & Terms'
   const tocHeading = page?.tocHeading || 'Contents'
   const dpo = page?.dpo ?? {}
 
@@ -40,7 +41,7 @@ export const PrivacyPage: React.FC = () => {
         image={heroImage}
         imageHue={5}
         imageLabel={imageLabel}
-        breadcrumbs={[{ label: 'BIMC CosMedic', href: '/' }, { label: 'Privacy & Terms' }]}
+        breadcrumbs={[{ label: 'BIMC CosMedic', href: '/' }, { label: breadcrumbLabel }]}
       />
 
       <section

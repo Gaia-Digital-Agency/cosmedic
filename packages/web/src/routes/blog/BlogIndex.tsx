@@ -54,6 +54,8 @@ export const BlogIndex: React.FC = () => {
     page?.lede ||
     "Quarterly dispatches from our surgeons, aestheticians, and concierge — on technique, recovery, restraint, and the small decisions that add up to a good result."
   const heroImage = mediaUrl(page?.heroImage, '') || IMG.texture
+  const imageLabel = (page as any)?.imageLabel || 'JOURNAL'
+  const breadcrumbLabel = (page as any)?.breadcrumbLabel || 'Journal'
 
   // R8.C — archive section + featured-post chrome from blog-page global.
   const thisIssueEyebrow = page?.thisIssueEyebrow || 'This issue'
@@ -78,8 +80,8 @@ export const BlogIndex: React.FC = () => {
         lede={lede}
         image={heroImage}
         imageHue={2}
-        imageLabel="JOURNAL"
-        breadcrumbs={[{ label: 'BIMC CosMedic', href: '/' }, { label: 'Journal' }]}
+        imageLabel={imageLabel}
+        breadcrumbs={[{ label: 'BIMC CosMedic', href: '/' }, { label: breadcrumbLabel }]}
       />
 
       <section className="page-section">

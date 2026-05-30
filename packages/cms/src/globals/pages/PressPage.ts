@@ -15,6 +15,18 @@ export const PressPage: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     ...pageFields({ hideHero: true }),
+    { name: 'breadcrumbLabel', label: 'Breadcrumb — Page Label', type: 'text', defaultValue: 'Accreditations & Press',
+      admin: { description: 'Second item in the /press breadcrumb trail.' } },
+    { name: 'imageLabel', label: 'Image Label', type: 'text', defaultValue: 'ACCREDITATIONS',
+      admin: { description: 'All-caps label overlaid on the hero image.' } },
+    { name: 'topStats', label: 'Stats Row', type: 'array',
+      admin: { description: '4 stat tiles shown below the hero on /press.' },
+      fields: [
+        { name: 'number', type: 'text', required: true, admin: { description: 'e.g. "28", "First"' } },
+        { name: 'label', type: 'text', required: true, admin: { description: 'e.g. "Years of practice"' } },
+        { name: 'italic', type: 'checkbox', defaultValue: false, admin: { description: 'Render number in italic (for word-like values e.g. "First").' } },
+      ],
+    },
     {
       name: 'accreditationsSection',
       type: 'group',

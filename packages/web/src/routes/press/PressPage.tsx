@@ -30,6 +30,9 @@ export const PressPage: React.FC = () => {
     page?.lede ||
     "Indonesia's first ACHSI-accredited international hospital, named Medical Tourism Hospital of the Year at the 2026 Healthcare Asia Awards, and quietly reviewed in the publications we read ourselves."
   const heroImage = mediaUrl(page?.heroImage, '') || IMG.clinic
+  const imageLabel = (page as any)?.imageLabel || 'ACCREDITATIONS'
+  const breadcrumbLabel = (page as any)?.breadcrumbLabel || 'Accreditations & Press'
+  const topStats = (page as any)?.topStats as Array<{number:string;label:string;italic?:boolean}> | undefined
 
   const accred = page?.accreditationsSection || {}
   const pressSec = page?.pressSection || {}
@@ -54,35 +57,24 @@ export const PressPage: React.FC = () => {
         lede={lede}
         image={heroImage}
         imageHue={3}
-        imageLabel="ACCREDITATIONS"
-        breadcrumbs={[{ label: 'BIMC CosMedic', href: '/' }, { label: 'Accreditations & Press' }]}
+        imageLabel={imageLabel}
+        breadcrumbs={[{ label: 'BIMC CosMedic', href: '/' }, { label: breadcrumbLabel }]}
       />
 
       <div className="stats-row">
-        <Reveal>
-          <div className="stat-block">
-            <span className="stat-num italic">First</span>
-            <span className="stat-label">ACHSI in Indonesia</span>
-          </div>
-        </Reveal>
-        <Reveal delay={80}>
-          <div className="stat-block">
-            <span className="stat-num">2026</span>
-            <span className="stat-label">Hospital of the Year</span>
-          </div>
-        </Reveal>
-        <Reveal delay={160}>
-          <div className="stat-block">
-            <span className="stat-num">28</span>
-            <span className="stat-label">Years of practice</span>
-          </div>
-        </Reveal>
-        <Reveal delay={240}>
-          <div className="stat-block">
-            <span className="stat-num">8</span>
-            <span className="stat-label">International standards</span>
-          </div>
-        </Reveal>
+        {(topStats || [
+          { number: 'First', label: 'ACHSI in Indonesia', italic: true },
+          { number: '2026', label: 'Hospital of the Year', italic: false },
+          { number: '28', label: 'Years of practice', italic: false },
+          { number: '8', label: 'International standards', italic: false },
+        ]).map((stat, i) => (
+          <Reveal key={i} delay={i * 80}>
+            <div className="stat-block">
+              <span className={`stat-num${stat.italic ? ' italic' : ''}`}>{stat.number}</span>
+              <span className="stat-label">{stat.label}</span>
+            </div>
+          </Reveal>
+        ))}
       </div>
 
       <section className="page-section">

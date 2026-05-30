@@ -15,6 +15,8 @@ export const PrivacyPage: GlobalConfig = {
   hooks: revalidateGlobalAfterChange(),
   fields: [
     ...pageFields({ hideHero: true }),
+    { name: 'breadcrumbLabel', label: 'Breadcrumb — Page Label', type: 'text', defaultValue: 'Privacy & Terms',
+      admin: { description: 'Second item in the /privacy breadcrumb trail.' } },
     {
       name: 'lastUpdatedDate',
       type: 'text',
