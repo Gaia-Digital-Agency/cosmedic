@@ -7,7 +7,6 @@ export const HomePlace: GlobalConfig = {
   label: 'Place',
   admin: {
     group: 'Homepage',
-    hidden: true,
     description:
       '"Recover in paradise" / Place section on /. Eyebrow, two-line heading, body paragraph, the 4 lettered rows (A./B./C./D.), and the bottom CTA.',
   },
