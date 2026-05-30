@@ -66,7 +66,7 @@ export const RecoveryStaysPage: GlobalConfig = {
       name: 'inclusionsSection',
       label: "What's Included",
       type: 'group',
-      admin: { hidden: true, description: '"What\'s included" section. Edit heading + intro paragraph here; edit each inclusion in the Villas list below.' },
+      admin: { description: '"What\'s included" section heading. Inclusions grid items are managed separately.' },
       fields: [
         { name: 'eyebrow', label: 'Label above heading', type: 'text', localized: true, defaultValue: "What's included" },
         { name: 'headingPre', type: 'text', localized: true, defaultValue: 'Every stay, ' },
