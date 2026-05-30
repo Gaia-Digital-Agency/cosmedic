@@ -243,3 +243,46 @@
 **Web path fix:** JourneyPage.tsx reads `hero?.title?.a` — CMS has flat `titleA`. Fix web path after merge.
 
 **After:** journey-stats → hidden. recovery-stays-page → hidden. journey-page → already hidden. One JOURNEY card.
+
+---
+
+## EXPERTS bucket — 2 cards (PENDING)
+
+**Pattern:** Already correct structure — 2 cards for 2 pages. No merge needed. Fixes only.
+
+### Card 1 — EXPERTS (surgeons-hero) → /experts
+
+| Section | Field | Source DB | Action |
+|---|---|---|---|
+| Breadcrumb | Page Label | surgeons_hero: breadcrumb_label | expose (hidden) |
+| Hero Image | Two Line — TitleA | locales: title_a | already visible ✓ |
+| Hero Image | Two Line — TitleB | locales: title_b | already visible ✓ |
+| Hero Image | Paragraph | locales: lede | already visible ✓ |
+| Hero Image | Image | main: hero_image_id | already visible ✓ |
+| Hero Image | Image Label | locales: image_label | already visible ✓ |
+| Lead Surgeon | Section Eyebrow | locales: sections_lead_section_eyebrow | already visible ✓ |
+| Lead Surgeon | Block Eyebrow | locales: sections_lead_block_eyebrow | already visible ✓ |
+| Lead Surgeon | Stat labels ×3 | locales: sections_lead_stat_label_* | already visible ✓ |
+| Lead Surgeon | CTA label | locales: sections_lead_cta_label | already visible ✓ |
+| Plastic Surgery | Eyebrow | locales: sections_plastic_surgery_eyebrow | already visible ✓ |
+| Plastic Surgery | Two Line — TitleA (roman prefix) | locales: sections_plastic_surgery_heading_a | fix web path: heading?.a → headingA |
+| Plastic Surgery | Two Line — TitleB (italic) | locales: sections_plastic_surgery_heading_italic | seed NULL → 'Reconstructive' |
+| Plastic Surgery | Title C (roman suffix) | locales: sections_plastic_surgery_heading_b | fix web path: heading?.b → headingB |
+| Plastic Surgery | Paragraph | locales: sections_plastic_surgery_lede | already visible ✓ |
+| Aesthetic Medicine | Eyebrow | locales: sections_aesthetic_medicine_eyebrow | already visible ✓ |
+| Aesthetic Medicine | Two Line — TitleA | locales: sections_aesthetic_medicine_heading_a | seed NULL → '' |
+| Aesthetic Medicine | Two Line — TitleB (italic) | locales: sections_aesthetic_medicine_heading_italic | seed NULL → 'Quiet' |
+| Aesthetic Medicine | Title C | locales: sections_aesthetic_medicine_heading_b | fix web path: heading?.b → headingB |
+| Aesthetic Medicine | Paragraph | locales: sections_aesthetic_medicine_lede | already visible ✓ |
+
+### Card 2 — DETAIL TEMPLATE (surgeon-detail-template) → /experts/[slug]
+
+Already correct — all fields visible, no changes needed.
+
+**No DB migration required.** All columns already exist.
+
+**Changes:**
+1. SurgeonsHero label `'Hero'` → `'Experts'`
+2. Expose `breadcrumbLabel`
+3. Seed 3 NULL fields in surgeons_hero_locales
+4. Fix 3 web path mismatches in SurgeonsIndex.tsx (`heading?.a` → `headingA` etc.)

@@ -196,9 +196,9 @@ export const SurgeonsIndex: React.FC = () => {
           <Eyebrow>{plasticCms?.eyebrow || FB.plastic.eyebrow}</Eyebrow>
           <div>
             <h2 className="section-title">
-              {plasticCms?.heading?.a ?? FB.plastic.heading.a}
+              {plasticCms?.headingA ?? plasticCms?.heading?.a ?? FB.plastic.heading.a}
               <span className="italic">{plasticCms?.headingItalic || FB.plastic.headingItalic}</span>
-              {plasticCms?.heading?.b ?? FB.plastic.heading.b}
+              {plasticCms?.headingB ?? plasticCms?.heading?.b ?? FB.plastic.heading.b}
             </h2>
             <p className="section-lede">{plasticCms?.lede || FB.plastic.lede}</p>
           </div>
@@ -217,9 +217,9 @@ export const SurgeonsIndex: React.FC = () => {
           <Eyebrow>{aestheticCms?.eyebrow || FB.aesthetic.eyebrow}</Eyebrow>
           <div>
             <h2 className="section-title">
-              {aestheticCms?.heading?.a ?? FB.aesthetic.heading.a}
+              {aestheticCms?.headingA ?? aestheticCms?.heading?.a ?? FB.aesthetic.heading.a}
               <span className="italic">{aestheticCms?.headingItalic || FB.aesthetic.headingItalic}</span>
-              {aestheticCms?.heading?.b ?? FB.aesthetic.heading.b}
+              {aestheticCms?.headingB ?? aestheticCms?.heading?.b ?? FB.aesthetic.heading.b}
             </h2>
             <p className="section-lede">{aestheticCms?.lede || FB.aesthetic.lede}</p>
           </div>

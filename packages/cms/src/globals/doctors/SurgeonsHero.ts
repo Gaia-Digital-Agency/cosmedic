@@ -4,17 +4,16 @@ import { revalidateGlobalAfterChange } from '../../lib/revalidate'
 
 export const SurgeonsHero: GlobalConfig = {
   slug: 'surgeons-hero',
-  label: 'Hero',
+  label: 'Experts',
   admin: {
     group: 'Experts',
-    description:
-      'Hero (ChapterOpener) for the /surgeons index page. Single source of truth — used nowhere else.',
+    description: 'All content for /experts — breadcrumb, hero, lead surgeon panel, plastic surgery section, aesthetic medicine section.',
   },
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),
   fields: [
-    { name: 'breadcrumbLabel', type: 'text', defaultValue: 'Surgeons',
-      admin: { description: 'Last segment in the breadcrumb trail. e.g. "Surgeons".', hidden: true } },
+    { name: 'breadcrumbLabel', label: 'Breadcrumb — Page Label', type: 'text', defaultValue: 'Surgeons',
+      admin: { description: 'Second item in the /experts breadcrumb trail.' } },
     { name: 'titleA', label: 'Title — Line A', type: 'text', required: true, localized: true,
       admin: { description: 'First line (roman). e.g. "Hands you".' } },
     { name: 'titleB', label: 'Title — Line B', type: 'text', required: true, localized: true,
