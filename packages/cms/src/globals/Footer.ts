@@ -7,8 +7,7 @@ export const Footer: GlobalConfig = {
   label: 'Footer',
   admin: {
     group: 'Homepage',
-    hidden: true,
-    description: 'Footer at the bottom of every page: white-on-dark logo, three link columns (Treatments / About / Connect), enquiry summary, address, copyright line.',
+    description: 'Footer on every page: logo, newsletter signup, About links, Connect links, copyright lines.',
   },
   access: { read: readPublic, update: isAuthenticated },
   hooks: revalidateGlobalAfterChange(),

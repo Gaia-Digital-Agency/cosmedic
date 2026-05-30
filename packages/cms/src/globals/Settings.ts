@@ -26,9 +26,9 @@ export const Settings: GlobalConfig = {
     { name: 'rateLockedManually', label: 'Lock Rate Manually', type: 'checkbox', defaultValue: false,
       admin: { description: 'When checked, the daily auto-fetch will not overwrite the rate above. Uncheck to resume auto-updates.' } },
     { name: 'rateLastFetchedAt', type: 'text',
-      admin: { description: 'Set automatically. Timestamp of the last rate check (auto or manual).', readOnly: true } },
+      admin: { description: 'Set automatically. Timestamp of the last rate check (auto or manual).', readOnly: true, hidden: true } },
     { name: 'rateSource', type: 'text',
-      admin: { description: 'Set automatically. Source and timestamp of the last fetch.', readOnly: true } },
+      admin: { description: 'Set automatically. Source and timestamp of the last fetch.', readOnly: true, hidden: true } },
     { name: 'roundIdrTo', label: 'Round IDR To', type: 'number', defaultValue: 50000,
       admin: { description: 'Round computed IDR to nearest N when converting from AUD. Default 50,000.' } },
     { name: 'contactEmail', label: 'General Email', type: 'text', defaultValue: 'cosmedic@bimcbali.com',
@@ -60,7 +60,7 @@ export const Settings: GlobalConfig = {
     {
       name: 'socialLinks',
       type: 'array',
-      admin: { description: 'Social links shown in the footer "Connect" column. Order here = display order.' },
+      admin: { description: 'Social links. Managed in Footer → Connect column.', hidden: true },
       fields: [
         { name: 'platform', type: 'select', required: true, options: [
           { label: 'Instagram', value: 'instagram' },

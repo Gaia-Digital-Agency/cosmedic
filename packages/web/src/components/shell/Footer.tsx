@@ -23,15 +23,6 @@ export const Footer: React.FC = () => {
   const fg = cms?.footer
   const settings = cms?.settings
 
-  // Resolve a social-platform key (instagram / facebook / whatsapp / …) to
-  // its URL via Settings.socialLinks. Returns undefined if not found, so
-  // the caller can fall back to the manual href in linkColumns.items[].href.
-  const resolveSocialUrl = (platform: string | undefined): string | undefined => {
-    if (!platform || platform === 'none') return undefined
-    const entry = (settings?.socialLinks || []).find((s) => s.platform === platform)
-    return entry?.url
-  }
-
   const treatmentLinks = (cms?.disciplines || [])
     .slice()
     .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
@@ -106,13 +97,7 @@ export const Footer: React.FC = () => {
                 <Mono>{col.heading}</Mono>
                 <ul>
                   {col.items.map((item) => {
-                    // Resolve URL: prefer Settings.socialLinks via item.social
-                    // flag (so the clinic edits one place); fall back to manual
-                    // href on the item; WhatsApp also has the legacy
-                    // wa.me-from-whatsappNumber path.
-                    const socialUrl = resolveSocialUrl(item.social)
-                    const isWa = item.social === 'whatsapp'
-                    const href = socialUrl || (isWa ? waHref : item.href)
+                    const href = item.href || (item.social === 'whatsapp' ? waHref : '#')
                     const external = href.startsWith('http')
                     return (
                       <li key={`${col.heading}-${item.label}`}>
