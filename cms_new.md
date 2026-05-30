@@ -204,8 +204,6 @@
 
 **Pattern:** Single JOURNEY card (journey-hero) covering both /journey and /recovery-stays. Web page order top to bottom, /journey first then /recovery-stays.
 
-**Also:** ContactHero.ts label rename `'Contact'` → `'Hero'`.
-
 ### Card 1 — JOURNEY (journey-hero)
 
 | Section | Field | Source global | Source DB | Localized | Action |
@@ -232,12 +230,8 @@
 | Portfolio | Two Line — TitleB | rec_stays_pg.portfolioSection | locales: portfolio_section_heading_italic | yes | move |
 | Portfolio | Title C (roman tail) | rec_stays_pg.portfolioSection | locales: portfolio_section_heading_post | yes | move |
 | Portfolio | Paragraph | rec_stays_pg.portfolioSection | locales: portfolio_section_lede | yes | move |
-| What's Included | Eyebrow | rec_stays_pg.inclusionsSection | locales: inclusions_section_eyebrow | yes | move + expose |
-| What's Included | Two Line — TitleA | rec_stays_pg.inclusionsSection | locales: inclusions_section_heading_pre | yes | move + expose |
-| What's Included | Two Line — TitleB | rec_stays_pg.inclusionsSection | locales: inclusions_section_heading_italic | yes | move + expose |
-| What's Included | Title C (roman tail) | rec_stays_pg.inclusionsSection | locales: inclusions_section_heading_post | yes | move + expose |
-| What's Included | Paragraph | rec_stays_pg.inclusionsSection | locales: inclusions_section_lede | yes | move + expose |
-| Inclusions grid | Letter, Title, Body | rec_stays_pg.inclusions | rec_stays_pg_inclusions + locales | array | move + expose |
+| What's Included | — | rec_stays_pg.inclusionsSection | locales | yes | keep hidden by design |
+| Inclusions grid | — | rec_stays_pg.inclusions | rec_stays_pg_inclusions | array | keep hidden by design |
 | Villa cards | — | RecoveryStays collection | collection | — | collection — no change |
 
 **Hidden by design:** chapter (both), imageHue (both), all buttonHref fields.
