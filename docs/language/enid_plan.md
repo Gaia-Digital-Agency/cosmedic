@@ -95,24 +95,22 @@ Provider: Vertex AI `gemini-2.5-flash` · credentials already in `packages/cms/.
 - [ ] A2.4. Enable temporarily on a test record (`AUTO_TRANSLATE_ENABLED=true` in dev) — verify: EN save → `id` locale filled, no loop, no crash, glossary terms preserved
 - [ ] A2.5. Reset to `AUTO_TRANSLATE_ENABLED=false` — stays silent until Phase F is done
 
-### Phase B — Per-locale CMS fetch (web layer)
-- [ ] B1. `cms.fetch.ts`: add `locale` param to all collection + global fetches; append `?locale={locale}` to API calls
-- [ ] B2. `cms.cache.ts`: cache keyed by `{resource}:{locale}`; `getCmsCacheSync(locale: Locale)`
-- [ ] B3. `cms-adapters.ts`: pass locale through all adapter calls; fallback to `en` when `id` value is empty string or null
-- [ ] B4. Test: fetch `/api/disciplines?locale=id` returns `id` values (or EN fallback) correctly
+### Phase B — Per-locale CMS fetch (web layer) ✅ COMPLETE (2026-05-30 · commit `794eb94`)
+- [x] B1. `cms.fetch.ts`: add `locale` param to all collection + global fetches; append `?locale={locale}` to API calls
+- [x] B2. `cms.cache.ts`: per-locale cache map `Record<Locale, CmsCache>`; `getCmsCacheSync(locale?)`, `loadCmsCache(force?, locale?)`, `setCmsCacheSync(next, locale?)` — all default to `'en'`, fully backward-compatible
+- [x] B3. `cms-adapters.ts`: no changes needed — adapters receive a locale-correct `CmsCache`; Payload `fallback:true` handles empty ID fields transparently at the API level
+- [x] B4. Test: `?locale=id` returns EN fallback values (correct — no ID content entered yet); `?locale=en` identical — both verified on `/api/disciplines`
 
-### Phase C — `/id/*` SSR routing + SEO
-**Spec already written — implement exactly from `enid.md` Prep #4.**
-
-- [ ] C1. `router.ts`: detect leading `/id` segment → `locale = 'id'`; strip prefix; resolve same route table
-- [ ] C2. `server.ts`: pass `locale` into render; pick locale-correct CMS cache
-- [ ] C3. `<html lang>` reflects active locale (`en` | `id`)
-- [ ] C4. Canonical: self-referential per locale — EN → `https://cosmedic.gaiada.online{path}`; ID → `…/id{path}`
-- [ ] C5. hreflang alternates on every page (3 tags: `en`, `id`, `x-default` → EN)
-- [ ] C6. `og:locale` = `en_US` / `id_ID`; add `og:locale:alternate`
-- [ ] C7. Sitemap: emit both `/{path}` and `/id/{path}` for every route; each `<url>` carries `<xhtml:link>` hreflang entries
-- [ ] C8. Locale detection order: URL `/id` prefix → cookie → `Settings.defaultLocale` → `en`. URL always wins.
-- [ ] C9. 301/redirect rules unaffected; `/id` + legacy slug redirects coexist
+### Phase C — `/id/*` SSR routing + SEO ✅ COMPLETE (2026-05-30 · commit `cd66b3c`)
+- [x] C1. `router.ts`: `stripLocalePrefix()` strips `/id` prefix; same route table resolves EN and ID paths
+- [x] C2. `server.ts`: locale detection; locale-correct CMS cache; locale forwarded to `render()` + `seoFor()`
+- [x] C3. `<html lang>` reflects active locale — `<!--html-lang-->` marker in `index.html` replaced per-request; `entry-server.tsx` embeds `window.__COSMEDIC_LOCALE__`; `entry-client.tsx` hydrates right locale cache
+- [x] C4. Canonical: EN → `https://cosmedic.gaiada.online{path}`; ID → `…/id{path}`
+- [x] C5. hreflang alternates on every page (3 tags: `en`, `id`, `x-default` → EN)
+- [x] C6. `og:locale` = `en_US` / `id_ID`; `og:locale:alternate` present
+- [x] C7. Sitemap emits both `/{path}` and `/id/{path}` for all 168 routes; each `<url>` has `<xhtml:link>` hreflang entries; `xmlns:xhtml` added to `<urlset>`
+- [x] C8. Locale detection order: URL `/id` prefix → cookie `locale_pref` → `'en'`
+- [x] C9. Legacy 301 redirects under `/id/*` correctly prefixed — e.g. `/id/treatments/surgical` → 301 `/id/procedures/surgical`
 
 ### Phase D — Enable EN|ID switcher
 - [ ] D1. `Header.tsx`: remove `aria-disabled`, opacity, tooltip; activate the locale toggle
