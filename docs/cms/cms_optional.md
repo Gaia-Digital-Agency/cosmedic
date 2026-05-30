@@ -1,31 +1,65 @@
-# CMS — Fields Visible in UI but Hidden in CMS
+# Cosmedic CMS — Hidden but Renders on Frontend
 
-> **ALL CONFLICTS RESOLVED — 2026-05-30**
-> Full visibility sweep + systematic group label pass applied.
-> Every field that renders as Lede, Para, Image, Title, Body, or Array is now visible.
-> No editor-inaccessible content remains.
-
-| Bucket | Item | Field | Status |
-|---|---|---|---|
-| — | — | — | All clear ✅ |
+> Globals and collections that are **hidden in the CMS admin sidebar** but whose
+> content **still renders on the live site**. Editors cannot edit these through
+> the normal admin UI — they must access the global via direct URL
+> (`/admin/globals/<slug>`) or ask a developer.
+>
+> Last verified: 2026-05-30 (session 2).
 
 ---
 
-## Standing Rule (2026-05-30)
+## Hidden Globals That Render
 
-> **Titles, Paragraphs/Text, Images, Arrays must NEVER be hidden from editors.**
-> OK to hide: slugs · hrefs · breadcrumbs · imageHue · imageLabel · chapter eyebrows ·
-> ctaHref · success/error states · legacy fields · deprecated · structural metadata
-
----
-
-## Resolved conflicts log
-
-All previously hidden editorial fields were fixed in the following passes:
-
-| Date | Pass | Result |
+| Slug | Renders on | Content |
 |---|---|---|
-| 2026-05-30 | Full L1–L10 sweep — 46 globals unhidden, field-level violations fixed | 0 conflicts |
-| 2026-05-30 | Systematic group label pass — 26 group labels added | Section titles consistent |
-| 2026-05-30 | Hero merge pass — Visit/Sections/PricingTerms absorbed into Heroes | Cards reduced, editability preserved |
-| 2026-05-30 | Section title fixes — HomeSurgeonsView, HomeLeadMagnet (zero-migration groups) | First-section titles added |
+| `header` | Every page | Navigation links, logo, locale switcher, CTA pill |
+| `footer` | Every page | Brand column, nav columns, newsletter, social links, copyright |
+| `floating-chrome` | Every page | "Plan Your Treatment" CTA pill, WhatsApp floating button |
+| `home-intro` | `/` | "Our Approach" pull-quote, two-column body paragraphs |
+| `home-gallery-view` | `/` | Gallery section eyebrow/heading/lede *(legacy — may be superseded by Sections card)* |
+| `home-stories-view` | `/` | Stories section eyebrow/heading/lede *(legacy — may be superseded by Sections card)* |
+| `home-pricing-view` | `/` | Pricing teaser eyebrow/heading/footnote *(legacy — may be superseded by Sections card)* |
+| `home-journey-view` | `/` | Journey teaser eyebrow/heading *(legacy — may be superseded by Sections card)* |
+| `treatments-index-section` | `/procedures` | Index section eyebrow, heading, lede |
+| `treatments-stats` | `/procedures` | Stats row (number + label tiles) |
+| `sub-category-detail-template` | `/procedures/*/* (21 routes)` | TOC labels, sidebar CTAs, section headings |
+| `pricing-overview` | `/pricing` | Section eyebrow, heading, body |
+| `pricing-discipline-list-view` | `/pricing` | On-request label, included label, arrow glyph |
+| `surgeons-lead-view` | `/experts` | Lead surgeon eyebrow, stat labels, CTA *(merged into SurgeonsHero.sections.lead)* |
+| `surgeons-plastic-view` | `/experts` | Plastic surgery section lede, eyebrow, heading *(merged into SurgeonsHero.sections)* |
+| `surgeons-aesthetic-view` | `/experts` | Aesthetic medicine section lede, eyebrow, heading *(merged into SurgeonsHero.sections)* |
+| `results-featured-cases-view` | `/results` | B&A section eyebrow, heading, lede, filter label |
+| `results-stories-view` | `/results` | Stories section eyebrow, heading, lede |
+| `library-cta` | `/results` | Library CTA + Share CTA blocks |
+| `journey-stats` | `/journey` | Stats row (number + label tiles) |
+| `contact-enquiry-section` | `/contact` | Form labels, intent copy, submit states, success/error messages |
+| `not-found-page` | `/404` | Error heading, lede, CTA buttons |
+
+---
+
+## Hidden Collections That Render
+
+| Slug | Renders on | Content |
+|---|---|---|
+| `journey-steps` | `/journey` | All numbered step cards (title, body, bullets, image) |
+| `blog-tags` | `/blog`, `/blog/*` | Tag chips on blog index and post pages |
+| `authors` | `/blog/*` | Byline name, role, bio, portrait on blog posts |
+
+---
+
+## Note on Merged Content
+
+Some of these hidden globals have had their content **merged into a visible Hero card**.
+The hidden global still exists in the DB but its data may be stale or unused — the
+visible card is now the live source. Check before editing via direct URL.
+
+| Hidden global | Merged into |
+|---|---|
+| `surgeons-lead-view` | Hero (surgeons-hero) → Sections → Lead Surgeon |
+| `surgeons-plastic-view` | Hero (surgeons-hero) → Sections → Plastic Surgery |
+| `surgeons-aesthetic-view` | Hero (surgeons-hero) → Sections → Aesthetic Medicine |
+| `pricing-insurance` | Hero (treatments-hero) → Pricing → Insurance |
+| `pricing-payment` | Hero (treatments-hero) → Pricing → Payment |
+| `consultation-policy` | Hero (treatments-hero) → Pricing → Consultation |
+| `contact-visit-section` | Hero (contact-hero) → Visit Section |

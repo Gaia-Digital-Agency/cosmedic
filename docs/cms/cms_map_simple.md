@@ -1,19 +1,21 @@
 # Cosmedic CMS — Visible Field Map (Admin View)
 
-> **Purpose:** What an editor sees in the CMS today.
-> **Last updated:** 2026-05-30 (Hero merge pass + section title fixes)
-> **State:** 15 visible globals · all editorial fields exposed · structural fields hidden
-> Legend: [T] title/heading · [P] paragraph · [I] image · [N] number · [A] array · [S] select · [C] CTA/link
+> **What an editor sees in the CMS today.**
+> Last updated: 2026-05-30 (session 2) — verified against source files.
+> **16 visible globals · 12 visible collections · all editorial fields exposed**
+> Legend: [T] title/heading · [P] paragraph · [I] image · [N] number · [A] array · [S] select · [C] CTA
 
 ---
 
 ## Naming levels
 Bucket > Card > Section > Field
-Rule: Lede, Para, Image, Title, Body, Arrays always visible. Slugs, hrefs, hues, breadcrumbs, chapter eyebrows hidden.
+
+**Rule:** Lede, Para, Image, Title, Body, Arrays always visible.
+Slugs, hrefs, hues, breadcrumbs, chapter eyebrows hidden.
 
 ---
 
-## 1. HOMEPAGE (6 visible cards)
+## 1. HOMEPAGE — 6 visible globals
 
 ### Hero (home-hero)
 title.a [T] · title.b [T] · lede [P] · primaryCtaLabel [C] · secondaryCtaLabel [C] · heroImage [I]
@@ -38,27 +40,29 @@ lede [P] · formPlaceholder [T] · submitLabel [C]
 **Heading:** a [T] · b [T]
 body [P] · ctaLabel [C] · image [I] · rows [A: letter, text]
 
-### Settings (settings)
-Site Name [T] · AUD→IDR Rate [N] · Round IDR To [N] · Lock Rate Manually · liveRateWidget [ui]
-General Email [T] · Concierge Phone [T] · WhatsApp Number [T]
-Address Line 1 [T] · Address Line 2 [T] · City [T]
-Hours Mon–Fri [T] · Hours Saturday [T] · Google Maps URL [C]
+### Settings
+siteName [T] · audToIdrRate [N] · rateLockedManually · roundIdrTo [N]
+contactEmail [T] · contactPhone [T] · whatsappNumber [T]
+addressLine1 [T] · addressLine2 [T] · city [T]
+hoursMonFri [T] · hoursSatSun [T] · googleMapsUrl [C]
 socialLinks [A: platform, url]
 
 ---
 
-## 2. PROCEDURES (3 visible cards)
+## 2. PROCEDURES — 3 visible globals
 
 ### Hero (treatments-hero)
-**Treatments:** titleA [T] · titleB [T] · lede [P] · heroImage [I]
-**Pricing:**
-- Hero: titleA [T] · titleB [T] · lede [P] · heroImage [I]
-- Insurance: eyebrow [T] · headingRoman [T] · headingItalic [T] · body [P]
-- Payment: eyebrow [T] · headingRoman [T] · headingItalic [T] · termsText [P]
-- Consultation: feeIdr [N] · waiverConditionText [P]
+**Treatments section:**
+titleA [T] · titleB [T] · lede [P] · heroImage [I]
+
+**Pricing section:**
+titleA [T] · titleB [T] · lede [P] · heroImage [I]
+*Insurance:* eyebrow [T] · headingRoman [T] · headingItalic [T] · body [P]
+*Payment:* eyebrow [T] · headingRoman [T] · headingItalic [T] · termsText [P]
+*Consultation:* feeIdr [N] · waiverConditionText [P]
 
 ### Discipline Template (discipline-detail-template)
-**Table of Contents:** onThisPage · overview · subCategories · procedures · faqs labels [T×5]
+**Table of Contents:** onThisPageLabel [T] · overviewLabel [T] · subCategoriesLabel [T] · proceduresLabel [T] · faqsLabel [T]
 **Overview:** heading [T]
 **Choose a Focus:** heading [T] · bodyTemplate [P] · availableLabel [C] · comingLabel [C]
 **Procedures:** heading [T] · intro [P]
@@ -67,118 +71,109 @@ socialLinks [A: platform, url]
 
 ### Catalogue View (pricing-catalogue-view)
 sectionEyebrow [T] · headingRoman [T] · headingItalic [T] · introTemplate [P]
-**Sheet Titles:** surgicalTitle/Subtitle · machineTitle/Subtitle · injectionTitle/Subtitle · btlTitle/Subtitle [T×8]
-**Hair Zone Labels:** face · upperBody · lowerBody · packageZone · other [T×5]
-**Injectable Category Labels:** 9 category labels [T×9]
+sheetLabels [A: surgicalTitle/Subtitle, machineTitle/Subtitle, injectionTitle/Subtitle, btlTitle/Subtitle]
+hairZoneLabels [A: face, upperBody, lowerBody, packageZone, other]
+injectableCategoryLabels [A: 9 category labels]
+
+### Collections in Procedures bucket
+**Disciplines:** title [T] · subtitle [T] · body [P] · tagline [T] · lede [P] · overview [P] · heroImage [I] · sections [A: t, body] · faqs [A: q, a]
+**Sub-Categories:** title [T] · tagline [T] · lede [P] · intro [P] · overview [P] · leadSurgeon · sections [A: t, body] · faqs [A: q, a] · heroImage [I]
+**Procedures:** name [T] · shortName [T] · description [P] · sections [A: t, body] · faqs [A: q, a] · heroImage [I] · pricing.priceIdr2026 [N] · pricing.priceNotes [T] · detail.duration [T] · detail.recovery [T] · detail.included [A] · featuredRank [N]
 
 ---
 
-## 3. EXPERTS (1 visible card — collections always visible)
+## 3. EXPERTS — 2 visible globals
 
 ### Hero (surgeons-hero)
 titleA [T] · titleB [T] · lede [P] · heroImage [I] · imageLabel [T]
 **Sections:**
-- Lead Surgeon: sectionEyebrow [T] · blockEyebrow [T] · statLabelTrained/Specialty/Distinction [T×3] · ctaLabel [C]
-- Plastic Surgery: lede [P] · eyebrow [T] · headingA [T] · headingB [T] · headingItalic [T]
-- Aesthetic Medicine: lede [P] · eyebrow [T] · headingA [T] · headingB [T] · headingItalic [T]
+*Lead Surgeon:* sectionEyebrow [T] · blockEyebrow [T] · statLabelTrained [T] · statLabelSpecialty [T] · statLabelDistinction [T] · ctaLabel [C]
+*Plastic Surgery:* lede [P] · eyebrow [T] · headingA [T] · headingB [T] · headingItalic [T]
+*Aesthetic Medicine:* lede [P] · eyebrow [T] · headingA [T] · headingB [T] · headingItalic [T]
 
 ### Detail Template (surgeon-detail-template)
-Hero labels: heroLeadLabel · heroSpecialistLabel · heroCtaConsultLabel · heroCtaTreatmentsLabelFallback [T×4]
-Stat labels: statLabelYears · statLabelDistinction · statLabelSpecialty [T×3]
-Sidebar labels: sidebarLabelSpecialism · Credentials · Languages · Availability [T×4]
+heroLeadLabel [T] · heroSpecialistLabel [T] · heroCtaConsultLabel [C] · heroCtaTreatmentsLabelFallback [C]
+statLabelYears [T] · statLabelDistinction [T] · statLabelSpecialty [T]
+sidebarLabelSpecialism [T] · sidebarLabelCredentials [T] · sidebarLabelLanguages [T] · sidebarLabelAvailability [T]
 languagesFallback [T] · availabilityFallback [T]
 facultyEyebrow [T] · **Faculty Heading:** pre [T] · italic [T] · post [T]
 specialtyEyebrow [T] · specialtyHeadingTemplate [P]
-trainingEyebrow [T] · trainingRowLabels [A: value×5] · trainingRowRights [A: value×4]
+trainingEyebrow [T] · trainingRowLabels [A: value ×5] · trainingRowRights [A: value ×4] · trainingRowPracticeMid (readonly)
 biographyEyebrow [T] · secondaryBioParagraph [P]
 
-### Surgeons (collection)
-name [T] · commonName [T] · spec [T] · train [T] · proc [T] · bio [P] · specAreas [A] · group [S] · lead · portrait [I]
+### Collection in Experts bucket
+**Surgeons:** name [T] · commonName [T] · spec [T] · train [T] · proc [T] · group [S] · lead · bio [P] · specAreas [A] · portrait [I] · languages [A]
 
 ---
 
-## 4. RESULTS (1 visible card — collections always visible)
+## 4. RESULTS — 1 visible global
 
 ### Hero (results-hero)
-titleA [T] · titleB [T] · lede [P] · heroImage [I] · imageLabel [T] · imageHue
+titleA [T] · titleB [T] · lede [P] · heroImage [I] · imageLabel [T]
 
-### Before/After Cases (collection)
-caseLabel [T] · composite [I] · beforeAlt [T] · afterAlt [T] · description [P] · recoveryDuration [T] · isFeatured
-
-### Patient Stories (collection)
-patientLabel [T] · country [T] · procedureLabel [T] · portrait [I] · quote [T] · body [P] · isFeatured
+### Collections in Results bucket
+**Before/After Cases:** caseLabel [T] · composite [I] · beforeAlt [T] · afterAlt [T] · description [P] · year [N] · recoveryDuration [T] · isFeatured
+**Patient Stories:** patientLabel [T] · country [T] · procedureLabel [T] · portrait [I] · quote [T] · body [P] · videoUrl [T] · isFeatured
 
 ---
 
-## 5. JOURNEY (1 visible card — collections always visible)
+## 5. JOURNEY — 2 visible globals
 
 ### Hero (journey-hero)
-titleA [T] · titleB [T] · lede [P] · heroImage [I] · imageLabel [T]
+titleA [T] · titleB [T] · lede [P] · heroImage [I] · imageHue [N] · imageLabel [T] · chapter [T]
 
 ### Page (recovery-stays-page)
-**Hero:** title.a [T] · title.b [T] · lede [P] · heroImage [I]
+**Hero:** title.a [T] · title.b [T] · lede [P] · heroImage [I] · imageLabel [T]
 topStats [A: number, label]
 **Portfolio Section:** eyebrow [T] · headingItalic [T] · headingPost [T] · lede [P]
 
-### Journey Steps (collection)
-title [T] · body [P] · bullets [A: text] · image [I]
-
-### Recovery Stays — Villas (collection)
-name [T] · location [T] · body [P] · heroImage [I] · priceFromIdrPerNight [N] · amenities [A] · partnerUrl [C]
+### Collections in Journey bucket
+**Recovery Stays — Villas:** name [T] · location [T] · bedrooms [T] · poolType [T] · heroImage [I] · body [P] · driveTime [T] · nursingNote [T] · amenities [A] · priceFromIdrPerNight [N] · partnerUrl [C]
 
 ---
 
-## 6. CONTACT (1 visible card — collections always visible)
+## 6. CONTACT — 1 visible global
 
 ### Hero (contact-hero)
 titleA [T] · titleB [T] · lede [P] · heroImage [I] · imageLabel [T]
 **Visit Section:** headingPre [T] · headingItalic [T] · body [P] · mapImage [I] · conciergeHoursValue [P]
 
-### Enquiries (collection)
-name [T] · email [T] · phone [T] · country [T] · status [S] · message [P]
+### Collection in Contact bucket
+**Enquiries:** name [T] · email [T] · phone [T] · country [T] · preferredDate [T] · message [P] · status [S] · assignedTo · internalNotes [A: at, by, text]
 
 ---
 
-## 7. PUBLICATIONS (1 visible card — collections always visible)
+## 7. PUBLICATIONS — 1 visible global
 
 ### Blog Post Template (blog-post-template)
-**Byline Labels:** writtenByLabel · publishedLabel · lengthLabel · filedUnderLabel [T×4]
-**About the Author:** eyebrowLabel · readFullProfileCta · bookConsultationCta [T×3]
-**More from the Journal:** eyebrow · headingPre · headingItalic · backToJournalCta [T×4]
+**Byline Labels:** writtenByLabel [T] · publishedLabel [T] · lengthLabel [T] · filedUnderLabel [T]
+**About the Author:** eyebrowLabel [T] · readFullProfileCta [C] · bookConsultationCta [C]
+**More from the Journal:** eyebrow [T] · headingPre [T] · headingItalic [T] · backToJournalCta [C]
 
-### Blog Posts (collection)
-title [T] · lede [P] · body [P] · heroImage [I] · author [S] · publishedAt · publishStatus [S]
-
-### Press Mentions (collection)
-publication [T] · headline [T] · summary [P] · isFeatured · logo [I]
-
-### Awards (collection)
-name [T] · year [N] · issuer [T] · summary [P] · logo [I]
+### Collections in Publications bucket
+**Blog Posts:** title [T] · lede [P] · body [P] · author [S] · publishedAt · tags · heroImage [I] · publishStatus [S]
+**Press Mentions:** publication [T] · headline [T] · url [C] · publishedDate · summary [P] · isFeatured · logo [I]
+**Awards:** name [T] · year [N] · issuer [T] · summary [P] · logo [I]
+**Privacy Sections:** title [T] · paragraphs [A] · listItems [A]
 
 ---
 
 ## 8. MEDIA LIBRARY
 
-### Media (collection)
-filename · alt [T] · caption [T] · isPlaceholder
+**Media:** filename · alt [T] · caption [T] · category
 
 ---
 
-## 9. USERS
+## Visible count summary
 
-### Users (collection)
-email [T] · avatar [I]
-
----
-
-## Field count history
-
-| Pass | Date | Visible cards | Notes |
-|---|---|:---:|------|
-| Baseline | 2026-05-23 | 81 | All globals visible |
-| Simplification 1–4 | 2026-05-29 | 26 | Over-hidden |
-| Visibility sweep | 2026-05-30 | ~72 | All editorial fields exposed |
-| Bucket cleanup | 2026-05-30 | ~40 | Strategic re-hiding |
-| Hero merge pass | 2026-05-30 | **15** | Sections absorbed into Heroes |
-
-> 15 globals visible · ~320 editorial fields accessible · structural/technical fields hidden
+| Bucket | Visible globals | Visible collections |
+|---|:---:|:---:|
+| Homepage | 6 | 0 |
+| Procedures | 3 | 3 |
+| Experts | 2 | 1 |
+| Results | 1 | 2 |
+| Journey | 2 | 1 |
+| Contact | 1 | 1 |
+| Publications | 1 | 4 |
+| Media Library | 0 | 1 |
+| **Total** | **16** | **13** |

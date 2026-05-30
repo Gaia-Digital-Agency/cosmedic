@@ -1,129 +1,105 @@
 # Cosmedic CMS — Complete Field Map
 
-> **HERO MERGE PASS APPLIED (2026-05-30):** Full Hero merge — Visit→ContactHero, Sections→SurgeonsHero, PricingTerms→TreatmentsHero.pricing. 15 visible globals, ~320 editorial fields accessible.
+> **Last updated: 2026-05-30 (session 2)**
+> Verified against source files in `packages/cms/src/{collections,globals}/`.
+> `[hidden]` = hidden in admin sidebar but schema exists in DB.
+> ✅ = visible to editors in admin sidebar.
 >
-> **For current visible state see `cms_map_simple.md`** (accurate as of 2026-05-30).
-> This file is a full schema inventory — many items are now hidden. `[hidden]` = hidden in admin sidebar but still in DB and accessible via direct URL.
-> Last updated: 2026-05-30. Source: `packages/cms/src/{collections,globals}/`.
->
-> **Architecture pattern (2026-05-30):**
-> Each bucket has one Hero card that absorbs related section globals as labeled sub-groups.
-> Group label = section title in admin form. 15 cards cover all editor-facing content.
-> Hidden globals remain queryable — schema must always match DB (no orphaned column references).
+> **16 visible globals** across 7 buckets. Architecture: each bucket has one Hero card
+> that absorbs related section globals as labeled sub-groups.
+> Hidden globals remain queryable — schema must always match DB.
 
 ---
 
 ## 1. CMS Globals
 
-### Shared Page Blocks (15 block types — available in every `sections` field)
-
-| Block | Fields |
-|---|---|
-| richText | eyebrow, heading, body |
-| imageGrid | heading, columns, images (src, alt, caption) |
-| ctaBand | heading, lede, primaryLabel, primaryHref, secondaryLabel, secondaryHref |
-| stats | heading, items (number, label, sourceNote) |
-| faqAccordion | heading, items (q, a) |
-| procedureList | heading, filterDiscipline, filterSubCategory, layout, limit |
-| surgeonList | heading, filterGroup, layout |
-| baGrid | heading, filterProcedure, limit, featuredOnly |
-| testimonialList | heading, count, featuredOnly |
-| recoveryStayList | heading, limit |
-| pressMentionList | heading, limit |
-| contactForm | heading, lede, sourceCta |
-| journeyStepList | heading, filterCategory |
-| externalEmbed | heading, iframeUrl, html |
-| notes | kind, heading, body |
-
-### Globals — all fields
-
 | Bucket | Item | Sidebar | Fields |
 |---|---|:---:|---|
-| **Homepage** | Home Page | `[hidden]` | slug, route, title, sections, publishStatus, seo.title, seo.description, seo.ogImage |
-| **Homepage** | Home Hero | ✅ | breadcrumbLabel, eyebrow, title.a, title.b, lede, primaryCtaLabel, secondaryCtaLabel, secondaryCtaHref, quickEnquiry (eyebrow, heading, intro, nameLabel, namePlaceholder, emailLabel, emailPlaceholder, interestLabel, interestOptionalLabel, interestPlaceholder, revealInterestLabel, submitLabel, submittingLabel, successLabel, successFine, errorFine, fineprint), heroImage |
-| **Homepage** | Home Intro | `[hidden]` | eyebrow, pullQuoteBefore, pullQuoteAccent, pullQuoteAfter, col1, col2 |
-| **Homepage** | Home Treatments View | `[hidden]` | lede, eyebrow, heading.a, heading.b |
-| **Homepage** | Home Surgeons View *(label: "Surgeons")* | ✅ | eyebrow, teamCaption *(heading)*, leadBody *(body)*, leadCtaLabel *(CTA)*, groupPhoto, groupPhotoAlt — legacy hidden: leadSurgeonEyebrow, leadStat1–3 Label/Value, associatesEyebrow |
-| **Homepage** | Home Gallery View | `[hidden]` | lede, eyebrow, heading.a, heading.b, ctaLabel, ctaHref |
-| **Homepage** | Home Stories View | `[hidden]` | lede, eyebrow, heading.a, heading.b, ctaLabel, ctaHref |
-| **Homepage** | Home Pricing View | `[hidden]` | lede, eyebrow, heading.a, heading.b, footnote, viewAllLabel, viewAllHref |
-| **Homepage** | Home Journey View | `[hidden]` | eyebrow, heading.a, heading.b, ctaLabel, ctaHref |
-| **Homepage** | Home Lead Magnet | ✅ | coverImage, coverEyebrow, coverLine1, coverLine2, coverLine3, coverFoot1, coverFoot2, bodyEyebrow, heading.a, heading.b, lede, formPlaceholder, submitLabel, successHeading, successBody, fineprint |
-| **Homepage** | Home Place | ✅ | eyebrow, heading.a, heading.b, body, rows (letter, text), ctaLabel, ctaHref, image |
-| **Homepage** | Settings | ✅ | siteName, siteTagline, audToIdrRate, roundIdrTo, contactEmail, clinicEnquiryEmail, pressEmail, contactPhone, whatsappNumber, addressLine1, addressLine2, city, postalCode, country, hoursMonFri, hoursSatSun, googleMapsUrl, socialLinks (platform, url), defaultLocale, defaultOgImage, defaultMetaDescription |
-| **Homepage** | Header | ✅ | navItems (label, href, activePattern, megaMenu), localeSwitcher (enabled, labelEn, labelId), logoLight, logoDark |
-| **Homepage** | Footer | ✅ | brandTagline, treatmentsHeading, linkColumns (heading, items.label, items.href), newsletter (label, placeholder, buttonLabel), footerBottomLines, enquirySummary, addressBlock, copyrightTemplate, logoLight |
-| **Homepage** | Floating Chrome | `[hidden]` | ctaPill.label, ctaPill.href, ctaPill.enabled, chat.enabled, chat.provider, chat.embedScript, chat.openOnLoad |
+| **Homepage** | Home Hero | ✅ | title.a, title.b, lede, primaryCtaLabel, secondaryCtaLabel, heroImage — *hidden*: breadcrumbLabel, eyebrow, secondaryCtaHref, quickEnquiry.* |
+| **Homepage** | Sections *(home-treatments-view)* | ✅ | **Treatments:** lede, eyebrow, heading.a, heading.b · **Pricing:** lede, eyebrow, heading.a, heading.b, footnote, viewAllLabel · **Gallery:** lede, eyebrow, heading.a, heading.b, ctaLabel · **Stories:** lede, eyebrow, heading.a, heading.b, ctaLabel |
+| **Homepage** | Surgeons *(home-surgeons-view)* | ✅ | **Team Heading:** caption · **Body & CTA:** body, ctaLabel · **Photo:** photo, photoAlt — *hidden*: eyebrow, leadSurgeonEyebrow, leadStat1–3, associatesEyebrow |
+| **Homepage** | Lead Magnet *(home-lead-magnet)* | ✅ | **Cover:** image, title, footer · **Heading:** a, b · lede, formPlaceholder, submitLabel — *hidden*: coverEyebrow, bodyEyebrow, successHeading, successBody, fineprint |
+| **Homepage** | Place *(home-place)* | ✅ | **Heading:** a, b · body, rows (letter, text), ctaLabel, image — *hidden*: eyebrow, ctaHref |
+| **Homepage** | Settings | ✅ | siteName, audToIdrRate (+ liveRateWidget ui), rateLockedManually, rateLastFetchedAt (readonly), rateSource (readonly), roundIdrTo, contactEmail, contactPhone, whatsappNumber, addressLine1, addressLine2, city, hoursMonFri, hoursSatSun, googleMapsUrl, socialLinks (platform, url) — *hidden*: siteTagline, clinicEnquiryEmail, pressEmail, postalCode, country, defaultLocale, defaultOgImage, defaultMetaDescription |
+| **Homepage** | Header | `[hidden]` | navItems (label, href, activePattern, megaMenu), localeSwitcher (enabled, labelEn, labelId), logoLight, logoDark |
+| **Homepage** | Footer | `[hidden]` | brandTagline, treatmentsHeading, linkColumns (heading, items.label, items.href), newsletter (label, placeholder, buttonLabel), footerBottomLines, enquirySummary, addressBlock, copyrightTemplate, logoLight |
+| **Homepage** | Home Intro | `[hidden]` | intro (eyebrow, pullQuoteBefore, pullQuoteAccent, pullQuoteAfter, col1, col2), journey (eyebrow, heading.a, heading.b, ctaLabel), trustStrip (number, label, sourceNote) |
+| **Homepage** | Home Gallery View | `[hidden]` | lede, eyebrow, heading.a, heading.b, ctaLabel, ctaHref *(content now in Sections card)* |
+| **Homepage** | Home Stories View | `[hidden]` | lede, eyebrow, heading.a, heading.b, ctaLabel, ctaHref *(content now in Sections card)* |
+| **Homepage** | Home Pricing View | `[hidden]` | lede, eyebrow, heading.a, heading.b, footnote, viewAllLabel, viewAllHref *(content now in Sections card)* |
+| **Homepage** | Home Journey View | `[hidden]` | eyebrow, heading.a, heading.b, ctaLabel, ctaHref *(content now in Sections card)* |
+| **Homepage** | Floating Chrome | `[hidden]` | ctaPill.label, ctaPill.href, ctaPill.enabled, chat.enabled, chat.provider, chat.embedScript |
 | **Homepage** | Brand Stats | `[hidden]` | stats (number, label, sourceNote) |
 | **Homepage** | Endorsement Mark | `[hidden]` | endorsementLine, clearspaceUnit, minScreenWidthPx, minPrintMmWidth, primaryLockup, inverseLockup |
 | **Homepage** | SEO Defaults | `[hidden]` | titlePattern, robotsTxt, sitemapBaseUrl, organizationSchema |
-| **Treatments** | Treatments Page | `[hidden]` | slug, route, title, chapterTitle.a, chapterTitle.b, tagline, lede, heroImage, sections, publishStatus, seo.title, seo.description, seo.ogImage |
-| **Treatments** | Treatments Hero | ✅ | chapter, titleA, titleB, lede, heroImage, imageHue, imageLabel, breadcrumbLabel |
-| **Treatments** | Treatments Index | ✅ | eyebrow, heading, lede, readMoreLabel, readMoreArrow |
-| **Treatments** | Treatments Stats | `[hidden]` | stats (number, label) |
-| **Treatments** | Discipline Detail Template | `[hidden]` | toc.onThisPageLabel, toc.overviewLabel, toc.subCategoriesLabel, toc.proceduresLabel, toc.faqsLabel, overview.heading, chooseAFocus.heading, chooseAFocus.bodyTemplate, chooseAFocus.availableLabel, chooseAFocus.comingLabel, procedures.heading, procedures.intro, faqs.heading, related.eyebrow, related.headingItalic, related.headingRoman, related.ledeTemplate |
-| **Treatments** | Sub-Category Detail Template | `[hidden]` | chapterSeparator, toc.onThisPageLabel, toc.overviewLabel, toc.treatmentsLabel, toc.faqsLabel, takeAStep.eyebrow, takeAStep.videoConsultLabel, takeAStep.estimateLabel, takeAStep.whatsappLabel, takeAStep.replyLine, overview.heading, treatments.heading, treatments.intro, faqs.heading |
-| **Treatments** | Pricing Page | `[hidden]` | slug, route, title, sections, publishStatus, seo.title, seo.description, seo.ogImage |
-| **Treatments** | Pricing Hero *(label: "Pricing Hero")* | ✅ | chapter, titleA, titleB, lede, heroImage, imageHue, imageLabel, breadcrumbLabel |
-| **Treatments** | Pricing Overview | ✅ | eyebrow, heading.a, heading.b, body |
-| **Treatments** | Pricing Footnote | `[hidden]` | text |
-| **Treatments** | Pricing Insurance | `[hidden]` | eyebrow, headingRoman, headingItalic, body |
-| **Treatments** | Pricing Payment | `[hidden]` | eyebrow, headingRoman, headingItalic, termsText |
-| **Treatments** | Pricing Catalogue View | `[hidden]` | sectionEyebrow, headingRoman, headingItalic, introTemplate, sheetLabels (surgicalTitle, surgicalSubtitle, machineTitle, machineSubtitle, injectionTitle, injectionSubtitle, btlTitle, btlSubtitle), hairZoneLabels (face, upperBody, lowerBody, packageZone), injectableCategoryLabels (botulinumToxin, filler, skinBooster, collagenStimulator, bioRemodeling) |
-| **Treatments** | Pricing Discipline List | `[hidden]` | sectionEyebrow, onRequestLabel, includedLabel, arrowChar |
-| **Treatments** | Consultation Policy | ✅ | feeIdr, waiverConditionText, displayOn |
-| **Experts** | Surgeons Page | `[hidden]` | slug, route, title, sections, publishStatus, seo.title, seo.description, seo.ogImage |
-| **Experts** | Surgeons Hero | ✅ | breadcrumbLabel, title.a, title.b, lede, heroImage, imageHue, imageLabel, chapter |
-| **Experts** | Surgeons Lead View | `[hidden]` | sectionEyebrow, blockEyebrow, statLabelTrained, statLabelSpecialty, statLabelDistinction, ctaLabel |
-| **Experts** | Surgeons Plastic View | `[hidden]` | lede, eyebrow, heading.a, heading.b, headingItalic |
-| **Experts** | Surgeons Aesthetic View | `[hidden]` | lede, eyebrow, heading.a, heading.b, headingItalic |
-| **Experts** | Surgeon Detail Template | `[hidden]` | breadcrumbHomeLabel, breadcrumbSurgeonsLabel, heroLeadLabel, heroSpecialistLabel, heroCtaConsultLabel, heroCtaTreatmentsLabelTemplate, heroCtaTreatmentsLabelFallback, statLabelYears, statLabelDistinction, statLabelSpecialty, sidebarLabelSpecialism, sidebarLabelCredentials, sidebarLabelLanguages, sidebarLabelAvailability, languagesFallback, availabilityFallback, facultyEyebrow, facultyHeading (pre, italic, post), specialtyEyebrow, specialtyHeadingTemplate, trainingEyebrow, trainingRowLabels, trainingRowRights, trainingRowPracticeMid, biographyEyebrow, secondaryBioParagraph |
-| **Results** | Results Page | `[hidden]` | slug, route, title, sections, publishStatus, seo.title, seo.description, seo.ogImage |
-| **Results** | Results Hero | ✅ | breadcrumbLabel, title.a, title.b, lede, heroImage, imageHue, imageLabel, chapter |
-| **Results** | CTAs *(was: Library CTA + Share CTA merged)* | ✅ | eyebrow, headingPre, headingItalic, body, buttonLabel, buttonHref, share.eyebrow, share.headingPre, share.headingItalic, share.headingPost, share.body, share.buttonLabel, share.buttonHref |
-| **Results** | Share CTA | `[hidden]` | eyebrow, headingPre, headingItalic, headingPost, body, buttonLabel, buttonHref *(data now in CTAs global)* |
-| **Results** | Gallery Page | `[hidden]` | slug, route, title, breadcrumbLabel, filterBarLabel, countFormat, imageLabel, imageHue, sections, publishStatus, seo.title, seo.description, seo.ogImage |
-| **Results** | Stories Page | `[hidden]` | slug, route, title, breadcrumbLabel, imageLabel, imageHue, sections, publishStatus, seo.title, seo.description, seo.ogImage |
+| **Procedures** | Hero *(treatments-hero)* | ✅ | **Treatments group:** titleA, titleB, lede, heroImage · **Pricing group:** titleA, titleB, lede, heroImage · Insurance (eyebrow, headingRoman, headingItalic, body) · Payment (eyebrow, headingRoman, headingItalic, termsText) · Consultation (feeIdr, waiverConditionText) |
+| **Procedures** | Discipline Template *(discipline-detail-template)* | ✅ | **TOC:** onThisPageLabel, overviewLabel, subCategoriesLabel, proceduresLabel, faqsLabel · **Overview:** heading · **Choose a Focus:** heading, bodyTemplate, availableLabel, comingLabel · **Procedures:** heading, intro · **FAQs:** heading · **Related:** eyebrow, headingItalic, headingRoman, ledeTemplate |
+| **Procedures** | Catalogue View *(pricing-catalogue-view)* | ✅ | sectionEyebrow, headingRoman, headingItalic, introTemplate, sheetLabels (surgicalTitle/Subtitle, machineTitle/Subtitle, injectionTitle/Subtitle, btlTitle/Subtitle), hairZoneLabels (face, upperBody, lowerBody, packageZone, other), injectableCategoryLabels (9 labels) |
+| **Procedures** | Sub-Category Template | `[hidden]` | chapterSeparator, toc (onThisPageLabel, overviewLabel, treatmentsLabel, faqsLabel), takeAStep (eyebrow, videoConsultLabel, estimateLabel, whatsappLabel, replyLine), overview.heading, treatments (heading, intro), faqs.heading |
+| **Procedures** | Treatments Index | `[hidden]` | eyebrow, heading, lede, readMoreLabel, readMoreArrow |
+| **Procedures** | Treatments Stats | `[hidden]` | stats (number, label) |
+| **Procedures** | Pricing Hero | `[hidden]` | chapter, titleA, titleB, lede, heroImage *(now in Hero → Pricing group)* |
+| **Procedures** | Pricing Overview | `[hidden]` | eyebrow, heading.a, heading.b, body |
+| **Procedures** | Pricing Footnote | `[hidden]` | text |
+| **Procedures** | Pricing Insurance | `[hidden]` | eyebrow, headingRoman, headingItalic, body *(now in Hero → Pricing → Insurance)* |
+| **Procedures** | Pricing Payment | `[hidden]` | eyebrow, headingRoman, headingItalic, termsText *(now in Hero → Pricing → Payment)* |
+| **Procedures** | Pricing Discipline List | `[hidden]` | sectionEyebrow, onRequestLabel, includedLabel, arrowChar |
+| **Procedures** | Consultation Policy | `[hidden]` | feeIdr, waiverConditionText, displayOn *(now in Hero → Pricing → Consultation)* |
+| **Procedures** | Treatments Page | `[hidden]` | slug, route, title, chapterTitle.a/b, tagline, lede, heroImage, sections, publishStatus, seo.* |
+| **Procedures** | Pricing Page | `[hidden]` | slug, route, title, sections, publishStatus, seo.* |
+| **Experts** | Hero *(surgeons-hero)* | ✅ | titleA, titleB, lede, heroImage, imageLabel · **Sections:** Lead (sectionEyebrow, blockEyebrow, statLabelTrained/Specialty/Distinction, ctaLabel) · Plastic Surgery (lede, eyebrow, headingA, headingB, headingItalic) · Aesthetic Medicine (lede, eyebrow, headingA, headingB, headingItalic) — *hidden*: breadcrumbLabel, imageHue, chapter |
+| **Experts** | Detail Template *(surgeon-detail-template)* | ✅ | breadcrumbHomeLabel, breadcrumbSurgeonsLabel · heroLeadLabel, heroSpecialistLabel, heroCtaConsultLabel, heroCtaTreatmentsLabelFallback · statLabelYears, statLabelDistinction, statLabelSpecialty · sidebarLabelSpecialism/Credentials/Languages/Availability · languagesFallback, availabilityFallback · facultyEyebrow, facultyHeading (pre, italic, post) · specialtyEyebrow, specialtyHeadingTemplate · trainingEyebrow, trainingRowLabels (×5), trainingRowRights (×4), trainingRowPracticeMid (readonly) · biographyEyebrow, secondaryBioParagraph |
+| **Experts** | Surgeons Lead View | `[hidden]` | sectionEyebrow, blockEyebrow, statLabelTrained/Specialty/Distinction, ctaLabel *(now in Hero → Sections → Lead)* |
+| **Experts** | Surgeons Plastic View | `[hidden]` | lede, eyebrow, heading.a, heading.b, headingItalic *(now in Hero → Sections → Plastic Surgery)* |
+| **Experts** | Surgeons Aesthetic View | `[hidden]` | lede, eyebrow, heading.a, heading.b, headingItalic *(now in Hero → Sections → Aesthetic Medicine)* |
+| **Experts** | Surgeons Page | `[hidden]` | slug, route, title, sections, publishStatus, seo.* |
+| **Results** | Hero *(results-hero)* | ✅ | titleA, titleB, lede, heroImage, imageLabel — *hidden*: breadcrumbLabel, imageHue, chapter |
+| **Results** | Library CTA | `[hidden]` | eyebrow, headingPre, headingItalic, body, buttonLabel, buttonHref, share.eyebrow/headingPre/headingItalic/headingPost/body/buttonLabel/buttonHref |
 | **Results** | Featured Cases View | `[hidden]` | eyebrow, headingPre, headingItalic, lede, filterBarLabel, countFormat |
 | **Results** | Stories View | `[hidden]` | eyebrow, headingPre, headingItalic, lede |
-| **Journey** | Journey Page | `[hidden]` | slug, route, title, sections, publishStatus, seo.title, seo.description, seo.ogImage |
-| **Journey** | Journey Hero | ✅ | breadcrumbLabel, title.a, title.b, lede, heroImage, imageHue, imageLabel, chapter |
+| **Results** | Share CTA | `[hidden]` | eyebrow, headingPre, headingItalic, headingPost, body, buttonLabel, buttonHref |
+| **Results** | Results Page | `[hidden]` | slug, route, title, sections, publishStatus, seo.* |
+| **Results** | Gallery Page | `[hidden]` | slug, route, title, breadcrumbLabel, filterBarLabel, countFormat, imageLabel, sections, publishStatus, seo.* |
+| **Results** | Stories Page | `[hidden]` | slug, route, title, breadcrumbLabel, imageLabel, sections, publishStatus, seo.* |
+| **Journey** | Hero *(journey-hero)* | ✅ | titleA, titleB, lede, heroImage, imageHue, imageLabel, chapter — *hidden*: breadcrumbLabel |
+| **Journey** | Page *(recovery-stays-page)* | ✅ | **Hero:** title.a, title.b, lede, heroImage, imageHue, imageLabel, breadcrumbLabel, chapter · topStats (number, label, italic) · **Portfolio Section:** eyebrow, headingItalic, headingPost, lede — *hidden*: inclusionsSection, inclusions |
 | **Journey** | Journey Stats | `[hidden]` | stats (number, label, italic) |
-| **Journey** | Recovery Stays — Page | ✅ | slug, route, title, sections, publishStatus, seo, hero.chapter, hero.title.a, hero.title.b, hero.lede, hero.heroImage, hero.imageHue, hero.imageLabel, hero.breadcrumbLabel, topStats (number, label, italic), portfolioSection (eyebrow, headingPre `[hidden]`, headingItalic, headingPost, lede), inclusionsSection (eyebrow, headingPre `[hidden]`, headingItalic, headingPost, lede), inclusions (letter, title `[hidden]`, body `[hidden]`) |
-| **Contact** | Contact Page | `[hidden]` | slug, route, title, sections, publishStatus, seo.title, seo.description, seo.ogImage |
-| **Contact** | Contact Hero | ✅ | breadcrumbLabel, title.a, title.b, lede, heroImage, imageHue, imageLabel, chapter |
-| **Contact** | Contact Enquiry Section | ✅ | eyebrow, headingPre, headingItalic, intro, trustLine, directLines (sectionLabel, conciergeLabel, whatsappLabel, emailLabel, pressLabel), intentCopy (slug, eyebrow, title, lede), formLabels (nameLabel, namePlaceholder, emailLabel, emailPlaceholder, treatmentLabel, treatmentPlaceholder, addDetailsLabel, countryLabel, countryPlaceholder, dateLabel, datePlaceholder, messageLabel, messagePlaceholder), submitLabels (send, sending, sent, successMessage) |
-| **Contact** | Contact Visit Section | ✅ | eyebrow, headingPre, headingItalic, body, mapImage, mapImageLabel, mapImageHue, openInMapsLabel, getDirectionsLabel, clinicHoursLabel, conciergeHoursLabel, conciergeHoursValue |
-| **Contact** | Form Defaults | `[hidden]` | labels (name, email, phone, country, treatment, message), placeholders (name, email, phone, country, treatment, message), submitLabel, successMessage, errorMessage, rateLimitMessage |
+| **Journey** | Journey Page | `[hidden]` | slug, route, title, sections, publishStatus, seo.* |
+| **Contact** | Hero *(contact-hero)* | ✅ | titleA, titleB, lede, heroImage, imageLabel · **Visit Section:** headingPre, headingItalic, body, mapImage, conciergeHoursValue — *hidden*: breadcrumbLabel, imageHue, chapter |
+| **Contact** | Enquiry *(contact-enquiry-section)* | `[hidden]` | eyebrow, headingPre, headingItalic, intro, trustLine, directLines (sectionLabel, conciergeLabel, whatsappLabel, emailLabel, pressLabel), intentCopy (slug, eyebrow, title, lede), formLabels (12 fields), submitLabels (send, sending, sent, successMessage) |
+| **Contact** | Visit *(contact-visit-section)* | `[hidden]` | headingPre, headingItalic, body, mapImage, conciergeHoursValue *(content now in Hero → Visit Section)* |
+| **Contact** | Form Defaults | `[hidden]` | labels (name, email, phone, country, treatment, message), placeholders, submitLabel, successMessage, errorMessage, rateLimitMessage |
 | **Contact** | Email Templates | `[hidden]` | templates (id, subject, bodyMjml, locale) |
-| **Contact** | Video Consult Page | `[hidden]` | slug, route, title, sections, publishStatus, seo.title, seo.description, seo.ogImage |
-| **About** | Blog Page | `[hidden]` | slug, route, title, sections, publishStatus, seo, thisIssueEyebrow, readTheEssayCtaLabel, archiveSection (eyebrow, headingPre, headingItalic, lede, filterAllLabel, emptyStateCopy) |
-| **About** | Press Page | ✅ | slug, route, title, sections, publishStatus, seo, accreditationsSection (eyebrow, heading, lede), pressSection (eyebrow, headingPre, headingItalic, lede), pressEnquiriesCtaLabel |
-| **About** | Privacy Page | `[hidden]` | slug, route, title, sections, publishStatus, seo, lastUpdatedDate, versionLine, readingTimeLine, introParagraph, imageLabel, tocHeading, dpo (eyebrow, headingA, headingB, lede, emailLabel, email, postLabel, addressLine1, addressLine2, addressLine3, generalContactLabel) |
-| **About** | Blog Post Template | `[hidden]` | byline (writtenByLabel, publishedLabel, lengthLabel, filedUnderLabel), aboutTheAuthor (eyebrowLabel, readFullProfileCta, bookConsultationCta), moreFromTheJournal (eyebrow, headingPre, headingItalic, backToJournalCta) |
-| **About** | Not Found Page | `[hidden]` | eyebrow, headingA, headingB, lede, primaryBtnLabel, primaryBtnHref, secondaryBtnLabel, secondaryBtnHref |
+| **Contact** | Contact Page | `[hidden]` | slug, route, title, sections, publishStatus, seo.* |
+| **Contact** | Video Consult Page | `[hidden]` | slug, route, title, sections, publishStatus, seo.* |
+| **Publications** | Blog Post Template | ✅ | **Byline Labels:** writtenByLabel, publishedLabel, lengthLabel, filedUnderLabel · **About the Author:** eyebrowLabel, readFullProfileCta, bookConsultationCta · **More from the Journal:** eyebrow, headingPre, headingItalic, backToJournalCta |
+| **Publications** | Blog Page | `[hidden]` | slug, route, title, sections, publishStatus, seo.*, thisIssueEyebrow, readTheEssayCtaLabel, archiveSection.* |
+| **Publications** | Press Page | `[hidden]` | slug, route, title, sections, publishStatus, seo.*, accreditationsSection.*, pressSection.*, pressEnquiriesCtaLabel |
+| **Publications** | Privacy Page | `[hidden]` | slug, route, title, sections, publishStatus, seo.*, lastUpdatedDate, versionLine, readingTimeLine, introParagraph, tocHeading, dpo.* |
+| **Publications** | Not Found Page | `[hidden]` | eyebrow, headingA, headingB, lede, primaryBtnLabel, primaryBtnHref, secondaryBtnLabel, secondaryBtnHref |
 
 ---
 
 ## 2. CMS Collections — all fields
 
-| Bucket | Item | Sidebar | Fields |
-|---|---|:---:|---|
-| **Homepage** | Press Mentions | ✅ | slug, publication, headline, url, publishedDate, summary, isFeatured, sortOrder, logo |
-| **Homepage** | Awards | ✅ | slug, name, year, issuer, summary, sortOrder, logo |
-| **Treatments** | Disciplines | ✅ | slug, title, subtitle, displayCount, hue, body, chapterTitle.a, chapterTitle.b, tagline, lede, overview, heroImage, leadSurgeons, faqs (q, a), seo.title, seo.description, seo.ogImage, sortOrder |
-| **Treatments** | Sub Categories | ✅ | slug, parent, title, chapterTitle.a, chapterTitle.b, tagline, lede, intro, overview, leadSurgeon, sections, faqs (q, a), heroImage, seo.title, seo.description, seo.ogImage, sortOrder |
-| **Treatments** | Procedures | ✅ | slug, name, shortName, catalogueGroup, mainCategory, subCategory, unit, audienceTier, brand, productLine, manufacturer, fdaApproved, bodyZone, parentDiscipline, parentSubCategory, description, sections, faqs (q, a), surgeonsCredentialed, heroImage, pricing.priceIdr2025, pricing.priceIdr2026, pricing.priceIdrRangeLow, pricing.priceIdrRangeHigh, pricing.priceNotes, pricing.displayYear, featuredRank, includesImplant, detail.duration, detail.recovery, detail.included, recoveryTimeline, relatedBA, relatedProcedures, seo.title, seo.description, seo.ogImage, sortOrder |
-| **Experts** | Surgeons | ✅ | slug, designation, name, commonName, suffix, spec, train, proc, credLine, yearsInPractice, group, lead, sortOrder, bio, specAreas, credentialedProcedures, availabilitySchedule (day, windowStart, windowEnd, byAppointment), languages, portrait, portraitPosition, seo.title, seo.description, seo.ogImage, hue |
-| **Results** | Before/After Cases | ✅ | slug, caseLabel, procedure, composite, beforeAlt, afterAlt, surgeon, tags, description, year, patientAge, recoveryDuration, isFeatured, seo.title, seo.description, seo.ogImage, sortOrder |
-| **Results** | Patient Stories | ✅ | slug, patientLabel, country, procedure, procedureLabel, hue, portrait, quote, body, videoUrl, year, surgeon, isFeatured, publishStatus, seo.title, seo.description, seo.ogImage, sortOrder |
-| **Journey** | Journey Steps | `[hidden]` | slug, order, number, title, body, bullets (letter, text), image, imageHue, dayLabel, icon, category, sortOrder |
-| **Journey** | Recovery Stays — Villas | ✅ | slug, name, location, bedrooms, poolType, heroImage, imageHue, body, driveTime, nursingNote, gallery, descriptor, amenities, priceFromAudPerNight, priceFromIdrPerNight, partnerUrl, geo.lat, geo.lng, seo.title, seo.description, seo.ogImage, sortOrder |
-| **Contact** | Enquiries | ✅ | name, email, phone, country, status, assignedTo, treatmentInterest, treatmentInterestText, preferredDate, message, internalNotes (at, by, text), submittedAt, ip, userAgent, honeypot, sourcePage, sourceCta |
-| **About** | Blog Posts | ✅ | slug, title, lede, body, author, publishedAt, tags, readingTimeMinutes, heroImage, publishStatus, seo.title, seo.description, seo.ogImage, sortOrder |
-| **About** | Blog Tags | `[hidden]` | slug, name, description, sortOrder |
-| **About** | Authors | `[hidden]` | slug, name, role, bio, surgeonProfile, portrait |
-| **About** | Privacy *(was: Privacy Sections)* | ✅ | slug, title, paragraphs, listItems, sortOrder |
-| **Users** | Users | ✅ | email, avatar |
-| **Media** | Media Library | `[hidden]` | filename, alt, category, isPlaceholder, credit, caption |
-| *(internal)* | Analytics | `[hidden]` | question, askedAt, ip, country, city, timezone, userAgent |
+| Bucket | Collection | Sidebar | Visible Fields | Hidden Fields |
+|---|---|:---:|---|---|
+| **Homepage** | — | — | — | — |
+| **Procedures** | Disciplines | ✅ | title, subtitle, body, tagline, lede, overview, heroImage, sections (t, body), faqs (q, a) | slug, displayCount, hue, chapterTitle.a/b, leadSurgeons, seo.* |
+| **Procedures** | Sub-Categories | ✅ | title, tagline, lede, intro, overview, leadSurgeon, sections (t, body), faqs (q, a), heroImage | slug, parent, chapterTitle.a/b, seo.* |
+| **Procedures** | Procedures | ✅ | name, shortName, description, sections (t, body), faqs (q, a), heroImage, pricing.priceIdr2026, pricing.priceNotes, detail.duration, detail.recovery, detail.included (value), featuredRank | slug, catalogueGroup, mainCategory, subCategory, unit, audienceTier, brand, productLine, manufacturer, fdaApproved, bodyZone, parentDiscipline, parentSubCategory, pricing.priceIdr2025/RangeLow/RangeHigh/displayYear, includesImplant, surgeonsCredentialed, recoveryTimeline, relatedBA, relatedProcedures, sortOrder, seo.* |
+| **Experts** | Surgeons | ✅ | name, commonName, spec, train, proc, group, lead, bio, specAreas (value), portrait, languages (code) | slug, suffix, credLine, yearsInPractice, credentialedProcedures, availabilitySchedule, portraitPosition, hue, seo.* |
+| **Results** | Before/After Cases | ✅ | caseLabel, composite, beforeAlt, afterAlt, description, year, recoveryDuration, isFeatured | slug, procedure, surgeon, tags, patientAge, seo.* |
+| **Results** | Patient Stories | ✅ | patientLabel, country, procedureLabel, portrait, quote, body, videoUrl, isFeatured | slug, procedure, hue, year, surgeon, publishStatus, seo.* |
+| **Journey** | Journey Steps | `[hidden]` | order, number, title, body, bullets (letter, text), image, imageHue, dayLabel | slug, icon, category, sortOrder |
+| **Journey** | Recovery Stays — Villas | ✅ | name, location, bedrooms, poolType, heroImage, body, driveTime, nursingNote, amenities (value), priceFromIdrPerNight, partnerUrl | slug, imageHue, gallery, descriptor, priceFromAudPerNight, geo.lat/lng, seo.* |
+| **Contact** | Enquiries | ✅ | name, email, phone, country, preferredDate, message, status, assignedTo, internalNotes (at, by, text) | submittedAt, ip, userAgent, honeypot, sourcePage, sourceCta, treatmentInterest, treatmentInterestText |
+| **Contact** | Analytics | `[hidden]` | question, askedAt, ip, country, city, timezone, userAgent | — |
+| **Publications** | Blog Posts | ✅ | title, lede, body, author, publishedAt, tags, heroImage, publishStatus | slug, readingTimeMinutes, seo.* |
+| **Publications** | Press Mentions | ✅ | publication, headline, url, publishedDate, summary, isFeatured, logo | slug, sortOrder |
+| **Publications** | Awards | ✅ | name, year, issuer, summary, logo | slug, sortOrder |
+| **Publications** | Blog Tags | `[hidden]` | slug, name, description, sortOrder | — |
+| **Publications** | Authors | `[hidden]` | slug, name, role, bio, surgeonProfile, portrait | — |
+| **Publications** | Privacy Sections | ✅ | title, paragraphs, listItems | slug, sortOrder |
+| **Media Library** | Media | ✅ | filename, alt, caption, category | isPlaceholder, credit |
+| **Users** | Users | ✅ | email, avatar | — |
