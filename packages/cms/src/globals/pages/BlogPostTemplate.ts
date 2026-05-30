@@ -23,6 +23,7 @@ export const BlogPostTemplate: GlobalConfig = {
   fields: [
     {
       name: 'byline',
+      label: 'Byline Labels',
       type: 'group',
       admin: { description: 'Labels in the byline row above the article body.' },
       fields: [
@@ -34,6 +35,7 @@ export const BlogPostTemplate: GlobalConfig = {
     },
     {
       name: 'aboutTheAuthor',
+      label: 'About the Author',
       type: 'group',
       admin: { description: 'The "About the author" section that appears after the article body.' },
       fields: [
@@ -44,6 +46,7 @@ export const BlogPostTemplate: GlobalConfig = {
     },
     {
       name: 'moreFromTheJournal',
+      label: 'More from the Journal',
       type: 'group',
       admin: { description: 'The "More from the journal" related-posts section at the foot of every post.' },
       fields: [

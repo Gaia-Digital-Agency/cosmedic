@@ -14,9 +14,9 @@ export const ContactVisitSection: GlobalConfig = {
   fields: [
     { name: 'eyebrow', label: 'Label above heading', type: 'text', localized: true, defaultValue: 'Visit',
       admin: { description: 'Small-caps eyebrow above the heading.', hidden: true } },
-    { name: 'headingPre', type: 'text', localized: true, defaultValue: 'Find us in',
+    { name: 'headingPre', label: 'Heading (roman)', type: 'text', localized: true, defaultValue: 'Find us in',
       admin: { description: 'First part of the section heading (roman).' } },
-    { name: 'headingItalic', type: 'text', localized: true, defaultValue: 'Nusa Dua.',
+    { name: 'headingItalic', label: 'Heading (italic)', type: 'text', localized: true, defaultValue: 'Nusa Dua.',
       admin: { description: 'Second part of the heading rendered in italic serif.' } },
     { name: 'body', type: 'textarea', localized: true,
       defaultValue: 'Within the BIMC Hospital Nusa Dua, on the southernmost reach of Bali. Twelve minutes from Ngurah Rai International Airport.',
