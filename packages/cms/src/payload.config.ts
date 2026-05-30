@@ -235,12 +235,12 @@ export default buildConfig({
 
     // ── c. Doctors ────────────────────────────────────────────────
     // Collection (Surgeons) always first.
-    SurgeonsPage,          // Main
+    SurgeonsPage,          // Main (hidden)
     SurgeonsHero,          // Hero
-    SurgeonsLeadView,      // Lead View
-    SurgeonsPlasticView,   // Plastic Surgery View
-    SurgeonsAestheticView, // Aesthetic Medicine View
     SurgeonDetailTemplate, // Detail Template
+    SurgeonsLeadView,      // Lead
+    SurgeonsPlasticView,   // Plastic Surgery
+    SurgeonsAestheticView, // Aesthetic Medicine
 
     // ── d. Results ────────────────────────────────────────────────
     // Collections (BeforeAfterCases / Stories) always first.

@@ -8,6 +8,7 @@ export const SurgeonsPage: GlobalConfig = {
   label: 'Main',
   admin: {
     group: 'Experts',
+    hidden: true,
     description:
       'Page meta + SEO + extra editorial blocks slot for /surgeons. The hero (chapter / title / lede / hero image) is edited on **b. Hero** (same Bucket). The doctor cards come from **c. Surgeons** (Collection). The 3 section chrome items (Lead / Plastic Surgery / Aesthetic Medicine) are edited on **d / e / f -View** in the same Bucket.',
   },

@@ -4,7 +4,7 @@ import { revalidateGlobalAfterChange } from '../../lib/revalidate'
 
 export const SurgeonsAestheticView: GlobalConfig = {
   slug: 'surgeons-aesthetic-view',
-  label: 'Aesthetic Medicine View',
+  label: 'Aesthetic Medicine',
   admin: {
     group: 'Experts',
     description:
