@@ -604,7 +604,7 @@ export const ClinicCatalogueTable: React.FC = () => {
           })}
         </SheetSection>
 
-        {(cms?.pricingInsurance as any)?.consultation?.feeIdr ?? cms?.consultationPolicy?.feeIdr ? (
+        {(cms?.treatmentsHero as any)?.pricing?.consultation?.feeIdr ?? (cms?.pricingInsurance as any)?.consultation?.feeIdr ?? cms?.consultationPolicy?.feeIdr ? (
           <Reveal>
             <div
               style={{
@@ -625,8 +625,8 @@ export const ClinicCatalogueTable: React.FC = () => {
                   color: 'var(--ink-100)',
                 }}
               >
-                Consultation fee: <strong>{fmtIdr((cms?.pricingInsurance as any)?.consultation?.feeIdr ?? cms?.consultationPolicy?.feeIdr, roundTo)}</strong>
-                {' '}(≈ {fmtAud((cms?.pricingInsurance as any)?.consultation?.feeIdr ?? cms?.consultationPolicy?.feeIdr, rate)})
+                Consultation fee: <strong>{fmtIdr((cms?.treatmentsHero as any)?.pricing?.consultation?.feeIdr ?? (cms?.pricingInsurance as any)?.consultation?.feeIdr ?? cms?.consultationPolicy?.feeIdr, roundTo)}</strong>
+                {' '}(≈ {fmtAud((cms?.treatmentsHero as any)?.pricing?.consultation?.feeIdr ?? (cms?.pricingInsurance as any)?.consultation?.feeIdr ?? cms?.consultationPolicy?.feeIdr, rate)})
                 . {cms.consultationPolicy.waiverConditionText}
               </p>
             </div>

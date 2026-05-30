@@ -79,8 +79,8 @@ export const ResultsPage: React.FC = () => {
 
   const hero = {
     chapter: heroCms?.chapter || FB.hero.chapter,
-    titleA: heroCms?.title?.a || FB.hero.title.a,
-    titleB: heroCms?.title?.b || FB.hero.title.b,
+    titleA: heroCms?.titleA || heroCms?.title?.a || FB.hero.title.a,
+    titleB: heroCms?.titleB || heroCms?.title?.b || FB.hero.title.b,
     lede: heroCms?.lede || FB.hero.lede,
     image: mediaUrl(heroCms?.heroImage) || IMG.texture,
     imageHue: heroCms?.imageHue ?? FB.hero.imageHue,

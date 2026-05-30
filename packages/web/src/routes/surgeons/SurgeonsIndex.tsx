@@ -90,16 +90,16 @@ export const SurgeonsIndex: React.FC = () => {
 
   const cms = useCms()
   const heroCms = cms?.surgeonsHero
-  const leadCms = (cms?.surgeonsPlasticView as any)?.lead ?? cms?.surgeonsLeadView
-  const plasticCms = (cms?.surgeonsPlasticView as any)?.plasticSurgery ?? cms?.surgeonsPlasticView
-  const aestheticCms = (cms?.surgeonsPlasticView as any)?.aestheticMedicine ?? cms?.surgeonsAestheticView
+  const leadCms = (cms?.surgeonsHero as any)?.sections?.lead ?? (cms?.surgeonsPlasticView as any)?.lead ?? cms?.surgeonsLeadView
+  const plasticCms = (cms?.surgeonsHero as any)?.sections?.plasticSurgery ?? (cms?.surgeonsPlasticView as any)?.plasticSurgery ?? cms?.surgeonsPlasticView
+  const aestheticCms = (cms?.surgeonsHero as any)?.sections?.aestheticMedicine ?? (cms?.surgeonsPlasticView as any)?.aestheticMedicine ?? cms?.surgeonsAestheticView
 
   // Resolved values (CMS-or-fallback). Each line is "global || fallback string"
   // so a partially-empty global degrades to a literal — never undefined.
   const hero = {
     chapter: heroCms?.chapter || FB.hero.chapter,
-    titleA: heroCms?.title?.a || FB.hero.title.a,
-    titleB: heroCms?.title?.b || FB.hero.title.b,
+    titleA: heroCms?.titleA || heroCms?.title?.a || FB.hero.title.a,
+    titleB: heroCms?.titleB || heroCms?.title?.b || FB.hero.title.b,
     lede: heroCms?.lede || FB.hero.lede,
     image: mediaUrl(heroCms?.heroImage) || IMG.clinic,
     imageHue: heroCms?.imageHue ?? FB.hero.imageHue,

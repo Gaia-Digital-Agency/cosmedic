@@ -1,6 +1,6 @@
 import { hydrateRoot } from 'react-dom/client'
 import { App } from './App'
-import { resolveRoute } from './router'
+import { resolveRoute, stripLocalePrefix } from './router'
 import { setCmsCacheSync, type CmsCache } from './lib/cms'
 import type { Locale } from './i18n'
 
@@ -19,5 +19,5 @@ if (typeof window !== 'undefined' && window.__COSMEDIC_CMS__) {
 
 hydrateRoot(
   document.getElementById('root')!,
-  <App route={resolveRoute(window.location.pathname)} cms={window.__COSMEDIC_CMS__} />,
+  <App route={resolveRoute(stripLocalePrefix(window.location.pathname).canonicalPath)} cms={window.__COSMEDIC_CMS__} />,
 )

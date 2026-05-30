@@ -7,6 +7,7 @@ export const PricingInsurance: GlobalConfig = {
   label: 'Pricing Terms',
   admin: {
     group: 'Procedures',
+    hidden: true,
     description:
       'Bottom section of /pricing: Insurance (left column), Payment terms (right column), and Consultation fee/waiver.',
   },

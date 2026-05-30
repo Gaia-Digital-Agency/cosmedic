@@ -29,5 +29,18 @@ export const ContactHero: GlobalConfig = {
       admin: { description: 'Caption label shown over the painted-SVG fallback if no hero image is uploaded.' } },
     { name: 'chapter', type: 'text', localized: true, defaultValue: 'Chapter VIII — Plan Your Journey',
       admin: { description: 'Small caps eyebrow above the hero title, e.g. "Chapter VIII — Plan Your Journey".', hidden: true } },
+    // ── Visit Section ─────────────────────────────────────────────────────────
+    {
+      name: 'visitSection', label: 'Visit Section', type: 'group',
+      admin: { description: '"Find us in Nusa Dua" section on /contact. Address/hours values come from Settings.' },
+      fields: [
+        { name: 'headingPre', label: 'Heading (roman)', type: 'text', localized: true, defaultValue: 'Find us in' },
+        { name: 'headingItalic', label: 'Heading (italic)', type: 'text', localized: true, defaultValue: 'Nusa Dua.' },
+        { name: 'body', type: 'textarea', localized: true,
+          defaultValue: 'Within the BIMC Hospital Nusa Dua, on the southernmost reach of Bali. Twelve minutes from Ngurah Rai International Airport.' },
+        { name: 'mapImage', type: 'upload', relationTo: 'media' },
+        { name: 'conciergeHoursValue', type: 'textarea', localized: true, defaultValue: 'Twenty-four hours\nReplies within ten minutes' },
+      ],
+    },
   ],
 }

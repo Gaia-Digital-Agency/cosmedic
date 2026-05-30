@@ -7,6 +7,7 @@ export const SurgeonsPlasticView: GlobalConfig = {
   label: 'Sections',
   admin: {
     group: 'Experts',
+    hidden: true,
     description:
       'Section chrome for all three editorial sections on /experts: Lead Surgeon panel, Plastic Surgery grid, and Aesthetic Medicine grid.',
   },

@@ -55,8 +55,9 @@ export const PricingPage: React.FC = () => {
     cms?.pricingFootnote?.text ||
     `Prices indicative for international patients. AUD shown at 1 AUD ≈ Rp ${liveRate.toLocaleString('de-DE')} (live rate). Final quotes are tailored after consultation. Recovery stays, transfers, and twelve months of telehealth follow-up included on most surgical packages.`
 
+  const pricingGroup = (cms?.treatmentsHero as any)?.pricing
   const insCms = cms?.pricingInsurance ?? {}
-  const ins = (insCms as any)?.insurance ?? insCms
+  const ins = pricingGroup?.insurance ?? (insCms as any)?.insurance ?? insCms
   const insuranceEyebrow = ins.eyebrow || 'Insurance'
   const insuranceHeadingRoman = ins.headingRoman || 'Working'
   const insuranceHeadingItalic = ins.headingItalic || 'with insurers.'
@@ -67,7 +68,7 @@ export const PricingPage: React.FC = () => {
         'Travel insurance is recommended for every patient, and we work with two specialist medical-travel insurers — details supplied during consultation.',
       ]
 
-  const pay = (insCms as any)?.payment ?? cms?.pricingPayment ?? {}
+  const pay = pricingGroup?.payment ?? (insCms as any)?.payment ?? cms?.pricingPayment ?? {}
   const paymentEyebrow = pay.eyebrow || 'Payment'
   const paymentHeadingRoman = pay.headingRoman || 'Quiet,'
   const paymentHeadingItalic = pay.headingItalic || 'considered terms.'

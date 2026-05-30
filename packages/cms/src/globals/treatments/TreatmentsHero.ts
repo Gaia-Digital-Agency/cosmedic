@@ -47,6 +47,24 @@ export const TreatmentsHero: GlobalConfig = {
           admin: { description: 'Intro paragraph beneath the title.' } },
         { name: 'heroImage', type: 'upload', relationTo: 'media',
           admin: { description: 'Hero image for /pricing.' } },
+        // ── Pricing Terms (merged from Pricing Terms card) ──────────────────
+        { name: 'insurance', label: 'Insurance', type: 'group', fields: [
+          { name: 'eyebrow', type: 'text', localized: true, defaultValue: 'Insurance' },
+          { name: 'headingRoman', type: 'text', localized: true, defaultValue: 'Working' },
+          { name: 'headingItalic', type: 'text', localized: true, defaultValue: 'with insurers.' },
+          { name: 'body', type: 'textarea', localized: true },
+        ] },
+        { name: 'payment', label: 'Payment', type: 'group', fields: [
+          { name: 'eyebrow', type: 'text', localized: true, defaultValue: 'Payment' },
+          { name: 'headingRoman', type: 'text', localized: true, defaultValue: 'Quiet,' },
+          { name: 'headingItalic', type: 'text', localized: true, defaultValue: 'considered terms.' },
+          { name: 'termsText', type: 'textarea', localized: true },
+        ] },
+        { name: 'consultation', label: 'Consultation', type: 'group', fields: [
+          { name: 'feeIdr', type: 'number', defaultValue: 150000 },
+          { name: 'waiverConditionText', type: 'textarea', localized: true,
+            defaultValue: 'Consultation fee is waived if treatment is performed the same day.' },
+        ] },
       ],
     },
   ],

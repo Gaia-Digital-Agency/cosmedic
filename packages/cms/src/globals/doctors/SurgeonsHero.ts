@@ -29,5 +29,34 @@ export const SurgeonsHero: GlobalConfig = {
       admin: { description: 'Caption shown on the image card (uppercase mono), e.g. "THE PRACTITIONERS".' } },
     { name: 'chapter', type: 'text', required: true, localized: true,
       admin: { description: 'Eyebrow above the title, e.g. "Chapter III — The Practitioners".', hidden: true } },
+    // ── Sections ─────────────────────────────────────────────────────────────
+    {
+      name: 'sections', label: 'Sections', type: 'group',
+      admin: { description: 'Section chrome for all three /experts grids.' },
+      fields: [
+        { name: 'lead', label: 'Lead Surgeon', type: 'group', fields: [
+          { name: 'sectionEyebrow', type: 'text', localized: true },
+          { name: 'blockEyebrow', type: 'text', localized: true },
+          { name: 'statLabelTrained', type: 'text', localized: true, defaultValue: 'Trained' },
+          { name: 'statLabelSpecialty', type: 'text', localized: true, defaultValue: 'Specialty' },
+          { name: 'statLabelDistinction', type: 'text', localized: true, defaultValue: 'Distinction' },
+          { name: 'ctaLabel', type: 'text', localized: true, defaultValue: 'Read the full profile' },
+        ] },
+        { name: 'plasticSurgery', label: 'Plastic Surgery', type: 'group', fields: [
+          { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true },
+          { name: 'eyebrow', type: 'text', localized: true },
+          { name: 'headingA', type: 'text', localized: true },
+          { name: 'headingB', type: 'text', localized: true },
+          { name: 'headingItalic', type: 'text', localized: true },
+        ] },
+        { name: 'aestheticMedicine', label: 'Aesthetic Medicine', type: 'group', fields: [
+          { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true },
+          { name: 'eyebrow', type: 'text', localized: true },
+          { name: 'headingA', type: 'text', localized: true },
+          { name: 'headingB', type: 'text', localized: true },
+          { name: 'headingItalic', type: 'text', localized: true },
+        ] },
+      ],
+    },
   ],
 }

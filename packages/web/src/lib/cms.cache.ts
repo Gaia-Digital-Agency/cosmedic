@@ -203,7 +203,7 @@ async function doLoad(locale?: string): Promise<CmsCache> {
       fetchGlobal<SeoDefaultsGlobal>('seo-defaults', 1, locale),
       fetchGlobal<ContactHeroGlobal>('contact-hero', 1, locale).catch(() => ({})),
       fetchGlobal<ContactEnquirySectionGlobal>('contact-enquiry-section', 1, locale).catch(() => ({})),
-      fetchGlobal<ContactVisitSectionGlobal>('contact-visit-section', 1, locale).catch(() => ({})),
+      Promise.resolve({}), // contact-visit-section merged into contact-hero.visitSection
       fetchGlobal<JourneyHeroGlobal>('journey-hero', 1, locale).catch(() => ({})),
       fetchGlobal<JourneyStatsGlobal>('journey-stats', 1, locale).catch(() => ({})),
       fetchGlobal<RecoveryStaysPageGlobal>('recovery-stays-page', 1, locale).catch(() => ({})),
@@ -214,14 +214,14 @@ async function doLoad(locale?: string): Promise<CmsCache> {
       fetchGlobal<SubCategoryDetailTemplateGlobal>('sub-category-detail-template', 1, locale).catch(() => ({})),
       fetchGlobal<SurgeonsHeroGlobal>('surgeons-hero', 1, locale).catch(() => ({})),
       Promise.resolve({}), // surgeons-lead-view merged into surgeons-plastic-view.lead
-      fetchGlobal<SurgeonsSectionViewGlobal>('surgeons-plastic-view', 1, locale).catch(() => ({})),
+      Promise.resolve({}), // surgeons-plastic-view merged into surgeons-hero.sections
       Promise.resolve({}), // surgeons-aesthetic-view merged into surgeons-plastic-view.aestheticMedicine
       fetchGlobal<SurgeonDetailTemplateGlobal>('surgeon-detail-template', 1, locale).catch(() => ({})),
       fetchGlobal<BlogPostTemplateGlobal>('blog-post-template', 1, locale).catch(() => ({})),
       Promise.resolve({}), // pricing-hero merged into treatments-hero.pricing
       fetchGlobal<PricingOverviewGlobal>('pricing-overview', 1, locale).catch(() => ({})),
       fetchGlobal<PricingFootnoteGlobal>('pricing-footnote', 1, locale).catch(() => ({})),
-      fetchGlobal<PricingInsuranceGlobal>('pricing-insurance', 1, locale).catch(() => ({})),
+      Promise.resolve({}), // pricing-insurance merged into treatments-hero.pricing
       Promise.resolve({}), // pricing-payment merged into pricing-insurance.payment
       fetchGlobal<PricingDisciplineListViewGlobal>('pricing-discipline-list-view', 1, locale).catch(() => ({})),
       fetchGlobal<PricingCatalogueViewGlobal>('pricing-catalogue-view', 1, locale).catch(() => ({})),
