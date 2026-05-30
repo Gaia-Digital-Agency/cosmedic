@@ -15,16 +15,10 @@ export const ResultsHero: GlobalConfig = {
   fields: [
     { name: 'breadcrumbLabel', type: 'text', defaultValue: 'Results & Stories',
       admin: { description: 'Last segment in the breadcrumb trail.', hidden: true } },
-    {
-      name: 'title', type: 'group',
-      admin: { description: 'Two-line headline. Line A renders roman; line B renders italic.' },
-      fields: [
-        { name: 'a', type: 'text', localized: true, defaultValue: 'Quietly',
-          admin: { description: 'First line (roman).' } },
-        { name: 'b', type: 'text', localized: true, defaultValue: 'transformative.',
-          admin: { description: 'Second line (italic-friendly).' } },
-      ],
-    },
+    { name: 'titleA', label: 'Title — Line A', type: 'text', localized: true, defaultValue: 'Quietly',
+      admin: { description: 'First line (roman).' } },
+    { name: 'titleB', label: 'Title — Line B', type: 'text', localized: true, defaultValue: 'transformative.',
+      admin: { description: 'Second line (italic-friendly).' } },
     { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true,
       defaultValue:
         'A small selection of consented results paired with the stories behind them. Our complete library — over two hundred cases — is shared during private consultation.',

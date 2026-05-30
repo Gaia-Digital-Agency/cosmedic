@@ -14,16 +14,10 @@ export const ContactHero: GlobalConfig = {
   fields: [
     { name: 'breadcrumbLabel', type: 'text', defaultValue: 'Plan Your Journey',
       admin: { description: 'Label for the current page in the breadcrumb (the "Home → <this>" trail).', hidden: true } },
-    {
-      name: 'title', type: 'group',
-      admin: { description: 'Two-line hero title. Line A is roman; line B renders italic-friendly.' },
-      fields: [
-        { name: 'a', type: 'text', localized: true, defaultValue: 'Begin, when',
-          admin: { description: 'First line of the hero title.' } },
-        { name: 'b', type: 'text', localized: true, defaultValue: 'you are ready.',
-          admin: { description: 'Second line of the hero title (italic-friendly).' } },
-      ],
-    },
+    { name: 'titleA', label: 'Title — Line A', type: 'text', localized: true, defaultValue: 'Begin, when',
+      admin: { description: 'First line of the hero title.' } },
+    { name: 'titleB', label: 'Title — Line B', type: 'text', localized: true, defaultValue: 'you are ready.',
+      admin: { description: 'Second line of the hero title (italic-friendly).' } },
     { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true,
       defaultValue: 'Write to us in your own time, in your own words. A concierge will reply within twenty-four hours, in English or Bahasa Indonesia. There is no obligation — and no pressure — to proceed.',
       admin: { description: 'Intro paragraph beneath the title.' } },

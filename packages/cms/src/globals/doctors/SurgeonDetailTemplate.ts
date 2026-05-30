@@ -97,6 +97,7 @@ export const SurgeonDetailTemplate: GlobalConfig = {
       admin: { description: 'Eyebrow above the "Meet the other practitioners" card grid.' } },
     {
       name: 'facultyHeading',
+      label: 'Faculty Heading',
       type: 'group',
       admin: { description: '"Meet the other practitioners." heading — split into 3 parts so the italic mid-sentence renders correctly.' },
       fields: [

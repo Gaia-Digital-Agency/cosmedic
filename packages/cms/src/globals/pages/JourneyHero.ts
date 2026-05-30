@@ -18,17 +18,12 @@ export const JourneyHero: GlobalConfig = {
       type: 'text',
       localized: true,
       defaultValue: 'Your Journey',
-      admin: { description: 'Label shown for /journey in the breadcrumb trail.' },
+      admin: { description: 'Label shown for /journey in the breadcrumb trail.', hidden: true },
     },
-    {
-      name: 'title',
-      type: 'group',
-      admin: { description: 'The two-line headline. Line A renders first, line B underneath.' },
-      fields: [
-        { name: 'a', type: 'text', localized: true, admin: { description: 'First line, e.g. "From enquiry,".' } },
-        { name: 'b', type: 'text', localized: true, admin: { description: 'Second line, e.g. "to homecoming.".' } },
-      ],
-    },
+    { name: 'titleA', label: 'Title — Line A', type: 'text', localized: true,
+      admin: { description: 'First line, e.g. "From enquiry,".' } },
+    { name: 'titleB', label: 'Title — Line B', type: 'text', localized: true,
+      admin: { description: 'Second line, e.g. "to homecoming.".' } },
     { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true, admin: { description: 'Sub-paragraph under the title.' } },
     {
       name: 'heroImage',

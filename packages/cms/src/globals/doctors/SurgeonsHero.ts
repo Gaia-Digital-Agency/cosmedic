@@ -15,16 +15,10 @@ export const SurgeonsHero: GlobalConfig = {
   fields: [
     { name: 'breadcrumbLabel', type: 'text', defaultValue: 'Surgeons',
       admin: { description: 'Last segment in the breadcrumb trail. e.g. "Surgeons".', hidden: true } },
-    {
-      name: 'title', label: 'Title', type: 'group',
-      admin: { description: 'Two-line headline. Line A renders roman; line B renders italic.' },
-      fields: [
-        { name: 'a', type: 'text', required: true, localized: true,
-          admin: { description: 'First line (roman). e.g. "Hands you".' } },
-        { name: 'b', type: 'text', required: true, localized: true,
-          admin: { description: 'Second line (italic). e.g. "can trust.".' } },
-      ],
-    },
+    { name: 'titleA', label: 'Title — Line A', type: 'text', required: true, localized: true,
+      admin: { description: 'First line (roman). e.g. "Hands you".' } },
+    { name: 'titleB', label: 'Title — Line B', type: 'text', required: true, localized: true,
+      admin: { description: 'Second line (italic). e.g. "can trust.".' } },
     { name: 'lede', label: 'Intro paragraph', type: 'textarea', required: true, localized: true,
       admin: { description: 'Intro paragraph below the headline. Keep ~2 sentences.' } },
     { name: 'heroImage', type: 'upload', relationTo: 'media',
