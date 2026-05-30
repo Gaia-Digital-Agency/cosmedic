@@ -8,6 +8,7 @@ export const BlogPage: GlobalConfig = {
   label: 'Blog',
   admin: {
     group: 'Publications',
+    hidden: true,
     description:
       'All content for /blog — hero, "This issue" featured callout, archive section. Posts and tags come from the BlogPosts / BlogTags collections.',
   },

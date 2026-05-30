@@ -8,6 +8,7 @@ export const PrivacyPage: GlobalConfig = {
   label: 'Privacy',
   admin: {
     group: 'Publications',
+    hidden: true,
     description:
       'All content for /privacy — hero, metadata lines, intro paragraph, DPO contact section. Legal sections come from the Privacy Sections collection.',
   },

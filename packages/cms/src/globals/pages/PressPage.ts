@@ -8,6 +8,7 @@ export const PressPage: GlobalConfig = {
   label: 'Press',
   admin: {
     group: 'Publications',
+    hidden: true,
     description:
       'All content for /press — hero, Accreditations section, In the Press section. Cards come from Awards collection; rows from PressMentions collection.',
   },
