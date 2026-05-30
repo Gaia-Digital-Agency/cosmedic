@@ -286,3 +286,68 @@ Already correct — all fields visible, no changes needed.
 2. Expose `breadcrumbLabel`
 3. Seed 3 NULL fields in surgeons_hero_locales
 4. Fix 3 web path mismatches in SurgeonsIndex.tsx (`heading?.a` → `headingA` etc.)
+
+---
+
+## PUBLICATIONS bucket — 4 cards ✅ SHIPPED
+
+**Pattern:** One card per web page. BlogPostTemplate is a shared template (not a page card).
+All three page globals were hidden — exposed by removing `hidden: true`. No migration for the expose step.
+
+### Card 1 — BLOG (blog-page) → /blog
+
+| Section | Field | Source DB | Action |
+|---|---|---|---|
+| Breadcrumb | Page Label | blog_page: breadcrumb_label | add field + column (default: 'Journal') |
+| Hero Image | Two Line — TitleA | blog_page_locales: chapter_title_a | pageFields — already present |
+| Hero Image | Two Line — TitleB | blog_page_locales: chapter_title_b | pageFields — already present |
+| Hero Image | Paragraph | blog_page_locales: lede | pageFields — already present |
+| Hero Image | Image | blog_page: hero_image_id | pageFields — already present |
+| Hero Image | Image Label | blog_page: image_label | add field + column (default: 'JOURNAL') |
+| This Issue | Eyebrow | blog_page: this_issue_eyebrow | already in global ✓ |
+| This Issue | Read Essay CTA | blog_page: read_the_essay_cta_label | already in global ✓ |
+| Archive | Eyebrow | blog_page: archive_section_eyebrow | already in global ✓ |
+| Archive | Two Line — TitleA | blog_page: archive_section_heading_pre | already in global ✓ |
+| Archive | Two Line — TitleB | blog_page: archive_section_heading_italic | already in global ✓ |
+| Archive | Paragraph | blog_page: archive_section_lede | already in global ✓ |
+| Archive | Filter All label | blog_page: archive_section_filter_all_label | already in global ✓ |
+| Archive | Empty state copy | blog_page: archive_section_empty_state_copy | already in global ✓ |
+
+### Card 2 — PRESS (press-page) → /press
+
+| Section | Field | Source DB | Action |
+|---|---|---|---|
+| Breadcrumb | Page Label | press_page: breadcrumb_label | add field + column (default: 'Accreditations & Press') |
+| Hero Image | Two Line — TitleA | press_page_locales: chapter_title_a | pageFields — already present |
+| Hero Image | Two Line — TitleB | press_page_locales: chapter_title_b | pageFields — already present |
+| Hero Image | Paragraph | press_page_locales: lede | pageFields — already present |
+| Hero Image | Image | press_page: hero_image_id | pageFields — already present |
+| Hero Image | Image Label | press_page: image_label | add field + column (default: 'ACCREDITATIONS') |
+| Stats Row | 4 tiles (number, label, italic) | press_page_top_stats | add array field + table, seed hardcoded values |
+| Accreditations | Eyebrow | press_page: accreditations_section_eyebrow | already in global ✓ |
+| Accreditations | Heading | press_page: accreditations_section_heading | already in global ✓ |
+| Accreditations | Paragraph | press_page: accreditations_section_lede | already in global ✓ |
+| In the Press | Eyebrow | press_page: press_section_eyebrow | already in global ✓ |
+| In the Press | Two Line — TitleA | press_page: press_section_heading_pre | already in global ✓ |
+| In the Press | Two Line — TitleB | press_page: press_section_heading_italic | already in global ✓ |
+| In the Press | Paragraph | press_page: press_section_lede | already in global ✓ |
+| In the Press | CTA label | press_page: press_enquiries_cta_label | already in global ✓ |
+
+### Card 3 — PRIVACY (privacy-page) → /privacy
+
+| Section | Field | Source DB | Action |
+|---|---|---|---|
+| Breadcrumb | Page Label | privacy_page: breadcrumb_label | add field + column (default: 'Privacy & Terms') |
+| Hero Image | Two Line — TitleA/TitleB, Paragraph, Image | privacy_page_locales | pageFields — already present |
+| Hero Image | Image Label | privacy_page: image_label | already in global ✓ |
+| Metadata | Last Updated | privacy_page: last_updated_date | already in global ✓ |
+| Metadata | Version line | privacy_page: version_line | already in global ✓ |
+| Metadata | Reading time | privacy_page: reading_time_line | already in global ✓ |
+| Content | Intro paragraph | privacy_page: intro_paragraph | already in global ✓ |
+| Content | TOC heading | privacy_page: toc_heading | already in global ✓ |
+| Content | Privacy sections | PrivacySections collection | collection — no global needed |
+| DPO | 10 fields (eyebrow, heading, lede, email, address, CTA) | privacy_page: dpo_* | already in global ✓ |
+
+### Card 4 — BLOG POST TEMPLATE (blog-post-template) → /blog/[slug]
+
+Template card — shared chrome across all individual blog posts. Already visible and correct. No changes needed.
