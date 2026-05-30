@@ -50,15 +50,15 @@ export const SubCategories: CollectionConfig = {
     { name: 'lede', label: 'Intro paragraph', type: 'textarea', localized: true,
       admin: { description: 'Lede paragraph rendered under the hero title on this sub-category page.' } },
     { name: 'intro', type: 'richText', localized: true,
-      admin: { description: 'Rich-text intro paragraph rendered above the body sections.', hidden: true } },
+      admin: { description: 'Rich-text intro paragraph rendered above the body sections.' } },
     { name: 'overview', type: 'richText', localized: true,
-      admin: { description: 'Long-form overview rich-text block rendered as the body content of /treatments/{slug}.', hidden: true } },
+      admin: { description: 'Long-form overview rich-text block rendered as the body content of /treatments/{slug}.' } },
     { name: 'leadSurgeon', type: 'relationship', relationTo: 'surgeons',
       admin: { description: 'The single lead surgeon for this sub-category. Rendered as the "Lead surgeon" mini-card in the sub-category page sidebar.' } },
     {
       name: 'sections',
       type: 'array',
-      admin: { description: 'Body sections rendered in order on /treatments/{slug}. Each section gets a heading + anchor link in the sticky-TOC sidebar.', hidden: true },
+      admin: { description: 'Body sections rendered in order on /treatments/{slug}. Each section gets a heading + anchor link in the sticky-TOC sidebar.' },
       fields: [
         { name: 'anchorId', type: 'text', required: true,
           admin: { description: 'URL-safe anchor id used in the TOC link and href, e.g. "overview" → /treatments/X#overview.' } },
@@ -71,7 +71,7 @@ export const SubCategories: CollectionConfig = {
     {
       name: 'faqs',
       type: 'array',
-      admin: { description: 'Frequently-asked-questions accordion at the bottom of /treatments/{slug}.', hidden: true },
+      admin: { description: 'Frequently-asked-questions accordion at the bottom of /treatments/{slug}.' },
       fields: [
         { name: 'q', type: 'text', required: true, localized: true,
           admin: { description: 'Question shown as the accordion header.' } },

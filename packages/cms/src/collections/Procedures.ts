@@ -123,11 +123,11 @@ export const Procedures: CollectionConfig = {
     { name: 'parentSubCategory', type: 'relationship', relationTo: 'sub-categories',
       admin: { description: 'Which sub-category this procedure renders under. Drives which /treatments/{sub-slug} page lists this procedure in its accordion.', hidden: true } },
     { name: 'description', type: 'richText', localized: true,
-      admin: { description: 'Top-of-record description shown when the procedure expands in the sub-category accordion.', hidden: true } },
+      admin: { description: 'Top-of-record description shown when the procedure expands in the sub-category accordion.' } },
     {
       name: 'sections',
       type: 'array',
-      admin: { description: 'Body sections rendered inside the expanded procedure accordion (or a future /procedure-{slug} page).', hidden: true },
+      admin: { description: 'Body sections rendered inside the expanded procedure accordion (or a future /procedure-{slug} page).' },
       fields: [
         { name: 'anchorId', type: 'text', required: true,
           admin: { description: 'URL-safe anchor id for the section heading.' } },
@@ -140,7 +140,7 @@ export const Procedures: CollectionConfig = {
     {
       name: 'faqs',
       type: 'array',
-      admin: { description: 'Procedure-specific FAQ accordion items.', hidden: true },
+      admin: { description: 'Procedure-specific FAQ accordion items.' },
       fields: [
         { name: 'q', type: 'text', required: true, localized: true },
         { name: 'a', type: 'textarea', required: true, localized: true },
